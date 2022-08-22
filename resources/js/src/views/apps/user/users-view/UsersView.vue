@@ -47,17 +47,17 @@
           cols="12"
           lg="6"
         >
-          <user-view-user-timeline-card />
+          <!-- <user-view-user-timeline-card /> -->
         </b-col>
         <b-col
           cols="12"
           lg="6"
         >
-          <user-view-user-permissions-card />
+          <!-- <user-view-user-permissions-card /> -->
         </b-col>
       </b-row>
 
-      <invoice-list />
+      <!-- <invoice-list /> -->
     </template>
 
   </div>
