@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,3 +29,10 @@ Route::post('/user/updateaccount/{id}',[UserController::class,'updateUserAccount
 Route::post('/user/updateinformation/{id}',[UserController::class,'updateUserInformation'])->name('/user/updateinformation/{id}');
 Route::post('/user/deleteuser/{id}',[UserController::class,'deleteUser'])->name('/user/deleteuser/{id}');
 
+Route::post('/auth/login',[AuthController::class,'login'])->name('/auth/login');
+
+Route::group(['middleware' => 'auth:sanctum'], function() {
+    Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('user', [AuthController::class, 'user']);
+    // Route::post('/auth/refresh-token', [AuthController::class, 'refresh']);
+  });

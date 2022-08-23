@@ -45,15 +45,15 @@ export default class JwtService {
         if (response && response.status === 401) {
           if (!this.isAlreadyFetchingAccessToken) {
             this.isAlreadyFetchingAccessToken = true
-            this.refreshToken().then(r => {
-              this.isAlreadyFetchingAccessToken = false
+            // this.refreshToken().then(r => {
+            //   this.isAlreadyFetchingAccessToken = false
 
-              // Update accessToken in localStorage
-              this.setToken(r.data.accessToken)
-              this.setRefreshToken(r.data.refreshToken)
+            //   // Update accessToken in localStorage
+            //   this.setToken(r.data.accessToken)
+            //   this.setRefreshToken(r.data.refreshToken)
 
-              this.onAccessTokenFetched(r.data.accessToken)
-            })
+            //   this.onAccessTokenFetched(r.data.accessToken)
+            // })
           }
           const retryOriginalRequest = new Promise(resolve => {
             this.addSubscriber(accessToken => {
