@@ -52,11 +52,11 @@
           />
           <span class="d-none d-sm-inline">Information</span>
         </template>
-        <user-edit-tab-information class="mt-2 pt-75" />
+        <user-edit-tab-information  :user-data="userData" class="mt-2 pt-75" />
       </b-tab>
 
       <!-- Tab: Social -->
-      <b-tab>
+      <!-- <b-tab class="d-none">
         <template #title>
           <feather-icon
             icon="Share2Icon"
@@ -66,7 +66,7 @@
           <span class="d-none d-sm-inline">Social</span>
         </template>
         <user-edit-tab-social class="mt-2 pt-75" />
-      </b-tab>
+      </b-tab> -->
     </b-tabs>
   </component>
 </template>
@@ -82,7 +82,8 @@ import userStoreModule from '../userStoreModule'
 import UserEditTabAccount from './UserEditTabAccount.vue'
 import UserEditTabInformation from './UserEditTabInformation.vue'
 import UserEditTabSocial from './UserEditTabSocial.vue'
-
+import { useToast } from 'vue-toastification/composition'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 export default {
   components: {
     BTab,
@@ -94,8 +95,10 @@ export default {
     UserEditTabAccount,
     UserEditTabInformation,
     UserEditTabSocial,
+    ToastificationContent
   },
   setup() {
+      const toast = useToast()
     const userData = ref(null)
 
     const USER_APP_STORE_MODULE_NAME = 'app-user'

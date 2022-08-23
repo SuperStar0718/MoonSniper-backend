@@ -67,12 +67,13 @@ export default function useUsersList() {
         status: statusFilter.value,
       })
       .then(response => {
-        const { users, total } = response.data
-
+        response.data.users.users =  response.data.users.data;
+        const { users, total } = response.data.users
         callback(users)
         totalUsers.value = total
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         toast({
           component: ToastificationContent,
           props: {
