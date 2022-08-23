@@ -32,7 +32,22 @@ Route::post('/user/deleteuser/{id}',[UserController::class,'deleteUser'])->name(
 Route::post('/auth/login',[AuthController::class,'login'])->name('/auth/login');
 
 Route::group(['middleware' => 'auth:sanctum'], function() {
+    //User functions
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'user']);
+
+    //MoonSniper functions
+    Route::post('/get_coins','App\Http\Controllers\Coingecko@get_coin_prices');
+    Route::post('/get_fag','App\Http\Controllers\Coingecko@get_fear_greed');
+    Route::post('/get_trading_volume_history','App\Http\Controllers\Coingecko@get_trading_volume_history');
+    Route::post('/create_preset_filter','App\Http\Controllers\PresetFilterController@create_preset_filter');
+    Route::post('/get_preset_filters','App\Http\Controllers\PresetFilterController@get_preset_filters');
+    Route::post('/delete_preset_filter','App\Http\Controllers\PresetFilterController@delete_preset_filter');
     // Route::post('/auth/refresh-token', [AuthController::class, 'refresh']);
   });
+
+
+//ChromeApp functions:
+//public Routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
