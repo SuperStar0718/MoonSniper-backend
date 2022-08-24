@@ -37,11 +37,26 @@ Route::post('/validateusernameonupdate',[UserController::class,'validateUsername
 Route::post('/validateemailonupdate',[UserController::class,'validateEmailOnUpdate']);
 Route::post('/plans',[PlansController::class,'plans']);
 Route::group(['middleware' => 'auth:sanctum'], function() {
+    //User functions
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'user']);
+
+    //MoonSniper functions
+    Route::post('/get_coins','App\Http\Controllers\Coingecko@get_coin_prices');
+    Route::post('/get_fag','App\Http\Controllers\Coingecko@get_fear_greed');
+    Route::post('/get_trading_volume_history','App\Http\Controllers\Coingecko@get_trading_volume_history');
+    Route::post('/create_preset_filter','App\Http\Controllers\PresetFilterController@create_preset_filter');
+    Route::post('/get_preset_filters','App\Http\Controllers\PresetFilterController@get_preset_filters');
+    Route::post('/delete_preset_filter','App\Http\Controllers\PresetFilterController@delete_preset_filter');
     Route::post('/user/profile',[UserController::class,'updateUserProfile'])->name('/user/profile}');
     Route::post('/user/updatepassword',[UserController::class,'updateUserPassword'])->name('/user/updatepassword');
     Route::post('/user/updateprofileinformation',[UserController::class,'updateUserProfileInfo'])->name('/user/updateprofileinformation');
     
     Route::post('/user/updatenotofications',[UserController::class,'updateUserNotifications'])->name('/user/updatenotofications');
   });
+
+
+//ChromeApp functions:
+//public Routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
