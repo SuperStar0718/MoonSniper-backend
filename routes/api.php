@@ -51,7 +51,6 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::post('/user/profile',[UserController::class,'updateUserProfile'])->name('/user/profile}');
     Route::post('/user/updatepassword',[UserController::class,'updateUserPassword'])->name('/user/updatepassword');
     Route::post('/user/updateprofileinformation',[UserController::class,'updateUserProfileInfo'])->name('/user/updateprofileinformation');
-    
     Route::post('/user/updatenotofications',[UserController::class,'updateUserNotifications'])->name('/user/updatenotofications');
   });
 
