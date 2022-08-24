@@ -57,6 +57,12 @@ class UserController extends Controller
         }
 
         $users = $query->paginate($request->perPage ? $request->perPage : 10);
+        foreach($users as $user)
+        {
+            if ($user->avatar) {
+                $user->avatar = asset('/storage/user/avatars/' . $user->avatar);
+            }
+        }
         return response()->json(['users' => $users]);
     }
     public function usersById(Request $request)
@@ -103,18 +109,6 @@ class UserController extends Controller
         ]);
         $user->save();
         return response()->json(['status' => 'success']);
-        // if($user->save()){
-        //     $tokenResult = $user->createToken('Personal Access Token');
-        //     $token = $tokenResult->plainTextToken;
-
-        //     return response()->json([
-        //     'message' => 'Successfully created user!',
-        //     'accessToken'=> $token,
-        //     ],201);
-        // }
-        // else{
-        //     return response()->json(['error'=>'Provide proper details']);
-        // }
     }
     public function updateAvatar(Request $request)
     {
