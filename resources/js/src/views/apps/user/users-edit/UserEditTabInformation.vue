@@ -225,7 +225,7 @@
                 uniqueMail2
             }
         },
-        setup(props) {
+        setup(props,{refs}) {
             const toast = useToast()
                 
             const languageOptions = ['English', 'Spanish', 'French', 'Russian', 'German', 'Arabic', 'Sanskrit']
@@ -242,6 +242,8 @@
 
             const contactOptionsOptions = ['Email', 'Message', 'Phone']
             const updateInformation = () => {
+                        refs.refFormObserver.validate().then(success => {
+                    if (success) {
                 axios
                     .post(`api/user/updateinformation/${props.userData.id}`, props.userData)
                     .then(response => {
@@ -265,6 +267,7 @@
 
                     })
             }
+                        })}
             const {
                 refFormObserver,
                 getValidationState,

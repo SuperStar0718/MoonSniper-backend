@@ -16,8 +16,9 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
-            UsersTableSeeder::class,            
+            // UsersTableSeeder::class,            
+            PlanSeeder::class,            
         ]);
-       \App\Models\User::factory(10)->create();
+    //    \App\Models\User::factory(10)->create();
     }
 }

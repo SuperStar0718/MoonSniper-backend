@@ -153,7 +153,7 @@
                 this.informationData =this.informationData;
             },
         },
-        setup(props) {
+        setup(props,{refs}) {
             const toast = useToast()
 
             const languageOptions = ['English', 'Spanish', 'French', 'Russian', 'German', 'Arabic', 'Sanskrit']
@@ -170,6 +170,8 @@
 
             const contactOptionsOptions = ['Email', 'Message', 'Phone']
             const updateInformation = () => {
+               refs.refFormObserver.validate().then(success => {
+                    if (success) {
               let params = {
                 bio:props.informationData.bio,
                 contact:props.informationData.contact,
@@ -185,7 +187,7 @@
                             toast({
                                 component: ToastificationContent,
                                 props: {
-                                    title: 'Notificatons are updated',
+                                    title: 'Information details has been updated',
                                     variant: 'success',
                                 },
                             })
@@ -201,6 +203,7 @@
 
                     })
             }
+               })}
             const {
                 refFormObserver,
                 getValidationState,

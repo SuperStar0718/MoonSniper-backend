@@ -199,7 +199,7 @@ import axios from '@axios'
                props.passwords
            )
             const updatePassword = ()=>{
-              console.log(refs);
+             
                 axios
                     .post(`api/user/updatepassword`,  props.passwords)
                     .then(response => {

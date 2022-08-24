@@ -185,7 +185,7 @@ export default {
                             toast({
                                 component: ToastificationContent,
                                 props: {
-                                    title: 'Information details has been updated',
+                                    title: 'Notificatons are updated',
                                     variant: 'success',
                                 },
                             })

@@ -23,9 +23,9 @@
             </div>
         </b-media>
         <!-- User Info: Input Fields -->
-        <validation-observer #default="{ updateProfile }" ref="refFormObserver">
+        <validation-observer #default="{ handleSubmit }" ref="refFormObserver">
 
-            <b-form @submit.prevent="updateProfile(updateProfile)" @reset.prevent="resetForm">
+            <b-form @submit.prevent="handleSubmit(updateProfile)" @reset.prevent="resetForm">
                 <b-row>
                     <!-- Field: Username -->
                     <b-col cols="12" md="4">
@@ -43,10 +43,10 @@
                     <!-- Field: Full Name -->
                     <b-col cols="12" md="4">
                         <b-form-group label="Full Name" label-for="full-name">
-                           <validation-provider #default="validationContext" name="Fullname"
+                            <validation-provider #default="validationContext" name="Fullname"
                                 :rules="`required:${userData.id}`">
-                            <b-form-input id="full-name" v-model="userData.fullName" />
-                             <b-form-invalid-feedback>
+                                <b-form-input id="full-name" v-model="userData.fullName" />
+                                <b-form-invalid-feedback>
                                     {{ validationContext.errors[0] }}
                                 </b-form-invalid-feedback>
                             </validation-provider>
@@ -56,9 +56,9 @@
                     <!-- Field: Email -->
                     <b-col cols="12" md="4">
                         <b-form-group label="Email" label-for="email">
-                        <validation-provider #default="validationContext" name="Email"
+                            <validation-provider #default="validationContext" name="Email"
                                 :rules="`required|email|uniqueMail2:${userData.id}`">
-                                 <b-form-input id="email" v-model="userData.email" type="email" />
+                                <b-form-input id="email" v-model="userData.email" type="email" />
                                 <b-form-invalid-feedback>
                                     {{ validationContext.errors[0] }}
                                 </b-form-invalid-feedback>
@@ -69,12 +69,12 @@
                     <!-- Field: Status -->
                     <b-col cols="12" md="4">
                         <b-form-group label="Status" label-for="user-status">
-                         <validation-provider #default="validationContext" name="Status"
+                            <validation-provider #default="validationContext" name="Status"
                                 :rules="`required:${userData.id}`">
-                            <v-select v-model="userData.status" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                :options="statusOptions" :reduce="val => val.value" :clearable="false"
-                                input-id="user-status" />
-                                 <b-form-invalid-feedback>
+                                <v-select v-model="userData.status" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                    :options="statusOptions" :reduce="val => val.value" :clearable="false"
+                                    input-id="user-status" />
+                                <b-form-invalid-feedback>
                                     {{ validationContext.errors[0] }}
                                 </b-form-invalid-feedback>
                             </validation-provider>
@@ -83,14 +83,14 @@
 
                     <!-- Field: Role -->
                     <b-col cols="12" md="4">
-                     
+
                         <b-form-group label="User Role" label-for="user-role">
-                         <validation-provider #default="validationContext" name="Role"
+                            <validation-provider #default="validationContext" name="Role"
                                 :rules="`required:${userData.id}`">
-                            <v-select v-model="userData.role" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                :options="roleOptions" :reduce="val => val.value" :clearable="false"
-                                input-id="user-role" />
-                                 <b-form-invalid-feedback>
+                                <v-select v-model="userData.role" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                    :options="roleOptions" :reduce="val => val.value" :clearable="false"
+                                    input-id="user-role" />
+                                <b-form-invalid-feedback>
                                     {{ validationContext.errors[0] }}
                                 </b-form-invalid-feedback>
                             </validation-provider>
@@ -100,10 +100,10 @@
                     <!-- Field: Email -->
                     <b-col cols="12" md="4">
                         <b-form-group label="Company" label-for="company">
-                         <validation-provider #default="validationContext" name="Company"
+                            <validation-provider #default="validationContext" name="Company"
                                 :rules="`required:${userData.id}`">
-                            <b-form-input id="company" v-model="userData.company" />
-                             <b-form-invalid-feedback>
+                                <b-form-input id="company" v-model="userData.company" />
+                                <b-form-invalid-feedback>
                                     {{ validationContext.errors[0] }}
                                 </b-form-invalid-feedback>
                             </validation-provider>
@@ -234,7 +234,7 @@
                 uniqueMail2
             }
         },
-        setup(props) {
+        setup(props,{refs}) {
             const toast = useToast()
             const {
                 resolveUserRoleVariant
@@ -357,20 +357,24 @@
                     })
             }
             const updateProfile = () => {
-                axios
-                    .post(`api/user/updateaccount/${props.userData.id}`, props.userData)
-                    .then(response => {
-                        if (response.data.status == 'success') {
-                            toast({
-                                component: ToastificationContent,
-                                props: {
-                                    title: 'Account details has been updated',
-                                    variant: 'success',
-                                },
-                            })
-                        }
+                refs.refFormObserver.validate().then(success => {
+                    if (success) {
+                        axios
+                            .post(`api/user/updateaccount/${props.userData.id}`, props.userData)
+                            .then(response => {
+                                if (response.data.status == 'success') {
+                                    toast({
+                                        component: ToastificationContent,
+                                        props: {
+                                            title: 'Account details has been updated',
+                                            variant: 'success',
+                                        },
+                                    })
+                                }
 
-                    })
+                            })
+                    }
+                })
             }
             const {
                 refFormObserver,
@@ -404,9 +408,9 @@
     @import '~@resources/scss/vue/libs/vue-select.scss';
 
 </style>
-<style >
- 
-.invalid-feedback {
-     display: block !important; 
-}
+<style>
+    .invalid-feedback {
+        display: block !important;
+    }
+
 </style>

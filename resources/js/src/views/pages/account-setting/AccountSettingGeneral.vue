@@ -205,7 +205,7 @@
             //     // this.optionsLocal = JSON.parse(JSON.stringify(this.generalData))
             // },
         },
-        setup(props) {
+        setup(props,{refs}) {
             const toast = useToast()
             const refInputEl = ref(null)
             const previewEl = ref(null)
@@ -255,6 +255,8 @@
                     })
             }
             const updateProfile = () => {
+               refs.refFormObserver.validate().then(success => {
+                    if (success) {
                 let params = {
                     username: props.generalData.username,
                     fullName: props.generalData.fullName,
@@ -279,6 +281,7 @@
                         this.$refs.refFormObserver.setErrors(error.response.data.error)
                     })
             }
+               })}
             const {
                 refFormObserver,
                 getValidationState,

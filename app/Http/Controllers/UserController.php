@@ -154,7 +154,6 @@ class UserController extends Controller
         Validator::make($request->all(), [
             'fullName' => 'required|string',
             'role' => 'required|string',
-            'currentPlan' => 'required|string',
             'company' => 'required|string',
         ])->validate();
         $user = User::find($request->id);
@@ -318,7 +317,6 @@ class UserController extends Controller
             $user->avatar = $avatar;
             return response()->json(['status'=>'success','user'=>$user]);
          }
-        
 
     }
 

@@ -146,7 +146,7 @@
                 axios
                     .post(`api/user/deleteuser/${props.userData.id}`)
                     .then(response => {
-                        if (response.data.status = 'success') {
+                        if (response.data.status == 'success') {
                            router.push({ name: 'apps-users-list' })
                             // toast({
                             //     component: ToastificationContent,
