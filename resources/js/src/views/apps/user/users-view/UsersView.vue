@@ -38,7 +38,7 @@
           xl="3"
           lg="4"
         >
-          <user-view-user-plan-card />
+          <user-view-user-plan-card :user-data="userData" />
         </b-col>
       </b-row>
 

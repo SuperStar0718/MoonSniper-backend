@@ -9,11 +9,13 @@
         class="mb-2"
       >
         <b-form-checkbox
+        @click="notificationData.commentOnArticle!=notificationData.commentOnArticle"
           id="accountSwitch1"
-          :checked="localOptions.commentOnArticle"
+          :checked="notificationData.commentOnArticle"
           name="check-button"
-          switch
+          v-model="notificationData.commentOnArticle"
           inline
+          switch
         >
           <span>Email me when someone comments on my article</span>
         </b-form-checkbox>
@@ -23,9 +25,11 @@
         class="mb-2"
       >
         <b-form-checkbox
+        @click="notificationData.AnswerOnForm!=notificationData.AnswerOnForm"
           id="accountSwitch2"
-          :checked="localOptions.AnswerOnForm"
+          :checked="notificationData.AnswerOnForm"
           name="check-button"
+          v-model="notificationData.AnswerOnForm"
           switch
           inline
         >
@@ -37,9 +41,11 @@
         class="mb-2"
       >
         <b-form-checkbox
+        @click="notificationData.followMe!=notificationData.followMe"
           id="accountSwitch3"
-          :checked="localOptions.followMe"
+          :checked="notificationData.followMe"
           name="check-button"
+          v-model="notificationData.followMe"
           switch
           inline
         >
@@ -56,9 +62,11 @@
         class="mt-1 mb-2"
       >
         <b-form-checkbox
+        @click="notificationData.newAnnouncements=!notificationData.newAnnouncements"
           id="accountSwitch4"
-          :checked="localOptions.newAnnouncements"
+          :checked="notificationData.newAnnouncements"
           name="check-button"
+          v-model="notificationData.newAnnouncements"
           switch
           inline
         >
@@ -70,9 +78,11 @@
         class="mb-2"
       >
         <b-form-checkbox
+        @click="notificationData.productUpdates=!notificationData.productUpdates"
           id="accountSwitch5"
-          :checked="localOptions.productUpdates"
+          :checked="notificationData.productUpdates"
           name="check-button"
+          v-model="notificationData.productUpdates"
           switch
           inline
         >
@@ -84,9 +94,11 @@
         class="mb-2"
       >
         <b-form-checkbox
+        @click="notificationData.blogDigest!=notificationData.blogDigest"
           id="accountSwitch6"
-          :checked="localOptions.blogDigest"
+          :checked="notificationData.blogDigest"
           name="check-button"
+          v-model="notificationData.blogDigest"
           switch
           inline
         >
@@ -97,12 +109,12 @@
 
       <!-- buttons -->
       <b-col cols="12">
-        <b-button
+        <b-button @click="updateNotification"
           v-ripple.400="'rgba(255, 255, 255, 0.15)'"
           variant="primary"
           class="mr-1 mt-1"
         >
-          Save changes
+          Save clicks
         </b-button>
         <b-button
           v-ripple.400="'rgba(186, 191, 199, 0.15)'"
@@ -123,7 +135,11 @@ import {
   BButton, BRow, BCol, BCard, BFormCheckbox,
 } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
-
+import axios from '@axios'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+  import {
+        useToast
+    } from 'vue-toastification/composition'
 export default {
   components: {
     BButton,
@@ -131,6 +147,7 @@ export default {
     BCol,
     BCard,
     BFormCheckbox,
+    ToastificationContent
   },
   directives: {
     Ripple,
@@ -140,11 +157,53 @@ export default {
       type: Object,
       default: () => {},
     },
+    userData: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
-      localOptions: JSON.parse(JSON.stringify(this.notificationData)),
+      // localOptions: JSON.parse(JSON.stringify(this.notificationData)),
     }
   },
+  methods:{
+   
+  },
+  setup(props)
+  {
+    const toast = useToast({});
+
+    const  updateNotification = ()=> {
+              
+                axios
+                    .post(`api/user/updatenotofications`,{notifications: props.notificationData})
+                    .then(response => {
+                        if (response.data.status == 'success') {
+                            props.userData.notifications = response.data.notifications;
+                              localStorage.setItem('userData', JSON.stringify(  props.userData ))
+                            toast({
+                                component: ToastificationContent,
+                                props: {
+                                    title: 'Information details has been updated',
+                                    variant: 'success',
+                                },
+                            })
+                        } else {
+                            toast({
+                                component: ToastificationContent,
+                                props: {
+                                    title: 'Something went wrong!',
+                                    variant: 'error',
+                                },
+                            })
+                        }
+
+                    })
+            }
+            return{
+              updateNotification
+            }
+  }
 }
 </script>

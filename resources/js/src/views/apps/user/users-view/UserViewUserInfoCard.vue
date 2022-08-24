@@ -121,7 +121,7 @@
         avatarText
     } from '@core/utils/filter'
     import useUsersList from '../users-list/useUsersList'
-    import axios from 'axios'
+    import axios from '@axios'
     export default {
         components: {
             BCard,
@@ -136,7 +136,9 @@
                 required: true,
             },
         },
-        setup(props) {
+        setup(props,context) {
+             const router = context.root.$router;
+    const route = context.root.$route;
             const {
                 resolveUserRoleVariant
             } = useUsersList()
@@ -145,7 +147,7 @@
                     .post(`api/user/deleteuser/${props.userData.id}`)
                     .then(response => {
                         if (response.data.status = 'success') {
-                          this.$router.push('/apps/users/list')
+                           router.push({ name: 'apps-users-list' })
                             // toast({
                             //     component: ToastificationContent,
                             //     props: {
@@ -161,7 +163,8 @@
             return {
                 avatarText,
                 resolveUserRoleVariant,
-                deleteUser
+                deleteUser,
+                
             }
         },
     }

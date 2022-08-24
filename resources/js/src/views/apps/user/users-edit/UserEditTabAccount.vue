@@ -23,61 +23,93 @@
             </div>
         </b-media>
         <!-- User Info: Input Fields -->
-        <validation-observer>
+        <validation-observer #default="{ updateProfile }" ref="refFormObserver">
 
-            <b-form>
+            <b-form @submit.prevent="updateProfile(updateProfile)" @reset.prevent="resetForm">
                 <b-row>
                     <!-- Field: Username -->
                     <b-col cols="12" md="4">
                         <b-form-group label="Username" label-for="username">
-                            <ValidationProvider rules="required" v-slot="{ errors }">
+                            <validation-provider #default="validationContext" name="Username"
+                                :rules="`required|alpha-num|uniqueUsername2:${userData.id}`">
                                 <b-form-input id="username" v-model="userData.username" />
                                 <b-form-invalid-feedback>
-                                    {{ errors[0] }}
+                                    {{ validationContext.errors[0] }}
                                 </b-form-invalid-feedback>
-                            </ValidationProvider>
+                            </validation-provider>
                         </b-form-group>
                     </b-col>
 
                     <!-- Field: Full Name -->
                     <b-col cols="12" md="4">
-                        <b-form-group label="Name" label-for="full-name">
+                        <b-form-group label="Full Name" label-for="full-name">
+                           <validation-provider #default="validationContext" name="Fullname"
+                                :rules="`required:${userData.id}`">
                             <b-form-input id="full-name" v-model="userData.fullName" />
+                             <b-form-invalid-feedback>
+                                    {{ validationContext.errors[0] }}
+                                </b-form-invalid-feedback>
+                            </validation-provider>
                         </b-form-group>
                     </b-col>
 
                     <!-- Field: Email -->
                     <b-col cols="12" md="4">
                         <b-form-group label="Email" label-for="email">
-                            <b-form-input id="email" v-model="userData.email" type="email" />
+                        <validation-provider #default="validationContext" name="Email"
+                                :rules="`required|email|uniqueMail2:${userData.id}`">
+                                 <b-form-input id="email" v-model="userData.email" type="email" />
+                                <b-form-invalid-feedback>
+                                    {{ validationContext.errors[0] }}
+                                </b-form-invalid-feedback>
+                            </validation-provider>
                         </b-form-group>
                     </b-col>
 
                     <!-- Field: Status -->
                     <b-col cols="12" md="4">
                         <b-form-group label="Status" label-for="user-status">
+                         <validation-provider #default="validationContext" name="Status"
+                                :rules="`required:${userData.id}`">
                             <v-select v-model="userData.status" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                 :options="statusOptions" :reduce="val => val.value" :clearable="false"
                                 input-id="user-status" />
+                                 <b-form-invalid-feedback>
+                                    {{ validationContext.errors[0] }}
+                                </b-form-invalid-feedback>
+                            </validation-provider>
                         </b-form-group>
                     </b-col>
 
                     <!-- Field: Role -->
                     <b-col cols="12" md="4">
+                     
                         <b-form-group label="User Role" label-for="user-role">
+                         <validation-provider #default="validationContext" name="Role"
+                                :rules="`required:${userData.id}`">
                             <v-select v-model="userData.role" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                 :options="roleOptions" :reduce="val => val.value" :clearable="false"
                                 input-id="user-role" />
+                                 <b-form-invalid-feedback>
+                                    {{ validationContext.errors[0] }}
+                                </b-form-invalid-feedback>
+                            </validation-provider>
                         </b-form-group>
                     </b-col>
 
                     <!-- Field: Email -->
                     <b-col cols="12" md="4">
                         <b-form-group label="Company" label-for="company">
+                         <validation-provider #default="validationContext" name="Company"
+                                :rules="`required:${userData.id}`">
                             <b-form-input id="company" v-model="userData.company" />
+                             <b-form-invalid-feedback>
+                                    {{ validationContext.errors[0] }}
+                                </b-form-invalid-feedback>
+                            </validation-provider>
                         </b-form-group>
                     </b-col>
-                      <!-- <b-col cols="12" md="4">
+                    <!-- <b-col cols="12" md="4">
                         <b-form-group label="Country" label-for="user-status">
                             <v-select v-model="userData.country" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                 :options="countries" :reduce="val => val.value" :clearable="false"
@@ -140,7 +172,18 @@
         BFormCheckbox,
         BFormInvalidFeedback
     } from 'bootstrap-vue'
-
+    import {
+        ValidationProvider,
+        ValidationObserver
+    } from 'vee-validate'
+    import {
+        required,
+        alphaNum,
+        email,
+        uniqueMail,
+        uniqueUsername2,
+        uniqueMail2
+    } from '@validations'
     import {
         avatarText
     } from '@core/utils/filter'
@@ -153,18 +196,7 @@
     } from '@vue/composition-api'
     import useUsersList from '../users-list/useUsersList'
     import axios from '@axios'
-    import {
-        ValidationProvider,
-        ValidationObserver,
-        extend
-    } from 'vee-validate'
-           extend('required', value => {
-            console.log(value);
-        if (value.trim().length >0) {
-            //  return true;
-        }
-        return 'This field is is required';
-    });
+    import formValidation from '@core/comp-functions/forms/form-validation'
     export default {
         components: {
             BButton,
@@ -191,6 +223,16 @@
                 type: Object,
                 required: true,
             },
+        },
+        data() {
+            return {
+                required,
+                alphaNum,
+                email,
+                uniqueMail,
+                uniqueUsername2,
+                uniqueMail2
+            }
         },
         setup(props) {
             const toast = useToast()
@@ -270,7 +312,7 @@
                     delete: true,
                 },
             ]
-            const countryOptions =[{}]
+            const countryOptions = [{}]
 
             // ? Demo Purpose => Update image on click of update
             const refInputEl = ref(null)
@@ -314,11 +356,11 @@
 
                     })
             }
-                const updateProfile = () => {
+            const updateProfile = () => {
                 axios
-                    .post(`api/user/updateaccount/${props.userData.id}`,props.userData)
+                    .post(`api/user/updateaccount/${props.userData.id}`, props.userData)
                     .then(response => {
-                        if (response.data.status = 'success') {
+                        if (response.data.status == 'success') {
                             toast({
                                 component: ToastificationContent,
                                 props: {
@@ -330,7 +372,11 @@
 
                     })
             }
-
+            const {
+                refFormObserver,
+                getValidationState,
+                resetForm
+            } = formValidation(props.userData)
 
             return {
                 resolveUserRoleVariant,
@@ -338,14 +384,16 @@
                 roleOptions,
                 statusOptions,
                 permissionsData,
-
-                //  ? Demo - Update Image on click of update button
                 refInputEl,
                 previewEl,
                 inputImageRenderer,
                 removeAvatar,
                 updateProfile,
-                countries
+                countries,
+
+                refFormObserver,
+                getValidationState,
+                resetForm,
             }
         },
     }
@@ -355,4 +403,10 @@
 <style lang="scss">
     @import '~@resources/scss/vue/libs/vue-select.scss';
 
+</style>
+<style >
+ 
+.invalid-feedback {
+     display: block !important; 
+}
 </style>

@@ -94,6 +94,9 @@ export default {
   created() {
     this.$http.get('/profile/data').then(res => {
       this.profileData = res.data
+      console.log('profileData');
+      console.log(profileData);
+      console.log('profileData');
     })
   },
 }

@@ -8,13 +8,13 @@
         Current Plan
       </h5>
       <b-badge variant="light-primary">
-        Basic
+        {{ currentPlan }}
       </b-badge>
-      <small class="text-muted w-100">July 22, 2021</small>
+      <small class="text-muted w-100 d-none" >July 22, 2021</small>
     </b-card-header>
 
     <b-card-body>
-      <ul class="list-unstyled my-1">
+      <ul class="list-unstyled my-1 d-none">
         <li>
           <span class="align-middle">5 Users</span>
         </li>
@@ -53,6 +53,32 @@ export default {
     BBadge,
     BButton,
   },
+  props:{
+     userData: {
+                type: Object,
+                required: true,
+            },
+  },
+  computed:{
+    currentPlan()
+    {
+      switch (this.userData.currentPlan) {
+        case 'basic':
+            return 'Basic'
+          break;
+           case 'enterprise':
+            return 'Enterprise'
+          break;
+           case 'team':
+            return 'Team'
+          break;
+      
+        default:
+          return '-'
+          break;
+      }
+    }
+  }
 }
 </script>
 

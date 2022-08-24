@@ -235,7 +235,7 @@ import UsersListFilters from './UsersListFilters.vue'
 import useUsersList from './useUsersList'
 import userStoreModule from '../userStoreModule'
 import UserListAddNew from './UserListAddNew.vue'
-
+import axios from '@axios'
 export default {
   components: {
     UsersListFilters,
@@ -257,6 +257,25 @@ export default {
 
     vSelect,
   },
+  data() {
+    return {
+      planOptions:[]
+    }
+  },
+   methods: {
+    loadPlans() {
+      axios.post('api/plans').then(res=>{
+        this.planOptions= res.data.plans;
+        console.log(res.data.plans);
+    });
+    
+    },
+  },
+  mounted()
+  {
+    this.loadPlans()
+  },
+
   setup() {
     const USER_APP_STORE_MODULE_NAME = 'app-user'
 
@@ -278,12 +297,12 @@ export default {
       { label: 'Subscriber', value: 'subscriber' },
     ]
 
-    const planOptions = [
-      { label: 'Basic', value: 'basic' },
-      { label: 'Company', value: 'company' },
-      { label: 'Enterprise', value: 'enterprise' },
-      { label: 'Team', value: 'team' },
-    ]
+    // const planOptions = [
+    //   { label: 'Basic', value: 'basic' },
+    //   { label: 'Company', value: 'company' },
+    //   { label: 'Enterprise', value: 'enterprise' },
+    //   { label: 'Team', value: 'team' },
+    // ]
 
     const statusOptions = [
       { label: 'Pending', value: 'pending' },
@@ -342,7 +361,7 @@ export default {
       resolveUserStatusVariant,
 
       roleOptions,
-      planOptions,
+      // planOptions,
       statusOptions,
 
       // Extra Filters

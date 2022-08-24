@@ -297,6 +297,11 @@ export default {
               password: this.password,
             })
             .then(response => {
+              if(response.data.error)
+              {
+                 this.$refs.loginForm.setErrors({"password":["Invalid Credentials."]})
+                 return;
+              }
               const { userData } = response.data
               useJwt.setToken(response.data.accessToken)
               // useJwt.setRefreshToken(response.data.refreshToken)
@@ -322,6 +327,7 @@ export default {
               })
             })
             .catch(error => {
+              console.log(error);
               this.$refs.loginForm.setErrors(error.response.data.error)
             })
         }

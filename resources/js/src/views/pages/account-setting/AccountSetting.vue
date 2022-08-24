@@ -40,7 +40,7 @@
         <span class="font-weight-bold">Change Password</span>
       </template>
 
-      <account-setting-password />
+      <account-setting-password :passwords="{}" />
     </b-tab>
     <!--/ change password tab -->
 
@@ -58,13 +58,13 @@
       </template>
 
       <account-setting-information
-        v-if="options.info"
-        :information-data="options.info"
+        v-if="options.general"
+        :information-data="options.general"
       />
     </b-tab>
 
     <!-- social links -->
-    <b-tab>
+    <b-tab v-if="false">
 
       <!-- title -->
       <template #title>
@@ -96,8 +96,9 @@
       </template>
 
       <account-setting-notification
-        v-if="options.notification"
-        :notification-data="options.notification"
+        v-if="options.general"
+        :user-data="options.general"
+        :notification-data="options.general.notifications?options.general.notifications:{}"
       />
     </b-tab>
   </b-tabs>
@@ -110,7 +111,6 @@ import AccountSettingPassword from './AccountSettingPassword.vue'
 import AccountSettingInformation from './AccountSettingInformation.vue'
 import AccountSettingSocial from './AccountSettingSocial.vue'
 import AccountSettingNotification from './AccountSettingNotification.vue'
-
 export default {
   components: {
     BTabs,
@@ -123,11 +123,40 @@ export default {
   },
   data() {
     return {
-      options: {},
+      options: {
+        general:{}
+      },
     }
   },
   beforeCreate() {
-    this.$http.get('/account-setting/data').then(res => { this.options = res.data })
+    // this.$http.get('/account-setting/data').then(res => { this.options = res.data })
   },
+  methods:{
+    getUser()
+    {
+    let user =   localStorage.getItem('userData');
+    this.options.general = JSON.parse(user);
+    }
+  },
+  mounted(){
+    this.getUser();
+    if(this.options.general.notifications.length<= 0)
+    {
+     this.options.general.notifications = {};
+     this.options.general.notifications.commentOnArticle = false;
+     this.options.general.notifications.AnswerOnForm = false;
+     this.options.general.notifications.followMe = false;
+     this.options.general.notifications.newAnnouncements = false;
+     this.options.general.notifications.productUpdates = false;
+     this.options.general.notifications.blogDigest = false;
+    }else{
+     this.options.general.notifications.commentOnArticle =  this.options.general.notifications.commentOnArticle?this.options.general.notifications.commentOnArticle:false;
+     this.options.general.notifications.AnswerOnForm =  this.options.general.notifications.AnswerOnForm?this.options.general.notifications.AnswerOnForm:false;
+     this.options.general.notifications.followMe = this.options.general.notifications.followMe?this.options.general.notifications.followMe:false;;
+     this.options.general.notifications.newAnnouncements = this.options.general.notifications.newAnnouncements?this.options.general.notifications.newAnnouncements:false;;
+     this.options.general.notifications.productUpdates = this.options.general.notifications.productUpdates?this.options.general.notifications.productUpdates:false;;
+     this.options.general.notifications.blogDigest = this.options.general.notifications.blogDigest?this.options.general.notifications.blogDigest:false;;
+    }
+  }
 }
 </script>

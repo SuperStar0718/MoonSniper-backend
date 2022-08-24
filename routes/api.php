@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PlansController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,9 +31,17 @@ Route::post('/user/updateinformation/{id}',[UserController::class,'updateUserInf
 Route::post('/user/deleteuser/{id}',[UserController::class,'deleteUser'])->name('/user/deleteuser/{id}');
 
 Route::post('/auth/login',[AuthController::class,'login'])->name('/auth/login');
-
+Route::post('/validateemail',[UserController::class,'validateEmail']);
+Route::post('/validateusername',[UserController::class,'validateUsername']);
+Route::post('/validateusernameonupdate',[UserController::class,'validateUsernameOnUpdate']);
+Route::post('/validateemailonupdate',[UserController::class,'validateEmailOnUpdate']);
+Route::post('/plans',[PlansController::class,'plans']);
 Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'user']);
-    // Route::post('/auth/refresh-token', [AuthController::class, 'refresh']);
+    Route::post('/user/profile',[UserController::class,'updateUserProfile'])->name('/user/profile}');
+    Route::post('/user/updatepassword',[UserController::class,'updateUserPassword'])->name('/user/updatepassword');
+    Route::post('/user/updateprofileinformation',[UserController::class,'updateUserProfileInfo'])->name('/user/updateprofileinformation');
+    
+    Route::post('/user/updatenotofications',[UserController::class,'updateUserNotifications'])->name('/user/updatenotofications');
   });

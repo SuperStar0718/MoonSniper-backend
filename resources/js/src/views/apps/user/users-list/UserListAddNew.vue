@@ -26,7 +26,6 @@
         />
 
       </div>
-
       <!-- BODY -->
       <validation-observer
         #default="{ handleSubmit }"
@@ -43,7 +42,7 @@
           <validation-provider
             #default="validationContext"
             name="Full Name"
-            rules="required"
+            :rules="required"
           >
             <b-form-group
               label="Full Name"
@@ -68,7 +67,7 @@
           <validation-provider
             #default="validationContext"
             name="Username"
-            rules="required|alpha-num"
+            rules="required|alpha-num|uniqueUsername"
           >
             <b-form-group
               label="Username"
@@ -91,7 +90,7 @@
           <validation-provider
             #default="validationContext"
             name="Email"
-            rules="required|email"
+            rules="required|email|uniqueMail"
           >
             <b-form-group
               label="Email"
@@ -260,7 +259,7 @@
 import { BSidebar, BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BButton } from 'bootstrap-vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { ref } from '@vue/composition-api'
-import { required, alphaNum, email } from '@validations'
+import { required, alphaNum, email,uniqueMail,uniqueUsername } from '@validations'
 import formValidation from '@core/comp-functions/forms/form-validation'
 import Ripple from 'vue-ripple-directive'
 import vSelect from 'vue-select'
@@ -307,6 +306,8 @@ export default {
       required,
       alphaNum,
       email,
+      uniqueMail,
+      uniqueUsername,
       countries,
     }
   },
@@ -329,7 +330,6 @@ export default {
 
     const onSubmit = () => {
       store.dispatch('app-user/addUser', userData.value).then((res) => {
-        
         emit('refetch-data')
         emit('update:is-add-new-user-sidebar-active', false)
       }).catch(error=>{

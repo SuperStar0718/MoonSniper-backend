@@ -10509,9 +10509,9 @@ vue-ripple-directive@^2.0.1:
     vue "^2.2.1"
 
 vue-router@^3.5.2:
-  version "3.6.0"
-  resolved "https://registry.npmjs.org/vue-router/-/vue-router-3.6.0.tgz"
-  integrity sha512-pcU/wpHhsCMNkRyBKWbutP1D9+i4XlRy4dZbxb0L2MCrlbivSaea1o++wBECsK4b+dog/B0p9lajx3tUMf4UtQ==
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.6.2.tgz#f2fafe34645bbca3dac9bd3b91f65eccc013aa72"
+  integrity sha512-gpdFaRw98Hf+NeKe15+Y1p9XUvurA56U2QXb8CIrI9CVhCexn5PmJh/WrRuR5zvz4Hk41QIoLUCS0KBM5TVxaA==
 
 vue-select@^3.12.2:
   version "3.20.0"

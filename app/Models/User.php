@@ -30,6 +30,7 @@ class User extends Authenticatable
         'status',
         'avatar',
         'dob',
+        'bio',
         'website',
         'language',
         'gender',

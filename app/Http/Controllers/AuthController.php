@@ -22,8 +22,8 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'Unauthorized',
-            ], 401);
+                'error' => 'Unauthorized',
+            ], );
         }
 
         $user = $request->user();
@@ -31,7 +31,11 @@ class AuthController extends Controller
         $token = $tokenResult->plainTextToken;
         $ability =[];
         $user2 =  User::find($user->id);
-        $ability[0] = ["action"=> "manage","subject"=> "all"];   
+        $ability[0] = ["action"=> "manage","subject"=> "all"];
+        if ($user->avatar) {
+            $user->avatar = asset('/storage/user/avatars/' . $user->avatar);
+        }
+        $user2->notifications = $user->notifications?unserialize($user->notifications):[];
         $user2->ability = $ability;
                         return response()->json([
             'accessToken' => $token,
@@ -39,16 +43,17 @@ class AuthController extends Controller
             'userData' => $user2,
         ]);
     }
+
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        $user = $request->user();
+        $ability =[];
+        $user =  User::find($user->id);
+        $ability[0] = ["action"=> "manage","subject"=> "all"];
+        $user->notifications = $user->notifications?unserialize($user->notifications):[];
+        $user->ability = $ability;
+        return response()->json( $user);
     }
-    public function refresh(Request $request): JsonResponse
-    {
-        $request->user()->tokens()->delete();
-
-        return response()->json([
-            'refreshToken' => $request->user()->createToken('Personal Access Token')->plainTextToken,
-        ]);
-    }
+   
+   
 }

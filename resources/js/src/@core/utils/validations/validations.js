@@ -17,7 +17,7 @@ import ar from 'vee-validate/dist/locale/ar.json'
 import en from 'vee-validate/dist/locale/en.json'
 
 // eslint-disable-next-line object-curly-newline
-import { validatorPositive, validatorUrlValidator, validatorPassword, validatorCreditCard } from './validators'
+import { validatorPositive, validatorUrlValidator, validatorPassword, validatorCreditCard,validatorUniqueEmail,validatorUniqueUserName,validatorUniqueUserName2,validatorUniqueEmail2 } from './validators'
 
 // ////////////////////////////////////////////////////////
 // General
@@ -50,6 +50,22 @@ export const length = extend('length', rule_length)
 export const positive = extend('positive', {
   validate: validatorPositive,
   message: 'Please enter positive number!',
+})
+export const uniqueMail = extend('uniqueMail', {
+  validate:validatorUniqueEmail,
+  message: 'The email has already been taken!',
+})
+export const uniqueUsername = extend('uniqueUsername', {
+  validate:validatorUniqueUserName,
+  message: 'The username has already been taken!',
+})
+export const uniqueUsername2 = extend('uniqueUsername2', {
+  validate:validatorUniqueUserName2,
+  message: 'The username has already been taken!',
+})
+export const uniqueMail2 = extend('uniqueMail2', {
+  validate:validatorUniqueEmail2,
+  message: 'The email has already been taken!',
 })
 
 export const credit = extend('credit-card', {

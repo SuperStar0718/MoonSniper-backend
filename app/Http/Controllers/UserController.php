@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -132,6 +134,8 @@ class UserController extends Controller
         $file = File::put(storage_path('app/public/user/avatars/') . '' . $imageName, $avatar);
         $user->avatar = $imageName;
         $user->save();
+        $avatar =  asset('/storage/user/avatars/' . $user->avatar);
+        return response()->json(['status' => 'success','avatar'=>$avatar]);
         return response()->json(['status' => 'success']);
     }
     public function removeAvatar(Request $request)
@@ -152,8 +156,6 @@ class UserController extends Controller
             'role' => 'required|string',
             'currentPlan' => 'required|string',
             'company' => 'required|string',
-            'country' => 'required|string',
-            'contact' => 'required|string',
         ])->validate();
         $user = User::find($request->id);
         if ($user) {
@@ -224,5 +226,133 @@ class UserController extends Controller
             return response()->json(['status' => 'failed']);
 
         }
+    }
+    public function validateEmail(Request $request)
+    {
+       $checkMail = User::where('email',$request->email)->first();
+        if($checkMail)
+        {
+            return response()->json(['status'=>false]);
+        }else{
+            return response()->json(['status'=>true]);
+        }
+    }
+    public function validateUsername(Request $request)
+    {
+        $checkusername = User::where('username',$request->username)->first();
+        if($checkusername)
+        {
+            return response()->json(['status'=>false]);
+        }else{
+            return response()->json(['status'=>true]);
+        }
+    }
+    public function validateUsernameOnUpdate(Request $request)
+    {
+        $checkusername = User::where('username',$request->username)->where('id','!=',$request->id)->first();
+        if($checkusername)
+        {
+            return response()->json(['status'=>false]);
+        }else{
+            return response()->json(['status'=>true]);
+        }
+    }
+    public function validateEmailOnUpdate(Request $request)
+    {
+        $checkemail = User::where('email',$request->email)->where('id','!=',$request->id)->first();
+        if($checkemail)
+        {
+            return response()->json(['status'=>false]);
+        }else{
+            return response()->json(['status'=>true]);
+        }
+    }
+    public function updateUserProfile(Request $request)
+    {
+        $auth = Auth::user();
+        Validator::make($request->all(), [
+            'email' => 'required|email|string|max:255|unique:users,email,' . $auth->id,
+            'email' => 'required|string|max:255|unique:users,username,' . $auth->id,
+            'fullName' => 'required|string',
+             'company' => 'required|string',
+        ])->validate();
+
+         $user = User::find($auth->id);
+         if($auth)
+         {
+            $user->fullName = $request->fullName;
+            $user->email = $request->email;
+            $user->username = $request->username;
+            $user->company = $request->company;
+            $user->save();
+            $ability[0] = ["action"=> "manage","subject"=> "all"];   
+            $user->ability = $ability;
+            $avatar =  asset('/storage/user/avatars/' . $user->avatar);
+            $user->notifications = $user->notifications?unserialize($user->notifications):[];
+            $user->avatar = $avatar;
+            return response()->json(['status'=>'success','user'=>$user]);
+         }
+        
+
+    }
+    public function updateUserProfileInfo(Request $request)
+    {
+        $auth = Auth::user();
+        Validator::make($request->all(), [
+             'contact' => 'required|string',
+        ])->validate();
+
+         $user = User::find($auth->id);
+         if($auth)
+         {
+            $user->bio = $request->bio;
+            $user->contact = $request->contact;
+            $user->country = $request->country;
+            $user->dob = $request->dob;
+            $user->website = $request->website;
+            $user->save();
+            $ability[0] = ["action"=> "manage","subject"=> "all"];   
+            $user->ability = $ability;
+            $avatar =  asset('/storage/user/avatars/' . $user->avatar);
+            $user->notifications = $user->notifications?unserialize($user->notifications):[];
+            $user->avatar = $avatar;
+            return response()->json(['status'=>'success','user'=>$user]);
+         }
+        
+
+    }
+
+    
+    public function updateUserPassword(Request $request)
+    {
+        $auth = Auth::user();
+        Validator::make($request->all(), [
+            'password' => 'required|confirmed|same:password_confirmation',
+            'password_confirmation' => 'required'
+        ])->validate();
+        $user = User::find($auth->id);
+        if( $user)
+        {
+            if(Hash::check($request->oldpassword, $auth->password))
+            {
+                $user->password = Hash::make($request->password);
+                $user->save();
+                return response()->json(['status'=>'success']);
+            }else{
+                return response()->json(['status'=>'failed']);
+            }
+        }else{
+            return response()->json(['status'=>'failed']);
+        }
+       
+    }
+
+    public function updateUserNotifications(Request $request)
+    {
+        $auth = Auth::user();
+        $user = User::find($auth->id);
+        $user->notifications = serialize($request->notifications);
+        $user->save();
+        return response()->json(['status'=>'success','notifications'=>$request->notifications]);
     }
 }

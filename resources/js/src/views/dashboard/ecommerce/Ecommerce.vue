@@ -142,7 +142,7 @@ export default {
       // ? Your API will return name of logged in user or you might just directly get name of logged in user
       // ? This is just for demo purpose
       const userData = getUserData()
-      this.data.congratulations.name = userData.fullName.split(' ')[0] || userData.username
+      // this.data.congratulations.name = userData.fullName.split(' ')[0] || userData.username
     })
   },
 }

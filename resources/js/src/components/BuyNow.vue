@@ -1,6 +1,6 @@
 <template>
   <div class="buy-now">
-    <b-button
+    <!-- <b-button
       v-ripple.400="'rgba(255, 255, 255, 0.15)'"
       variant="danger"
       href="https://1.envato.market/vuexy_admin"
@@ -8,7 +8,7 @@
       rel="noopener noreferrer"
     >
       Buy Now
-    </b-button>
+    </b-button> -->
   </div>
 </template>
 
