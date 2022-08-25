@@ -21,7 +21,7 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
         methods: {
             async AuthProvider() {
                 const newWindow = openWindow('', 'login')
-                await axios.get('http://localhost:8000/auth/google/redirect').then(res => {
+                await axios.get('auth/google/redirect').then(res => {
                     this.url = res.data.url;
 
                 });
