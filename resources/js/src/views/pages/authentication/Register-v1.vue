@@ -32,7 +32,7 @@
               <validation-provider
                 #default="{ errors }"
                 name="Username"
-                rules="required"
+                rules="required|uniqueUsername"
               >
                 <b-form-input
                   id="username"
@@ -187,7 +187,7 @@ import {
   BFormCheckbox,
 } from 'bootstrap-vue'
 import VuexyLogo from '@core/layouts/components/Logo.vue'
-import { required, email } from '@validations'
+import { required, email,uniqueUsername } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
@@ -221,6 +221,7 @@ export default {
       // validation rules
       required,
       email,
+      uniqueUsername
     }
   },
   computed: {

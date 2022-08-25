@@ -17,7 +17,7 @@ import ar from 'vee-validate/dist/locale/ar.json'
 import en from 'vee-validate/dist/locale/en.json'
 
 // eslint-disable-next-line object-curly-newline
-import { validatorPositive, validatorUrlValidator, validatorPassword, validatorCreditCard,validatorUniqueEmail,validatorUniqueUserName,validatorUniqueUserName2,validatorUniqueEmail2 } from './validators'
+import { validatorPositive, validatorUrlValidator, validatorPassword, validatorCreditCard,validatorUniqueEmail,validatorUniqueUserName,validatorUniqueUserName2,validatorUniqueEmail2,maxValValidator } from './validators'
 
 // ////////////////////////////////////////////////////////
 // General
@@ -81,6 +81,10 @@ export const password = extend('password', {
 export const url = extend('url', {
   validate: validatorUrlValidator,
   message: 'URL is invalid',
+})
+export const maxVal = extend('maxVal', {
+  validate: maxValValidator,
+  // message: 'URL is invalid',
 })
 
 // Install English and Arabic localizations.
@@ -160,9 +164,7 @@ localize({
 // export const max = (val, max) => {
 
 //   // If blank return
-//   if (val === undefined || val === null) return true
-
-//   return val.length <= max || `More than ${max} characters are not allowed`
+ 
 // }
 
 // export const max_arr = (val, max) => {

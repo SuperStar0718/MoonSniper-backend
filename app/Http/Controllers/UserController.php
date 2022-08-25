@@ -170,14 +170,7 @@ class UserController extends Controller
     public function updateUserInformation(Request $request)
     {
 
-        Validator::make($request->all(), [
-            // 'fullName' => 'required|string',
-            // 'role' => 'required|string',
-            // 'currentPlan' => 'required|string',
-            // 'company' => 'required|string',
-            // 'country' => 'required|string',
-            // 'contact' => 'required|string',
-        ])->validate();
+       
         $user = User::find($request->id);
         if ($user) {
             $user->dob = $request->dob;

@@ -19,7 +19,7 @@ import '@/libs/toastification'
 import '@/libs/sweet-alerts'
 import '@/libs/vue-select'
 import '@/libs/tour'
-
+import VueSocialauth from 'vue-social-auth'
 // Axios Mock Adapter
 // import '@/@fake-db/db'
 
@@ -29,6 +29,15 @@ Vue.use(ModalPlugin)
 
 // Composition API
 Vue.use(VueCompositionAPI)
+Vue.use(VueSocialauth,{
+
+  providers: {
+    google: {
+      clientId: '',
+      redirectUri: '/auth/google/callback' // Your client app URL
+    }
+  }
+})
 
 // Feather font icon - For form-wizard
 // * Shall remove it if not using font-icons of feather-icons - For form-wizard

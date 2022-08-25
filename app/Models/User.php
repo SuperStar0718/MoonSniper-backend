@@ -40,6 +40,8 @@ class User extends Authenticatable
         'postcode',
         'city',
         'state',
+        'is_email_verified',
+        'email_verified_at',
     ];
 
     /**

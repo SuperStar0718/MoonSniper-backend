@@ -177,7 +177,8 @@
 
           <!-- social buttons -->
           <div class="auth-footer-btn d-flex justify-content-center">
-            <b-button
+            <GoogleLoginVue/>
+            <!-- <b-button
               variant="facebook"
               href="javascript:void(0)"
             >
@@ -200,7 +201,7 @@
               href="javascript:void(0)"
             >
               <feather-icon icon="GithubIcon" />
-            </b-button>
+            </b-button> -->
           </div>
         </b-col>
       </b-col>
@@ -230,6 +231,7 @@ import {
   BAlert,
   VBTooltip,
 } from 'bootstrap-vue'
+  import GoogleLoginVue from './GoogleLogin.vue'
 import useJwt from '@/auth/jwt/useJwt'
 import { required, email } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
@@ -260,6 +262,7 @@ export default {
     VuexyLogo,
     ValidationProvider,
     ValidationObserver,
+    GoogleLoginVue
   },
   mixins: [togglePasswordVisibility],
   data() {

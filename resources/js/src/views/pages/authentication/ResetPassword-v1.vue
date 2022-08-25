@@ -104,6 +104,7 @@
               block
               type="submit"
               variant="primary"
+              
             >
               Set New Password
             </b-button>
@@ -140,7 +141,8 @@ import {
 } from 'bootstrap-vue'
 import { required } from '@validations'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
-
+import axios from '@axios'
+import { getHomeRouteForLoggedInUser } from '@/auth/utils'
 export default {
   components: {
     VuexyLogo,
@@ -188,14 +190,38 @@ export default {
     validationForm() {
       this.$refs.simpleRules.validate().then(success => {
         if (success) {
-          this.$toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Form Submitted',
-              icon: 'EditIcon',
-              variant: 'success',
-            },
-          })
+
+          axios.post('api/reset-password', {
+                            password: this.password,
+                            password_confirmation: this.cPassword,
+                            token: this.$route.params.token,
+                            email: this.$route.query.email,
+                        }).then(res => {
+                            if (res.data.status == 'success') {
+                            
+                                this.$toast({
+                                    component: ToastificationContent,
+                                    props: {
+                                        title: 'Password has been reset succesfully',
+                                        icon: 'EditIcon',
+                                        variant: 'success',
+                                    },
+                                    
+                                })
+                                   this.$router.replace(getHomeRouteForLoggedInUser()).then(() => { })
+                            }else{
+                               this.$toast({
+                                component: ToastificationContent,
+                                props: {
+                                  title: 'Invalid Request',
+                                  icon: 'EditIcon',
+                                  variant: 'error',
+                                },
+                              })
+                                 this.$router.replace(getHomeRouteForLoggedInUser()).then(() => { })
+                            }
+                        })
+         
         }
       })
     },

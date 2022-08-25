@@ -31,6 +31,8 @@ Route::post('/user/updateinformation/{id}',[UserController::class,'updateUserInf
 Route::post('/user/deleteuser/{id}',[UserController::class,'deleteUser'])->name('/user/deleteuser/{id}');
 
 Route::post('/auth/login',[AuthController::class,'login'])->name('/auth/login');
+Route::post('/auth/register',[AuthController::class,'registration'])->name('/auth/register');
+
 Route::post('/validateemail',[UserController::class,'validateEmail']);
 Route::post('/validateusername',[UserController::class,'validateUsername']);
 Route::post('/validateusernameonupdate',[UserController::class,'validateUsernameOnUpdate']);
@@ -59,3 +61,6 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 //public Routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/forgot-password', [AuthController::class, 'generateForgotPasswordToken']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+Route::post('/verify-mail', [AuthController::class, 'verifyEmail']);

@@ -45,6 +45,16 @@ export default [
       redirectIfLoggedIn: true,
     },
   },
+   {
+    path: '/vetify-mail/:token',
+    name: 'verify-mail',
+    component: () => import('@/views/pages/authentication/VerifyEmail.vue'),
+    meta: {
+      layout: 'full',
+      resource: 'Auth',
+      redirectIfLoggedIn: true,
+    },
+  },
   {
     path: '/pages/authentication/register-v1',
     name: 'auth-register-v1',
@@ -89,11 +99,12 @@ export default [
     },
   },
   {
-    path: '/pages/authentication/reset-password-v1',
+    path: '/reset-password-link/:token',
     name: 'auth-reset-password-v1',
     component: () => import('@/views/pages/authentication/ResetPassword-v1.vue'),
     meta: {
       layout: 'full',
+      resource: 'Auth',
     },
   },
   {

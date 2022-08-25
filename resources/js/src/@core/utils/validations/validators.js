@@ -1,4 +1,5 @@
 import axios from "@axios"
+import { async } from "q"
 export const validatorPositive = value => {
     if (value >= 0) {
         return true
@@ -92,4 +93,9 @@ if (data.status == true) {
     return false;
 }
   }
+}
+export const maxValValidator = async(val,max)=>{
+    if (val === undefined || val === null) return true
+
+    return val.length <= max || `More than ${max} characters are not allowed`
 }
