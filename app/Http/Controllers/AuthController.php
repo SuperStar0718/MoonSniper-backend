@@ -111,7 +111,7 @@ class AuthController extends Controller
             'created_at' => Carbon::now(),
         ]);
         $Reset->save();
-        Mail::send('emails.ForgetPassword', ['token' => $token, 'url' => env('APP_URL'), 'email' => $request->email], function ($message) use ($request) {
+        Mail::send('emails.ForgetPassword', ['token' => $token, 'url' => config('app.url'), 'email' => $request->email], function ($message) use ($request) {
             $message->to($request->email);
             $message->subject('Reset Password');
         });
