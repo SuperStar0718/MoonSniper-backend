@@ -38,11 +38,11 @@
                             <b-col md="6" xl="3" class="mb-1">
 
                                 <b-form-group label="Number of Tokens" label-for="nextunlocknumberoftokens">
-                                  
-                                    <validation-provider #default="{ errors }" name="Number of Token" vid="next_unlock_number_of_tokens"
-                                        rules="double">
+
+                                    <validation-provider #default="{ errors }" name="Number of Token"
+                                        vid="next_unlock_number_of_tokens" rules="double">
                                         <b-form-input id="nextunlocknumberoftokens"
-                                        v-model="selected.next_unlock_number_of_tokens" />
+                                            v-model="selected.next_unlock_number_of_tokens" />
                                         <b-form-invalid-feedback>
                                             {{ errors[0] }}
                                         </b-form-invalid-feedback>
@@ -51,11 +51,11 @@
                             </b-col>
                             <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Percent of Tokens" label-for="nextunlockpercentoftokens">
-                                      <validation-provider #default="{ errors }" name="Percent of Tokens" vid="next_unlock_percent_of_tokens"
-                                        rules="double">
-                                    <b-form-input id="nextunlockpercentoftokens"
-                                        v-model="selected.next_unlock_percent_of_tokens" />
-                                         <b-form-invalid-feedback>
+                                    <validation-provider #default="{ errors }" name="Percent of Tokens"
+                                        vid="next_unlock_percent_of_tokens" rules="double">
+                                        <b-form-input id="nextunlockpercentoftokens"
+                                            v-model="selected.next_unlock_percent_of_tokens" />
+                                        <b-form-invalid-feedback>
                                             {{ errors[0] }}
                                         </b-form-invalid-feedback>
                                     </validation-provider>
@@ -98,11 +98,11 @@
 
                             <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Number of Tokens" label-for="threemonthsunlocknumberoftokens">
-                                  <validation-provider #default="{ errors }" name="Number of Tokens2" vid="three_months_unlock_number_of_tokens"
-                                        rules="double">
-                                    <b-form-input id="threemonthsunlocknumberoftokens"
-                                        v-model="selected.three_months_unlock_number_of_tokens" />
-                                         <b-form-invalid-feedback>
+                                    <validation-provider #default="{ errors }" name="Number of Tokens2"
+                                        vid="three_months_unlock_number_of_tokens" rules="double">
+                                        <b-form-input id="threemonthsunlocknumberoftokens"
+                                            v-model="selected.three_months_unlock_number_of_tokens" />
+                                        <b-form-invalid-feedback>
                                             {{ errors[0] }}
                                         </b-form-invalid-feedback>
                                     </validation-provider>
@@ -110,11 +110,11 @@
                             </b-col>
                             <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Percent of Tokens" label-for="threemonthsunlockpercentoftokens">
-                                   <validation-provider #default="{ errors }" name="Percent of Tokens2" vid="three_months_unlock_percent_of_tokens"
-                                        rules="double">
-                                    <b-form-input id="threemonthsunlockpercentoftokens"
-                                        v-model="selected.three_months_unlock_percent_of_tokens" />
-                                          <b-form-invalid-feedback>
+                                    <validation-provider #default="{ errors }" name="Percent of Tokens2"
+                                        vid="three_months_unlock_percent_of_tokens" rules="double">
+                                        <b-form-input id="threemonthsunlockpercentoftokens"
+                                            v-model="selected.three_months_unlock_percent_of_tokens" />
+                                        <b-form-invalid-feedback>
                                             {{ errors[0] }}
                                         </b-form-invalid-feedback>
                                     </validation-provider>
@@ -124,7 +124,7 @@
                                 <b-form-group label="Unlock Size" label-for="threemonthsunlocksize">
                                     <b-form-input id="threemonthsunlocksize"
                                         v-model="selected.three_months_unlock_size" />
-                                        
+
                                 </b-form-group>
                             </b-col>
 
@@ -136,11 +136,11 @@
 
                             <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Number of Tokens" label-for="sixmonthsunlocknumberoftokens">
-                                 <validation-provider #default="{ errors }" name="Number of Tokens3" vid="six_months_unlock_number_of_tokens"
-                                        rules="double">
-                                    <b-form-input id="sixmonthsunlocknumberoftokens"
-                                        v-model="selected.six_months_unlock_number_of_tokens" />
-                                          <b-form-invalid-feedback>
+                                    <validation-provider #default="{ errors }" name="Number of Tokens3"
+                                        vid="six_months_unlock_number_of_tokens" rules="double">
+                                        <b-form-input id="sixmonthsunlocknumberoftokens"
+                                            v-model="selected.six_months_unlock_number_of_tokens" />
+                                        <b-form-invalid-feedback>
                                             {{ errors[0] }}
                                         </b-form-invalid-feedback>
                                     </validation-provider>
@@ -148,11 +148,11 @@
                             </b-col>
                             <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Percent of Tokens" label-for="sixmonthsunlockpercentoftokens">
-                                  <validation-provider #default="{ errors }" name="Percent of Tokens3" vid="six_months_unlock_number_of_tokens"
-                                        rules="double">
-                                    <b-form-input id="sixmonthsunlockpercentoftokens 	"
-                                        v-model="selected.six_months_unlock_percent_of_tokens" />
-                                          <b-form-invalid-feedback>
+                                    <validation-provider #default="{ errors }" name="Percent of Tokens3"
+                                        vid="six_months_unlock_number_of_tokens" rules="double">
+                                        <b-form-input id="sixmonthsunlockpercentoftokens 	"
+                                            v-model="selected.six_months_unlock_percent_of_tokens" />
+                                        <b-form-invalid-feedback>
                                             {{ errors[0] }}
                                         </b-form-invalid-feedback>
                                     </validation-provider>
@@ -171,6 +171,7 @@
                                     :disabled="sendForm || invalid"
                                     :block="$store.getters['app/currentBreakPoint'] === 'xs'">
                                     Save Changes
+                                    <b-spinner v-if="sendForm" small class="ml-[0.5]" label="Small Spinner" />
                                 </b-button>
                             </b-col>
                         </b-row>
@@ -202,7 +203,8 @@
         BFormDatepicker,
         BForm,
         BButton,
-        BFormInvalidFeedback
+        BFormInvalidFeedback,
+        BSpinner
 
     } from 'bootstrap-vue'
     import {
@@ -242,7 +244,8 @@
             ToastificationContent,
             ValidationProvider,
             ValidationObserver,
-            BFormInvalidFeedback
+            BFormInvalidFeedback,
+            BSpinner
         },
         data() {
             return {
@@ -277,7 +280,8 @@
                 required,
                 alphaNum,
                 integer,
-                digits,double
+                digits,
+                double
             }
         },
         methods: {
@@ -316,7 +320,7 @@
             getSuggestionValue(suggestion) {
                 return suggestion.item.name;
             },
-            updateCoinData(coinid) {
+          async  updateCoinData(coinid) {
                 this.sendForm = true;
                 if (this.selected.coin_id == coinid) {
                     let params = {
@@ -338,7 +342,7 @@
                         six_months_unlock_percent_of_tokens: this.selected.six_months_unlock_percent_of_tokens,
                         six_months_unlock_size: this.selected.six_months_unlock_size,
                     }
-                    axios.post('api/update-coindata', params).then(res => {
+                   await axios.post('api/update-coindata', params).then(res => {
                         if (res.data.status == 'success') {
                             this.$toast({
                                 component: ToastificationContent,
@@ -350,8 +354,12 @@
                             })
                         }
                     })
-                }
+                    setTimeout(() => {
                 this.sendForm = false;
+                    }, 1000);
+                }else{
+                }
+
             }
         },
     }

@@ -98,10 +98,7 @@ export default [
         title: 'Edit Unlocking Data',
         route: 'unlocking-edit-coins',
       },
-      {
-        title: 'Edit',
-        route: { name: 'apps-users-edit', params: { id: 21 } },
-      },
+      
     ],
   },
   {

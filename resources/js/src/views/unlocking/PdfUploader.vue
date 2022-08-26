@@ -28,6 +28,7 @@
                         <b-button variant="primary" class="mb-1 mb-sm-0 mr-0 mr-sm-1" type="submit"
                             :disabled="sendForm || invalid" :block="$store.getters['app/currentBreakPoint'] === 'xs'">
                             Upload
+                            <b-spinner v-if="sendForm" small  label="Small Spinner" />
                         </b-button>
                     </b-col>
                 </b-row>
@@ -44,7 +45,8 @@
         BForm,
         BButton,
         BFormInvalidFeedback,
-        BCardText
+        BCardText,
+        BSpinner
     } from 'bootstrap-vue'
     import {
         BFormFile
@@ -70,7 +72,8 @@
             ValidationObserver,
             BButton,
             BFormInvalidFeedback,
-            BCardText
+            BCardText,
+            BSpinner
         },
         data() {
             return {
@@ -84,6 +87,7 @@
             uploadPDF() {
                 this.$refs.uploadPDF.validate().then(success => {
                     if (success) {
+                        this.sendForm = true;
                         this.pdfFile = this.$refs.pdffile.files[0];
                         let formData = new FormData();
                         formData.append('pdfFile', this.pdfFile);
@@ -102,7 +106,7 @@
                                     },
                                 })
                                 this.pdfFile = null;
-                            }else{
+                            } else {
                                 this.$toast({
                                     component: ToastificationContent,
                                     props: {
@@ -113,6 +117,9 @@
                                 })
                             }
                         })
+                        setTimeout(() => {
+                            this.sendForm = false;
+                        }, 1000);
                     }
 
                 })
