@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PlansController;
+use App\Http\Controllers\UnlockingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,11 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     //User functions
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'user']);
+    // Unlocking functions
+    Route::post('/autosuggestcoins',[UnlockingController::class,'coinsForAutoSuggest']);
+    Route::post('/load-single-coin',[UnlockingController::class,'loadSingleCoin']);
+    Route::post('/update-coindata',[UnlockingController::class,'updateCoinData']);
+    Route::post('/upload-pdf',[UnlockingController::class,'uploadPDF']);
 
     //MoonSniper functions
     Route::post('/get_coins','App\Http\Controllers\Coingecko@get_coin_prices');

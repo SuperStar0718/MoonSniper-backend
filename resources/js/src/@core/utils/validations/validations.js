@@ -17,7 +17,7 @@ import ar from 'vee-validate/dist/locale/ar.json'
 import en from 'vee-validate/dist/locale/en.json'
 
 // eslint-disable-next-line object-curly-newline
-import { validatorPositive, validatorUrlValidator, validatorPassword, validatorCreditCard,validatorUniqueEmail,validatorUniqueUserName,validatorUniqueUserName2,validatorUniqueEmail2,maxValValidator } from './validators'
+import { validatorPositive, validatorUrlValidator, validatorPassword, validatorCreditCard,validatorUniqueEmail,validatorUniqueUserName,validatorUniqueUserName2,validatorUniqueEmail2,maxValValidator,doubleValidator,pdfValidator } from './validators'
 
 // ////////////////////////////////////////////////////////
 // General
@@ -86,7 +86,15 @@ export const maxVal = extend('maxVal', {
   validate: maxValValidator,
   // message: 'URL is invalid',
 })
-
+export const double = extend('double', {
+  validate: doubleValidator,
+  message: 'Your {_field_} must be interger or double',
+})
+export const pdf = extend('pdf', {
+  validate: pdfValidator
+  ,
+  message: 'Your {_field_} type must be PDF',
+})
 // Install English and Arabic localizations.
 localize({
   en: {

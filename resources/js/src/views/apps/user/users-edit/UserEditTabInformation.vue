@@ -253,6 +253,7 @@
                                 props: {
                                     title: 'Information details has been updated',
                                     variant: 'success',
+                                      icon: 'BellIcon',
                                 },
                             })
                         } else {
@@ -261,6 +262,7 @@
                                 props: {
                                     title: 'Something went wrong!',
                                     variant: 'error',
+                                      icon: 'BellIcon',
                                 },
                             })
                         }

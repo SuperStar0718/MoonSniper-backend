@@ -99,3 +99,19 @@ export const maxValValidator = async(val,max)=>{
 
     return val.length <= max || `More than ${max} characters are not allowed`
 }
+export const doubleValidator = async(val)=>{
+    if (val === undefined || val === null || val.length === 0) {
+        return true
+    }
+    const re = /^-?[0-9]+([.,][0-9]*|[0-9])?$/
+    /* eslint-enable no-useless-escape */
+    return re.test(val)
+}
+export const pdfValidator = async(val)=>{
+    if (val === undefined || val === null || val.length === 0) {
+        return true
+    }
+    const re = /^.*\.(pdf|PDF)$/
+    /* eslint-enable no-useless-escape */
+    return re.test(val)
+}

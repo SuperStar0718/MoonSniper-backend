@@ -271,6 +271,7 @@
                                 props: {
                                     title: 'User has been deleted',
                                     variant: 'success',
+                                      icon: 'BellIcon',
                                 },
                             })
                         }

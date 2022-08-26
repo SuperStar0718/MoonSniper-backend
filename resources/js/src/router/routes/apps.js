@@ -199,7 +199,17 @@ export default [
     name: 'apps-users-edit',
     component: () => import('@/views/apps/user/users-edit/UsersEdit.vue'),
   },
-
+  //Coins
+  {
+    path: '/unlocking/edit-coin',
+    name: 'unlocking-edit-coins',
+    component: () => import('@/views/unlocking/Coins.vue'),
+  },
+  {
+    path: '/unlocking/update-from-pdf',
+    name: 'update-from-pdf',
+    component: () => import('@/views/unlocking/PdfUploader.vue'),
+  },
   // Invoice
   {
     path: '/apps/invoice/list',

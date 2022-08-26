@@ -85,6 +85,26 @@ export default [
     ],
   },
   {
+    title: 'Unlocking',
+    icon: 'UserIcon',
+    
+    children: [
+      
+      {
+        title: 'Update From PDF',
+        route: 'update-from-pdf',
+      },
+      {
+        title: 'Edit Unlocking Data',
+        route: 'unlocking-edit-coins',
+      },
+      {
+        title: 'Edit',
+        route: { name: 'apps-users-edit', params: { id: 21 } },
+      },
+    ],
+  },
+  {
     title: 'Pages',
     icon: 'FileIcon',
     children: [

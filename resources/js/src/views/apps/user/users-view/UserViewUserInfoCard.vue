@@ -121,6 +121,10 @@
         avatarText
     } from '@core/utils/filter'
     import useUsersList from '../users-list/useUsersList'
+    import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+   import {
+        useToast
+    } from 'vue-toastification/composition'
     import axios from '@axios'
     export default {
         components: {
@@ -129,6 +133,7 @@
             BRow,
             BCol,
             BAvatar,
+            ToastificationContent
         },
         props: {
             userData: {
@@ -137,6 +142,7 @@
             },
         },
         setup(props,context) {
+              const toast = useToast()
              const router = context.root.$router;
     const route = context.root.$route;
             const {
@@ -147,14 +153,16 @@
                     .post(`api/user/deleteuser/${props.userData.id}`)
                     .then(response => {
                         if (response.data.status == 'success') {
+                            toast({
+                                component: ToastificationContent,
+                                props: {
+                                    title: 'User has been deleted',
+                                    variant: 'success',
+                                     icon: 'BellIcon',
+                                },
+                            })
                            router.push({ name: 'apps-users-list' })
-                            // toast({
-                            //     component: ToastificationContent,
-                            //     props: {
-                            //         title: 'User has been deleted',
-                            //         variant: 'success',
-                            //     },
-                            // })
+
                         }
 
                     })

@@ -333,6 +333,7 @@
                                 props: {
                                     title: 'Avatar has been updated',
                                     variant: 'success',
+                                      icon: 'BellIcon',
                                 },
                             })
                         }
@@ -350,6 +351,7 @@
                                 props: {
                                     title: 'Avatar has been updated',
                                     variant: 'success',
+                                      icon: 'BellIcon',
                                 },
                             })
                         }
@@ -368,6 +370,7 @@
                                         props: {
                                             title: 'Account details has been updated',
                                             variant: 'success',
+                                              icon: 'BellIcon',
                                         },
                                     })
                                 }

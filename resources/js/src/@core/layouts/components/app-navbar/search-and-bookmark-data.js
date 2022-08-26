@@ -123,6 +123,7 @@ export default {
       { title: 'Users View', route: { name: 'apps-users-view', params: { id: 21 } }, icon: 'UserIcon', isBookmarked: false },
       { title: 'Vue Select', route: { name: 'extensions-vue-select' }, icon: 'AlignCenterIcon', isBookmarked: false },
       { title: 'Wishlist', route: { name: 'apps-e-commerce-wishlist' }, icon: 'HeartIcon', isBookmarked: false },
+      { title: 'Unlocking', route: { name: 'unlocking-coins' }, icon: 'UserIcon', isBookmarked: false },
     ],
   },
   files: {

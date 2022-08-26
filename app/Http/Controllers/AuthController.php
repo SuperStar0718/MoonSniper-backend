@@ -77,7 +77,7 @@ class AuthController extends Controller
             $VerifyToken->token = $token;
             $VerifyToken->email = $request->email;
             $VerifyToken->save();
-            Mail::send('emails.VerifyMail', ['token' => $token, 'url' => env('APP_URL'), 'email' => $request->email], function ($message) use ($user) {
+            Mail::send('emails.VerifyMail', ['token' => $token, 'url' => config('app.url'), 'email' => $request->email], function ($message) use ($user) {
                 $message->to($user->email);
                 $message->subject('Verify Email');
             });

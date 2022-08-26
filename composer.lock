@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f90f317a600df93b2dc77795e040a996",
+    "content-hash": "ce6e034e58819a53900417afebe98f58",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1023,6 +1023,63 @@
                 }
             ],
             "time": "2022-06-20T21:43:11+00:00"
+        },
+        {
+            "name": "iksaku/laravel-mass-update",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iksaku/laravel-mass-update.git",
+                "reference": "5a8bda6739b83903070f5ee9643fc88de370b886"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iksaku/laravel-mass-update/zipball/5a8bda6739b83903070f5ee9643fc88de370b886",
+                "reference": "5a8bda6739b83903070f5ee9643fc88de370b886",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^8.71|^9.0",
+                "illuminate/support": "^8.71|^9.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "brianium/paratest": "^6.4",
+                "orchestra/testbench": "^6.15|^7.0",
+                "pestphp/pest": "^1.19",
+                "pestphp/pest-plugin-parallel": "^0.3.1",
+                "phpunit/phpunit": "^9.5",
+                "vimeo/psalm": "^4.18"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Iksaku\\Laravel\\MassUpdate\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jorge González",
+                    "email": "yo@jorgeglz.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Update multiple Laravel Model records, each with different values, using a single query!",
+            "homepage": "https://github.com/iksaku/laravel-mass-update",
+            "keywords": [
+                "iksaku",
+                "laravel",
+                "laravel-mass-update"
+            ],
+            "support": {
+                "issues": "https://github.com/iksaku/laravel-mass-update/issues",
+                "source": "https://github.com/iksaku/laravel-mass-update/tree/1.0.4"
+            },
+            "time": "2022-01-22T01:05:11+00:00"
         },
         {
             "name": "laravel/framework",
