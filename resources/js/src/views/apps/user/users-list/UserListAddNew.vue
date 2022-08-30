@@ -47,7 +47,6 @@
                         <b-form-group label="Email" label-for="email">
                             <b-form-input id="email" v-model="userData.email"
                                 :state="getValidationState(validationContext)" trim />
-
                             <b-form-invalid-feedback>
                                 {{ validationContext.errors[0] }}
                             </b-form-invalid-feedback>

@@ -1,13 +1,14 @@
 <template>
     <b-card title="Coins">
-        <vue-autosuggest ref="autocomplete" v-model="query" :suggestions="suggestions" :input-props="inputProps"
-            :section-configs="sectionConfigs" :render-suggestion="renderSuggestion"
+        <vue-autosuggest ref="autocomplete" v-model="query" :suggestions="suggestions" :input-props="inputProps"   @focus="isFocused = true"
+        @blur="isFocused = false"
+            :section-configs="sectionConfigs" :render-suggestion="renderSuggestion" :should-render-suggestions="(size, loading) => (size >= 0 && !loading) || isFocused"
             :get-suggestion-value="getSuggestionValue" @input="fetchResults" />
         <b-card class="border" no-body v-if="selected">
 
             <b-card title="Update Coin's Details">
                 <validation-observer ref="UpdateForm" #default="{invalid}">
-                    <b-form @submit.prevent="updateCoinData(selected.coin_id)">
+                    <b-form>
                     <b-row>
                      <b-col md="6" xl="3" class="mb-1">
 
@@ -189,10 +190,16 @@
                         </b-row>
                         <b-row class="mt-2">
                             <b-col>
-                                <b-button variant="primary" class="mb-1 mb-sm-0 mr-0 mr-sm-1" type="submit"
+                                <b-button variant="primary" class="mb-1 mb-sm-0 mr-0 mr-sm-1" type="click"  @click="updateCoinData(selected.coin_id,'save')"
                                     :disabled="sendForm || invalid"
                                     :block="$store.getters['app/currentBreakPoint'] === 'xs'">
-                                    Save Changes
+                                    Save
+                                    <b-spinner v-if="sendForm" small class="ml-[0.5]" label="Small Spinner" />
+                                </b-button>
+                                <b-button variant="primary" class="mb-1 mb-sm-0 mr-0 mr-sm-1" type="click"  @click="updateCoinData(selected.coin_id,'saveandedit')"
+                                    :disabled="sendForm || invalid"
+                                    :block="$store.getters['app/currentBreakPoint'] === 'xs'">
+                                    Save & Edit Another
                                     <b-spinner v-if="sendForm" small class="ml-[0.5]" label="Small Spinner" />
                                 </b-button>
                             </b-col>
@@ -285,12 +292,14 @@
                     class: 'form-control',
                     name: 'ajax',
                 },
+                isFocused:false,
                 suggestions: [],
                 sectionConfigs: {
                     coins: {
                         limit: 30,
                         label: 'Coins',
                         onSelected: selected => {
+                            this.isFocused = false;
                             axios.post('api/load-single-coin', {
                                 coinid: selected.item.coin_id
                             }).then(res => {
@@ -353,7 +362,7 @@
             getSuggestionValue(suggestion) {
                 return suggestion.item.name;
             },
-            async updateCoinData(coinid) {
+            async updateCoinData(coinid,type) {
                 this.sendForm = true;
                 if (this.selected.coin_id == coinid) {
                     let params = {
@@ -393,7 +402,15 @@
                     setTimeout(() => {
                         this.sendForm = false;
                     }, 1000);
-                } else {}
+                } 
+                if(type != 'save')
+                {
+                    this.selected = null;
+                    this.$refs.autocomplete.setCurrentIndex(0)
+                this.$refs.autocomplete.$el.click();
+                this.isFocused = true;
+                }
+              
 
             }
         },
