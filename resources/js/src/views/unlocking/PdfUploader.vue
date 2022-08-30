@@ -7,7 +7,7 @@
                         <template>
                             <div>
                                 <!-- Styled -->
-                                <validation-provider #default="{ errors }" name="PDF" rules="required" vid="pdf">
+                                <validation-provider #default="{ errors }" name="PDF" rules="" vid="pdf">
                                     <b-form-file v-model="pdfFile" ref="pdffile" accept="application/pdf"
                                         placeholder="Choose a file or drop it here..."
                                         drop-placeholder="Drop file here..." />
@@ -85,7 +85,9 @@
         },
         methods: {
             uploadPDF() {
-                this.$refs.uploadPDF.validate().then(success => {
+                if(this.$refs.pdffile.files[0])
+                {
+                    this.$refs.uploadPDF.validate().then(success => {
                     if (success) {
                         this.sendForm = true;
                         this.pdfFile = this.$refs.pdffile.files[0];
@@ -102,7 +104,7 @@
                                     props: {
                                         title: 'PDF has been upload',
                                         variant: 'success',
-                                        icon: 'BellIcon',
+                                        icon: 'CheckCircleIcon',
                                     },
                                 })
                                 this.pdfFile = null;
@@ -112,7 +114,7 @@
                                     props: {
                                         title: 'Something went wrong',
                                         variant: 'error',
-                                        icon: 'BellIcon',
+                                        icon: 'CheckCircleIcon',
                                     },
                                 })
                             }
@@ -123,7 +125,9 @@
                     }
 
                 })
-            }
+          
+                }
+                  }
         }
     }
 

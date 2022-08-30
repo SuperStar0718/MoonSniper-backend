@@ -106,7 +106,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Notification',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
           text: '👋 Chocolate oat cake jelly oat cake candy jelly beans pastry.',
           variant,
         },

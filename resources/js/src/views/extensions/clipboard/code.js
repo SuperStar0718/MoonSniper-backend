@@ -49,7 +49,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Text copied',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
         },
       })
     },
@@ -58,7 +58,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Failed to copy texts!',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
         },
       })
     },
@@ -118,7 +118,7 @@ export default {
           component: ToastificationContent,
           props: {
             title: 'Text copied',
-            icon: 'BellIcon',
+            icon: 'CheckCircleIcon',
           },
         })
       }, e => {
@@ -126,7 +126,7 @@ export default {
           component: ToastificationContent,
           props: {
             title: 'Can not copy!',
-            icon: 'BellIcon',
+            icon: 'CheckCircleIcon',
           },
         })
       })

@@ -43,11 +43,11 @@
                     <!-- phone -->
                     <b-col md="6">
                  
-                        <b-form-group label-for="Contact" label="Phone">
-                           <validation-provider #default="validationContext" name="Mobile"
-                                :rules="`required`">
-                            <cleave id="phone" v-model="informationData.contact" class="form-control" :raw="false"
-                                :options="clevePhone" placeholder="Phone number" />
+                        <b-form-group label-for="Contact" label="Contact">
+                           <validation-provider #default="validationContext" name="Contact"
+                                rules="">
+                            <cleave id="contact" v-model="informationData.contact" class="form-control" :raw="false"
+                                :options="clevePhone" placeholder="Contact" />
                                  <b-form-invalid-feedback>
                                     {{ validationContext.errors[0] }}
                                 </b-form-invalid-feedback>
@@ -189,6 +189,7 @@
                                 props: {
                                     title: 'Information details has been updated',
                                     variant: 'success',
+                                    icon:'CheckCircleIcon'
                                 },
                             })
                         } else {
@@ -197,6 +198,7 @@
                                 props: {
                                     title: 'Something went wrong!',
                                     variant: 'error',
+                                     icon: 'XCircleIcon',
                                 },
                             })
                         }

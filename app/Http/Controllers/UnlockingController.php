@@ -19,14 +19,31 @@ class UnlockingController extends Controller
     public function loadSingleCoin(Request $request)
     {
         $coin = DB::table('coins')->where('coin_data.coin_id', $request->coinid)
-            ->Join('coin_data', 'coins.coin_id', '=', 'coin_data.coin_id')
+            ->Join('coin_data', 'coins.coin_id', '=', 'coin_data.coin_id')->select('coin_data.coin_id',
+            'coin_data.total_locked',
+            'coin_data.next_unlock_date',
+            'coin_data.next_unlock_date_text',
+            'coin_data.next_unlock_number_of_tokens',
+            'coin_data.next_unlock_percent_of_tokens',
+            'coin_data.next_unlock_size',
+            'coin_data.first_vc_unlock',
+            'coin_data.end_vc_unlock',
+            'coin_data.first_vc_unlock_text',
+            'coin_data.end_vc_unlock_text',
+            'coin_data.three_months_unlock_number_of_tokens',
+            'coin_data.three_months_unlock_percent_of_tokens',
+            'coin_data.three_months_unlock_size',
+            'coin_data.six_months_unlock_number_of_tokens',
+            'coin_data.six_months_unlock_percent_of_tokens',
+            'coin_data.six_months_unlock_size',
+            'coin_data.seed_price',
+            )
             ->first();
        return $coin;
     }
     public function updateCoinData(Request $request)
     {
          $coin = CoinsData::where('coin_id', $request->coinid)->first();
-
          $coin->total_locked = $request->total_locked;
          $coin->next_unlock_date = $request->next_unlock_date;
          $coin->next_unlock_date_text = $request->next_unlock_date_text;
@@ -35,7 +52,7 @@ class UnlockingController extends Controller
          $coin->next_unlock_size = $request->next_unlock_size;
          $coin->first_vc_unlock = $request->first_vc_unlock;
          $coin->end_vc_unlock = $request->end_vc_unlock;
-         $coin->first_vc_unlock_text = $request->total_locked;                                          
+         $coin->first_vc_unlock_text = $request->first_vc_unlock_text;                                          
          $coin->end_vc_unlock_text = $request->end_vc_unlock_text;
          $coin->three_months_unlock_number_of_tokens = $request->three_months_unlock_number_of_tokens;
          $coin->three_months_unlock_percent_of_tokens = $request->three_months_unlock_percent_of_tokens;
@@ -43,6 +60,7 @@ class UnlockingController extends Controller
          $coin->six_months_unlock_number_of_tokens = $request->six_months_unlock_number_of_tokens;
          $coin->six_months_unlock_percent_of_tokens = $request->six_months_unlock_percent_of_tokens;
          $coin->six_months_unlock_size = $request->six_months_unlock_size;
+         $coin->seed_price = $request->seed_price;
          $coin->save();
          return response()->json(['status'=>'success']);
     }
@@ -56,7 +74,7 @@ class UnlockingController extends Controller
             $extension =  $request->file('pdfFile')->getClientOriginalExtension();
             $filenameWithExt = $filename . '_' . rand(100, 9999);
             $fileNameToStore = $filenameWithExt . '.' . $extension;
-            $request->file('pdfFile')->storeAs('public\unlocking/pdfs', $fileNameToStore);
+            $request->file('pdfFile')->storeAs('public/unlocking/pdfs', $fileNameToStore);
             $paths = $fileNameToStore;
             $addPdf->file = $paths;
             $addPdf->save();

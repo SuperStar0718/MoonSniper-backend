@@ -196,7 +196,6 @@
             loadPlans() {
                 axios.post('api/plans').then(res => {
                     this.planOptions = res.data.plans;
-                    console.log(res.data.plans);
                 });
 
             },
@@ -240,8 +239,8 @@
                     value: 'maintainer'
                 },
                 {
-                    label: 'Subscriber',
-                    value: 'subscriber'
+                    label: 'Client',
+                    value: 'client'
                 },
             ]
 
@@ -271,7 +270,7 @@
                                 props: {
                                     title: 'User has been deleted',
                                     variant: 'success',
-                                      icon: 'BellIcon',
+                                      icon: 'CheckCircleIcon',
                                 },
                             })
                         }

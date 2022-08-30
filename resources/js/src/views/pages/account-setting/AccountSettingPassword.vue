@@ -209,6 +209,7 @@ import axios from '@axios'
                                 props: {
                                     title: 'Password has been updated',
                                     variant: 'success',
+                                    icon:'CheckCircleIcon'
                                 },
                             })
                         }else{

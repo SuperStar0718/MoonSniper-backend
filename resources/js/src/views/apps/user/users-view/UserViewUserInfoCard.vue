@@ -158,7 +158,7 @@
                                 props: {
                                     title: 'User has been deleted',
                                     variant: 'success',
-                                     icon: 'BellIcon',
+                                     icon: 'CheckCircleIcon',
                                 },
                             })
                            router.push({ name: 'apps-users-list' })

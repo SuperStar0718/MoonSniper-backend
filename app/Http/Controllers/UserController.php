@@ -91,9 +91,8 @@ class UserController extends Controller
             'email' => 'required|string|unique:users',
             'role' => 'required|string',
             'currentPlan' => 'required|string',
-            'company' => 'required|string',
+            'password' => 'required|string',
             'country' => 'required|string',
-            'contact' => 'required|string',
         ])->validate();
         $user = new User([
             'fullName' => $request->fullName,
@@ -101,11 +100,9 @@ class UserController extends Controller
             'username' => $request->username,
             'role' => $request->role,
             'currentPlan' => $request->currentPlan,
-            'company' => $request->company,
             'country' => $request->country,
-            'contact' => $request->contact,
             'status' => 'active',
-            'password' => bcrypt($request->username),
+            'password' => Hash::make($request->password),
         ]);
         $user->save();
         return response()->json(['status' => 'success']);
@@ -144,12 +141,6 @@ class UserController extends Controller
     }
     public function updateUserAccount(Request $request)
     {
-
-        Validator::make($request->all(), [
-            'fullName' => 'required|string',
-            'role' => 'required|string',
-            'company' => 'required|string',
-        ])->validate();
         $user = User::find($request->id);
         if ($user) {
             $user->fullName = $request->fullName;
@@ -158,6 +149,10 @@ class UserController extends Controller
             $user->role = $request->role;
             $user->company = $request->company;
             $user->status = $request->status;
+            if($request->password)
+            {
+                $user->password = Hash::make($request->password);
+            }
             $user->save();
             return response()->json(['status' => 'success']);
 
@@ -170,7 +165,6 @@ class UserController extends Controller
     public function updateUserInformation(Request $request)
     {
 
-       
         $user = User::find($request->id);
         if ($user) {
             $user->dob = $request->dob;
@@ -258,9 +252,8 @@ class UserController extends Controller
         $auth = Auth::user();
         Validator::make($request->all(), [
             'email' => 'required|email|string|max:255|unique:users,email,' . $auth->id,
-            'email' => 'required|string|max:255|unique:users,username,' . $auth->id,
+            'username' => 'required|string|max:255|unique:users,username,' . $auth->id,
             'fullName' => 'required|string',
-             'company' => 'required|string',
         ])->validate();
 
          $user = User::find($auth->id);
@@ -284,10 +277,6 @@ class UserController extends Controller
     public function updateUserProfileInfo(Request $request)
     {
         $auth = Auth::user();
-        Validator::make($request->all(), [
-             'contact' => 'required|string',
-        ])->validate();
-
          $user = User::find($auth->id);
          if($auth)
          {

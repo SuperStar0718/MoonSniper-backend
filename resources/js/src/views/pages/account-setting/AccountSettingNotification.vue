@@ -187,6 +187,7 @@ export default {
                                 props: {
                                     title: 'Notificatons are updated',
                                     variant: 'success',
+                                     icon: 'CheckCircleIcon',
                                 },
                             })
                         } else {
@@ -195,6 +196,7 @@ export default {
                                 props: {
                                     title: 'Something went wrong!',
                                     variant: 'error',
+                                    variant:'XCircleIcon'
                                 },
                             })
                         }

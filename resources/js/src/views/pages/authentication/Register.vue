@@ -266,7 +266,7 @@
                                
                             })
                             .catch(error => {
-                                this.$refs.registerForm.setErrors(error.response.data.error)
+                                this.$refs.registerForm.setErrors(error.data.error)
                             })
                     }
                 })

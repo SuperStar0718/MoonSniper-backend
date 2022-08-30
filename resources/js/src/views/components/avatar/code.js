@@ -584,7 +584,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Notification',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
         },
       })
     },

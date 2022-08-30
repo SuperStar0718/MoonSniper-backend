@@ -41,9 +41,27 @@ class AuthController extends Controller
         $token = $tokenResult->plainTextToken;
         $ability = [];
         $user2 = User::find($user->id);
+        if($user2->role == 'admin')
+        {
         $ability[0] = ["action" => "manage", "subject" => "all"];
-        if ($user->avatar) {
-            $user->avatar = asset('/storage/user/avatars/' . $user->avatar);
+
+        }else if($user2->role == 'client')
+        {
+        $ability = [
+            ["action" => "read", "subject" => "Unautherize"],
+            ["action" => "read", "subject" => "Profile"],
+            ["action" => "read", "subject" => "Dashboard"],
+        ];
+        }else {
+            $ability = [
+                ["action" => "read", "subject" => "Unlocking"],
+                ["action" => "read", "subject" => "Unautherize"],
+                ["action" => "read", "subject" => "Profile"],
+                ["action" => "read", "subject" => "Dashboard"],
+            ];
+        }
+        if ($user2->avatar) {
+            $user2->avatar = asset('/storage/user/avatars/' . $user2->avatar);
         }
         $user2->notifications = $user->notifications ? unserialize($user->notifications) : [];
         $user2->ability = $ability;
@@ -94,6 +112,9 @@ class AuthController extends Controller
         $ability[0] = ["action" => "manage", "subject" => "all"];
         $user->notifications = $user->notifications ? unserialize($user->notifications) : [];
         $user->ability = $ability;
+        if ($user->avatar) {
+            $user->avatar = asset('/storage/user/avatars/' . $user->avatar);
+        }
         return response()->json($user);
     }
 

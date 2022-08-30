@@ -27,7 +27,6 @@
 
             <b-form @submit.prevent="handleSubmit(updateProfile)" @reset.prevent="resetForm">
                 <b-row>
-                    <!-- Field: Username -->
                     <b-col cols="12" md="4">
                         <b-form-group label="Username" label-for="username">
                             <validation-provider #default="validationContext" name="Username"
@@ -39,8 +38,6 @@
                             </validation-provider>
                         </b-form-group>
                     </b-col>
-
-                    <!-- Field: Full Name -->
                     <b-col cols="12" md="4">
                         <b-form-group label="Full Name" label-for="full-name">
                             <validation-provider #default="validationContext" name="Fullname"
@@ -53,7 +50,6 @@
                         </b-form-group>
                     </b-col>
 
-                    <!-- Field: Email -->
                     <b-col cols="12" md="4">
                         <b-form-group label="Email" label-for="email">
                             <validation-provider #default="validationContext" name="Email"
@@ -66,7 +62,6 @@
                         </b-form-group>
                     </b-col>
 
-                    <!-- Field: Status -->
                     <b-col cols="12" md="4">
                         <b-form-group label="Status" label-for="user-status">
                             <validation-provider #default="validationContext" name="Status"
@@ -81,7 +76,6 @@
                         </b-form-group>
                     </b-col>
 
-                    <!-- Field: Role -->
                     <b-col cols="12" md="4">
 
                         <b-form-group label="User Role" label-for="user-role">
@@ -97,11 +91,10 @@
                         </b-form-group>
                     </b-col>
 
-                    <!-- Field: Email -->
                     <b-col cols="12" md="4">
                         <b-form-group label="Company" label-for="company">
                             <validation-provider #default="validationContext" name="Company"
-                                :rules="`required:${userData.id}`">
+                                rules="">
                                 <b-form-input id="company" v-model="userData.company" />
                                 <b-form-invalid-feedback>
                                     {{ validationContext.errors[0] }}
@@ -109,13 +102,18 @@
                             </validation-provider>
                         </b-form-group>
                     </b-col>
-                    <!-- <b-col cols="12" md="4">
-                        <b-form-group label="Country" label-for="user-status">
-                            <v-select v-model="userData.country" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                :options="countries" :reduce="val => val.value" :clearable="false"
-                                input-id="user-status" />
+                      <b-col cols="12" md="4">
+                        <b-form-group label="Password" label-for="password">
+                            <validation-provider #default="validationContext" name="Password"
+                                :rules="`password`">
+                                <b-form-input id="password" v-model="userData.password" />
+                                <b-form-invalid-feedback>
+                                    {{ validationContext.errors[0] }}
+                                </b-form-invalid-feedback>
+                            </validation-provider>
                         </b-form-group>
-                    </b-col> -->
+                    </b-col>
+                 
 
                 </b-row>
             </b-form>
@@ -182,7 +180,9 @@
         email,
         uniqueMail,
         uniqueUsername2,
-        uniqueMail2
+        uniqueMail2,
+        confirmed,
+        password
     } from '@validations'
     import {
         avatarText
@@ -231,7 +231,9 @@
                 email,
                 uniqueMail,
                 uniqueUsername2,
-                uniqueMail2
+                uniqueMail2,
+                  confirmed,
+        password
             }
         },
         setup(props,{refs}) {
@@ -257,8 +259,8 @@
                     value: 'maintainer'
                 },
                 {
-                    label: 'Subscriber',
-                    value: 'subscriber'
+                    label: 'Client',
+                    value: 'client'
                 },
             ]
 
@@ -333,7 +335,7 @@
                                 props: {
                                     title: 'Avatar has been updated',
                                     variant: 'success',
-                                      icon: 'BellIcon',
+                                      icon: 'CheckCircleIcon',
                                 },
                             })
                         }
@@ -351,7 +353,7 @@
                                 props: {
                                     title: 'Avatar has been updated',
                                     variant: 'success',
-                                      icon: 'BellIcon',
+                                      icon: 'CheckCircleIcon',
                                 },
                             })
                         }
@@ -370,7 +372,7 @@
                                         props: {
                                             title: 'Account details has been updated',
                                             variant: 'success',
-                                              icon: 'BellIcon',
+                                              icon: 'CheckCircleIcon',
                                         },
                                     })
                                 }

@@ -115,7 +115,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Show Event Tooltip',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
         },
       })
     },
@@ -124,7 +124,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Shown Event Tooltip',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
         },
       })
     },
@@ -133,7 +133,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Hide Event Tooltip',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
         },
       })
     },
@@ -142,7 +142,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Hidden Event Tooltip',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
         },
       })
     },

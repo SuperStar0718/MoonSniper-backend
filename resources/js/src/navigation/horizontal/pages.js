@@ -38,11 +38,6 @@ export default [
             target: '_blank',
           },
           {
-            title: 'Reset Password v1',
-            route: 'auth-reset-password-v1',
-            target: '_blank',
-          },
-          {
             title: 'Reset Password v2',
             route: 'auth-reset-password-v2',
             target: '_blank',

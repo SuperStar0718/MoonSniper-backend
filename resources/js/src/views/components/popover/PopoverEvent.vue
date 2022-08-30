@@ -134,7 +134,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Show Event popover',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
         },
       })
     },
@@ -143,7 +143,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Shown Event popover',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
         },
       })
     },
@@ -152,7 +152,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Hide Event popover',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
         },
       })
     },
@@ -161,7 +161,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Hidden Event popover',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
         },
       })
     },

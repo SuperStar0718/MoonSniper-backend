@@ -102,7 +102,7 @@ export default {
     validationForm() {
       this.$refs.simpleRules.validate().then(success => {
         if (success) {
-          this.$router.push({ name: 'auth-reset-password-v1' })
+          // this.$router.push({ name: 'auth-reset-password-v1' })
         }
       })
     },

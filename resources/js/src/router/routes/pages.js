@@ -129,7 +129,7 @@ export default [
     component: () => import('@/views/pages/miscellaneous/NotAuthorized.vue'),
     meta: {
       layout: 'full',
-      resource: 'Auth',
+      resource: 'Unautherize',
     },
   },
   {
@@ -163,6 +163,7 @@ export default [
           active: true,
         },
       ],
+        resource: 'Profile',
     },
   },
   {

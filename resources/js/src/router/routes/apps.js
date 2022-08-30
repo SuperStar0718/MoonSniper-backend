@@ -188,6 +188,9 @@ export default [
     path: '/apps/users/list',
     name: 'apps-users-list',
     component: () => import('@/views/apps/user/users-list/UsersList.vue'),
+    meta: {
+      resource: 'Users',
+    },
   },
   {
     path: '/apps/users/view/:id',
@@ -204,11 +207,17 @@ export default [
     path: '/unlocking/edit-coin',
     name: 'unlocking-edit-coins',
     component: () => import('@/views/unlocking/Coins.vue'),
+    meta: {
+      resource: 'Unlocking',
+    },
   },
   {
     path: '/unlocking/update-from-pdf',
     name: 'update-from-pdf',
     component: () => import('@/views/unlocking/PdfUploader.vue'),
+    meta: {
+      resource: 'Unlocking',
+    },
   },
   // Invoice
   {

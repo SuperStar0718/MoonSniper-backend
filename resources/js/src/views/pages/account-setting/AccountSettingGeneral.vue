@@ -68,7 +68,7 @@
                     </b-col>
                     <b-col sm="6">
                         <b-form-group label="Company" label-for="account-company">
-                          <validation-provider #default="validationContext" name="Company" :rules="`required`">
+                          <validation-provider #default="validationContext" name="Company" rules="">
                             <b-form-input v-model="generalData.company" name="company" placeholder="Company name" />
                              <b-form-invalid-feedback>
                                     {{ validationContext.errors[0] }}
@@ -228,6 +228,7 @@
                                     icon: true,
                                     title: 'Avatar has been updated',
                                     variant: 'success',
+                                     icon: 'CheckCircleIcon',
                                 },
                             })
                         }
@@ -248,6 +249,7 @@
                                 props: {
                                     title: 'Avatar has been updated',
                                     variant: 'success',
+                                    icon:'CheckCircleIcon'
                                 },
                             })
                         }
@@ -273,6 +275,7 @@
                                 props: {
                                     title: 'Account details has been updated',
                                     variant: 'success',
+                                    icon:'CheckCircleIcon'
                                 },
                             })
                         }

@@ -86,7 +86,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Notification',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
           text: '👋 Chocolate oat cake jelly oat cake candy jelly beans pastry.',
           variant,
         },
@@ -254,7 +254,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Notification',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
           text: 'I do not think that word means what you think it means.',
           variant,
         },

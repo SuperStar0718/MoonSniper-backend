@@ -7,6 +7,8 @@ export default [
         title: 'eCommerce',
         route: 'dashboard-ecommerce',
         icon: 'ShoppingCartIcon',
+          resource: 'Invoice',
+        action: 'read',
       },
       {
         title: 'Analytics',
@@ -14,5 +16,6 @@ export default [
         icon: 'ActivityIcon',
       },
     ],
+  
   },
 ]

@@ -74,6 +74,7 @@ export default [
           {
             title: 'List',
             route: 'apps-users-list',
+            
           },
           {
             title: 'View',

@@ -8,8 +8,8 @@
             <b-card title="Update Coin's Details">
                 <validation-observer ref="UpdateForm" #default="{invalid}">
                     <b-form @submit.prevent="updateCoinData(selected.coin_id)">
-                        <b-row>
-                            <b-col md="6" xl="3" class="mb-1">
+                    <b-row>
+                     <b-col md="6" xl="3" class="mb-1">
 
                                 <b-form-group label="Total Locked" label-for="totallocked">
                                     <validation-provider #default="{ errors }" name="Total locker" vid="total_locker"
@@ -20,12 +20,14 @@
                                         </b-form-invalid-feedback>
                                     </validation-provider>
                                 </b-form-group>
-
                             </b-col>
+                    </b-row>
+                        <b-row>
+                           
                             <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Next Unlock Date" label-for="nextunlockdate">
                                     <flat-pickr v-model="selected.next_unlock_date" class="form-control"
-                                        :config="{ enableTime: true,dateFormat: 'Y-m-d H:i'}" />
+                                        :config="{ enableTime: false,dateFormat: 'Y-m-d'}" />
 
                                 </b-form-group>
                             </b-col>
@@ -35,10 +37,18 @@
                                     <b-form-input id="nextunlockdatetext" v-model="selected.next_unlock_date_text" />
                                 </b-form-group>
                             </b-col>
+                                <b-col md="6" xl="3" class="mb-1">
+                                <b-form-group label="Next Unlock Size" label-for="nextunlocksize">
+                                    <b-form-select id="nextunlocksize" v-model="selected.next_unlock_size"
+                                        :options="nextUnlockSize" />
+                                </b-form-group>
+                            </b-col>
+                           
+
+                        </b-row>
+                        <b-row>
                             <b-col md="6" xl="3" class="mb-1">
-
                                 <b-form-group label="Number of Tokens" label-for="nextunlocknumberoftokens">
-
                                     <validation-provider #default="{ errors }" name="Number of Token"
                                         vid="next_unlock_number_of_tokens" rules="double">
                                         <b-form-input id="nextunlocknumberoftokens"
@@ -61,35 +71,47 @@
                                     </validation-provider>
                                 </b-form-group>
                             </b-col>
-                            <b-col md="6" xl="3" class="mb-1">
-                                <b-form-group label="Next Unlock Size" label-for="nextunlocksize">
-                                    <b-form-input id="nextunlocksize" v-model="selected.next_unlock_size" />
+                             <b-col md="6" xl="3" class="mb-1">
+                                <b-form-group label="Seed Price" label-for="seedprice">
+                                    <validation-provider #default="{ errors }" name="Seed Price"
+                                        vid="seed price" rules="double">
+                                        <b-form-input id="seedprice"
+                                            v-model="selected.seed_price" />
+                                        <b-form-invalid-feedback>
+                                            {{ errors[0] }}
+                                        </b-form-invalid-feedback>
+                                    </validation-provider>
                                 </b-form-group>
                             </b-col>
+                        </b-row>
+                        
+
+                        <b-row>
+                     
+                        
                             <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Date of first VC unlock" label-for="firstvcunlock">
                                     <flat-pickr v-model="selected.first_vc_unlock" class="form-control"
-                                        :config="{ enableTime: true,dateFormat: 'Y-m-d H:i'}" />
+                                        :config="{ enableTime: false,dateFormat: 'Y-m-d'}" />
+                                </b-form-group>
+                            </b-col>
+                              <b-col md="6" xl="3" class="mb-1">
+                                <b-form-group label="Date of first VC unlock (Text)" label-for="firstvcunlocktext">
+                                    <b-form-input id="firstvcunlocktext" v-model="selected.first_vc_unlock_text" />
                                 </b-form-group>
                             </b-col>
                             <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Date of last VC unlock" label-for="endvcunlock">
                                     <flat-pickr v-model="selected.end_vc_unlock" class="form-control"
-                                        :config="{ enableTime: true,dateFormat: 'Y-m-d H:i'}" />
+                                        :config="{ enableTime: false,dateFormat: 'Y-m-d'}" />
 
-                                </b-form-group>
-                            </b-col>
-                            <b-col md="6" xl="3" class="mb-1">
-                                <b-form-group label="Date of first VC unlock (Text)" label-for="firstvcunlocktext">
-                                    <b-form-input id="firstvcunlocktext" v-model="selected.first_vc_unlock_text" />
                                 </b-form-group>
                             </b-col>
                             <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Date of last VC unlock (Text)" label-for="endvcunlocktext">
                                     <b-form-input id="endvcunlocktext" v-model="selected.end_vc_unlock_text" />
                                 </b-form-group>
-                            </b-col>
-
+                            </b-col>                                    
                         </b-row>
                         <h5 class="mt-1">
                             Unlocks in the next 3 months:
@@ -121,10 +143,9 @@
                                 </b-form-group>
                             </b-col>
                             <b-col md="6" xl="3" class="mb-1">
-                                <b-form-group label="Unlock Size" label-for="threemonthsunlocksize">
-                                    <b-form-input id="threemonthsunlocksize"
-                                        v-model="selected.three_months_unlock_size" />
-
+                                  <b-form-group label="Unlock Size" label-for="threemonthsunlocksize">
+                                    <b-form-select id="threemonthsunlocksize" v-model="selected.three_months_unlock_size"
+                                        :options="nextUnlockSize" />
                                 </b-form-group>
                             </b-col>
 
@@ -159,8 +180,9 @@
                                 </b-form-group>
                             </b-col>
                             <b-col md="6" xl="3" class="mb-1">
-                                <b-form-group label="Unlock Size" label-for="sixmonthsunlocksize">
-                                    <b-form-input id="sixmonthsunlocksize" v-model="selected.six_months_unlock_size" />
+                                   <b-form-group label="Unlock Size" label-for="sixmonthsunlocksize">
+                                    <b-form-select id="sixmonthsunlocksize" v-model="selected.six_months_unlock_size"
+                                        :options="nextUnlockSize" />
                                 </b-form-group>
                             </b-col>
 
@@ -204,7 +226,8 @@
         BForm,
         BButton,
         BFormInvalidFeedback,
-        BSpinner
+        BSpinner,
+        BFormSelect
 
     } from 'bootstrap-vue'
     import {
@@ -245,7 +268,9 @@
             ValidationProvider,
             ValidationObserver,
             BFormInvalidFeedback,
-            BSpinner
+            BSpinner,
+            BFormSelect
+
         },
         data() {
             return {
@@ -277,6 +302,14 @@
                     },
 
                 },
+                 nextUnlockSize: [
+        { value: null, text: 'Please select some item' },
+        { value: 'small', text: 'SMALL' },
+        { value: 'medium', text: 'MEDIUM' },
+        { value: 'big', text: 'BIG' },
+
+       
+      ],
                 required,
                 alphaNum,
                 integer,
@@ -320,7 +353,7 @@
             getSuggestionValue(suggestion) {
                 return suggestion.item.name;
             },
-          async  updateCoinData(coinid) {
+            async updateCoinData(coinid) {
                 this.sendForm = true;
                 if (this.selected.coin_id == coinid) {
                     let params = {
@@ -335,30 +368,32 @@
                         end_vc_unlock: this.selected.end_vc_unlock,
                         first_vc_unlock_text: this.selected.first_vc_unlock_text,
                         end_vc_unlock_text: this.selected.end_vc_unlock_text,
-                        three_months_unlock_number_of_tokens: this.selected.three_months_unlock_number_of_tokens,
-                        three_months_unlock_percent_of_tokens: this.selected.three_months_unlock_percent_of_tokens,
+                        three_months_unlock_number_of_tokens: this.selected
+                            .three_months_unlock_number_of_tokens,
+                        three_months_unlock_percent_of_tokens: this.selected
+                            .three_months_unlock_percent_of_tokens,
                         three_months_unlock_size: this.selected.three_months_unlock_size,
                         six_months_unlock_number_of_tokens: this.selected.six_months_unlock_number_of_tokens,
                         six_months_unlock_percent_of_tokens: this.selected.six_months_unlock_percent_of_tokens,
                         six_months_unlock_size: this.selected.six_months_unlock_size,
+                        seed_price: this.selected.seed_price,
                     }
-                   await axios.post('api/update-coindata', params).then(res => {
+                    await axios.post('api/update-coindata', params).then(res => {
                         if (res.data.status == 'success') {
                             this.$toast({
                                 component: ToastificationContent,
                                 props: {
                                     title: 'Coin details has been updated',
                                     variant: 'success',
-                                    icon: 'BellIcon',
+                                    icon: 'CheckCircleIcon',
                                 },
                             })
                         }
                     })
                     setTimeout(() => {
-                this.sendForm = false;
+                        this.sendForm = false;
                     }, 1000);
-                }else{
-                }
+                } else {}
 
             }
         },

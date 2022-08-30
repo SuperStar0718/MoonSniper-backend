@@ -69,7 +69,7 @@ export default {
         component: ToastificationContent,
         props: {
           title: 'Notification',
-          icon: 'BellIcon',
+          icon: 'CheckCircleIcon',
           text: 'I do not think that word means what you think it means.',
           variant,
         },

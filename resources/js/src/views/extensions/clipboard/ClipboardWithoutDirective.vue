@@ -68,7 +68,7 @@ export default {
           component: ToastificationContent,
           props: {
             title: 'Text copied',
-            icon: 'BellIcon',
+            icon: 'CheckCircleIcon',
           },
         })
       }, () => {
@@ -76,7 +76,7 @@ export default {
           component: ToastificationContent,
           props: {
             title: 'Can not copy!',
-            icon: 'BellIcon',
+            icon: 'CheckCircleIcon',
           },
         })
       })

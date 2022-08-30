@@ -26,10 +26,10 @@
 
                     <!-- Field: Mobile -->
                     <b-col cols="12" md="6" lg="4">
-                        <b-form-group label="Mobile" label-for="mobile">
-                            <validation-provider #default="validationContext" name="Mobile"
-                                :rules="`required:${userData.id}`">
-                                <b-form-input id="mobile" v-model="userData.contact" />
+                        <b-form-group label="Contact" label-for="contact">
+                            <validation-provider #default="validationContext" name="Contact"
+                                rules="">
+                                <b-form-input id="contact" v-model="userData.contact" />
                                 <b-form-invalid-feedback>
                                     {{ validationContext.errors[0] }}
                                 </b-form-invalid-feedback>
@@ -253,7 +253,7 @@
                                 props: {
                                     title: 'Information details has been updated',
                                     variant: 'success',
-                                      icon: 'BellIcon',
+                                      icon: 'CheckCircleIcon',
                                 },
                             })
                         } else {
@@ -262,7 +262,7 @@
                                 props: {
                                     title: 'Something went wrong!',
                                     variant: 'error',
-                                      icon: 'BellIcon',
+                                      icon: 'XCircleIcon',
                                 },
                             })
                         }
