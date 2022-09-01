@@ -406,7 +406,6 @@
                 if(type != 'save')
                 {
                     this.selected = null;
-                    this.$refs.autocomplete.setCurrentIndex(0)
                 this.$refs.autocomplete.$el.click();
                 this.isFocused = true;
                 }
@@ -414,6 +413,13 @@
 
             }
         },
+        mounted(){  var params = {filters:[],"filters2":"",sort:["market_cap","desc"]};
+        // {"filters":[],"filters2":"","sort":["market_cap","desc"]}
+        
+            axios.post('api/get_coins', JSON.stringify(params) ).then(res=>{
+                console.log(res.data);
+            })
+        }
     }
 
 </script>

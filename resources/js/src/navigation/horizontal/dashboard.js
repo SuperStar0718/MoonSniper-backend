@@ -5,10 +5,15 @@ export default [
     children: [
       {
         title: 'eCommerce',
-        route: 'dashboard-ecommerce',
+        route: 'dashboard',
         icon: 'ShoppingCartIcon',
           resource: 'Invoice',
         action: 'read',
+      },
+      {
+        title: 'eCommerce',
+        route: 'dashboard-ecommerce',
+        icon: 'ShoppingCartIcon',
       },
       {
         title: 'Analytics',

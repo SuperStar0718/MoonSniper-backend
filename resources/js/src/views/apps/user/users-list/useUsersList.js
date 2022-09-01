@@ -84,11 +84,9 @@ export default function useUsersList() {
         })
       })
   }
-
   // *===============================================---*
   // *--------- UI ---------------------------------------*
   // *===============================================---*
-
   const resolveUserRoleVariant = role => {
     if (role === 'client') return 'primary'
     if (role === 'author') return 'warning'

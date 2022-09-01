@@ -1,7 +1,7 @@
 export default [
   {
     title: 'Dashboard',
-        route: 'dashboard-ecommerce',
+        route: 'dashboard',
         resource: 'Dashboard',
         action: 'read',
     icon: 'HomeIcon',

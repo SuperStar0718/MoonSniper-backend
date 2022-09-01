@@ -206,7 +206,6 @@
 
         setup(props,context) {
               const router = context.root.$router;
-    const route = context.root.$route;
            const toast = useToast({});
             const USER_APP_STORE_MODULE_NAME = 'app-user'
 

@@ -29,10 +29,9 @@ class Coingecko extends Controller
 
     }
 
-    // Filter coin data by some criterias & paginate with 100 records per page
+    // Filter coin data by some criterias & paginate with 50 records per page
     public function get_coin_prices(Request $request)
     {
-        
         $input_json = $request->getContent();
         $input_array = json_decode($input_json, true);
 
@@ -64,7 +63,7 @@ class Coingecko extends Controller
                 ->whereNotNull('coin_data.coin_id')
                 ->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%".$input_array["filters2"]."%")
                 ->orderBy(DB::raw("ISNULL(".$input_array["sort"][0]."), ".$input_array["sort"][0]), $input_array["sort"][1])
-                ->paginate(100); 
+                ->paginate(50); 
             }else
             {
                 $data = DB::table('coins')
@@ -73,7 +72,7 @@ class Coingecko extends Controller
                 ->where($input_array["filters"])
                 ->whereNotNull('coin_data.coin_id')
                 ->orderBy(DB::raw("ISNULL(".$input_array["sort"][0]."), ".$input_array["sort"][0]), $input_array["sort"][1])
-                ->paginate(100); 
+                ->paginate(50); 
             }
             
 
@@ -86,7 +85,7 @@ class Coingecko extends Controller
                     ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
                     ->where($input_array["filters"])
                     ->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%".$input_array["filters2"]."%")
-                    ->paginate(100);
+                    ->paginate(50);
             }
             else
             {
@@ -94,7 +93,7 @@ class Coingecko extends Controller
                     ->select('*')
                     ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
                     ->where($input_array["filters"])
-                    ->paginate(100);
+                    ->paginate(50);
             }
 
         }
