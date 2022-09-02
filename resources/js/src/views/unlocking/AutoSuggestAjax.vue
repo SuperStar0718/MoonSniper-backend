@@ -1,16 +1,17 @@
 <template>
     <b-card title="Coins">
-        <vue-autosuggest ref="autocomplete" v-model="query" :suggestions="suggestions" :input-props="inputProps"   @focus="isFocused = true"
-        @blur="isFocused = false"
-            :section-configs="sectionConfigs" :render-suggestion="renderSuggestion" :should-render-suggestions="(size, loading) => (size >= 0 && !loading) || isFocused"
+        <vue-autosuggest ref="autocomplete" v-model="query" :suggestions="suggestions" :input-props="inputProps"
+            @focus="isFocused = true" @blur="isFocused = false" :section-configs="sectionConfigs"
+            :render-suggestion="renderSuggestion"
+            :should-render-suggestions="(size, loading) => (size >= 0 && !loading) || isFocused"
             :get-suggestion-value="getSuggestionValue" @input="fetchResults" />
         <b-card class="border" no-body v-if="selected">
 
             <b-card title="Update Coin's Details">
                 <validation-observer ref="UpdateForm" #default="{invalid}">
                     <b-form>
-                    <b-row>
-                     <b-col md="6" xl="3" class="mb-1">
+                        <b-row>
+                            <b-col md="6" xl="3" class="mb-1">
 
                                 <b-form-group label="Total Locked" label-for="totallocked">
                                     <validation-provider #default="{ errors }" name="Total locker" vid="total_locker"
@@ -22,9 +23,9 @@
                                     </validation-provider>
                                 </b-form-group>
                             </b-col>
-                    </b-row>
+                        </b-row>
                         <b-row>
-                           
+
                             <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Next Unlock Date" label-for="nextunlockdate">
                                     <flat-pickr v-model="selected.next_unlock_date" class="form-control"
@@ -38,13 +39,13 @@
                                     <b-form-input id="nextunlockdatetext" v-model="selected.next_unlock_date_text" />
                                 </b-form-group>
                             </b-col>
-                                <b-col md="6" xl="3" class="mb-1">
+                            <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Next Unlock Size" label-for="nextunlocksize">
                                     <b-form-select id="nextunlocksize" v-model="selected.next_unlock_size"
                                         :options="nextUnlockSize" />
                                 </b-form-group>
                             </b-col>
-                           
+
 
                         </b-row>
                         <b-row>
@@ -72,12 +73,11 @@
                                     </validation-provider>
                                 </b-form-group>
                             </b-col>
-                             <b-col md="6" xl="3" class="mb-1">
+                            <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Seed Price" label-for="seedprice">
-                                    <validation-provider #default="{ errors }" name="Seed Price"
-                                        vid="seed price" rules="double">
-                                        <b-form-input id="seedprice"
-                                            v-model="selected.seed_price" />
+                                    <validation-provider #default="{ errors }" name="Seed Price" vid="seed price"
+                                        rules="double">
+                                        <b-form-input id="seedprice" v-model="selected.seed_price" />
                                         <b-form-invalid-feedback>
                                             {{ errors[0] }}
                                         </b-form-invalid-feedback>
@@ -85,18 +85,18 @@
                                 </b-form-group>
                             </b-col>
                         </b-row>
-                        
+
 
                         <b-row>
-                     
-                        
+
+
                             <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Date of first VC unlock" label-for="firstvcunlock">
                                     <flat-pickr v-model="selected.first_vc_unlock" class="form-control"
                                         :config="{ enableTime: false,dateFormat: 'Y-m-d'}" />
                                 </b-form-group>
                             </b-col>
-                              <b-col md="6" xl="3" class="mb-1">
+                            <b-col md="6" xl="3" class="mb-1">
                                 <b-form-group label="Date of first VC unlock (Text)" label-for="firstvcunlocktext">
                                     <b-form-input id="firstvcunlocktext" v-model="selected.first_vc_unlock_text" />
                                 </b-form-group>
@@ -112,7 +112,7 @@
                                 <b-form-group label="Date of last VC unlock (Text)" label-for="endvcunlocktext">
                                     <b-form-input id="endvcunlocktext" v-model="selected.end_vc_unlock_text" />
                                 </b-form-group>
-                            </b-col>                                    
+                            </b-col>
                         </b-row>
                         <h5 class="mt-1">
                             Unlocks in the next 3 months:
@@ -144,9 +144,9 @@
                                 </b-form-group>
                             </b-col>
                             <b-col md="6" xl="3" class="mb-1">
-                                  <b-form-group label="Unlock Size" label-for="threemonthsunlocksize">
-                                    <b-form-select id="threemonthsunlocksize" v-model="selected.three_months_unlock_size"
-                                        :options="nextUnlockSize" />
+                                <b-form-group label="Unlock Size" label-for="threemonthsunlocksize">
+                                    <b-form-select id="threemonthsunlocksize"
+                                        v-model="selected.three_months_unlock_size" :options="nextUnlockSize" />
                                 </b-form-group>
                             </b-col>
 
@@ -181,7 +181,7 @@
                                 </b-form-group>
                             </b-col>
                             <b-col md="6" xl="3" class="mb-1">
-                                   <b-form-group label="Unlock Size" label-for="sixmonthsunlocksize">
+                                <b-form-group label="Unlock Size" label-for="sixmonthsunlocksize">
                                     <b-form-select id="sixmonthsunlocksize" v-model="selected.six_months_unlock_size"
                                         :options="nextUnlockSize" />
                                 </b-form-group>
@@ -190,13 +190,14 @@
                         </b-row>
                         <b-row class="mt-2">
                             <b-col>
-                                <b-button variant="primary" class="mb-1 mb-sm-0 mr-0 mr-sm-1" type="click"  @click="updateCoinData(selected.coin_id,'save')"
-                                    :disabled="sendForm || invalid"
+                                <b-button variant="primary" class="mb-1 mb-sm-0 mr-0 mr-sm-1" type="click"
+                                    @click="updateCoinData(selected.coin_id,'save')" :disabled="sendForm || invalid"
                                     :block="$store.getters['app/currentBreakPoint'] === 'xs'">
                                     Save
                                     <b-spinner v-if="sendForm" small class="ml-[0.5]" label="Small Spinner" />
                                 </b-button>
-                                <b-button variant="primary" class="mb-1 mb-sm-0 mr-0 mr-sm-1" type="click"  @click="updateCoinData(selected.coin_id,'saveandedit')"
+                                <b-button variant="primary" class="mb-1 mb-sm-0 mr-0 mr-sm-1" type="click"
+                                    @click="updateCoinData(selected.coin_id,'saveandedit')"
                                     :disabled="sendForm || invalid"
                                     :block="$store.getters['app/currentBreakPoint'] === 'xs'">
                                     Save & Edit Another
@@ -292,7 +293,7 @@
                     class: 'form-control',
                     name: 'ajax',
                 },
-                isFocused:false,
+                isFocused: false,
                 suggestions: [],
                 sectionConfigs: {
                     coins: {
@@ -311,14 +312,23 @@
                     },
 
                 },
-                 nextUnlockSize: [
-        { value: null, text: 'Please select some item' },
-        { value: 'small', text: 'SMALL' },
-        { value: 'medium', text: 'MEDIUM' },
-        { value: 'big', text: 'BIG' },
-
-       
-      ],
+                nextUnlockSize: [{
+                        value: null,
+                        text: 'Please select some item'
+                    },
+                    {
+                        value: 'small',
+                        text: 'SMALL'
+                    },
+                    {
+                        value: 'medium',
+                        text: 'MEDIUM'
+                    },
+                    {
+                        value: 'big',
+                        text: 'BIG'
+                    },
+                ],
                 required,
                 alphaNum,
                 integer,
@@ -362,7 +372,7 @@
             getSuggestionValue(suggestion) {
                 return suggestion.item.name;
             },
-            async updateCoinData(coinid,type) {
+            async updateCoinData(coinid, type) {
                 this.sendForm = true;
                 if (this.selected.coin_id == coinid) {
                     let params = {
@@ -402,21 +412,25 @@
                     setTimeout(() => {
                         this.sendForm = false;
                     }, 1000);
-                } 
-                if(type != 'save')
-                {
-                    this.selected = null;
-                this.$refs.autocomplete.$el.click();
-                this.isFocused = true;
                 }
-              
+                if (type != 'save') {
+                    this.selected = null;
+                    this.$refs.autocomplete.$el.click();
+                    this.isFocused = true;
+                }
+
 
             }
         },
-        mounted(){  var params = {filters:[],"filters2":"",sort:["market_cap","desc"]};
-        // {"filters":[],"filters2":"","sort":["market_cap","desc"]}
-        
-            axios.post('api/get_coins', JSON.stringify(params) ).then(res=>{
+        mounted() {
+            var params = {
+                filters: [],
+                "filters2": "",
+                sort: ["market_cap", "desc"]
+            };
+            // {"filters":[],"filters2":"","sort":["market_cap","desc"]}
+
+            axios.post('api/get_coins', JSON.stringify(params)).then(res => {
                 console.log(res.data);
             })
         }
