@@ -34,7 +34,7 @@ class Coingecko extends Controller
     public function get_coin_prices(Request $request)
     {
         $input_json = $request->getContent();
-        $input_array = $request;
+        $input_array = json_decode($input_json, true);
 
 
 

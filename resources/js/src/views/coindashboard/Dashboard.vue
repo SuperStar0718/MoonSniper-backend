@@ -737,8 +737,12 @@
             </div>
         </b-modal>
         <b-modal id="modal-details" v-if="activeData" ok-only ok-title="Close" centered size="lg"
-            :title="activeData.name +' - '+activeData.symbol">
+            >
             <template>
+                <div slot="modal-title">
+                 <b-avatar v-if="activeData.image" :src="activeData.image"></b-avatar> -{{activeData.name +' - '+activeData.symbol}}
+                    
+                  </div>
                 <div class="accordion" role="tablist">
                     <b-card no-body class="mb-1">
                         <b-card-header header-tag="header" class="p-1" role="tab">
@@ -760,9 +764,9 @@
                                             <span>${{ activeData.market_cap }}</span> </div>
                                     </b-col>
                                 </b-row>
-                                <b-row class="" style="max-height:120px">
+                                <b-row class="mt-2" style="max-height:120px">
                                     <b-col cols="12" class="text-center">
-                                        <h5>{{ activeData.name }} Market Cap</h5>
+                                        <h5>{{ activeData.name }} 7 Days</h5>
                                         <trend :data="activeData.sparkline_in_7d" :gradient="['#d40808']" auto-draw
                                             smooth></trend>
                                     </b-col>
@@ -778,30 +782,30 @@
                         <b-collapse id="soicalData" accordion="detailsModel" role="tabpanel">
                             <b-card-body>
                                 <b-row class="text-center mt-1 mb-1">
-                                    <b-col md="6" xl="6">
-                                        <div class="d-flex m-2 justify-content-center">
+                                    <b-col md="6" xl="6" v-if="activeData.social_mentions">
+                                        <div class="d-flex m-2 justify-content-center" >
                                             <span class="mr-1">Social Mentions: </span>
                                             <span class="text-success" v-if="activeData.social_mentions>=0">
                                                 +{{activeData.social_mentions}} %</span>
-                                            <span class="text-danger" v-else> -{{activeData.social_mentions}} %</span>
+                                            <span class="text-danger" v-else> {{activeData.social_mentions}} %</span>
                                         </div>
                                     </b-col>
-                                    <b-col md="6" xl="6">
+                                    <b-col md="6" xl="6" v-if="activeData.average_sentiment">
                                         <div class="d-flex m-2  justify-content-center">
                                             <span class="mr-1">Average Sentiment: </span>
                                             <span>{{activeData.average_sentiment}}</span>
                                         </div>
                                     </b-col>
-                                    <b-col md="6" xl="6">
-                                        <div class="d-flex m-2 justify-content-center">
+                                    <b-col md="6" xl="6"  v-if="activeData.social_engagement">
+                                        <div class="d-flex m-2 justify-content-center" >
                                             <span class="mr-1"> Social Engagement: </span>
                                             <span class="text-success" v-if="activeData.social_engagement>=0">
                                                 +{{activeData.social_engagement}} %</span>
                                             <span class="text-danger" v-else> {{activeData.social_engagement}} %</span>
                                         </div>
                                     </b-col>
-                                    <b-col md="6" xl="6">
-                                        <div class="d-flex m-2  justify-content-center">
+                                    <b-col md="6" xl="6" v-if="activeData.average_sentiment_change">
+                                        <div class="d-flex m-2  justify-content-center" >
                                             <span class="mr-1">Historical Sentiment: </span>
                                             <span class="text-success"
                                                 v-if="roundData(activeData.average_sentiment_change)>=0">
@@ -820,8 +824,8 @@
 
                                         </div>
                                     </b-col>
-                                    <b-col md="6" xl="6">
-                                        <div class="d-flex m-2 justify-content-center">
+                                    <b-col md="6" xl="6"  v-if="activeData.total_supply_percent">
+                                        <div class="d-flex m-2 justify-content-center" >
                                             <span class="mr-1">Total Supply %: </span>
                                             <span class="">
                                                 {{ activeData.total_supply_percent}} %</span>
@@ -830,7 +834,7 @@
                                     </b-col>
                                 </b-row>
                                 <b-row>
-                                    <b-col md="3" class="text-center" xl="2"
+                                    <b-col  class="text-center" cols="2"
                                         v-if="activeData.website && activeData.website != '' ">
                                         <a :href="activeData.website" target="_blank">
                                             <b-img rounded :src="'/images/static/website.png'" fluid
@@ -839,7 +843,7 @@
                                         <div>Website</div>
 
                                     </b-col>
-                                    <b-col md="3" class="text-center" xl="2"
+                                    <b-col  class="text-center" cols="2"
                                         v-if="activeData.twitter && activeData.twitter != '' ">
                                         <a :href="activeData.twitter" target="_blank">
                                             <b-img rounded :src="'/images/static/twitter.png'" fluid
@@ -851,7 +855,7 @@
                                             v-if="activeData.twitter_followers">{{activeData.twitter_followers}}
                                             Follower</span>
                                     </b-col>
-                                    <b-col md="3" class="text-center" xl="2"
+                                    <b-col  class="text-center" cols="2"
                                         v-if="activeData.telegram && activeData.telegram != '' ">
                                         <a :href="activeData.telegram" target="_blank">
                                             <b-img rounded :src="'/images/static/telegram.png'" fluid
@@ -863,7 +867,7 @@
                                             v-if="activeData.telegram_members">{{activeData.telegram_members}}
                                             Follower</span>
                                     </b-col>
-                                    <b-col md="3" class="text-center" xl="2"
+                                    <b-col  class="text-center" cols="2"
                                         v-if="activeData.discord && activeData.discord != '' ">
                                         <a :href="activeData.discord" target="_blank">
                                             <b-img rounded :src="'/images/static/discord.png'" fluid
@@ -875,7 +879,7 @@
                                             v-if="activeData.discord_followers">{{activeData.discord_followers}}
                                             Follower</span>
                                     </b-col>
-                                    <b-col md="3" class="text-center" xl="2"
+                                    <b-col  class="text-center" cols="2"
                                         v-if="activeData.medium && activeData.medium != '' ">
                                         <a :href="activeData.medium" target="_blank">
                                             <b-img rounded :src="'/images/static/medium.png'" fluid
@@ -887,7 +891,7 @@
                                             v-if="activeData.medium_followers">{{activeData.medium_followers}} Followers
                                         </span>
                                     </b-col>
-                                    <b-col md="3" class="text-center" xl="2"
+                                    <b-col  class="text-center" cols="2"
                                         v-if="activeData.reddit && activeData.reddit != '' ">
                                         <a :href="activeData.reddit" target="_blank">
                                             <b-img rounded :src="'/images/static/reddit.png'" fluid
@@ -899,7 +903,7 @@
                                             v-if="activeData.reddit_followers">Follower{{activeData.reddit_followers}}
                                         </span>
                                     </b-col>
-                                    <b-col md="3" class="text-center" xl="2"
+                                    <b-col  class="text-center" cols="2"
                                         v-if="activeData.whitepaper && activeData.whitepaper != '' ">
                                         <a :href="activeData.whitepaper" target="_blank">
                                             <b-img rounded :src="'/images/static/whitepaper.png'" fluid
@@ -908,7 +912,7 @@
                                         </a>
                                         <div>White paper</div>
                                     </b-col>
-                                    <b-col md="3" class="text-center" xl="2"
+                                    <b-col  class="text-center" cols="2"
                                         v-if="activeData.github && activeData.github != '' ">
                                         <a :href="activeData.github" target="_blank">
                                             <b-img rounded :src="'/images/static/github.png'" fluid
@@ -930,33 +934,33 @@
                             <b-card-body>
                                 <b-card-body>
                                     <b-row class="text-center mt-1 mb-1">
-                                        <b-col md="6" xl="6">
+                                        <b-col md="6" xl="6" v-if="activeData.next_unlock_date">
                                             <div class="d-flex m-2 justify-content-center">
                                                 <span class="mr-1">Next Unlock Date: </span>
                                                 <span
                                                     class="text-danger">{{dateFormat(activeData.next_unlock_date)}}</span>
                                             </div>
                                         </b-col>
-                                        <b-col md="6" xl="6">
+                                        <b-col md="6" xl="6" v-if="activeData.next_unlock_date_text">
                                             <div class="d-flex m-2 justify-content-center">
                                                 <span class="mr-1">Next Unlock Date Text: </span>
                                                 <span class="text-danger">{{activeData.next_unlock_date_text}}</span>
                                             </div>
                                         </b-col>
-                                        <b-col md="6" xl="6">
+                                        <b-col md="6" xl="6" v-if="activeData.next_unlock_percent_of_tokens">
                                             <div class="d-flex m-2 justify-content-center">
                                                 <span class="mr-1">Next Unlock Percent Of Tokens: </span>
                                                 <span class="text-danger">{{activeData.next_unlock_percent_of_tokens}}
                                                     %</span>
                                             </div>
                                         </b-col>
-                                        <b-col md="6" xl="6">
+                                        <b-col md="6" xl="6" v-if="activeData.next_unlock_number_of_tokens">
                                             <div class="d-flex m-2  justify-content-center">
                                                 <span class="mr-1">Next Unlock Number Of Tokens: </span>
                                                 <span>{{activeData.next_unlock_number_of_tokens}}</span>
                                             </div>
                                         </b-col>
-                                        <b-col md="6" xl="6">
+                                        <b-col md="6" xl="6" v-if="activeData.next_unlock_size">
                                             <div class="d-flex m-2 justify-content-center">
                                                 <span class="mr-1">Next Unlock Size: </span>
                                                 <span class="text-success"> {{activeData.next_unlock_size}}</span>
@@ -1158,14 +1162,19 @@
         methods: {
              loadCoins() {
                 this.$bvModal.hide('modal-filters');
+                console.log(JSON.stringify(this.params));
                 this.isBusy = true;
                 this.loadedData = false;
-                 axios.post('api/get_coins?page=' + this.Cpagpage, this.params).then(res => {
-                    this.items = res.data;
+                 axios.post('api/get_coins?page=' + this.Cpagpage, JSON.stringify(this.params)).then(res => {
+                    if(res.data.data)
+                    {
+                        this.items = res.data;
                     this.loadedData = true;
                 setTimeout(() => {
                     this.isBusy = false;
                 }, 1000);
+                    }
+                    
                 })
                 
             },
