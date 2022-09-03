@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { ToastPlugin, ModalPlugin } from 'bootstrap-vue'
 import VueCompositionAPI from '@vue/composition-api'
+import VueInputRestrictionDirectives from 'vue-input-restriction-directives';
 
 import i18n from '@/libs/i18n'
 import router from './router'
@@ -29,6 +30,8 @@ Vue.use(ModalPlugin)
 
 // Composition API
 Vue.use(VueCompositionAPI)
+Vue.use(VueInputRestrictionDirectives);
+
 Vue.use(VueSocialauth,{
 
   providers: {

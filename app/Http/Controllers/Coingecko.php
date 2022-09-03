@@ -26,6 +26,7 @@ class Coingecko extends Controller
     public function get_fear_greed(){
         $data = Dashboard::first();
         return json_encode($data);
+        return null;
 
     }
 

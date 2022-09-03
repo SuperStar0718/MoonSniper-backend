@@ -10461,6 +10461,11 @@ vue-i18n@^8.25.0:
   resolved "https://registry.npmjs.org/vue-i18n/-/vue-i18n-8.27.2.tgz"
   integrity sha512-QVzn7u2WVH8F7eSKIM00lujC7x1mnuGPaTnDTmB01Hd709jDtB9kYtBqM+MWmp5AJRx3gnqAdZbee9MelqwFBg==
 
+vue-input-restriction-directives@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/vue-input-restriction-directives/-/vue-input-restriction-directives-1.2.2.tgz#5fb186a33057446e33280beed8e78506fce40823"
+  integrity sha512-4z/FEvW8m+H+x7vF5rlI+aqqRQJ/cj1GtJuIUqxeEgdFOFZlcHMOWcYaX0V56TSQvfQWMpWQXG/0PoCFCBBG2g==
+
 "vue-loader-v16@npm:vue-loader@^16.1.0":
   version "16.8.3"
   resolved "https://registry.npmjs.org/vue-loader/-/vue-loader-16.8.3.tgz"

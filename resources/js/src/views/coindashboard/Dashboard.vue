@@ -1,95 +1,94 @@
 <template>
     <div>
         <b-card no-body>
-            <b-overlay
-            :show="isBusy"
-            rounded="sm"
-          >
-            <b-card-body>
-                <div class="mx-auto" style="margin-top:-30px !important">
-                    <b-row class="mt-3 mb-1">
-                        <b-col md="6" xl="4">
-                            <div class="d-flex mx-auto ">
-                                <h5 class="text-secondary" style="margin-right:8px;">MC:</h5>
-                                <h5 v-if="loaded">{{fag.data.market_cap}}</h5>
-                                <!-- <div class="d-flex text-success">
+            <b-overlay :show="fagLoad" rounded="sm">
+                <b-card-body>
+                    <div class="mx-auto" style="margin-top:-30px !important">
+                        <b-row class="mt-3 mb-1">
+                            <b-col md="6" xl="4">
+                                <div class="d-flex mx-auto justify-content-center">
+                                    <h5 class="text-secondary" style="margin-right:8px;">MC:</h5>
+                                    <h5 v-if="loaded">{{fag.data.market_cap}}</h5>
+                                    <!-- <div class="d-flex text-success">
                                 <feather-icon icon="CloudIcon" size="12" class="align-middle"
                                     style="margin:2px 6px 0 10px" /><span style="font-size:12px;">4.4%</span>
                             </div> -->
-                            </div>
-
-                        </b-col>
-                        <b-col md="6" xl="4" class="mb-1">
-                            <div class="d-flex mx-auto justify-content-center">
-                                <h5 class="text-secondary" style="margin-right:8px;">VOL(24):</h5>
-                                <h5 v-if="loaded"> {{fag.data.vol_24h}}</h5>
-                                <!-- <div class="d-flex text-success">
-                                <feather-icon icon="CloudIcon" size="12" class="align-middle"
-                                    style="margin:2px 6px 0 10px" /><span style="font-size:12px;">4.4%</span>
-                            </div> -->
-                            </div>
-
-                        </b-col>
-                        <b-col md="6" xl="4" class="mb-1">
-                            <div class="d-flex mx-auto justify-content-end">
-                                <h5 class="text-secondary" style="margin-right:8px;">Dominance:</h5>
-                                <div class="d-flex justify-content-between" v-if="loaded">
-                                    <h5 style="margin:0 8px 0 8px"> {{fag.data.btc_dom}}</h5>
-                                    <h5 style="margin:0 8px 0 8px">{{fag.data.eth_dom}}</h5>
                                 </div>
 
-                            </div>
+                            </b-col>
+                            <b-col md="6" xl="4" class="mb-1">
+                                <div class="d-flex mx-auto justify-content-center">
+                                    <h5 class="text-secondary" style="margin-right:8px;">VOL(24):</h5>
+                                    <h5 v-if="loaded"> {{fag.data.vol_24h}}</h5>
+                                    <!-- <div class="d-flex text-success">
+                                <feather-icon icon="CloudIcon" size="12" class="align-middle"
+                                    style="margin:2px 6px 0 10px" /><span style="font-size:12px;">4.4%</span>
+                            </div> -->
+                                </div>
 
-                        </b-col>
-
-                    </b-row>
-                </div>
-                <b-row class="">
-                    <b-col md="6" xl="3">
-                        <div class="mx-auto w-75 text-center">
-                            <h5 class="w-75">Fear and Greed</h5>
-                            <VueSvgGauge width="60%" class="w-75" :start-angle="-110" :end-angle="110"
-                                :value="fag.data.fear_greed_index" :separator-step="5" :min="0" :max="100"
-                                :gauge-color="[{ offset: 0, color: '#f55442'}, { offset: 100, color: '#0bd63a'}]"
-                                :scale-interval="0.1">
-                                <div class="inner-text">
-                                    <div class="mt-2"
-                                        :class="{'text-danger':fag.data.fear_greed_index<50,'text-success':fag.data.fear_greed_index>=50}">
-                                        <span class="d-block"
-                                            style="font-size:12px">{{fag.data.fear_greed_index}}</span>
-                                        <span class="d-block"
-                                            style="font-size:12px">{{fag.data.fear_greed_classification}}</span>
-                                        <span class="d-block text-info " style="font-size:10px"><a
-                                                v-ripple.400="'rgba(113, 102, 240, 0.15)'" v-b-modal.modal-chart
-                                                variant="outline-primary">View
-                                                History</a></span>
+                            </b-col>
+                            <b-col md="6" xl="4" class="mb-1">
+                                <div class="d-flex mx-auto justify-content-center">
+                                    <h5 class="text-secondary" style="margin-right:8px;">Dominance:</h5>
+                                    <div class="d-flex justify-content-between" v-if="loaded">
+                                        <h5 style="margin:0 8px 0 8px"> {{fag.data.btc_dom}}
+                                        </h5>
+                                        <h5 style="margin:0 8px 0 8px" >{{fag.data.eth_dom}}</h5>
                                     </div>
+
                                 </div>
-                            </VueSvgGauge>
-                        </div>
-                    </b-col>
-                    <b-col md="6" xl="3">
-                        <div class="mx-auto w-75 text-center">
-                            <!-- <h5>Indicator</h5> -->
-                        </div>
-                    </b-col>
-                    <b-col md="6" xl="3">
-                        <div class="mx-auto w-75 text-center">
-                            <!-- <h5>Indicator</h5> -->
-                        </div>
-                    </b-col>
-                    <b-col md="6" xl="3">
-                        <div class="mx-auto w-75 text-center">
-                            <!-- <h5>Indicator</h5> -->
-                        </div>
-                    </b-col>
-                </b-row>
-            </b-card-body></b-overlay>
+
+                            </b-col>
+
+                        </b-row>
+                    </div>
+                    <b-row class="">
+                        <b-col md="6" xl="3">
+                            <div class="mx-auto w-75 text-center">
+                                <h5 class="w-75 mx-auto">Fear and Greed</h5>
+                                <VueSvgGauge width="60%" class="w-75 mx-auto" :start-angle="-110" :end-angle="110"
+                                    :value="fag.data.fear_greed_index" :separator-step="5" :min="0" :max="100"
+                                    :gauge-color="[{ offset: 0, color: '#f55442'}, { offset: 100, color: '#0bd63a'}]"
+                                    :scale-interval="0.1">
+                                    <div class="inner-text">
+                                        <div class="mt-2"
+                                            :class="{'text-danger':fag.data.fear_greed_index<50,'text-success':fag.data.fear_greed_index>=50}">
+                                            <span class="d-block"
+                                                style="font-size:12px">{{fag.data.fear_greed_index}}</span>
+                                            <span class="d-block"
+                                                style="font-size:12px">{{fag.data.fear_greed_classification}}</span>
+                                            <span class="d-block text-info " style="font-size:10px"><a
+                                                    v-ripple.400="'rgba(113, 102, 240, 0.15)'" v-b-modal.modal-chart
+                                                    variant="outline-primary">View
+                                                    History</a></span>
+                                        </div>
+                                    </div>
+                                </VueSvgGauge>
+                            </div>
+                        </b-col>
+                        <b-col md="6" xl="3">
+                            <div class="mx-auto w-75 text-center">
+                                <!-- <h5>Indicator</h5> -->
+                            </div>
+                        </b-col>
+                        <b-col md="6" xl="3">
+                            <div class="mx-auto w-75 text-center">
+                                <!-- <h5>Indicator</h5> -->
+                            </div>
+                        </b-col>
+                        <b-col md="6" xl="3">
+                            <div class="mx-auto w-75 text-center">
+                                <!-- <h5>Indicator</h5> -->
+                            </div>
+                        </b-col>
+                    </b-row>
+                </b-card-body>
+            </b-overlay>
         </b-card>
         <div class="body-content-overlay" />
         <div class="searchbar mt-1 mb-1">
             <b-row>
-                <b-col cols="11">
+                <b-col cols="8" md="8" xl="11">
                     <b-input-group class="input-group-merge">
                         <b-form-input v-model="params.filters2" placeholder="Search Product" class="search-product" />
                         <b-input-group-append is-text>
@@ -97,7 +96,7 @@
                         </b-input-group-append>
                     </b-input-group>
                 </b-col>
-                <b-col cols="1">
+                <b-col cols="4" md="4" xl="1">
                     <div class="d-flex jusctify-content-between">
                         <div v-b-modal.modal-filters variant="outline-primary">
                             <feather-icon icon="FilterIcon" size="28" class="text-black cursor-pointer"
@@ -113,109 +112,113 @@
         </div>
         <div class="body-content-overlay" />
         <div id="">
-            <b-overlay
-      :show="isBusy"
-      rounded="sm"
-    >
-        <b-table sticky-header :no-border-collapse="true" tbody-tr-class="cursor-pointer" show-empty
-            @row-clicked="detailsModel($event)" style="white-space: nowrap;" responsive :items="items.data"
-            :fields="fields">
-            <template #empty="scope">
-                <h4>{{ scope.emptyText }}</h4>
-              </template>
-           
-            <template #head()="scope">
-                <div class="text-nowrap cursor-pointer text-center " style="font-size:11px !important;"
-                    @click="sortingCols(scope.field.key)">
-                    <div class="d-flex">
-                        <span> {{ scope.label }} </span> <span class="mx-auto text-center">
-                            <feather-icon icon="ChevronUpIcon" size="8" class="align-middle d-block"
-                                :class="{'text-danger':params.sort[1] =='asc'&& params.sort[0] ==scope.field.key}" />
-                            <feather-icon icon="ChevronDownIcon" size="8"
-                                :class="{'text-danger':params.sort[1] =='desc'&& params.sort[0] ==scope.field.key}"
-                                class="align-middle d-block" /> </span>
-                    </div>
-                </div>
-            </template>
-            <template #cell(coin_platform)="data">
-                <div class="" v-html="getPlatformTags(data.value)"></div>
-            </template>
+            <b-overlay :show="isBusy" rounded="sm">
+                <b-table sticky-header :no-border-collapse="true" tbody-tr-class="cursor-pointer" show-empty
+                    @row-clicked="detailsModel($event)" style="white-space: nowrap;" responsive :items="items.data"
+                    :fields="fields">
+                    <template #empty="scope">
+                        <h4>{{ scope.emptyText }}</h4>
+                    </template>
 
-            <template #cell(name)="data">
-                <div style="text-align: center;">
-                    <b-avatar class=" text-center" :src="data.item.image" />
+                    <template #head()="scope">
+                        <div class="text-nowrap cursor-pointer text-center " style="font-size:11px !important;"
+                            @click="sortingCols(scope.field.key)">
+                            <div class="d-flex">
+                                <span> {{ scope.label }} </span> <span class="mx-auto text-center">
+                                    <feather-icon icon="ChevronUpIcon" size="8" class="align-middle d-block"
+                                        :class="{'text-danger':params.sort[1] =='asc'&& params.sort[0] ==scope.field.key}" />
+                                    <feather-icon icon="ChevronDownIcon" size="8"
+                                        :class="{'text-danger':params.sort[1] =='desc'&& params.sort[0] ==scope.field.key}"
+                                        class="align-middle d-block" /> </span>
+                            </div>
+                        </div>
+                    </template>
+                    <template #cell(coin_platform)="data">
+                        <div class="" v-html="getPlatformTags(data.value)"></div>
+                    </template>
 
-                    <div class="text-nowrap text-truncate" style="max-width: 100px; font-size:11px">{{ data.value }}
-                    </div>
-                </div>
-            </template>
-            <template #cell(current_price)="data">
-                <div class="" style=" font-size:11px">{{data.value}}$</div>
-            </template>
-            <template #cell(market_cap)="data">
-                <div class="" style=" font-size:11px">{{data.value?data.value:0}}$</div>
-            </template>
-            <template #cell(high_24h)="data">
-                <div v-if="data.value !=''" class="" style=" font-size:11px">{{data.value}}$</div>
-            </template>
-            <template #cell(low_24h)="data">
-                <div v-if="data.value !=''" class="" style=" font-size:11px">{{data.value}}$</div>
-            </template>
+                    <template #cell(name)="data">
+                        <div style="text-align: center;">
+                            <b-avatar class=" text-center" :src="data.item.image" />
 
-            <template #cell(price_change_percentage_24h)="data">
-                <div v-if="data.value">
-                    <span v-if="data.value>= 0" class="text-success" style="font-size:11px">{{ data.value }} %</span>
-                    <span v-else class="text-danger" style="font-size:11px">{{ data.value }} %</span></div>
-            </template>
-            <template #cell(roi_percentage)="data">
-                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
-                        @click="sortingCols(data.value)" style="font-size:11px">{{ roundData(data.value) }} %</span>
-                    <span v-else-if="data.value!=null" class="text-danger"
-                        style="font-size:11px">{{ roundData(data.value) }} %</span></div>
-            </template>
-            <template #cell(total_supply_percent)="data">
-                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
-                        @click="sortingCols(data.value)" style="font-size:11px">{{ roundData(data.value) }} %</span>
-                    <span v-else-if="data.value!=null" class="text-danger"
-                        style="font-size:11px">{{ roundData(data.value) }} %</span></div>
-            </template>
-            <template #cell(ath)="data">
-                <div v-if="data.value">
-                    <span style="font-size:11px">{{data.value}}$</span>
-                </div>
-            </template>
-            <template #cell(atl)="data">
-                <div v-if="data.value">
-                    <span style="font-size:11px">{{data.value}}$</span>
-                </div>
-            </template>
-            <template #cell(social_mentions_change)="data">
-                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
-                        @click="sortingCols(data.value)" style="font-size:11px">{{ roundData(data.value) }} %</span>
-                    <span v-else-if="data.value!=null" class="text-danger"
-                        style="font-size:11px">{{ roundData(data.value) }} %</span></div>
-            </template>
-            <template #cell(social_engagement_change)="data">
-                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
-                        @click="sortingCols(data.value)" style="font-size:11px">{{ roundData(data.value) }} %</span>
-                    <span v-else-if="data.value!=null" class="text-danger"
-                        style="font-size:11px">{{ roundData(data.value) }} %</span></div>
-            </template>
-            <template #cell(average_sentiment_change)="data">
-                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
-                        @click="sortingCols(data.value)" style="font-size:11px">{{ roundData(data.value) }} %</span>
-                    <span v-else-if="data.value!=null" class="text-danger"
-                        style="font-size:11px">{{ roundData(data.value) }} %</span></div>
-            </template>
-            <template #cell()="data">
-                <div class="text-center" style="font-size:11px">
-                    <span class="text-nowrap">{{ data.value }}</span>
-                </div>
-            </template>
-        </b-table>
-</b-overlay>
+                            <div class="text-nowrap text-truncate" style="max-width: 100px; font-size:11px">
+                                {{ data.value }}
+                            </div>
+                        </div>
+                    </template>
+                    <template #cell(current_price)="data">
+                        <div class="" style=" font-size:11px">{{data.value}}$</div>
+                    </template>
+                    <template #cell(market_cap)="data">
+                        <div class="" style=" font-size:11px">{{data.value?data.value:0}}$</div>
+                    </template>
+                    <template #cell(high_24h)="data">
+                        <div v-if="data.value !=''" class="" style=" font-size:11px">{{data.value}}$</div>
+                    </template>
+                    <template #cell(low_24h)="data">
+                        <div v-if="data.value !=''" class="" style=" font-size:11px">{{data.value}}$</div>
+                    </template>
 
-    </div>
+                    <template #cell(price_change_percentage_24h)="data">
+                        <div v-if="data.value">
+                            <span v-if="data.value>= 0" class="text-success" style="font-size:11px">{{ data.value }}
+                                %</span>
+                            <span v-else class="text-danger" style="font-size:11px">{{ data.value }} %</span></div>
+                    </template>
+                    <template #cell(roi_percentage)="data">
+                        <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
+                                @click="sortingCols(data.value)" style="font-size:11px">{{ roundData(data.value) }}
+                                %</span>
+                            <span v-else-if="data.value!=null" class="text-danger"
+                                style="font-size:11px">{{ roundData(data.value) }} %</span></div>
+                    </template>
+                    <template #cell(total_supply_percent)="data">
+                        <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
+                                @click="sortingCols(data.value)" style="font-size:11px">{{ roundData(data.value) }}
+                                %</span>
+                            <span v-else-if="data.value!=null" class="text-danger"
+                                style="font-size:11px">{{ roundData(data.value) }} %</span></div>
+                    </template>
+                    <template #cell(ath)="data">
+                        <div v-if="data.value">
+                            <span style="font-size:11px">{{data.value}}$</span>
+                        </div>
+                    </template>
+                    <template #cell(atl)="data">
+                        <div v-if="data.value">
+                            <span style="font-size:11px">{{data.value}}$</span>
+                        </div>
+                    </template>
+                    <template #cell(social_mentions_change)="data">
+                        <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
+                                @click="sortingCols(data.value)" style="font-size:11px">{{ roundData(data.value) }}
+                                %</span>
+                            <span v-else-if="data.value!=null" class="text-danger"
+                                style="font-size:11px">{{ roundData(data.value) }} %</span></div>
+                    </template>
+                    <template #cell(social_engagement_change)="data">
+                        <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
+                                @click="sortingCols(data.value)" style="font-size:11px">{{ roundData(data.value) }}
+                                %</span>
+                            <span v-else-if="data.value!=null" class="text-danger"
+                                style="font-size:11px">{{ roundData(data.value) }} %</span></div>
+                    </template>
+                    <template #cell(average_sentiment_change)="data">
+                        <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
+                                @click="sortingCols(data.value)" style="font-size:11px">{{ roundData(data.value) }}
+                                %</span>
+                            <span v-else-if="data.value!=null" class="text-danger"
+                                style="font-size:11px">{{ roundData(data.value) }} %</span></div>
+                    </template>
+                    <template #cell()="data">
+                        <div class="text-center" style="font-size:11px">
+                            <span class="text-nowrap">{{ data.value }}</span>
+                        </div>
+                    </template>
+                </b-table>
+            </b-overlay>
+
+        </div>
         <div class="mx-2 mb-2">
             <b-row>
 
@@ -260,11 +263,13 @@
                                         <div class="">
                                             <b-form-group label="Market Cap" label-for="market_cap">
                                                 <div class="d-flex">
-                                                    <b-form-input v-model="filterKey.mc_min" placeholder="min" />
+                                                    <b-form-input v-numeric-only v-model="filterKey.mc_min"
+                                                        placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
-                                                    <b-form-input v-model="filterKey.mc_max" placeholder="max" />
+                                                    <b-form-input v-numeric-only v-model="filterKey.mc_max"
+                                                        placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -274,12 +279,12 @@
                                             <b-form-group label="Daily Price Change (%)"
                                                 label-for="price_change_percentage_24h">
                                                 <div class="d-flex">
-                                                    <b-form-input name="price_change_percentage_24h"
+                                                    <b-form-input name="price_change_percentage_24h" v-numeric-only
                                                         v-model="filterKey.day_min_change" placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
-                                                    <b-form-input v-model="filterKey.day_max_change"
+                                                    <b-form-input v-model="filterKey.day_max_change" v-numeric-only
                                                         placeholder="max" />
                                                 </div>
                                             </b-form-group>
@@ -301,12 +306,12 @@
                                         <div class="">
                                             <b-form-group label="Token Price">
                                                 <div class="d-flex">
-                                                    <b-form-input v-model="filterKey.min_token_price"
+                                                    <b-form-input v-model="filterKey.min_token_price" v-numeric-only
                                                         placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
-                                                    <b-form-input v-model="filterKey.max_token_price"
+                                                    <b-form-input v-model="filterKey.max_token_price" v-numeric-only
                                                         placeholder="max" />
                                                 </div>
                                             </b-form-group>
@@ -317,12 +322,12 @@
                                             <b-form-group label="Circulating Supply">
                                                 <div class="d-flex">
                                                     <b-form-input v-model="filterKey.min_circulating_supply"
-                                                        placeholder="min" />
+                                                        v-numeric-only placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
                                                     <b-form-input v-model="filterKey.max_circulating_supply"
-                                                        placeholder="max" />
+                                                        v-numeric-only placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -343,12 +348,12 @@
                                         <div class="">
                                             <b-form-group label="Market Cap. Rank">
                                                 <div class="d-flex">
-                                                    <b-form-input v-model="filterKey.min_market_cap_rank"
+                                                    <b-form-input v-model="filterKey.min_market_cap_rank" v-numeric-only
                                                         placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
-                                                    <b-form-input v-model="filterKey.max_market_cap_rank"
+                                                    <b-form-input v-model="filterKey.max_market_cap_rank" v-numeric-only
                                                         placeholder="max" />
                                                 </div>
                                             </b-form-group>
@@ -358,12 +363,12 @@
                                         <div class="">
                                             <b-form-group label="Total Supply">
                                                 <div class="d-flex">
-                                                    <b-form-input v-model="filterKey.min_total_supply"
+                                                    <b-form-input v-model="filterKey.min_total_supply" v-numeric-only
                                                         placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
-                                                    <b-form-input v-model="filterKey.max_total_supply"
+                                                    <b-form-input v-model="filterKey.max_total_supply" v-numeric-only
                                                         placeholder="max" />
                                                 </div>
                                             </b-form-group>
@@ -385,12 +390,12 @@
                                         <div class="">
                                             <b-form-group label="Trade Volume">
                                                 <div class="d-flex">
-                                                    <b-form-input v-model="filterKey.min_trade_volume"
+                                                    <b-form-input v-model="filterKey.min_trade_volume" v-numeric-only
                                                         placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
-                                                    <b-form-input v-model="filterKey.max_trade_volume"
+                                                    <b-form-input v-model="filterKey.max_trade_volume" v-numeric-only
                                                         placeholder="max" />
                                                 </div>
                                             </b-form-group>
@@ -400,11 +405,13 @@
                                         <div class="">
                                             <b-form-group label="ROI %">
                                                 <div class="d-flex">
-                                                    <b-form-input v-model="filterKey.min_roi_per" placeholder="min" />
+                                                    <b-form-input v-model="filterKey.min_roi_per" v-numeric-only
+                                                        placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
-                                                    <b-form-input v-model="filterKey.max_roi_per" placeholder="max" />
+                                                    <b-form-input v-model="filterKey.max_roi_per" v-numeric-only
+                                                        placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -413,11 +420,13 @@
                                         <div class="">
                                             <b-form-group label="ROI in X's">
                                                 <div class="d-flex">
-                                                    <b-form-input v-model="filterKey.min_times_roi" placeholder="min" />
+                                                    <b-form-input v-model="filterKey.min_times_roi" v-numeric-only
+                                                        placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
-                                                    <b-form-input v-model="filterKey.max_times_roi" placeholder="max" />
+                                                    <b-form-input v-model="filterKey.max_times_roi" v-numeric-only
+                                                        placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -429,12 +438,12 @@
                                         <div class="">
                                             <b-form-group label="Days in Market">
                                                 <div class="d-flex">
-                                                    <b-form-input v-model="filterKey.min_days_in_market"
+                                                    <b-form-input v-model="filterKey.min_days_in_market" v-numeric-only
                                                         placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
-                                                    <b-form-input v-model="filterKey.max_days_in_market"
+                                                    <b-form-input v-model="filterKey.max_days_in_market" v-numeric-only
                                                         placeholder="max" />
                                                 </div>
                                             </b-form-group>
@@ -445,12 +454,12 @@
                                             <b-form-group label="Total Supply (%)">
                                                 <div class="d-flex">
                                                     <b-form-input v-model="filterKey.min_total_supply_per"
-                                                        placeholder="min" />
+                                                        v-numeric-only placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
                                                     <b-form-input v-model="filterKey.max_total_supply_per"
-                                                        placeholder="max" />
+                                                        v-numeric-only placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -459,12 +468,12 @@
                                         <div class="">
                                             <b-form-group label="Seed Price">
                                                 <div class="d-flex">
-                                                    <b-form-input v-model="filterKey.min_seed_price"
+                                                    <b-form-input v-model="filterKey.min_seed_price" v-numeric-only
                                                         placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
-                                                    <b-form-input v-model="filterKey.max_seed_price"
+                                                    <b-form-input v-model="filterKey.max_seed_price" v-numeric-only
                                                         placeholder="max" />
                                                 </div>
                                             </b-form-group>
@@ -474,11 +483,13 @@
                                         <div class="">
                                             <b-form-group label="Seed ROI">
                                                 <div class="d-flex">
-                                                    <b-form-input v-model="filterKey.min_seed_roi" placeholder="min" />
+                                                    <b-form-input v-model="filterKey.min_seed_roi" v-numeric-only
+                                                        placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
-                                                    <b-form-input v-model="filterKey.max_seed_roi" placeholder="max" />
+                                                    <b-form-input v-model="filterKey.max_seed_roi" v-numeric-only
+                                                        placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -501,12 +512,12 @@
                                             <b-form-group label="Sentiment Change %">
                                                 <div class="d-flex">
                                                     <b-form-input v-model="filterKey.min_social_sentiment"
-                                                        placeholder="min" />
+                                                        v-numeric-only placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
                                                     <b-form-input v-model="filterKey.max_social_sentiment"
-                                                        placeholder="max" />
+                                                        v-numeric-only placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -516,12 +527,12 @@
                                             <b-form-group label="Social Mentions Change %">
                                                 <div class="d-flex">
                                                     <b-form-input v-model="filterKey.min_social_mentions_change"
-                                                        placeholder="min" />
+                                                        v-numeric-only placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
                                                     <b-form-input v-model="filterKey.max_social_mentions_change"
-                                                        placeholder="max" />
+                                                        v-numeric-only placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -531,12 +542,12 @@
                                             <b-form-group label="Social Engagement Change %">
                                                 <div class="d-flex">
                                                     <b-form-input v-model="filterKey.min_social_engagement_change"
-                                                        placeholder="min" />
+                                                        v-numeric-only placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
                                                     <b-form-input v-model="filterKey.max_social_engagement_change"
-                                                        placeholder="max" />
+                                                        v-numeric-only placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -546,12 +557,12 @@
                                             <b-form-group label="Average Sentiment (1-5)">
                                                 <div class="d-flex">
                                                     <b-form-input v-model="filterKey.min_average_sentiment_1_5"
-                                                        placeholder="min" />
+                                                        v-numeric-only placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
                                                     <b-form-input v-model="filterKey.max_average_sentiment_1_5"
-                                                        placeholder="max" />
+                                                        v-numeric-only placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -573,12 +584,12 @@
                                         <div class="">
                                             <b-form-group label="Total Locked">
                                                 <div class="d-flex">
-                                                    <b-form-input v-model="filterKey.min_total_locked"
+                                                    <b-form-input v-model="filterKey.min_total_locked" v-numeric-only
                                                         placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
-                                                    <b-form-input v-model="filterKey.max_total_locked"
+                                                    <b-form-input v-model="filterKey.max_total_locked" v-numeric-only
                                                         placeholder="max" />
                                                 </div>
                                             </b-form-group>
@@ -599,12 +610,12 @@
                                             <b-form-group label="Next Unlock # of Tokens">
                                                 <div class="d-flex">
                                                     <b-form-input v-model="filterKey.min_next_unlock_n_tokens"
-                                                        placeholder="min" />
+                                                        v-numeric-only placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
                                                     <b-form-input v-model="filterKey.max_next_unlock_n_tokens"
-                                                        placeholder="max" />
+                                                        v-numeric-only placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -613,12 +624,12 @@
                                         <div class="">
                                             <b-form-group label="Next Unlock %">
                                                 <div class="d-flex">
-                                                    <b-form-input v-model="filterKey.min_next_unlock_per"
+                                                    <b-form-input v-model="filterKey.min_next_unlock_per" v-numeric-only
                                                         placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
-                                                    <b-form-input v-model="filterKey.max_next_unlock_per"
+                                                    <b-form-input v-model="filterKey.max_next_unlock_per" v-numeric-only
                                                         placeholder="max" />
                                                 </div>
                                             </b-form-group>
@@ -639,12 +650,12 @@
                                             <b-form-group label="3 Months Unlock # of Tokens">
                                                 <div class="d-flex">
                                                     <b-form-input v-model="filterKey.min_3_months_unlock_n_tokens"
-                                                        placeholder="min" />
+                                                        v-numeric-only placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
                                                     <b-form-input v-model="filterKey.max_3_months_unlock_n_tokens"
-                                                        placeholder="max" />
+                                                        v-numeric-only placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -654,12 +665,12 @@
                                             <b-form-group label="3 Months Unlock %">
                                                 <div class="d-flex">
                                                     <b-form-input v-model="filterKey.min_3_months_unlock_per"
-                                                        placeholder="min" />
+                                                        v-numeric-only placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
                                                     <b-form-input v-model="filterKey.max_3_months_unlock_per"
-                                                        placeholder="max" />
+                                                        v-numeric-only placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -679,12 +690,12 @@
                                             <b-form-group label="6 Months Unlock # of Tokens">
                                                 <div class="d-flex">
                                                     <b-form-input v-model="filterKey.min_6_months_unlock_n_tokens"
-                                                        placeholder="min" />
+                                                        v-numeric-only placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
                                                     <b-form-input v-model="filterKey.max_6_months_unlock_n_tokens"
-                                                        placeholder="max" />
+                                                        v-numeric-only placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -694,12 +705,12 @@
                                             <b-form-group label="6 Months Unlock %">
                                                 <div class="d-flex">
                                                     <b-form-input v-model="filterKey.min_6_months_unlock_per"
-                                                        placeholder="min" />
+                                                        v-numeric-only placeholder="min" />
                                                     <span>
                                                         <feather-icon icon="ArrowRightIcon" size="16"
                                                             class="align-middle" style="margin:10px 6px 0 0px" /></span>
                                                     <b-form-input v-model="filterKey.max_6_months_unlock_per"
-                                                        placeholder="max" />
+                                                        v-numeric-only placeholder="max" />
                                                 </div>
                                             </b-form-group>
                                         </div>
@@ -805,16 +816,16 @@
                                         <div class="d-flex m-2 justify-content-center">
                                             <span class="mr-1">Social Score: </span>
                                             <span class="">
-                                                 {{ calculate_social_score(activeData) }}/10</span>
-                                         
+                                                {{ calculate_social_score(activeData) }}/10</span>
+
                                         </div>
                                     </b-col>
                                     <b-col md="6" xl="6">
                                         <div class="d-flex m-2 justify-content-center">
                                             <span class="mr-1">Total Supply %: </span>
                                             <span class="">
-                                                 {{ activeData.total_supply_percent}} %</span>
-                                         
+                                                {{ activeData.total_supply_percent}} %</span>
+
                                         </div>
                                     </b-col>
                                 </b-row>
@@ -1009,9 +1020,11 @@
         VBToggle,
         BCardText,
         BFormSelect,
-        BSpinner,BOverlay
+        BSpinner,
+        BOverlay
 
     } from 'bootstrap-vue'
+
     import Ripple from 'vue-ripple-directive'
     import axios from '@axios'
     import {
@@ -1023,7 +1036,7 @@
     import categoryData from './categories'
     import filterFields from './filterfields'
     import Trend from "vuetrend"
-    
+
     export default {
         components: {
             BTable,
@@ -1052,7 +1065,9 @@
             BCardText,
             BFormSelect,
             Trend,
-            BImg,BSpinner,BOverlay
+            BImg,
+            BSpinner,
+            BOverlay
 
         },
         data() {
@@ -1060,12 +1075,15 @@
                 stickyHeader: true,
                 true: false,
                 loaded: false,
+                loadedData: false,
                 fields: fieldsData,
                 items: [],
+                pricesWs: null,
+                coinsStr: '',
                 Cpagpage: 1,
                 sortKey: '',
                 sortBy: '',
-                isBusy:true,
+                isBusy: true,
                 params: {
                     filters: [],
                     filters2: "",
@@ -1126,6 +1144,7 @@
                     },
                 ],
                 activeData: {},
+                fagLoad: false,
 
             }
 
@@ -1134,35 +1153,43 @@
             'b-modal': VBModal,
             'b-toggle': VBToggle,
             Ripple,
+
         },
         methods: {
-            loadCoins() {
-                this.isBusy = true;
-                axios.post('api/get_coins?page=' + this.Cpagpage, this.params).then(res => {
-                    this.items = res.data;
-                })
+             loadCoins() {
                 this.$bvModal.hide('modal-filters');
+                this.isBusy = true;
+                this.loadedData = false;
+                 axios.post('api/get_coins?page=' + this.Cpagpage, this.params).then(res => {
+                    this.items = res.data;
+                    this.loadedData = true;
                 setTimeout(() => {
                     this.isBusy = false;
                 }, 1000);
+                })
+                
             },
             loadFag() {
                 this.isBusy = true;
+                this.fagLoad = true;
                 axios.post('api/get_fag').then(res => {
-                    this.fag = res;
-                    this.loaded = true;
-                    this.fag.data.fear_greed_history = JSON.parse(this.fag.data.fear_greed_history);
-                    let array = [];
-                    this.fag.data.fear_greed_history.forEach(element => {
-                        var d = new Date(parseInt(element.timestamp) * 1000);
-                        let date = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-                        array.unshift(date);
-                        this.chartOptions.xaxis.categories = array;
-                        this.series[0].data.unshift(parseInt(element.value))
+                    if (res.data) {
+                        this.fag = res;
+                        this.loaded = true;
+                        this.fag.data.fear_greed_history = JSON.parse(this.fag.data.fear_greed_history);
+                        let array = [];
+                        this.fag.data.fear_greed_history.forEach(element => {
+                            var d = new Date(parseInt(element.timestamp) * 1000);
+                            let date = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+                            array.unshift(date);
+                            this.chartOptions.xaxis.categories = array;
+                            this.series[0].data.unshift(parseInt(element.value))
 
-                    });
+                        });
+                    this.fagLoad = false;
 
-
+                    }
+                    
 
                 })
                 setTimeout(() => {
@@ -1208,6 +1235,7 @@
                 this.loadCoins();
             },
             filterCoins() {
+
                 this.isBusy = true;
                 this.params.filters = [];
                 let strArray = [];
@@ -1460,6 +1488,7 @@
                         .six_months_unlock_size + "%"
                     ]);
                 }
+
                 this.loadCoins();
 
             },
@@ -1543,7 +1572,7 @@
                 }
             },
             calculate_social_score(rowdata) {
-               let score = 0;
+                let score = 0;
                 let total_apps = 0;
                 total_apps = 0;
                 if (rowdata.twitter != null)
@@ -1674,6 +1703,28 @@
                 }
 
                 return score;
+            },
+            liveCoinFetch() {
+                if (this.pricesWs && this.pricesWs.readyState === WebSocket.OPEN) {
+                    this.pricesWs.close();
+                }
+                this.coinsStr = '';
+                this.items.data.forEach(element => {
+                    this.coinsStr += element.coin_id + ',';
+                });
+                this.pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=' + this.coinsStr)
+                let thisScope = this;
+                this.pricesWs.onmessage = function (msg) {
+                    let coinFetched = JSON.parse(msg.data);
+                    let objKeys = Object.keys(coinFetched);
+                    objKeys.forEach(element => {
+                        let index = thisScope.items.data.findIndex(x => x.coin_id === element)
+                        if (thisScope.items.data[index]) {
+                            thisScope.items.data[index].current_price = coinFetched[element];
+                        }
+                    });
+
+                }
             }
 
         },
@@ -1681,6 +1732,7 @@
             this.loadCoins();
             this.loadFag();
         },
+
         watch: {
             'Cpagpage': function (newVal, oldVal) {
                 if (oldVal && newVal) {
@@ -1688,11 +1740,18 @@
                 }
             },
             'params.filters2': function (newVal, oldVal) {
-                if (oldVal != newVal) {
+                if (oldVal != newVal && newVal.trim().length == 0 || newVal.trim().length >= 3) {
                     this.Cpagpage = 1;
                     this.loadCoins()
                 }
             },
+            'loadedData': function (n, o) {
+                if (this.loadedData == true) {
+
+                    this.liveCoinFetch();
+                }
+
+            }
         }
     }
 
@@ -1729,17 +1788,26 @@
         align-items: center;
         justify-content: center;
     }
+
     #overlay {
-        position: fixed; /* Sit on top of the page content */
-        display: none; /* Hidden by default */
-        width: 100%; /* Full width (cover the whole page) */
-        height: 100%; /* Full height (cover the whole page) */
+        position: fixed;
+        /* Sit on top of the page content */
+        display: none;
+        /* Hidden by default */
+        width: 100%;
+        /* Full width (cover the whole page) */
+        height: 100%;
+        /* Full height (cover the whole page) */
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0,0,0,0.5); /* Black background with opacity */
-        z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
-        cursor: pointer; /* Add a pointer on hover */
-      }
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Black background with opacity */
+        z-index: 2;
+        /* Specify a stack order in case you're using a different order for other elements */
+        cursor: pointer;
+        /* Add a pointer on hover */
+    }
+
 </style>
