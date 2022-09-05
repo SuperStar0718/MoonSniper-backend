@@ -1,116 +1,116 @@
 const data =[{
     key: 'market_cap_rank',
     label: '#',
-    stickyColumn: true,
+    stickyColumn: false,
     sortable: false,
 },
 {
     key: 'name',
     thStyle: {
-        width: '100px !important'
+        // "max-width": '100px !important'
     },
     tdStyle: {
-        width: '100px !important'
+        // "max-width": '100px !important'
     },
     thClass: 'nameWidth',
-    label: 'Coin',
-    stickyColumn: true,
+    label: 'Token',
+    stickyColumn: false,
 },
 {
     key: 'current_price',
     label: 'Price($)',
-    stickyColumn: true,
+    stickyColumn: false,
 },
 {
     key: 'market_cap',
-    label: 'Market Cap.($)',
-    stickyColumn: true,
+    label: 'MC',
+    stickyColumn: false,
 },
 {
     key: 'description',
-    label: 'Description',
-    stickyColumn: true,
+    label: 'Desc',
+    stickyColumn: false,
 },
 
 {
     key: 'coin_platform',
     label: 'Platform',
-    stickyColumn: true,
+    stickyColumn: false,
 },
 {
     key: 'total_volume',
-    label: 'Trading VOL.',
-    stickyColumn: true,
+    label: 'VOL.',
+    stickyColumn: false,
 },
 {
     key: 'high_24h',
-    label: 'High $ (24h)',
-    stickyColumn: true,
+    label: 'High $(24h)',
+    stickyColumn: false,
 },
 {
     key: 'low_24h',
-    label: 'Low $ (24h)',
-    stickyColumn: true,
+    label: 'Low $(24h)',
+    stickyColumn: false,
 },
 {
     key: 'price_change_percentage_24h',
-    label: 'Price Change % (24h)',
-    stickyColumn: true,
+    label: '24h %',
+    stickyColumn: false,
 },
 {
     key: 'ath',
     label: 'ATH($)',
-    stickyColumn: true,
+    stickyColumn: false,
 },
 {
     key: 'atl',
     label: 'ATL($)',
-    stickyColumn: true,
+    stickyColumn: false,
 },
 {
     key: 'roi_times',
     label: `ROI in X's`,
-    stickyColumn: true,
+    stickyColumn: false,
 },
 {
     key: 'roi_percentage',
     label: 'ROI %',
-    stickyColumn: true,
+    stickyColumn: false,
 },
 {
     key: 'total_supply_percent',
     label: 'Total Supply %',
-    stickyColumn: true,
+    stickyColumn: false,
 },
 {
     key: 'next_unlock_date',
     label: 'Next Unlock Date',
-    stickyColumn: true,
+    stickyColumn: false,
 },
 {
     key: 'next_unlock_status',
     label: 'Next Unlock Status',
-    stickyColumn: true,
+    stickyColumn: false,
 },
 {
     key: 'social_mentions_change',
     label: 'Social Mentions Change',
-    stickyColumn: true,
+    stickyColumn: false,
 },
 {
     key: 'social_engagement_change',
     label: 'Social Engagement Change',
-    stickyColumn: true,
+    stickyColumn: false,
 },
 {
     key: 'average_sentiment',
     label: 'Average Sentiment',
-    stickyColumn: true,
+    stickyColumn: false,
 },
 {
     key: 'average_sentiment_change',
     label: 'Average Sentiment Change',
-    stickyColumn: true,
+    stickyColumn: false,
 }
 ]
 export default data;
