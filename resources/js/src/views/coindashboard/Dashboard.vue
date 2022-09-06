@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="dashboard">
         <b-card no-body>
             <b-overlay :show="fagLoad" rounded="sm">
                 <b-card-body class="pt-1">
@@ -162,30 +162,39 @@
                 <b-col cols="4" md="4" xl="2">
                     <div class="d-flex jusctify-content-between">
                         <div>
-                            <feather-icon v-if="locked" @click="lockedFilter" icon="LockIcon" size="28" class="text-black cursor-pointer"
-                            style="margin:6px 8px 6px 0px; " />
-                            <feather-icon v-if="!locked" @click="lockedFilter" icon="UnlockIcon" size="28" class="text-black cursor-pointer"
-                            style="margin:6px 8px 6px 0px; " />
+                            <b-button style="padding:5px" v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                                variant="outline-primary" class="btn-icon mx-1">
+                                <feather-icon v-if="locked" @click="lockedFilter" icon="LockIcon" size="20"
+                                    class="text-black cursor-pointer" style=" " />
+                                <feather-icon v-if="!locked" @click="lockedFilter" icon="UnlockIcon" size="20"
+                                    class="text-black cursor-pointer" style=" " />
+                            </b-button>
                         </div>
                         <div v-b-modal.modal-filters variant="outline-primary">
-                            <feather-icon icon="FilterIcon" size="28" class="text-black cursor-pointer"
-                                style="margin:6px 8px 6px 0px; " />
+                            <b-button style="padding:5px" v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                                variant="outline-primary" class="btn-icon mx-1">
+                                <feather-icon icon="FilterIcon" size="20" class="text-black cursor-pointer" style=" " />
+                            </b-button>
                         </div>
-                        <div @click="clearFilters">
-                            <feather-icon icon="RefreshCcwIcon" size="28" class="text-black cursor-pointer"
-                                style="margin:6px 0px 6px 8px" />
+                        <div @click="clearFilters(true)">
+                            <b-button style="padding:5px" v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                                variant="outline-primary" class="btn-icon mx-1">
+                                <feather-icon icon="RefreshCcwIcon" size="20" class="text-black cursor-pointer"
+                                    style="" />
+                            </b-button>
+
                         </div>
-                        
+
                     </div>
                 </b-col>
             </b-row>
         </div>
         <div class="body-content-overlay" />
-        <div id="">
+        <div id="ctable">
             <b-overlay :show="isBusy" rounded="sm">
                 <b-table sticky-header :no-border-collapse="true" tbody-tr-class="cursor-pointer" show-empty
                     @row-clicked="detailsModel($event)" style="white-space: nowrap;" responsive :items="items.data"
-                    :fields="fields">
+                    :fields="visibleFields">
                     <template #empty="scope">
                         <h4>{{ scope.emptyText }}</h4>
                     </template>
@@ -230,6 +239,106 @@
                             </div>
                         </div>
                     </template>
+                    <template #cell(seed_price)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' &&data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(roi_seed)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' &&data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(total_locked)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(next_unlock_date)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(next_unlock_status)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(next_unlock_number_of_tokens)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(next_unlock_percent_of_tokens)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(next_unlock_size)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(first_vc_unlock)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(end_vc_unlock)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(three_months_unlock_number_of_tokens)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(three_months_unlock_percent_of_tokens)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(three_months_unlock_size)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+
+
+
+                    <template #cell(six_months_unlock_number_of_tokens)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(six_months_unlock_percent_of_tokens)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+                    <template #cell(six_months_unlock_size)="data">
+                        <div style="text-align: center;" class="d-flex justify-content-start"
+                            :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' && data.item.market_cap_rank >5}">
+                            {{ data.value }}
+                        </div>
+                    </template>
+
                     <template #cell(current_price)="data">
                         <div class="" style="">{{data.value}}$</div>
                     </template>
@@ -332,13 +441,32 @@
             <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line" :options="chartOptions"
                 :series="series"></vue-apex-charts>
         </b-modal>
-        <b-modal id="modal-filters" :hide-footer="true" size="lg" title="Filters" >
-           
+        <b-modal id="modal-filters" :hide-footer="true" size="lg" title="Filters">
             <template>
-               
+                <b-row>
+                    <b-col>
+                        <b-form-select v-model="selectedPreset">
+                            <b-form-select-option :value="null" selected>Select A Preset</b-form-select-option>
+                            <b-form-select-option v-for="(preset,index) in presetFilters" :key="index"
+                                :value="preset.id">
+                                {{ preset.preset_name }}
+                            </b-form-select-option>
+                        </b-form-select>
+                    </b-col>
+                    <b-col class="m-auto">
+                        <b-button v-ripple.400="'rgba(255, 255, 255, 0.15)'" v-if="selectedPreset" @click="deletePreset"
+                            variant="warning" class="btn-icon">
+                            <feather-icon icon="Trash2Icon" />
+                        </b-button>
+                        <b-button size="md" v-b-modal.modal-preset-create v-ripple.400="'rgba(113, 12, 240, 0.15)'"
+                            variant="outline-primary" pill>Create New Preset
+                        </b-button>
+
+                    </b-col>
+                </b-row>
                 <div class="accordion" role="tablist">
                     <app-collapse accordion>
-                        <app-collapse-item isVisible="true" title="Base Filters">
+                        <app-collapse-item :isVisible="true" title="Base Filters">
                             <b-card class="mb-1">
                                 <b-card-body>
                                     <b-row>
@@ -346,31 +474,31 @@
                                             <div class="">
                                                 <b-form-group label="Market Cap">
                                                     <div class="d-flex">
-                                                        <b-form-input v-numeric-only v-model="filterKey.mc_min"
+                                                        <b-form-input v-numeric-only v-model="filterKey.min_market_cap"
                                                             placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-numeric-only v-model="filterKey.mc_max"
+                                                        <b-form-input v-numeric-only v-model="filterKey.max_market_cap"
                                                             placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
-                                            
+
                                         </b-col>
                                         <b-col md="6" xl="6">
                                             <div class="">
                                                 <b-form-group label="Token Price">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_token_price" v-numeric-only
-                                                            placeholder="min" />
+                                                        <b-form-input v-model="filterKey.min_current_price"
+                                                            v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_token_price" v-numeric-only
-                                                            placeholder="max" />
+                                                        <b-form-input v-model="filterKey.max_current_price"
+                                                            v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
@@ -427,13 +555,13 @@
                                             <div class="">
                                                 <b-form-group label="Trade Volume">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_trade_volume"
+                                                        <b-form-input v-model="filterKey.min_trading_volume"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_trade_volume"
+                                                        <b-form-input v-model="filterKey.max_trading_volume"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -443,14 +571,14 @@
                                             <div class="">
                                                 <b-form-group label="ROI %">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_roi_per" v-numeric-only
-                                                            placeholder="min" />
+                                                        <b-form-input v-model="filterKey.min_roi_percentage"
+                                                            v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_roi_per" v-numeric-only
-                                                            placeholder="max" />
+                                                        <b-form-input v-model="filterKey.max_roi_percentage"
+                                                            v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
@@ -459,13 +587,13 @@
                                             <div class="">
                                                 <b-form-group label="ROI in X's">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_times_roi" v-numeric-only
+                                                        <b-form-input v-model="filterKey.min_roi_times" v-numeric-only
                                                             placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_times_roi" v-numeric-only
+                                                        <b-form-input v-model="filterKey.max_roi_times" v-numeric-only
                                                             placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -477,32 +605,34 @@
                                                     label-for="price_change_percentage_24h">
                                                     <div class="d-flex">
                                                         <b-form-input name="price_change_percentage_24h" v-numeric-only
-                                                            v-model="filterKey.day_min_change" placeholder="min" />
+                                                            v-model="filterKey.min_price_change_percentage_24h"
+                                                            placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.day_max_change" v-numeric-only
-                                                            placeholder="max" />
+                                                        <b-form-input
+                                                            v-model="filterKey.max_price_change_percentage_24h"
+                                                            v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
                                         </b-col>
-                                       
-                                      
-                                      
-                                     
+
+
+
+
                                         <b-col md="6" xl="6">
                                             <div class="">
                                                 <b-form-group label="Days in Market">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_days_in_market"
+                                                        <b-form-input v-model="filterKey.min_genesis_date"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_days_in_market"
+                                                        <b-form-input v-model="filterKey.max_genesis_date"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -512,13 +642,13 @@
                                             <div class="">
                                                 <b-form-group label="Total Supply (%)">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_total_supply_per"
+                                                        <b-form-input v-model="filterKey.min_total_supply_percent"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_total_supply_per"
+                                                        <b-form-input v-model="filterKey.max_total_supply_percent"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -544,13 +674,13 @@
                                             <div class="">
                                                 <b-form-group label="Seed ROI">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_seed_roi" v-numeric-only
+                                                        <b-form-input v-model="filterKey.min_roi_seed" v-numeric-only
                                                             placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_seed_roi" v-numeric-only
+                                                        <b-form-input v-model="filterKey.max_roi_seed" v-numeric-only
                                                             placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -560,13 +690,13 @@
                                             <div class="">
                                                 <b-form-group label="Platform" label-for="">
                                                     <div class="d-flex">
-                                                        <b-form-select id="" v-model="filterKey.platform"
+                                                        <b-form-select id="" v-model="filterKey.coin_platform"
                                                             :options="platforms" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
                                         </b-col>
-                                      
+
                                         <b-col md="6" xl="6">
                                             <div class="">
                                                 <b-form-group label="Keywords" label-for="">
@@ -581,7 +711,7 @@
                                             <div class="">
                                                 <b-form-group label="Category" label-for="">
                                                     <div class="d-flex">
-                                                        <b-form-select id="" v-model="filterKey.category"
+                                                        <b-form-select id="" v-model="filterKey.coin_category"
                                                             :options="categories" />
                                                     </div>
                                                 </b-form-group>
@@ -599,13 +729,13 @@
                                             <div class="">
                                                 <b-form-group label="Sentiment Change %">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_social_sentiment"
+                                                        <b-form-input v-model="filterKey.min_average_sentiment_change"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_social_sentiment"
+                                                        <b-form-input v-model="filterKey.max_average_sentiment_change"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -647,13 +777,13 @@
                                             <div class="">
                                                 <b-form-group label="Average Sentiment (1-5)">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_average_sentiment_1_5"
+                                                        <b-form-input v-model="filterKey.min_average_sentiment"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_average_sentiment_1_5"
+                                                        <b-form-input v-model="filterKey.max_average_sentiment"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -697,13 +827,15 @@
                                             <div class="">
                                                 <b-form-group label="Next Unlock # of Tokens">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_next_unlock_n_tokens"
+                                                        <b-form-input
+                                                            v-model="filterKey.min_next_unlock_number_of_tokens"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_next_unlock_n_tokens"
+                                                        <b-form-input
+                                                            v-model="filterKey.max_next_unlock_number_of_tokens"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -713,13 +845,15 @@
                                             <div class="">
                                                 <b-form-group label="Next Unlock %">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_next_unlock_per"
+                                                        <b-form-input
+                                                            v-model="filterKey.min_next_unlock_percent_of_tokens"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_next_unlock_per"
+                                                        <b-form-input
+                                                            v-model="filterKey.max_next_unlock_percent_of_tokens"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -739,13 +873,15 @@
                                             <div class="">
                                                 <b-form-group label="3 Months Unlock # of Tokens">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_3_months_unlock_n_tokens"
+                                                        <b-form-input
+                                                            v-model="filterKey.min_three_months_unlock_number_of_tokens"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_3_months_unlock_n_tokens"
+                                                        <b-form-input
+                                                            v-model="filterKey.max_three_months_unlock_number_of_tokens"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -755,13 +891,15 @@
                                             <div class="">
                                                 <b-form-group label="3 Months Unlock %">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_3_months_unlock_per"
+                                                        <b-form-input
+                                                            v-model="filterKey.min_three_months_unlock_percent_of_tokens"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_3_months_unlock_per"
+                                                        <b-form-input
+                                                            v-model="filterKey.max_three_months_unlock_percent_of_tokens"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -782,13 +920,15 @@
                                             <div class="">
                                                 <b-form-group label="6 Months Unlock # of Tokens">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_6_months_unlock_n_tokens"
+                                                        <b-form-input
+                                                            v-model="filterKey.min_six_months_unlock_number_of_tokens"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_6_months_unlock_n_tokens"
+                                                        <b-form-input
+                                                            v-model="filterKey.max_six_months_unlock_number_of_tokens"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -798,13 +938,15 @@
                                             <div class="">
                                                 <b-form-group label="6 Months Unlock %">
                                                     <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.min_6_months_unlock_per"
+                                                        <b-form-input
+                                                            v-model="filterKey.min_six_months_unlock_percent_of_tokens"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <b-form-input v-model="filterKey.max_6_months_unlock_per"
+                                                        <b-form-input
+                                                            v-model="filterKey.max_six_months_unlock_percent_of_tokens"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -829,8 +971,11 @@
                 </div>
             </template>
             <div class="float-right p-1">
-                <b-button @click="clearFilters"   v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary" pill>Clear all</b-button>
-                <b-button @click="filterCoins"   v-ripple.400="'rgba(113, 8, 150, 0.15)'" variant="outline-primary" pill>Apply filters</b-button>
+                <b-button @click="clearFilters(true)" v-ripple.400="'rgba(113, 12, 240, 0.15)'"
+                    variant="outline-primary" pill>Clear all</b-button>
+                <b-button @click="filterCoins(true)" v-ripple.400="'rgba(113, 8, 150, 0.15)'" variant="outline-primary"
+                    pill>
+                    Apply filters</b-button>
             </div>
         </b-modal>
         <b-modal id="modal-details" :hide-footer="true" v-if="activeData" centered size="lg">
@@ -861,9 +1006,9 @@
                                 <div v-if="selectedContract" class="d-flex mt-1">
                                     <div class="text-nowrap text-truncate" style="width:150px">{{selectedContract}}
                                     </div>
-                                    <b-button  size="sm" v-clipboard:copy="selectedContract"
-                                        v-clipboard:success="onCopy" v-clipboard:error="onError"
-                                        v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary" pill>Copy!
+                                    <b-button size="sm" v-clipboard:copy="selectedContract" v-clipboard:success="onCopy"
+                                        v-clipboard:error="onError" v-ripple.400="'rgba(113, 12, 240, 0.15)'"
+                                        variant="outline-primary" pill>Copy!
                                     </b-button>
 
                                 </div>
@@ -873,7 +1018,7 @@
 
                 </div>
                 <app-collapse accordion>
-                    <app-collapse-item isVisible="true" visible title="Market Data" class="open">
+                    <app-collapse-item :isVisible="true" visible title="Market Data" class="open">
                         <b-card no-body class="mb-1">
                             <b-card-body>
                                 <b-row>
@@ -907,19 +1052,19 @@
                     <app-collapse-item title="Social Data">
                         <b-card no-body class="mb-1">
                             <b-card-body>
-                              
+
                                 <b-row>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.website && activeData.website != '' ">
-                                        <a :href="activeData.website" target="_blank" class="d-block"> 
-                                            <b-img rounded :src="'/images/static/website.png'" fluid  class="w-50"
+                                        <a :href="activeData.website" target="_blank" class="d-block">
+                                            <b-img rounded :src="'/images/static/website.png'" fluid class="w-50"
                                                 alt="Responsive image" />
                                         </a>
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.twitter && activeData.twitter != '' ">
-                                        <a :href="activeData.twitter" target="_blank" class="d-block"> 
-                                            <b-img rounded :src="'/images/static/twitter.png'" fluid  class="w-50"
+                                        <a :href="activeData.twitter" target="_blank" class="d-block">
+                                            <b-img rounded :src="'/images/static/twitter.png'" fluid class="w-50"
                                                 alt="Responsive image" />
                                         </a>
                                         <span class="text-center" style="font-size:12px; font-weight:500"
@@ -928,8 +1073,8 @@
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.telegram && activeData.telegram != '' ">
-                                        <a :href="activeData.telegram" target="_blank" class="d-block"> 
-                                            <b-img rounded :src="'/images/static/telegram.png'" fluid  class="w-50"
+                                        <a :href="activeData.telegram" target="_blank" class="d-block">
+                                            <b-img rounded :src="'/images/static/telegram.png'" fluid class="w-50"
                                                 alt="Responsive image" />
 
                                         </a>
@@ -939,8 +1084,8 @@
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.discord && activeData.discord != '' ">
-                                        <a :href="activeData.discord" target="_blank" class="d-block"> 
-                                            <b-img rounded :src="'/images/static/discord.png'" fluid  class="w-50"
+                                        <a :href="activeData.discord" target="_blank" class="d-block">
+                                            <b-img rounded :src="'/images/static/discord.png'" fluid class="w-50"
                                                 alt="Responsive image" />
 
                                         </a>
@@ -950,10 +1095,10 @@
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.medium && activeData.medium != '' ">
-                                        <a :href="activeData.medium" target="_blank" class="d-block"> 
-                                            <b-img rounded :src="'/images/static/medium.png'" fluid  class="w-50"
+                                        <a :href="activeData.medium" target="_blank" class="d-block">
+                                            <b-img rounded :src="'/images/static/medium.png'" fluid class="w-50"
                                                 alt="Responsive image" />
-                                              
+
                                         </a>
                                         <span class="text-center" style="font-size:12px; font-weight:500"
                                             v-if="activeData.medium_followers">{{kFormatter(activeData.medium_followers)}}
@@ -961,8 +1106,8 @@
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.reddit && activeData.reddit != '' ">
-                                        <a :href="activeData.reddit" target="_blank" class="d-block"> 
-                                            <b-img rounded :src="'/images/static/reddit.png'" fluid  class="w-50"
+                                        <a :href="activeData.reddit" target="_blank" class="d-block">
+                                            <b-img rounded :src="'/images/static/reddit.png'" fluid class="w-50"
                                                 alt="Responsive image" />
 
                                         </a>
@@ -972,97 +1117,104 @@
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.whitepaper && activeData.whitepaper != '' ">
-                                        <a :href="activeData.whitepaper" target="_blank" class="d-block"> 
-                                            <b-img rounded :src="'/images/static/whitepaper.png'" fluid  class="w-50"
+                                        <a :href="activeData.whitepaper" target="_blank" class="d-block">
+                                            <b-img rounded :src="'/images/static/whitepaper.png'" fluid class="w-50"
                                                 alt="Responsive image" />
 
                                         </a>
                                         <span class="text-center" style="font-size:12px; font-weight:500"
-                                        v-if="activeData.whitepaper_followers">{{kFormatter(activeData.whitepaper_followers)}}
-                                    </span>
+                                            v-if="activeData.whitepaper_followers">{{kFormatter(activeData.whitepaper_followers)}}
+                                        </span>
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.github && activeData.github != '' ">
-                                        <a :href="activeData.github" target="_blank" class="d-block"> 
-                                            <b-img rounded :src="'/images/static/github.png'" fluid  class="w-50"
+                                        <a :href="activeData.github" target="_blank" class="d-block">
+                                            <b-img rounded :src="'/images/static/github.png'" fluid class="w-50"
                                                 alt="Responsive image" />
                                         </a>
                                         <span class="text-center" style="font-size:12px; font-weight:500"
-                                        v-if="activeData.github_followers">{{kFormatter(activeData.github_followers)}}
-                                    </span>
+                                            v-if="activeData.github_followers">{{kFormatter(activeData.github_followers)}}
+                                        </span>
                                     </b-col>
                                 </b-row>
                                 <b-row class="text-center mt-1 mb-1">
-                                    <b-col  sm="3" md="2" v-if="activeData">
-                                        <div class="border border-2 rounded border-dark" >
-                                            <div class="soicalLable" >Social Score: </div>
+                                    <b-col sm="3" md="2" v-if="activeData">
+                                        <div class="border border-2 rounded border-dark">
+                                            <div class="soicalLable">Social Score: </div>
                                             <div class="m-0 p-0 border  border border-dark"></div>
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" >
+                                            <div style="margin: 13px 0 16px 0; font-size: 14px;">
                                                 {{ calculate_social_score(activeData) }}/10</div>
                                         </div>
                                     </b-col>
-                                    <b-col  sm="3" md="2" v-if="activeData.total_supply_percent">
-                                        <div class="border border-2 rounded border-dark" >
-                                            <div class="soicalLable" >Total Supply %: </div>
+                                    <b-col sm="3" md="2" v-if="activeData.total_supply_percent">
+                                        <div class="border border-2 rounded border-dark">
+                                            <div class="soicalLable">Total Supply %: </div>
                                             <div class="m-0 p-0 border  border border-dark"></div>
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" >
+                                            <div style="margin: 13px 0 16px 0; font-size: 14px;">
                                                 {{ activeData.total_supply_percent}} %</div>
                                         </div>
                                     </b-col>
-                                     <b-col  sm="3" md="2" v-if="activeData.social_mentions">
-                                        <div class="border border-2 rounded border-dark" >
-                                            <div class="soicalLable" >Social Mentions: </div>
+                                    <b-col sm="3" md="2" v-if="activeData.social_mentions">
+                                        <div class="border border-2 rounded border-dark">
+                                            <div class="soicalLable">Social Mentions: </div>
                                             <div class="m-0 p-0 border  border border-dark"></div>
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success" v-if="activeData.social_mentions>=0">
+                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success"
+                                                v-if="activeData.social_mentions>=0">
                                                 +{{activeData.social_mentions}} %</div>
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger" v-else> {{activeData.social_mentions}} %</div>
+                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger"
+                                                v-else> {{activeData.social_mentions}} %</div>
                                         </div>
                                     </b-col>
-                                    <b-col  sm="3" md="2" v-if="activeData.average_sentiment">
-                                        <div class="border border-2 rounded border-dark" >
-                                            <div class="soicalLable" >Average Sentiment: </div>
+                                    <b-col sm="3" md="2" v-if="activeData.average_sentiment">
+                                        <div class="border border-2 rounded border-dark">
+                                            <div class="soicalLable">Average Sentiment: </div>
                                             <div class="m-0 p-0 border  border border-dark"></div>
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-success" >
+                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-success">
                                                 {{activeData.average_sentiment}}</div>
                                         </div>
                                     </b-col>
-                                    <b-col  sm="3" md="2" v-if="activeData.social_engagement">
-                                        <div class="border border-2 rounded border-dark" >
-                                            <div class="soicalLable" >Social Engagement:  </div>
+                                    <b-col sm="3" md="2" v-if="activeData.social_engagement">
+                                        <div class="border border-2 rounded border-dark">
+                                            <div class="soicalLable">Social Engagement: </div>
                                             <div class="m-0 p-0 border  border border-dark"></div>
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success" v-if="activeData.social_mentions>=0">
+                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success"
+                                                v-if="activeData.social_mentions>=0">
                                                 +{{activeData.social_engagement}} %</div>
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger" v-else> {{activeData.social_engagement}} %</div>
+                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger"
+                                                v-else> {{activeData.social_engagement}} %</div>
                                         </div>
                                     </b-col>
-                                    <b-col  sm="3" md="2" v-if="activeData.average_sentiment_change">
-                                        <div class="border border-3 rounded border-dark" >
-                                            <div class="soicalLable" >Social Engagement:  </div>
+                                    <b-col sm="3" md="2" v-if="activeData.average_sentiment_change">
+                                        <div class="border border-3 rounded border-dark">
+                                            <div class="soicalLable">Social Engagement: </div>
                                             <div class="m-0 p-0 border  border border-dark"></div>
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success" v-if="roundData(activeData.average_sentiment_change)>=0">
+                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success"
+                                                v-if="roundData(activeData.average_sentiment_change)>=0">
                                                 +{{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                 %</div>
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger" v-else>   {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
+                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger"
+                                                v-else>
+                                                {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                 %</div>
                                         </div>
                                     </b-col>
-                                   
+
                                 </b-row>
                             </b-card-body>
                         </b-card>
                     </app-collapse-item>
                     <app-collapse-item title="Unlocking">
                         <b-card no-body class="mb-1">
-                                <b-card-body>
-                                    <b-row class="">
-                                        <b-col md="12" xl="12" v-if="activeData.next_unlock_date">
-                                            <div class="d-flex">
-                                                <span class="mr-1">Next Unlock Date: </span>
-                                                <span style="font-weight:600"
-                                                    class="">{{dateFormat(activeData.next_unlock_date)}}</span>
-                                            </div>
-                                        </b-col>
-                                        <!-- <b-col md="12" xl="12" v-if="activeData.next_unlock_date_text">
+                            <b-card-body>
+                                <b-row class="">
+                                    <b-col md="12" xl="12" v-if="activeData.next_unlock_date">
+                                        <div class="d-flex">
+                                            <span class="mr-1">Next Unlock Date: </span>
+                                            <span style="font-weight:600" class=""
+                                                :class="{'blurry-text' :userData.currentPlan =='basic' && activeData.market_cap_rank < 1 ||userData.currentPlan =='basic' && activeData.market_cap_rank >5}">{{dateFormat(activeData.next_unlock_date)}}</span>
+                                        </div>
+                                    </b-col>
+                                    <!-- <b-col md="12" xl="12" v-if="activeData.next_unlock_date_text">
                                             <div class="d-flex m-2 justify-content-center">
                                                 <span class="mr-1">Next Unlock Date Text: </span>
                                                 <span class="">{{activeData.next_unlock_date_text}}</span>
@@ -1093,7 +1245,7 @@
                                                 <span class=""> {{activeData.next_unlock_Status}}</span>
                                             </div>
                                         </b-col> -->
-                                    </b-row>
+                                </b-row>
                             </b-card-body>
                         </b-card>
                     </app-collapse-item>
@@ -1108,7 +1260,24 @@
                 </app-collapse>
             </template>
         </b-modal>
-       
+        <b-modal id="modal-preset-create" :hide-footer="true" v-if="activeData" centered size="md"
+            title="Filter Preset Name:">
+            <template>
+                <div class="m-3">
+                    <b-row>
+                        <b-col cols="8">
+                            <b-form-input v-model="presetName" />
+                        </b-col>
+                        <b-col>
+                            <b-button size="md" @click="createPresetFilter" v-ripple.400="'rgba(11, 12, 240, 0.15)'"
+                                variant="outline-primary" pill>Create
+                            </b-button>
+                        </b-col>
+                    </b-row>
+                </div>
+            </template>
+        </b-modal>
+
     </div>
 </template>
 
@@ -1161,6 +1330,9 @@
     import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
     import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
     import VueSlider from 'vue-slider-component'
+    import {
+        getUserData
+    } from '@/auth/utils'
     export default {
         components: {
             BTable,
@@ -1213,12 +1385,13 @@
                 sortKey: '',
                 sortBy: '',
                 isBusy: true,
-                locked:false,
+                locked: false,
                 value_2: [0, 50],
                 params: {
                     filters: [],
                     filters2: "",
-                    sort: ["market_cap", "desc"]
+                    sort: ["market_cap", "desc"],
+                    api_mode: 1,
                 },
                 fag: {
                     data: {
@@ -1277,6 +1450,10 @@
                 ],
                 activeData: {},
                 fagLoad: false,
+                userData: null,
+                presetName: null,
+                presetFilters: [],
+                selectedPreset: null,
 
             }
 
@@ -1290,7 +1467,6 @@
         methods: {
             loadCoins() {
                 this.$bvModal.hide('modal-filters');
-                console.log(JSON.stringify(this.params));
                 this.isBusy = true;
                 this.loadedData = false;
                 axios.post('api/get_coins?page=' + this.Cpagpage, JSON.stringify(this.params)).then(res => {
@@ -1323,6 +1499,21 @@
 
                         });
                         this.fagLoad = false;
+
+                    }
+
+
+                })
+                setTimeout(() => {
+                    this.isBusy = false;
+                }, 1000);
+            },
+            loadPresetFilters() {
+                this.isBusy = true;
+                this.fagLoad = true;
+                axios.post('api/get_preset_filters').then(res => {
+                    if (res) {
+                        this.presetFilters = res.data;
 
                     }
 
@@ -1370,31 +1561,35 @@
 
                 this.loadCoins();
             },
-            filterCoins() {
+            filterCoins(refresh_flag) {
 
                 this.isBusy = true;
                 this.params.filters = [];
                 let strArray = [];
-                if (this.filterKey.mc_min) {
-                    this.params.filters.push(["market_cap", ">=", this.filterKey.mc_min.replaceAll(",", "")]);
+                if (this.filterKey.min_market_cap) {
+                    this.params.filters.push(["market_cap", ">=", this.filterKey.min_market_cap.replaceAll(",", "")]);
                 }
-                if (this.filterKey.mc_max) {
-                    this.params.filters.push(["market_cap", "<=", this.filterKey.mc_max.replaceAll(",", "")]);
+                if (this.filterKey.max_market_cap) {
+                    this.params.filters.push(["market_cap", "<=", this.filterKey.max_market_cap.replaceAll(",", "")]);
                 }
-                if (this.filterKey.day_min_change) {
-                    this.params.filters.push(["price_change_percentage_24h", ">=", this.filterKey.day_min_change]);
+                if (this.filterKey.min_price_change_percentage_24h) {
+                    this.params.filters.push(["price_change_percentage_24h", ">=", this.filterKey
+                        .min_price_change_percentage_24h
+                    ]);
                 }
-                if (this.filterKey.day_max_change) {
-                    this.params.filters.push(["price_change_percentage_24h", "<=", this.filterKey.day_max_change]);
+                if (this.filterKey.max_price_change_percentage_24h) {
+                    this.params.filters.push(["price_change_percentage_24h", "<=", this.filterKey
+                        .max_price_change_percentage_24h
+                    ]);
                 }
-                if (this.filterKey.platform && this.filterKey.platform != '') {
+                if (this.filterKey.coin_platform && this.filterKey.coin_platform != '') {
                     this.params.filters.push(["coin_platform", "like", "%" + this.filterKey.platform + "%"]);
                 }
-                if (this.filterKey.min_token_price) {
-                    this.params.filters.push(["current_price", ">=", this.filterKey.min_token_price]);
+                if (this.filterKey.min_current_price) {
+                    this.params.filters.push(["current_price", ">=", this.filterKey.min_current_price]);
                 }
-                if (this.filterKey.max_token_price) {
-                    this.params.filters.push(["current_price", "<=", this.filterKey.max_token_price]);
+                if (this.filterKey.max_current_price) {
+                    this.params.filters.push(["current_price", "<=", this.filterKey.max_current_price]);
                 }
                 if (this.filterKey.min_circulating_supply) {
                     this.params.filters.push(["circulating_supply", ">=", this.filterKey.min_circulating_supply]);
@@ -1402,8 +1597,8 @@
                 if (this.filterKey.max_circulating_supply) {
                     this.params.filters.push(["circulating_supply", "<=", this.filterKey.max_circulating_supply]);
                 }
-                if (this.filterKey.category && this.filterKey.category != '') {
-                    this.params.filters.push(["coin_category", "like", "%" + this.filterKey.category + "%"]);
+                if (this.filterKey.coin_category && this.filterKey.coin_category != '') {
+                    this.params.filters.push(["coin_category", "like", "%" + this.filterKey.coin_category + "%"]);
                 }
                 if (this.filterKey.max_market_cap_rank) {
                     this.params.filters.push(["market_cap_rank", "<=", this.filterKey.max_market_cap_rank]);
@@ -1420,43 +1615,43 @@
                 if (this.filterKey.keywords) {
                     this.params.filters.push(["coin_description", "like", "%'" + this.filterKey.keywords + "'%"]);
                 }
-                if (this.filterKey.min_trade_volume) {
-                    this.params.filters.push(["trading_volume", ">=", this.filterKey.min_trade_volume]);
+                if (this.filterKey.min_trading_volume) {
+                    this.params.filters.push(["trading_volume", ">=", this.filterKey.min_trading_volume]);
                 }
-                if (this.filterKey.max_trade_volume) {
-                    this.params.filters.push(["trading_volume", "<=", this.filterKey.max_trade_volume]);
+                if (this.filterKey.max_trading_volume) {
+                    this.params.filters.push(["trading_volume", "<=", this.filterKey.max_trading_volume]);
                 }
 
-                if (this.filterKey.min_roi_per) {
-                    this.params.filters.push(["roi_percentage", ">=", this.filterKey.min_roi_per]);
+                if (this.filterKey.min_roi_percentage) {
+                    this.params.filters.push(["roi_percentage", ">=", this.filterKey.min_roi_percentage]);
                 }
-                if (this.filterKey.max_roi_per) {
-                    this.params.filters.push(["roi_percentage", "<=", this.filterKey.max_roi_per]);
+                if (this.filterKey.max_roi_percentage) {
+                    this.params.filters.push(["roi_percentage", "<=", this.filterKey.max_roi_percentage]);
                 }
-                if (this.filterKey.min_times_roi) {
-                    this.params.filters.push(["roi_times", ">=", this.filterKey.min_times_roi]);
+                if (this.filterKey.min_roi_times) {
+                    this.params.filters.push(["roi_times", ">=", this.filterKey.min_roi_times]);
                 }
-                if (this.filterKey.max_times_roi) {
-                    this.params.filters.push(["roi_times", "<=", this.filterKey.max_times_roi]);
+                if (this.filterKey.max_roi_times) {
+                    this.params.filters.push(["roi_times", "<=", this.filterKey.max_roi_times]);
                 }
-                if (this.filterKey.min_days_in_market) {
+                if (this.filterKey.min_genesis_date) {
                     var d = new Date();
-                    d.setDate(d.getDate() - parseInt(this.filterKey.min_days_in_market));
+                    d.setDate(d.getDate() - parseInt(this.filterKey.min_genesis_date));
 
                     this.params.filters.push(["genesis_date", ">=", d.toISOString().split("T")[0]]);
                 }
-                if (this.filterKey.max_days_in_market) {
+                if (this.filterKey.max_genesis_date) {
                     var d = new Date();
-                    d.setDate(d.getDate() - parseInt(this.filterKey.max_days_in_market));
+                    d.setDate(d.getDate() - parseInt(this.filterKey.max_genesis_date));
                     this.params.filters.push(["genesis_date", "<=", d.toISOString().split("T")[0]]);
                 }
 
-                if (this.filterKey.min_total_supply_per) {
-                    this.params.filters.push(["total_supply_percent", ">=", this.filterKey.min_total_supply_per]);
+                if (this.filterKey.min_total_supply_percent) {
+                    this.params.filters.push(["total_supply_percent", ">=", this.filterKey.min_total_supply_percent]);
                 }
 
-                if (this.filterKey.max_total_supply_per) {
-                    this.params.filters.push(["total_supply_percent", "<=", this.filterKey.max_total_supply_per]);
+                if (this.filterKey.max_total_supply_percent) {
+                    this.params.filters.push(["total_supply_percent", "<=", this.filterKey.max_total_supply_percent]);
                 }
                 if (this.filterKey.min_seed_price) {
                     this.params.filters.push(["seed_price", ">=", this.filterKey.min_seed_price]);
@@ -1465,27 +1660,27 @@
                 if (this.filterKey.max_seed_price) {
                     this.params.filters.push(["seed_price", "<=", this.filterKey.max_seed_price]);
                 }
-                if (this.filterKey.min_seed_roi) {
-                    this.params.filters.push(["roi_seed", ">=", this.filterKey.min_seed_roi]);
+                if (this.filterKey.min_roi_seed) {
+                    this.params.filters.push(["roi_seed", ">=", this.filterKey.min_roi_seed]);
                 }
 
-                if (this.filterKey.max_seed_roi) {
-                    this.params.filters.push(["roi_seed", "<=", this.filterKey.max_seed_roi]);
+                if (this.filterKey.max_roi_seed) {
+                    this.params.filters.push(["roi_seed", "<=", this.filterKey.max_roi_seed]);
                 }
 
                 //end base filters
 
                 //start social sentiments 
 
-                if (this.filterKey.min_social_sentiment) {
+                if (this.filterKey.min_average_sentiment_change) {
                     this.params.filters.push(["average_sentiment_change", ">=", this.filterKey
-                        .min_social_sentiment
+                        .min_average_sentiment_change
                     ]);
                 }
 
-                if (this.filterKey.max_social_sentiment) {
+                if (this.filterKey.max_average_sentiment_change) {
                     this.params.filters.push(["average_sentiment_change", "<=", this.filterKey
-                        .max_social_sentiment
+                        .max_average_sentiment_change
                     ]);
                 }
                 if (this.filterKey.min_social_mentions_change) {
@@ -1510,15 +1705,15 @@
                         .max_social_engagement_change
                     ]);
                 }
-                if (this.filterKey.min_average_sentiment_1_5) {
+                if (this.filterKey.min_average_sentiment) {
                     this.params.filters.push(["average_sentiment", ">=", this.filterKey
-                        .min_average_sentiment_1_5
+                        .min_average_sentiment
                     ]);
                 }
 
-                if (this.filterKey.max_average_sentiment_1_5) {
+                if (this.filterKey.max_average_sentiment) {
                     this.params.filters.push(["average_sentiment", "<=", this.filterKey
-                        .max_average_sentiment_1_5
+                        .max_average_sentiment
                     ]);
                 }
                 //end soical sentiments
@@ -1547,51 +1742,51 @@
                         this.params.filters.push(["next_unlock_date", ">", d2.toISOString().split("T")[0]]);
                     }
                 }
-                if (this.filterKey.min_next_unlock_n_tokens) {
+                if (this.filterKey.min_next_unlock_number_of_tokens) {
                     this.params.filters.push(["next_unlock_number_of_tokens", ">=", this.filterKey
-                        .min_next_unlock_n_tokens
+                        .min_next_unlock_number_of_tokens
                     ]);
                 }
 
-                if (this.filterKey.max_next_unlock_n_tokens) {
+                if (this.filterKey.max_next_unlock_number_of_tokens) {
                     this.params.filters.push(["next_unlock_number_of_tokens", "<=", this.filterKey
-                        .max_next_unlock_n_tokens
+                        .max_next_unlock_number_of_tokens
                     ]);
                 }
-                if (this.filterKey.min_next_unlock_per) {
+                if (this.filterKey.min_next_unlock_percent_of_tokens) {
                     this.params.filters.push(["next_unlock_percent_of_tokens", ">=", this.filterKey
-                        .min_next_unlock_per
+                        .min_next_unlock_percent_of_tokens
                     ]);
                 }
 
-                if (this.filterKey.max_next_unlock_per) {
+                if (this.filterKey.max_next_unlock_percent_of_tokens) {
                     this.params.filters.push(["next_unlock_percent_of_tokens", "<=", this.filterKey
-                        .max_next_unlock_per
+                        .max_next_unlock_percent_of_tokens
                     ]);
                 }
                 if (this.filterKey.next_unlock_size) {
                     this.params.filters.push(["next_unlock_size", "like", "%" + this.filterKey.next_unlock_size + "%"]);
                 }
-                if (this.filterKey.min_3_months_unlock_n_tokens) {
+                if (this.filterKey.min_three_months_unlock_number_of_tokens) {
                     this.params.filters.push(["three_months_unlock_number_of_tokens", ">=", this.filterKey
-                        .min_3_months_unlock_n_tokens
+                        .min_three_months_unlock_number_of_tokens
                     ]);
                 }
 
-                if (this.filterKey.max_3_months_unlock_n_tokens) {
+                if (this.filterKey.max_three_months_unlock_number_of_tokens) {
                     this.params.filters.push(["three_months_unlock_number_of_tokens", "<=", this.filterKey
-                        .max_3_months_unlock_n_tokens
+                        .max_three_months_unlock_number_of_tokens
                     ]);
                 }
-                if (this.filterKey.min_3_months_unlock_per) {
+                if (this.filterKey.min_three_months_unlock_percent_of_tokens) {
                     this.params.filters.push(["three_months_unlock_percent_of_tokens", ">=", this.filterKey
-                        .min_3_months_unlock_per
+                        .min_three_months_unlock_percent_of_tokens
                     ]);
                 }
 
-                if (this.filterKey.max_3_months_unlock_per) {
+                if (this.filterKey.max_three_months_unlock_percent_of_tokens) {
                     this.params.filters.push(["three_months_unlock_percent_of_tokens", "<=", this.filterKey
-                        .max_3_months_unlock_per
+                        .max_three_months_unlock_percent_of_tokens
                     ]);
                 }
                 if (this.filterKey.three_months_unlock_size) {
@@ -1599,24 +1794,24 @@
                         .three_months_unlock_size + "%"
                     ]);
                 }
-                if (this.filterKey.min_6_months_unlock_n_tokens) {
+                if (this.filterKey.min_six_months_unlock_number_of_tokens) {
                     this.params.filters.push(["six_months_unlock_number_of_tokens", ">=", this.filterKey
-                        .min_6_months_unlock_n_tokens
+                        .min_six_months_unlock_number_of_tokens
                     ]);
                 }
-                if (this.filterKey.max_6_months_unlock_n_tokens) {
+                if (this.filterKey.max_six_months_unlock_number_of_tokens) {
                     this.params.filters.push(["six_months_unlock_number_of_tokens", "<=", this.filterKey
-                        .max_6_months_unlock_n_tokens
+                        .max_six_months_unlock_number_of_tokens
                     ]);
                 }
-                if (this.filterKey.min_6_months_unlock_per) {
+                if (this.filterKey.min_six_months_unlock_percent_of_tokens) {
                     this.params.filters.push(["six_months_unlock_percent_of_tokens", ">=", this.filterKey
-                        .min_6_months_unlock_per
+                        .min_six_months_unlock_percent_of_tokens
                     ]);
                 }
-                if (this.filterKey.max_6_months_unlock_per) {
+                if (this.filterKey.max_six_months_unlock_percent_of_tokens) {
                     this.params.filters.push(["six_months_unlock_percent_of_tokens", "<=", this.filterKey
-                        .max_6_months_unlock_per
+                        .max_six_months_unlock_percent_of_tokens
                     ]);
                 }
                 if (this.filterKey.six_months_unlock_size) {
@@ -1624,73 +1819,78 @@
                         .six_months_unlock_size + "%"
                     ]);
                 }
-
-                this.loadCoins();
+                if (refresh_flag) {
+                    this.loadCoins();
+                }
 
             },
-            clearFilters() {
+            clearFilters(refresh_flag) {
                 this.filterKey = {
-                    mc_min: null,
-                    mc_max: null,
-                    day_min_change: null,
-                    day_max_change: null,
-                    platform: null,
-                    min_token_price: null,
-                    max_token_price: null,
+                    min_market_cap: null,
+                    max_market_cap: null,
+                    min_price_change_percentage_24h: null,
+                    max_price_change_percentage_24h: null,
+                    coin_platform: null,
+                    min_current_price: null,
+                    max_current_price: null,
                     min_circulating_supply: null,
                     max_circulating_supply: null,
-                    category: null,
+                    coin_category: null,
                     max_market_cap_rank: null,
                     min_market_cap_rank: null,
                     market_cap_rank: null,
                     min_total_supply: null,
                     max_total_supply: null,
                     keywords: null,
-                    min_trade_volume: null,
-                    max_trade_volume: null,
-                    min_roi_per: null,
-                    max_roi_per: null,
-                    min_times_roi: null,
-                    max_times_roi: null,
-                    min_days_in_market: null,
-                    max_days_in_market: null,
-                    min_total_supply_per: null,
-                    max_total_supply_per: null,
+                    min_trading_volume: null,
+                    max_trading_volume: null,
+                    min_roi_percentage: null,
+                    max_roi_percentage: null,
+                    min_roi_times: null,
+                    max_roi_times: null,
+                    min_genesis_date: null,
+                    max_genesis_date: null,
+                    min_total_supply_percent: null,
+                    max_total_supply_percent: null,
                     min_seed_price: null,
                     max_seed_price: null,
-                    min_seed_roi: null,
-                    max_seed_roi: null,
-                    min_social_sentiment: null,
-                    max_social_sentiment: null,
+                    min_roi_seed: null,
+                    max_roi_seed: null,
+                    min_average_sentiment_change: null,
+                    max_average_sentiment_change: null,
                     min_social_mentions_change: null,
                     max_social_mentions_change: null,
                     min_social_engagement_change: null,
                     max_social_engagement_change: null,
-                    min_average_sentiment_1_5: null,
-                    max_average_sentiment_1_5: null,
+                    min_average_sentiment: null,
+                    max_average_sentiment: null,
                     min_total_locked: null,
                     max_total_locked: null,
                     next_unlock_status: null,
-                    min_next_unlock_n_tokens: null,
-                    max_next_unlock_n_tokens: null,
-                    min_next_unlock_per: null,
-                    max_next_unlock_per: null,
+                    min_next_unlock_number_of_tokens: null,
+                    max_next_unlock_number_of_tokens: null,
+                    min_next_unlock_percent_of_tokens: null,
+                    max_next_unlock_percent_of_tokens: null,
                     next_unlock_size: null,
-                    min_3_months_unlock_n_tokens: null,
-                    max_3_months_unlock_n_tokens: null,
-                    min_3_months_unlock_per: null,
-                    max_3_months_unlock_per: null,
+                    min_three_months_unlock_number_of_tokens: null,
+                    max_three_months_unlock_number_of_tokens: null,
+                    min_three_months_unlock_percent_of_tokens: null,
+                    max_three_months_unlock_percent_of_tokens: null,
                     three_months_unlock_size: null,
-                    min_6_months_unlock_n_tokens: null,
-                    max_6_months_unlock_n_tokens: null,
-                    min_6_months_unlock_per: null,
-                    max_6_months_unlock_per: null,
+                    min_six_months_unlock_number_of_tokens: null,
+                    max_six_months_unlock_number_of_tokens: null,
+                    min_six_months_unlock_percent_of_tokens: null,
+                    max_six_months_unlock_percent_of_tokens: null,
                     six_months_unlock_size: null,
                 }
                 this.params.filters = [];
                 this.params.filters2 = '';
                 this.params.sort = ["market_cap", "desc"];
-                this.loadCoins();
+                if (refresh_flag) {
+                    this.loadCoins();
+
+                }
+                this.isBusy = false;
             },
             detailsModel(item) {
                 this.selectedContract = null;
@@ -1701,7 +1901,6 @@
                 }
                 if (typeof item.contract_address == 'string') {
                     item.contract_address = JSON.parse(item.contract_address);
-                    console.log(item.contract_address);
                 }
                 this.activeData = item;
                 this.$bvModal.show('modal-details');
@@ -1709,7 +1908,11 @@
             dateFormat(val) {
                 if (val) {
                     let d = new Date(val)
-                    return d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
+                    if (!isNaN(d)) {
+                        return d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
+                    } else {
+                        return "********"
+                    }
                 }
             },
             calculate_social_score(rowdata) {
@@ -1891,16 +2094,126 @@
                 return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math.sign(
                     num) * Math.abs(num)
             },
-            lockedFilter()
-            {
-                this.locked =  !this.locked;
+            lockedFilter() {
+                if (this.params.api_mode == 2) {
+                    this.params.api_mode = 1;
+                    this.locked = false;
+
+                } else {
+                    this.locked = true;
+                    this.params.api_mode = 2;
+                }
+                this.loadCoins();
+            },
+            async createPresetFilter() {
+                await this.filterCoins(false);
+                let presetPayload = {
+                    filters: this.params.filters,
+                    filters2: this.params.filters2,
+                    filter_name: this.presetName
+                }
+                if (this.presetName) {
+                    axios.post('api/create_preset_filter', JSON.stringify(presetPayload)).then(res => {
+                    if (res) {
+                        this.presetFilters = res.data;
+                        this.selectedPreset = res.data[res.data.length - 1].id;
+                        this.presetName = "";
+                        this.$bvModal.hide('modal-preset-create');
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: 'Preset has been created',
+                                icon: 'CheckCircleIcon',
+                                variant: 'success',
+                            },
+                        })
+                    }
+
+                })
+                }
+           
+            },
+            deletePreset() {
+
+                axios.post('api/delete_preset_filter', {
+                    preset_id: this.selectedPreset
+                }).then(res => {
+                    if (res) {
+                        this.presetFilters = res.data;
+                        this.selectedPreset = null;
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: 'Preset has been delete',
+                                icon: 'CheckCircleIcon',
+                                variant: 'success',
+                            },
+                        })
+                    }
+
+                })
+            },
+            loadSelectedPresetFilter() {
+                this.clearFilters(false);
+                let index = this.presetFilters.map(item => item.id).indexOf(this.selectedPreset);
+                if (index >= 0) {
+                    var preset_json = JSON.parse(this.presetFilters[index].filter_json);
+                    preset_json.filters.forEach(element => {
+                        let keyval = element[2];
+                        if (keyval == "") {
+                            keyval = null;
+                        }
+                        if (element[0] == "coin_platform" || element[0] == "coin_category" || element[0] ==
+                            "three_months_unlock_size" || element[0] == "next_unlock_size" || element[0] ==
+                            "six_months_unlock_size") {
+                            keyval = keyval.replaceAll("%", "");
+                            this.filterKey[element[0]] = keyval
+                        }
+                        if (element[0] == "coin_description") {
+                            this.filterKey.keywords = keyval.replaceAll("%", "");
+                        } else {
+                            if (element[1] && element[1] == '>=') {
+                                let keyVal = 'min_' + element[0];
+                                this.filterKey[keyVal] = keyval
+                            }
+                            if (element[1] && element[1] == '<=') {
+                                let keyVal = 'max_' + element[0];
+                                this.filterKey[keyVal] = keyval
+                            }
+                            if (element[1] && element[1] == '=') {
+                                let keyVal = element[0];
+                                this.filterKey[keyVal] = keyval
+                            }
+                        }
+
+                    });
+
+                }
 
             }
+
+        },
+        computed: {
+            visibleFields() {
+                if (this.params.api_mode == 1) {
+                    return this.fields.filter(field => {
+                        return field.visible == 1 || field.visible == 3
+                    })
+                } else {
+                    return this.fields.filter(field => {
+                        return field.visible == 3 || field.visible == 2;
+                    })
+                }
+            },
 
         },
         mounted() {
             this.loadCoins();
             this.loadFag();
+            this.loadPresetFilters();
+        },
+        created() {
+            this.userData = getUserData()
         },
         watch: {
             'Cpagpage': function (newVal, oldVal) {
@@ -1920,36 +2233,40 @@
                     this.liveCoinFetch();
                 }
 
+            },
+            'selectedPreset': function (n, o) {
+                this.loadSelectedPresetFilter();
+
             }
         }
     }
 
 </script>
 <style>
-    .nameWidth {
+    #dashboard .nameWidth {
         width: 55px !important;
     }
 
-    .full {
+    #dashboard .full {
         width: 100%
     }
 
-    .customBadge {
+    #dashboard .customBadge {
         font-size: 11px;
         padding: 2px;
         border-radius: 5px;
     }
 
-    .b-table-sticky-header {
+    #dashboard .b-table-sticky-header {
         overflow-y: auto;
         max-height: 80vh;
     }
 
-    td {
+    #dashboard td {
         text-align: center;
     }
 
-    .inner-text {
+    #dashboard .inner-text {
         height: 100%;
         width: 100%;
         text-align: center;
@@ -1959,7 +2276,7 @@
     }
 
 
-    table td {
+    #dashboard table td {
         padding-left: 4px !important;
         padding-right: 4px !important;
         font-size: 14px;
@@ -1967,15 +2284,14 @@
 
     }
 
-    table th {
+    #dashboard table th {
         padding-left: 4px !important;
         padding-right: 4px !important;
-        font-size: 14px;
-        font-family: 'Poppins'
-
+        font-size: 12px !important;
+        font-family: 'Poppins' !important
     }
 
-    .b-avatar {
+    #dashboard .b-avatar {
         width: 30px;
         height: 30px;
         margin: auto;
@@ -1995,13 +2311,23 @@
         height: 100%;
         width: 100%
     }
-    .soicalLable{
-            font-size: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 40px;
-            margin: auto;
+
+    .soicalLable {
+        font-size: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        margin: auto;
+    }
+
+    .blurry-text {
+        text-shadow: 0 0 32px white;
+        color: transparent;
+    }
+
+    .blurry-text {
+        text-shadow: 0px -2px 5px #d13e3e;
     }
 
 </style>
