@@ -22,15 +22,16 @@ import '@/libs/vue-select'
 import '@/libs/tour'
 import VueSocialauth from 'vue-social-auth'
 import vueNumeralFilterInstaller from 'vue-numeral-filter';
+import Sparkline from 'vue-sparklines'
 
-Vue.use(vueNumeralFilterInstaller, { locale: 'en-gb' });
 // Axios Mock Adapter
 // import '@/@fake-db/db'
 
 // BSV Plugin Registration
+Vue.use(vueNumeralFilterInstaller, { locale: 'en-gb' });
 Vue.use(ToastPlugin)
 Vue.use(ModalPlugin)
-
+Vue.use(Sparkline)
 // Composition API
 Vue.use(VueCompositionAPI)
 Vue.use(VueInputRestrictionDirectives);
