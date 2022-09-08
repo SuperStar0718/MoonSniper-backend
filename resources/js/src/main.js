@@ -21,6 +21,9 @@ import '@/libs/sweet-alerts'
 import '@/libs/vue-select'
 import '@/libs/tour'
 import VueSocialauth from 'vue-social-auth'
+import vueNumeralFilterInstaller from 'vue-numeral-filter';
+
+Vue.use(vueNumeralFilterInstaller, { locale: 'en-gb' });
 // Axios Mock Adapter
 // import '@/@fake-db/db'
 

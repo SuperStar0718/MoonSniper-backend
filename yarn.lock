@@ -7262,6 +7262,11 @@ num2fraction@^1.2.2:
   resolved "https://registry.npmjs.org/num2fraction/-/num2fraction-1.2.2.tgz"
   integrity sha512-Y1wZESM7VUThYY+4W+X4ySH2maqcA+p7UR+w8VWNWVAd6lwuXXWz/w/Cz43J/dI2I+PS6wD5N+bJUF+gjWvIqg==
 
+numeral@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/numeral/-/numeral-2.0.6.tgz#4ad080936d443c2561aed9f2197efffe25f4e506"
+  integrity sha512-qaKRmtYPZ5qdw4jWJD6bxEf1FJEqllJrwxCLIm0sQU/A7v2/czigzOb+C2uSiFsa9lBUzeH7M1oK+Q+OLxL3kA==
+
 oauth-sign@~0.9.0:
   version "0.9.0"
   resolved "https://registry.npmjs.org/oauth-sign/-/oauth-sign-0.9.0.tgz"
@@ -10485,6 +10490,13 @@ vue-loader@^15.4.2, vue-loader@^15.9.2:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-numeral-filter@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/vue-numeral-filter/-/vue-numeral-filter-2.2.0.tgz#51e2f6af1bee898d0c067db3697f93511c16e286"
+  integrity sha512-w9Wq2ACdJTxDQR1joKyZERbBcW86M3couf39M6FQy1nQFmi0tgNYAeIwLhA6b40jRO8TRZwCkzbs59PYxjpC/A==
+  dependencies:
+    numeral "^2.0.6"
 
 vue-perfect-scrollbar@^0.2.1:
   version "0.2.1"

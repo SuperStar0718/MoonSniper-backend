@@ -153,7 +153,7 @@
             <b-row>
                 <b-col cols="8" md="8" xl="10">
                     <b-input-group class="input-group-merge">
-                        <b-form-input v-model="params.filters2" placeholder="Search Product" class="search-product" />
+                        <b-form-input v-model="params.filters2" placeholder="Search" class="search-product" />
                         <b-input-group-append is-text>
                             <feather-icon icon="SearchIcon" class="text-muted" />
                         </b-input-group-append>
@@ -162,12 +162,13 @@
                 <b-col cols="4" md="4" xl="2">
                     <div class="d-flex jusctify-content-between">
                         <div>
-                            <b-button style="padding:5px" v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                            <b-button style="padding:5px; width:33px" v-ripple.400="'rgba(113, 102, 240, 0.15)'"
                                 variant="outline-primary" class="btn-icon mx-1">
-                                <feather-icon v-if="locked" @click="lockedFilter" icon="LockIcon" size="20"
-                                    class="text-black cursor-pointer" style=" " />
                                 <feather-icon v-if="!locked" @click="lockedFilter" icon="UnlockIcon" size="20"
                                     class="text-black cursor-pointer" style=" " />
+                                <b-img class="text-black cursor-pointer rounded-full" width="20px" height="20px"
+                                    v-if="locked" @click="lockedFilter" fluid
+                                    src="/images/static/noun-cryptocurrency-3262833.svg" />
                             </b-button>
                         </div>
                         <div v-b-modal.modal-filters variant="outline-primary">
@@ -214,6 +215,11 @@
                     </template>
                     <template #cell(coin_platform)="data">
                         <div class="" v-html="getPlatformTags(data.value)"></div>
+                        <div class="" v-if="checkSeemore(data.value)"><span
+                                v-b-popover.hover.top="platformTagsSeemore(data.value)"
+                                v-ripple.400="'rgba(113, 102, 240, 0.15)'" title="Platforms" variant="outline-primary">
+                                See more...
+                            </span></div>
                     </template>
                     <template #cell(market_cap_rank)="data">
                         <div class="d-flex">
@@ -242,7 +248,7 @@
                     <template #cell(seed_price)="data">
                         <div style="text-align: center;" class="d-flex justify-content-start"
                             :class="{'blurry-text' :userData.currentPlan =='basic' && data.item.market_cap_rank < 1 ||userData.currentPlan =='basic' &&data.item.market_cap_rank >5}">
-                            {{ data.value }}
+                            {{data.value}}
                         </div>
                     </template>
                     <template #cell(roi_seed)="data">
@@ -340,23 +346,23 @@
                     </template>
 
                     <template #cell(current_price)="data">
-                        <div class="" style="">{{data.value}}$</div>
+                        <div class="" style="">{{toInterNationalNumber(data.value)}}$</div>
                     </template>
                     <template #cell(market_cap)="data">
-                        <div class="" style="">{{data.value?data.value:0}}$</div>
+                        <div class="" style="">{{data.value?toInterNationalNumber(data.value):0}}$</div>
                     </template>
                     <template #cell(high_24h)="data">
-                        <div v-if="data.value !=''" class="" style="">{{data.value}}$</div>
+                        <div v-if="data.value !=''" class="" style="">{{toInterNationalNumber(data.value)}}$</div>
                     </template>
                     <template #cell(low_24h)="data">
-                        <div v-if="data.value !=''" class="" style="">{{data.value}}$</div>
+                        <div v-if="data.value !=''" class="" style="">{{toInterNationalNumber(data.value)}}$</div>
                     </template>
 
                     <template #cell(price_change_percentage_24h)="data">
                         <div v-if="data.value">
-                            <span v-if="data.value>= 0" class="text-success" style="">{{ data.value }}
+                            <span v-if="data.value>= 0" class="text-success" style="">{{ toInterNationalNumber(data.value) }}
                                 %</span>
-                            <span v-else class="text-danger" style="">{{ data.value }} %</span></div>
+                            <span v-else class="text-danger" style="">{{ toInterNationalNumber(data.value) }} %</span></div>
                     </template>
                     <template #cell(roi_percentage)="data">
                         <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
@@ -374,12 +380,12 @@
                     </template>
                     <template #cell(ath)="data">
                         <div v-if="data.value">
-                            <span style="">{{data.value}}$</span>
+                            <span style="">{{toInterNationalNumber(data.value)}}$</span>
                         </div>
                     </template>
                     <template #cell(atl)="data">
                         <div v-if="data.value">
-                            <span style="">{{data.value}}$</span>
+                            <span style="">{{toInterNationalNumber(data.value)}}$</span>
                         </div>
                     </template>
                     <template #cell(social_mentions_change)="data">
@@ -405,7 +411,8 @@
                     </template>
                     <template #cell()="data">
                         <div class="text-center" style="">
-                            <span class="text-nowrap">{{ data.value }}</span>
+                            <span  v-if="checkString(data.value)" class="text-nowrap">{{ data.value }}</span>
+                            <span  v-else class="text-nowrap">{{ toInterNationalNumber(data.value) }}</span>
                         </div>
                     </template>
                 </b-table>
@@ -419,6 +426,12 @@
                     class="d-flex align-items-center justify-content-center justify-content-sm-start">
                     <span class="text-muted">Showing {{ items.from }} to {{ items.to }} of {{ items.total }}
                         entries</span>
+                    <span class="text-muted ml-2">Per page :</span>
+                    <b-form-select v-model="params.perpage" class="ml-1" style="width:70px;">
+                        <b-form-select-option v-for="(page,index) in perPageOptions" :key="index" :value="page">
+                            {{ page }}
+                        </b-form-select-option>
+                    </b-form-select>
                 </b-col>
                 <!-- Pagination -->
                 <b-col cols="12" sm="6" class="d-flex align-items-center justify-content-center justify-content-sm-end">
@@ -454,8 +467,12 @@
                         </b-form-select>
                     </b-col>
                     <b-col class="m-auto">
+                        <b-button v-ripple.400="'rgb(31, 103, 211)'" v-if="selectedPreset" @click="savePresetFilter"
+                            title="Save preset" variant="warning" class="btn-icon">
+                            <feather-icon icon="SaveIcon" />
+                        </b-button>
                         <b-button v-ripple.400="'rgba(255, 255, 255, 0.15)'" v-if="selectedPreset" @click="deletePreset"
-                            variant="warning" class="btn-icon">
+                            title="Delete preset" variant="warning" class="btn-icon">
                             <feather-icon icon="Trash2Icon" />
                         </b-button>
                         <b-button size="md" v-b-modal.modal-preset-create v-ripple.400="'rgba(113, 12, 240, 0.15)'"
@@ -983,15 +1000,23 @@
                 <div slot="modal-title">
                     <div class="d-flex justify-content-between min-block">
                         <div class="">
-                            <div>Rank #{{activeData.market_cap_rank}}</div>
+
                             <div>
                                 <b-avatar v-if="activeData.image" :src="activeData.image"></b-avatar>
-                                <span class="my-auto"> &nbsp;{{activeData.name +' - '+activeData.symbol}} &nbsp; <span
-                                        class="text-success">${{ activeData.current_price }}</span> </span>
+                                <span class="my-auto"> &nbsp;{{activeData.name +' - '+activeData.symbol}} &nbsp;
+                                    <span v-if="activeData.price_change_24h>= 0"
+                                        class="text-success">{{ roundData2(activeData.price_change_24h,6) }}$
+                                        <feather-icon icon="ChevronUpIcon" style="margin-left:px" />
+                                    </span>
+                                    <span v-else
+                                        class="text-danger text-base">{{ roundData2(activeData.price_change_24h,6) }}$
+                                        <feather-icon icon="ChevronDownIcon" style="margin-left:px" /></span>
+                                </span>
                             </div>
                         </div>
                         <div>
-                            <div class="bg-theme rounded">
+                            <div class="bg-theme rounded"
+                                v-if="activeData.contract_address && activeData.contract_address.length>0">
 
                                 <div class="d-flex">
                                     <div class="my-auto" style="margin-right: 4px;">Contract </div>
@@ -1003,12 +1028,12 @@
                                         </b-form-select-option>
                                     </b-form-select>
                                 </div>
-                                <div v-if="selectedContract" class="d-flex mt-1">
-                                    <div class="text-nowrap text-truncate" style="width:150px">{{selectedContract}}
+                                <div v-if="selectedContract" class="d-flex mt-1 justify-content-end">
+                                    <div class="text-nowrap text-truncate" style="width:200px">{{selectedContract}}
                                     </div>
-                                    <b-button size="sm" v-clipboard:copy="selectedContract" v-clipboard:success="onCopy"
-                                        v-clipboard:error="onError" v-ripple.400="'rgba(113, 12, 240, 0.15)'"
-                                        variant="outline-primary" pill>Copy!
+                                    <b-button size="sm" class="ml-1" v-clipboard:copy="selectedContract"
+                                        v-clipboard:success="onCopy" v-clipboard:error="onError"
+                                        v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary" pill>Copy!
                                     </b-button>
 
                                 </div>
@@ -1018,11 +1043,12 @@
 
                 </div>
                 <app-collapse accordion>
+                    <div class="rank_slot">Rank #{{toInterNationalNumber(activeData.market_cap_rank)}}</div>
                     <app-collapse-item :isVisible="true" visible title="Market Data" class="open">
                         <b-card no-body class="mb-1">
                             <b-card-body>
                                 <b-row>
-                                    <b-col md="8" sm="7" class="text-center sparlineChat">
+                                    <b-col md="8" sm="7" class="text-center sparlineChat mb-2">
                                         <h5> 7 Days</h5>
                                         <trend :data="activeData.sparkline_in_7d" :gradient="['#d40808']" auto-draw
                                             smooth></trend>
@@ -1031,19 +1057,54 @@
                                         <div class="mb-1">
                                             <h5>{{ activeData.name }} Volume</h5>
                                             <div class="" style="font-size:16px; font-weight: 600;">
-                                                <span class="">${{ activeData.total_volume }}</span>
+                                                <span class="">${{ toInterNationalNumber(activeData.total_volume) }}</span>
                                             </div>
                                         </div>
                                         <div class="mb-1">
                                             <h5>{{ activeData.name }} Market Cap</h5>
                                             <div class="" style="font-size:16px; font-weight: 600;">
-                                                <span>${{ activeData.market_cap }}</span> </div>
+                                                <span>${{ toInterNationalNumber(activeData.market_cap) }}</span> </div>
                                         </div>
-                                        <div class="mb-1">
-                                            <h5>{{ activeData.name }} Circulating Supply</h5>
+                                        <div class="mb-1" v-if="activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0">
+                                            <h5 >{{ activeData.name }} X's from launch</h5>
                                             <div class="" style="font-size:16px; font-weight: 600;">
-                                                <span>{{ activeData.circulating_supply }}</span> </div>
+                                                <span v-if="activeData.roi_times">{{ xfromlunch(activeData.roi_times,'roi_times') }}X</span> 
+                                                <span v-else-if="activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0 ">{{ xfromlunch(activeData.current_price,activeData.round_price) }}X</span> 
+                                            </div>
                                         </div>
+                                        <div class="mb-1" v-if="activeData.total_supply_percent">
+                                            <h5>{{ activeData.name }} Total Supply:</h5>
+                                            <div class="" style="font-size:16px; font-weight: 600;">
+                                                <span>{{ activeData.total_supply_percent }} %</span> </div>
+                                        </div>
+                                    </b-col>
+
+                                </b-row>
+                                <b-row class="mt-2">
+                                    <b-col cols="12" md="12">
+                                        <app-collapse accordion>
+                                            <app-collapse-item title="Trading Volume History Chart">
+                                                <div v-if="TradeHistoryseries[0].data.length>0">
+                                                    <vue-apex-charts class="full" width="100%" :dataLabels="true"
+                                                        type="line" height="290" :options="TradeHistoryOptions"
+                                                        :series="TradeHistoryseries">
+                                                    </vue-apex-charts>
+                                                </div>
+                                            </app-collapse-item>
+                                        </app-collapse>
+
+                                    </b-col>
+                                    <b-col cols="12" md="12">
+                                        <app-collapse accordion>
+                                            <app-collapse-item title="Supply Chart">
+                                                <div v-if="supplyChart.series.length >0">
+
+                                                    <vue-apex-charts type="donut" height="350"
+                                                        :options="supplyChart.chartOptions"
+                                                        :series="supplyChart.series" />
+                                                </div>
+                                            </app-collapse-item>
+                                        </app-collapse>
                                     </b-col>
                                 </b-row>
                             </b-card-body>
@@ -1060,6 +1121,9 @@
                                             <b-img rounded :src="'/images/static/website.png'" fluid class="w-50"
                                                 alt="Responsive image" />
                                         </a>
+                                        <span class="text-center" style="font-size:12px; font-weight:500"
+                                       >Website
+                                    </span>
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.twitter && activeData.twitter != '' ">
@@ -1070,6 +1134,9 @@
                                         <span class="text-center" style="font-size:12px; font-weight:500"
                                             v-if="activeData.twitter_followers">{{kFormatter(activeData.twitter_followers)}}
                                         </span>
+                                        <span class="text-center" style="font-size:12px; font-weight:500"
+                                        v-else>Twitter
+                                    </span>
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.telegram && activeData.telegram != '' ">
@@ -1081,6 +1148,9 @@
                                         <span class="text-center" style="font-size:12px; font-weight:500"
                                             v-if="activeData.telegram_members">{{kFormatter(activeData.telegram_members)}}
                                         </span>
+                                        <span class="text-center" style="font-size:12px; font-weight:500"
+                                        v-else>Telegram
+                                    </span>
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.discord && activeData.discord != '' ">
@@ -1092,6 +1162,9 @@
                                         <span class="text-center" style="font-size:12px; font-weight:500"
                                             v-if="activeData.discord_followers">{{kFormatter(activeData.discord_followers)}}
                                         </span>
+                                        <span class="text-center" style="font-size:12px; font-weight:500"
+                                        v-else>Discord
+                                    </span>
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.medium && activeData.medium != '' ">
@@ -1103,6 +1176,9 @@
                                         <span class="text-center" style="font-size:12px; font-weight:500"
                                             v-if="activeData.medium_followers">{{kFormatter(activeData.medium_followers)}}
                                         </span>
+                                        <span class="text-center" style="font-size:12px; font-weight:500"
+                                        v-else>Medium
+                                    </span>
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.reddit && activeData.reddit != '' ">
@@ -1114,16 +1190,22 @@
                                         <span class="text-center" style="font-size:12px; font-weight:500"
                                             v-if="activeData.reddit_followers">{{kFormatter(activeData.reddit_followers)}}
                                         </span>
+                                        <span class="text-center" style="font-size:12px; font-weight:500"
+                                        v-else>Reddit
+                                    </span>
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
                                         v-if="activeData.whitepaper && activeData.whitepaper != '' ">
                                         <a :href="activeData.whitepaper" target="_blank" class="d-block">
-                                            <b-img rounded :src="'/images/static/whitepaper.png'" fluid class="w-50"
+                                            <b-img rounded :src="'/images/static/whitepaper.png'"  fluid class="w-50 bg-light"
                                                 alt="Responsive image" />
 
                                         </a>
                                         <span class="text-center" style="font-size:12px; font-weight:500"
                                             v-if="activeData.whitepaper_followers">{{kFormatter(activeData.whitepaper_followers)}}
+                                        </span>
+                                        <span class="text-center" style="font-size:12px; font-weight:500"
+                                            v-else>Whitepaper
                                         </span>
                                     </b-col>
                                     <b-col class="text-center" cols="1" md="2" lg="2" sm="2"
@@ -1134,6 +1216,9 @@
                                         </a>
                                         <span class="text-center" style="font-size:12px; font-weight:500"
                                             v-if="activeData.github_followers">{{kFormatter(activeData.github_followers)}}
+                                        </span>
+                                        <span class="text-center" style="font-size:12px; font-weight:500"
+                                            v-else>Github
                                         </span>
                                     </b-col>
                                 </b-row>
@@ -1160,28 +1245,28 @@
                                             <div class="m-0 p-0 border  border border-dark"></div>
                                             <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success"
                                                 v-if="activeData.social_mentions>=0">
-                                                +{{activeData.social_mentions}} %</div>
+                                                +{{toInterNationalNumber(activeData.social_mentions)}} %</div>
                                             <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger"
-                                                v-else> {{activeData.social_mentions}} %</div>
+                                                v-else> {{toInterNationalNumber(activeData.social_mentions)}} %</div>
                                         </div>
                                     </b-col>
                                     <b-col sm="3" md="2" v-if="activeData.average_sentiment">
-                                        <div class="border border-2 rounded border-dark">
+                                        <div class=" border-2 rounded border-dark">
                                             <div class="soicalLable">Average Sentiment: </div>
-                                            <div class="m-0 p-0 border  border border-dark"></div>
+                                            <div class="m-0 p-0    border-dark"></div>
                                             <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-success">
-                                                {{activeData.average_sentiment}}</div>
+                                                {{roundData(activeData.average_sentiment)}}</div>
                                         </div>
                                     </b-col>
                                     <b-col sm="3" md="2" v-if="activeData.social_engagement">
-                                        <div class="border border-2 rounded border-dark">
+                                        <div class=" border-2 rounded border-dark">
                                             <div class="soicalLable">Social Engagement: </div>
-                                            <div class="m-0 p-0 border  border border-dark"></div>
+                                            <div class="m-0 p-0   border border-dark"></div>
                                             <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success"
                                                 v-if="activeData.social_mentions>=0">
-                                                +{{activeData.social_engagement}} %</div>
+                                                +{{toInterNationalNumber(activeData.social_engagement)}} %</div>
                                             <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger"
-                                                v-else> {{activeData.social_engagement}} %</div>
+                                                v-else> {{toInterNationalNumber(activeData.social_engagement)}} %</div>
                                         </div>
                                     </b-col>
                                     <b-col sm="3" md="2" v-if="activeData.average_sentiment_change">
@@ -1267,9 +1352,12 @@
                     <b-row>
                         <b-col cols="8">
                             <b-form-input v-model="presetName" />
+                            <small class="text-danger" v-if="checkExist(presetName)">Preset filter with given name
+                                already exists! Please give different name.!</small>
                         </b-col>
                         <b-col>
-                            <b-button size="md" @click="createPresetFilter" v-ripple.400="'rgba(11, 12, 240, 0.15)'"
+                            <b-button :disabled="!presetName || presetName.trim().length<=0 || checkExist(presetName)"
+                                size="md" @click="createPresetFilter" v-ripple.400="'rgba(11, 12, 240, 0.15)'"
                                 variant="outline-primary" pill>Create
                             </b-button>
                         </b-col>
@@ -1311,7 +1399,8 @@
         BFormSelect,
         BFormSelectOption,
         BSpinner,
-        BOverlay
+        BOverlay,
+        VBPopover
 
     } from 'bootstrap-vue'
 
@@ -1368,7 +1457,8 @@
             AppCollapseItem,
             BFormSelectOption,
             ToastificationContent,
-            VueSlider
+            VueSlider,
+            VBPopover
 
         },
         data() {
@@ -1392,7 +1482,9 @@
                     filters2: "",
                     sort: ["market_cap", "desc"],
                     api_mode: 1,
+                    perpage: 6
                 },
+                perPageOptions: [5, 6, 8, 9, 10, 20, 30, 50, 100],
                 fag: {
                     data: {
                         fear_greed_index: 0,
@@ -1405,13 +1497,145 @@
                         id: 'history-chart'
                     },
                     xaxis: {
-                        categories: []
+                        categories: [],
+                        type: 'datetime',
+                    },
+                    tooltip: {
+                        shared: false,
+                        x: {
+                            format: "dd.MM.yyyy HH:mm"
+                        }
                     },
                     colors: ['#fca503'],
 
                 },
+                TradeHistoryOptions: {
+                    chart: {
+                        id: 'trading-history',
+                        height: 290,
+                    },
+                    xaxis: {
+                        categories: [],
+                        type: 'datetime',
+                    },
+
+                    colors: ['#54b9eb'],
+                    stroke: {
+                        show: true,
+                        curve: 'smooth',
+                        lineCap: 'butt',
+                        width: 1,
+                        dashArray: 0,
+                        labels: {
+                            show: true,
+                            hideOverlappingLabels: true,
+                        }
+                    },
+
+                },
+
+                supplyChart: {
+                    series: [],
+                    chartOptions: {
+                        legend: {
+                            show: true,
+                            position: 'bottom',
+                            fontSize: '14px',
+                            fontFamily: 'Montserrat',
+                        },
+                        colors: [
+                            '#00d4bd',
+                            '#826bf8',
+                            '#2b9bf4',
+                            '#FFA1A1',
+                        ],
+                        dataLabels: {
+                            enabled: true,
+                            formatter(val) {
+                                // eslint-disable-next-line radix
+                                return `${parseInt(val)}%`
+                            },
+                        },
+                        plotOptions: {
+                            pie: {
+                                donut: {
+                                    labels: {
+                                        show: true,
+                                        name: {
+                                            fontSize: '2rem',
+                                            fontFamily: 'Montserrat',
+                                        },
+                                        value: {
+                                            fontSize: '1rem',
+                                            fontFamily: 'Montserrat',
+                                            formatter(val) {
+                                                // eslint-disable-next-line radix
+                                                return `${parseInt(val)}`
+                                            },
+                                        },
+                                        total: {
+                                            show: false,
+                                            fontSize: '1.5rem',
+                                            label: 'Total',
+                                            formatter() {
+                                                return '100%'
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        labels: ['Locked', 'Unlocked', 'Next Unlock'],
+                        responsive: [{
+                                breakpoint: 992,
+                                options: {
+                                    chart: {
+                                        height: 380,
+                                    },
+                                    legend: {
+                                        position: 'bottom',
+                                    },
+                                },
+                            },
+                            {
+                                breakpoint: 576,
+                                options: {
+                                    chart: {
+                                        height: 320,
+                                    },
+                                    plotOptions: {
+                                        pie: {
+                                            donut: {
+                                                labels: {
+                                                    show: true,
+                                                    name: {
+                                                        fontSize: '1.5rem',
+                                                    },
+                                                    value: {
+                                                        fontSize: '1rem',
+                                                    },
+                                                    total: {
+                                                        fontSize: '1.5rem',
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                    legend: {
+                                        show: true,
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                },
                 series: [{
                     name: 'Fear Greed Index',
+                    data: []
+                }],
+
+                TradeHistoryseries: [{
+                    name: 'Trading Volume',
                     data: []
                 }],
                 searchKey: null,
@@ -1461,6 +1685,7 @@
         directives: {
             'b-modal': VBModal,
             'b-toggle': VBToggle,
+            'b-popover': VBPopover,
             Ripple,
 
         },
@@ -1491,11 +1716,12 @@
                         this.fag.data.fear_greed_history = JSON.parse(this.fag.data.fear_greed_history);
                         let array = [];
                         this.fag.data.fear_greed_history.forEach(element => {
-                            var d = new Date(parseInt(element.timestamp) * 1000);
-                            let date = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-                            array.unshift(date);
-                            this.chartOptions.xaxis.categories = array;
-                            this.series[0].data.unshift(parseInt(element.value))
+                            // var d = new Date(parseInt(element.timestamp) * 1000);
+                            // let date = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+                            // array.unshift(date);
+                            // this.chartOptions.xaxis.categories = array;
+                            this.series[0].data.unshift([parseInt(element.timestamp) * 1000, parseInt(
+                                element.value)])
 
                         });
                         this.fagLoad = false;
@@ -1525,6 +1751,7 @@
             },
             getPlatformTags(val) {
                 var tags = "";
+                var moreTags = "";
                 const tagsArray = val.split("|");
                 var index = 0;
                 for (index = 0; index <= 1; index++) {
@@ -1533,15 +1760,63 @@
                         ' <div class="d-block " style="margin-bottom:1px;"><span class="bg-success text-white customBadge">' +
                         tagsArray[index] + '</span></div>';
                 }
-                if (tagsArray.length > 2) {
-                    tags = tags + '<span class="text-center">see more...</span>'
-                }
                 return tags;
+            },
+            checkSeemore(val) {
+                const tagsArray = val.split("|");
+
+                if (tagsArray.length > 2) {
+                    return true;
+
+                }
+                return false;
+            },
+            platformTagsSeemore(val) {
+                var tags = "";
+                const tagsArray = val.split("|");
+                for (let index = 0; index <= tagsArray.length; index++) {
+                    if (tagsArray[index] != undefined && tagsArray[index] != "")
+                        tags = tags +
+                        tagsArray[index] + ", ";
+                }
+                tags = tags.replace(/,*$/, '');
+                return tags;
+
             },
             roundData(val) {
                 if (val) {
-                    return parseFloat(val).toFixed(2);
+                    return this.toInterNationalNumber(parseFloat(val).toFixed(2));
                 }
+            },
+            roundData2(val, len) {
+                if (val) {
+                    return parseFloat(val).toFixed(len);
+                }
+            },
+            xfromlunch(val,val2) {
+                if(val2 == 'roi_times')
+                {
+
+                    return new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 15,
+                }).format(val.toFixed(2));
+                }else{
+                    var calculated_roi_x = val / val2;
+                    return new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 15,
+                }).format(calculated_roi_x.toFixed(2));
+                }
+               
+            },
+            toInterNationalNumber(val)
+            {
+                if(val)
+                return new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 15,
+                }).format(val);
             },
             sortingCols(val) {
                 this.isBusy = true;
@@ -1887,13 +2162,18 @@
                 this.params.filters2 = '';
                 this.params.sort = ["market_cap", "desc"];
                 if (refresh_flag) {
+                    this.isBusy = true;
                     this.loadCoins();
 
+                }else{
+                    this.isBusy = false;
+
                 }
-                this.isBusy = false;
             },
             detailsModel(item) {
                 this.selectedContract = null;
+                this.supplyChart.series = [];
+
                 if (typeof item.sparkline_in_7d == 'string') {
                     let sparklines = item.sparkline_in_7d.split("|").map(Number);
                     sparklines = sparklines.slice(0, -1);
@@ -1903,6 +2183,44 @@
                     item.contract_address = JSON.parse(item.contract_address);
                 }
                 this.activeData = item;
+                axios.post('api/get_trading_volume_history', {
+                        coin_id: item.coin_id,
+                        symbol: item.symbol
+                    })
+                    .then(res => {
+                        this.TradeHistoryOptions.xaxis.categories = [];
+                        this.TradeHistoryseries[0].data = [];
+                        if (res.data[0] && res.data[0].trading_volume_history_json) {
+                            this.activeData.trading_volume_history_json = JSON.parse(res.data[0]
+                                .trading_volume_history_json);
+                            if (this.activeData.trading_volume_history_json.total_volumes) {
+                                this.activeData.trading_volume_history_json.total_volumes.forEach(element => {
+                                    this.TradeHistoryseries[0].data.push([parseInt(element[0]), parseInt(
+                                        element[1])])
+                                })
+                            }
+
+
+                        }
+                        if (this.activeData.max_supply != null && this.activeData.circulating_supply != null && this
+                            .activeData.next_unlock_number_of_tokens != null &&
+                            this.activeData.three_months_unlock_number_of_tokens != null && this.activeData
+                            .six_months_unlock_number_of_tokens != null && this.userData.currentPlan != "basic") {
+
+
+                            var val1 = parseFloat(this.activeData.max_supply) - parseFloat(this.activeData
+                                .circulating_supply) - parseFloat(this.activeData
+                                .next_unlock_number_of_tokens);
+                            var val2 = parseFloat(this.activeData.circulating_supply)
+                            var val3 = parseFloat(this.activeData.next_unlock_number_of_tokens)
+                            this.supplyChart.series = [val1, val2, val3];
+                            console.log(this.supplyChart.series);
+
+                        }
+
+
+                    })
+
                 this.$bvModal.show('modal-details');
             },
             dateFormat(val) {
@@ -2090,9 +2408,17 @@
                     },
                 })
             },
+            checkString(val){
+                if(typeof val == 'string')
+                {
+                    return true;
+                }
+                return false;
+            },
             kFormatter(num) {
-                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math.sign(
-                    num) * Math.abs(num)
+                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math
+                    .sign(
+                        num) * Math.abs(num)
             },
             lockedFilter() {
                 if (this.params.api_mode == 2) {
@@ -2107,16 +2433,21 @@
             },
             async createPresetFilter() {
                 await this.filterCoins(false);
+
                 let presetPayload = {
                     filters: this.params.filters,
                     filters2: this.params.filters2,
                     filter_name: this.presetName
                 }
-                if (this.presetName) {
-                    axios.post('api/create_preset_filter', JSON.stringify(presetPayload)).then(res => {
+
+                axios.post('api/create_preset_filter', JSON.stringify(presetPayload)).then(res => {
                     if (res) {
                         this.presetFilters = res.data;
-                        this.selectedPreset = res.data[res.data.length - 1].id;
+                        let updated_val = res.data.filter(field => {
+                            return field.preset_name == this.presetName
+                        })
+
+                        this.selectedPreset = updated_val[0].id;
                         this.presetName = "";
                         this.$bvModal.hide('modal-preset-create');
                         this.$toast({
@@ -2130,8 +2461,57 @@
                     }
 
                 })
+
+
+            },
+            async savePresetFilter() {
+                await this.filterCoins(false);
+                let index = this.presetFilters.map(item => item.id).indexOf(this.selectedPreset);
+                this.presetName = this.presetFilters[index].preset_name
+                let presetPayload = {
+                    filters: this.params.filters,
+                    filters2: this.params.filters2,
+                    filter_name: this.presetName
                 }
-           
+
+                axios.post('api/create_preset_filter', JSON.stringify(presetPayload)).then(res => {
+                    if (res) {
+                        this.presetFilters = res.data;
+
+                        let updated_val = res.data.filter(field => {
+                            return field.preset_name == this.presetName
+                        })
+
+                        this.selectedPreset = updated_val[0].id;
+                        this.presetName = "";
+                        this.$bvModal.hide('modal-preset-create');
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: 'Preset has been updated',
+                                icon: 'CheckCircleIcon',
+                                variant: 'success',
+                            },
+                        })
+                    }
+
+                })
+
+
+            },
+            checkExist(val) {
+                if (val && val.trim().length > 0) {
+                    let checkval = this.presetFilters.filter(field => {
+                        return field.preset_name == val
+                    })
+                    if (checkval.length > 0) {
+                        return true;
+                    } else {
+                        return false
+                    }
+
+                }
+                return false;
             },
             deletePreset() {
 
@@ -2163,8 +2543,10 @@
                         if (keyval == "") {
                             keyval = null;
                         }
-                        if (element[0] == "coin_platform" || element[0] == "coin_category" || element[0] ==
-                            "three_months_unlock_size" || element[0] == "next_unlock_size" || element[0] ==
+                        if (element[0] == "coin_platform" || element[0] == "coin_category" ||
+                            element[0] ==
+                            "three_months_unlock_size" || element[0] == "next_unlock_size" ||
+                            element[0] ==
                             "six_months_unlock_size") {
                             keyval = keyval.replaceAll("%", "");
                             this.filterKey[element[0]] = keyval
@@ -2237,6 +2619,10 @@
             'selectedPreset': function (n, o) {
                 this.loadSelectedPresetFilter();
 
+            },
+            'params.perpage': function (n, o) {
+                this.Cpagpage = 1
+                this.loadCoins()
             }
         }
     }
@@ -2328,6 +2714,14 @@
 
     .blurry-text {
         text-shadow: 0px -2px 5px #d13e3e;
+    }
+
+    .rank_slot {
+        position: relative;
+        top: 15px;
+        right: 103px;
+        float: right;
+        z-index: 999;
     }
 
 </style>
