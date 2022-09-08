@@ -1058,15 +1058,15 @@
                         <div class="">
 
                             <div>
-                                <b-avatar v-if="activeData.image" :src="activeData.image"></b-avatar>
+                                <b-avatar class="bg-light" v-if="activeData.image" :src="activeData.image"></b-avatar>
                                 <span class="my-auto"> &nbsp;{{activeData.name +' - '+activeData.symbol}} &nbsp;
                                     <span v-if="activeData.price_change_24h>= 0"
-                                        class="text-success">{{ roundData2(activeData.price_change_24h,6) }}$
-                                        <feather-icon icon="ChevronUpIcon" style="margin-left:px" />
+                                        class="text-success">{{ roundData2(activeData.price_change_24h,6) }}<span v-if="activeData.price_change_24">$
+                                        <feather-icon icon="ChevronUpIcon" style="margin-left:px" /></span>
                                     </span>
                                     <span v-else
-                                        class="text-danger text-base">{{ roundData2(activeData.price_change_24h,6) }}$
-                                        <feather-icon icon="ChevronDownIcon" style="margin-left:px" /></span>
+                                        class="text-danger text-base">{{ roundData2(activeData.price_change_24h,6) }}<span v-if="activeData.price_change_24">$
+                                        <feather-icon icon="ChevronDownIcon" style="margin-left:px" /></span></span>
                                 </span>
                             </div>
                         </div>
@@ -1104,7 +1104,7 @@
                         <b-card no-body class="mb-1">
                             <b-card-body>
                                 <b-row>
-                                    <b-col md="8" sm="7" class="text-center sparlineChat mb-2">
+                                    <b-col md="8" sm="7" class="text-center sparlineChat mb-2"  v-if="activeData.sparkline_in_7d&& activeData.sparkline_in_7d.length>0">
                                         <h5> 7 Days</h5>
                                         <sparkline width="300" height="150">
                                             <sparklineLine :data="activeData.sparkline_in_7d"
@@ -1113,14 +1113,14 @@
                                         </sparkline>
                                     </b-col>
                                     <b-col>
-                                        <div class="mb-1">
+                                        <div class="mb-1" v-if="activeData.total_volume">
                                             <h5>{{ activeData.name }} Volume</h5>
                                             <div class="" style="font-size:16px; font-weight: 600;">
                                                 <span
                                                     class="">${{ toInterNationalNumber(activeData.total_volume) }}</span>
                                             </div>
                                         </div>
-                                        <div class="mb-1">
+                                        <div class="mb-1" v-if="activeData.market_cap">
                                             <h5>{{ activeData.name }} Market Cap</h5>
                                             <div class="" style="font-size:16px; font-weight: 600;">
                                                 <span>${{ toInterNationalNumber(activeData.market_cap) }}</span> </div>
@@ -2296,7 +2296,6 @@
                     item.contract_address = JSON.parse(item.contract_address);
                 }
                 this.activeData = item;
-                console.log(item.sparkline_in_7d);
                 axios.post('api/get_trading_volume_history', {
                         coin_id: item.coin_id,
                         symbol: item.symbol
@@ -2328,7 +2327,6 @@
                             var val2 = parseFloat(this.activeData.circulating_supply)
                             var val3 = parseFloat(this.activeData.next_unlock_number_of_tokens)
                             this.supplyChart.series = [val1, val2, val3];
-                            console.log(this.supplyChart.series);
 
                         }
 
