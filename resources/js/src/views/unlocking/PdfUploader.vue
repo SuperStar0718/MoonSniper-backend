@@ -93,7 +93,7 @@
                         this.pdfFile = this.$refs.pdffile.files[0];
                         let formData = new FormData();
                         formData.append('pdfFile', this.pdfFile);
-                        axios.post('api/upload-pdf', formData, {
+                        axios.post('/api/upload-pdf', formData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             }
@@ -102,14 +102,14 @@
                                 this.$toast({
                                     component: ToastificationContent,
                                     props: {
-                                        title: 'PDF has been upload, Start parsing the EDL and updating the db...',
+                                        title: 'PDF has been upload, Start parsing data and updating the db...',
                                         variant: 'success',
                                         icon: 'CheckCircleIcon',
                                     },
                                 })
 
                                 //Start parsing the data and updating db:
-                                axios.post('api/parse-pdf', res.data).then(res => {
+                                axios.post('/api/parse-pdf', res.data).then(res => {
                                     if (res.data.status == 'success') {
                                         this.$toast({
                                             component: ToastificationContent,
@@ -134,7 +134,7 @@
 
 
                                 //End updating data
-                                this.pdfFile = null;
+                                //this.pdfFile = null;
                             } else {
                                 this.$toast({
                                     component: ToastificationContent,
