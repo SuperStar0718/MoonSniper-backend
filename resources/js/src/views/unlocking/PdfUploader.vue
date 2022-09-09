@@ -109,11 +109,7 @@
                                 })
 
                                 //Start parsing the data and updating db:
-                                axios.post('api/parse-pdf', res.data, {
-                                    headers: {
-                                        'Content-Type': 'multipart/form-data'
-                                    }
-                                }).then(res => {
+                                axios.post('api/parse-pdf', res.data).then(res => {
                                     if (res.data.status == 'success') {
                                         this.$toast({
                                             component: ToastificationContent,

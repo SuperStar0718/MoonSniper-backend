@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/load-single-coin', [UnlockingController::class, 'loadSingleCoin']);
     Route::post('/update-coindata', [UnlockingController::class, 'updateCoinData']);
     Route::post('/upload-pdf', [UnlockingController::class, 'uploadPDF']);
-    Route::post('/parse-pdf', [UnlockingController::class, 'parsePDF']);
+    Route::post('/parse-pdf', 'App\Http\Controllers\UnlockingController@parsePDF');
 
     //MoonSniper functions
     Route::post('/get_coins', 'App\Http\Controllers\Coingecko@get_coin_prices');
