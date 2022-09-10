@@ -151,34 +151,39 @@
         <div class="body-content-overlay" />
         <div class="searchbar mt-1 mb-1">
             <b-row>
-                <b-col cols="8" md="8" xl="10">
-                    <b-input-group class="input-group-merge">
-                        <b-form-input v-model="params.filters2" placeholder="Search" class="search-product" />
+                <b-col cols="12" md="8" xl="10">
+                    <b-input-group class="input-group-merge mb-1">
+                        <b-form-input v-model="params.filters2" placeholder="Search" class="search-product " />
                         <b-input-group-append is-text>
                             <feather-icon icon="SearchIcon" class="text-muted" />
                         </b-input-group-append>
                     </b-input-group>
                 </b-col>
-                <b-col cols="4" md="4" xl="2">
-                    <div class="d-flex jusctify-content-between">
+                <b-col cols="12" md="4" xl="2">
+                    <div class="d-flex jusctify-content-between float-right">
                         <div>
-                            <b-button  @click="lockedFilter" style="padding:5px; width:33px" v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-                                variant="outline-primary" class="btn-icon mr-1 ">
-                                <feather-icon v-if="!locked" icon="UnlockIcon" size="20"
-                                    class="text-black cursor-pointer" style=" " />
-                                <b-img class=" cursor-pointer rounded-full" width="25px" height="25px"
-                                    v-if="locked" fluid 
+                            <b-button v-if="!locked" @click="lockedFilter" style="padding:5px; width:33px"
+                                title="Unlocking" v-ripple.400="'rgba(113, 102, 240, 0.15)'" variant="outline-primary"
+                                class="btn-icon mr-1 ">
+                                <feather-icon icon="UnlockIcon" size="20" class="text-black cursor-pointer" style=" " />
+
+                            </b-button>
+                            <b-button v-else @click="lockedFilter" style="padding:5px; width:33px" title="All Tokens"
+                                v-ripple.400="'rgba(113, 102, 240, 0.15)'" variant="outline-primary"
+                                class="btn-icon mr-1 ">
+
+                                <b-img class=" cursor-pointer rounded-full" width="25px" height="25px" fluid
                                     src="/images/static/noun-cryptocurrency-3262833.svg" />
                             </b-button>
                         </div>
                         <div v-b-modal.modal-filters variant="outline-primary">
-                            <b-button style="padding:5px" v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                            <b-button style="padding:5px" v-ripple.400="'rgba(113, 102, 240, 0.15)'" title="Filter"
                                 variant="outline-primary" class="btn-icon mx-1">
                                 <feather-icon icon="FilterIcon" size="20" class="text-black cursor-pointer" style=" " />
                             </b-button>
                         </div>
                         <div @click="clearFilters(true)">
-                            <b-button style="padding:5px" v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                            <b-button style="padding:5px" v-ripple.400="'rgba(113, 102, 240, 0.15)'" title="Refresh"
                                 variant="outline-primary" class="btn-icon ml-1">
                                 <feather-icon icon="RefreshCcwIcon" size="20" class="text-black cursor-pointer"
                                     style="" />
@@ -267,7 +272,7 @@
                     <template #cell(total_locked)="data">
                         <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
                             class="d-flex justify-content-start blurry-text">
-                            {{data.value}}
+                            {{toInterNationalNumber(data.value)}}
                         </div>
                         <div v-else style="text-align: center;" class="d-flex justify-content-start">
                             {{roundData(data.value)}}
@@ -311,36 +316,36 @@
                         </div>
                     </template>
                     <template #cell(roi_times)="data">
-                        <div style="text-align: center;" class="d-flex justify-content-start"  >
+                        <div style="text-align: center;" class="d-flex justify-content-start">
                             {{ toInterNationalNumber(data.value) }} <span v-if="data.value">X</span>
                         </div>
                     </template>
                     <template #cell(first_vc_unlock)="data">
                         <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
-                        class="d-flex justify-content-start blurry-text">
-                        {{data.value}}
-                    </div>
-                    <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                        {{dateFormat2(data.value)}} 
-                    </div>
-                    </template>
-                    
-                    <template #cell(end_vc_unlock)="data">
-                        <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
-                        class="d-flex justify-content-start blurry-text">
-                        {{data.value}}
-                    </div>
-                    <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                        {{dateFormat2(data.value)}} 
-                    </div>
-                    </template>
-                    <template #cell(three_months_unlock_number_of_tokens)="data">
-                       <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
                             class="d-flex justify-content-start blurry-text">
                             {{data.value}}
                         </div>
                         <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                            {{toInterNationalNumber(data.value)}} <span v-if="data.value">$</span>
+                            {{dateFormat2(data.value)}}
+                        </div>
+                    </template>
+
+                    <template #cell(end_vc_unlock)="data">
+                        <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
+                            class="d-flex justify-content-start blurry-text">
+                            {{data.value}}
+                        </div>
+                        <div v-else style="text-align: center;" class="d-flex justify-content-start">
+                            {{dateFormat2(data.value)}}
+                        </div>
+                    </template>
+                    <template #cell(three_months_unlock_number_of_tokens)="data">
+                        <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
+                            class="d-flex justify-content-start blurry-text">
+                            {{data.value}}
+                        </div>
+                        <div v-else style="text-align: center;" class="d-flex justify-content-start">
+                            {{toInterNationalNumber(data.value)}}
                         </div>
                     </template>
                     <template #cell(three_months_unlock_percent_of_tokens)="data">
@@ -349,7 +354,7 @@
                             {{data.value}}
                         </div>
                         <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                            {{roundData(data.value)}} <span v-if="data.value">$</span>
+                            {{roundData(data.value)}} <span v-if="data.value">%</span>
                         </div>
                     </template>
                     <template #cell(three_months_unlock_size)="data">
@@ -387,7 +392,9 @@
                     </template>
 
                     <template #cell(current_price)="data">
-                        <div v-if="data.value" :class="{'greenFlash':data.item.flash == 1,'redFlash':data.item.flash ==2}" style="">
+                        <div v-if="data.value"
+                            :class="{'greenFlash':data.item.flash == 1,'redFlash':data.item.flash ==2}"
+                            style="width: 100px;">
                             {{toInterNationalNumber(data.value)}}$</div>
                     </template>
                     <template #cell(market_cap)="data">
@@ -435,9 +442,9 @@
                     <template #cell(social_mentions_change)="data">
                         <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
                                 @click="sortingCols(data.value)" style="">{{ roundData(data.value) }}
-                                 <span v-if="data.value"> %</span></span>
+                                <span v-if="data.value"> %</span></span>
                             <span v-else-if="data.value!=null" class="text-danger" style="">{{ roundData(data.value) }}
-                                 <span v-if="data.value"> %</span></span></div>
+                                <span v-if="data.value"> %</span></span></div>
                     </template>
                     <template #cell(social_engagement_change)="data">
                         <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
@@ -449,9 +456,9 @@
                     <template #cell(average_sentiment_change)="data">
                         <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
                                 @click="sortingCols(data.value)" style="">{{ roundData(data.value) }}
-                                 <span v-if="data.value"> %</span></span>
+                                <span v-if="data.value"> %</span></span>
                             <span v-else-if="data.value!=null" class="text-danger" style="">{{ roundData(data.value) }}
-                                 <span v-if="data.value"> %</span></span></div>
+                                <span v-if="data.value"> %</span></span></div>
                     </template>
                     <template #cell(average_sentiment)="data">
                         <div v-if="data.value"> <span v-if="data.value>= 0 " class="" @click="sortingCols(data.value)"
@@ -512,16 +519,18 @@
                             <b-form-select-option :value="null" selected>Select A Preset</b-form-select-option>
                             <b-form-select-option v-for="(preset,index) in presetFilters" :key="index"
                                 :value="preset.id">
-                                {{ preset.preset_name }}
+                                {{ preset.preset_name }} <span v-if="preset.default !=1">(Custom Filter)</span>
                             </b-form-select-option>
                         </b-form-select>
                     </b-col>
                     <b-col class="m-auto">
-                        <b-button v-ripple.400="'rgb(31, 103, 211)'" v-if="selectedPreset" @click="savePresetFilter"
+                        <b-button v-ripple.400="'rgb(31, 103, 211)'"
+                            v-if="selectedPreset && checkDefault(selectedPreset)" @click="savePresetFilter"
                             title="Save preset" variant="warning" class="btn-icon">
                             <feather-icon icon="SaveIcon" />
                         </b-button>
-                        <b-button v-ripple.400="'rgba(255, 255, 255, 0.15)'" v-if="selectedPreset" @click="deletePreset"
+                        <b-button v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                            v-if="selectedPreset && checkDefault(selectedPreset)" @click="deletePreset"
                             title="Delete preset" variant="warning" class="btn-icon">
                             <feather-icon icon="Trash2Icon" />
                         </b-button>
@@ -562,16 +571,16 @@
                                             <div class="">
                                                 <b-form-group label="Token Price">
                                                     <div class="d-flex">
-                                                        <cleave id="min_market_cap" v-model="filterKey.min_current_price"
-                                                        class="form-control" :raw="false" :options="NumberFormaVal"
-                                                        placeholder="min" />
-                                                    <span>
-                                                        <feather-icon icon="ArrowRightIcon" size="16"
-                                                            class="align-middle" style="margin:10px 6px 0 0px" />
-                                                    </span>
-                                                    <cleave id="max_market_cap" v-model="filterKey.max_current_price"
-                                                        class="form-control" :raw="false" :options="NumberFormaVal"
-                                                        placeholder="max" />
+                                                        <cleave id="min_market_cap"
+                                                            v-model="filterKey.min_current_price" class="form-control"
+                                                            :raw="false" :options="NumberFormaVal" placeholder="min" />
+                                                        <span>
+                                                            <feather-icon icon="ArrowRightIcon" size="16"
+                                                                class="align-middle" style="margin:10px 6px 0 0px" />
+                                                        </span>
+                                                        <cleave id="max_market_cap"
+                                                            v-model="filterKey.max_current_price" class="form-control"
+                                                            :raw="false" :options="NumberFormaVal" placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
@@ -580,14 +589,16 @@
                                             <div class="">
                                                 <b-form-group label="Circulating Supply">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_circulating_supply"
-                                                            v-numeric-only placeholder="min" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_circulating_supply" v-numeric-only
+                                                            placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_circulating_supply"
-                                                            v-numeric-only placeholder="max" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_circulating_supply" v-numeric-only
+                                                            placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
@@ -596,14 +607,16 @@
                                             <div class="">
                                                 <b-form-group label="Total Supply">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_total_supply"
-                                                            v-numeric-only placeholder="min" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_total_supply" v-numeric-only
+                                                            placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_total_supply"
-                                                            v-numeric-only placeholder="max" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_total_supply" v-numeric-only
+                                                            placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
@@ -612,14 +625,16 @@
                                             <div class="">
                                                 <b-form-group label="Market Cap. Rank">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_market_cap_rank"
-                                                            v-numeric-only placeholder="min" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_market_cap_rank" v-numeric-only
+                                                            placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_market_cap_rank"
-                                                            v-numeric-only placeholder="max" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_market_cap_rank" v-numeric-only
+                                                            placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
@@ -628,14 +643,16 @@
                                             <div class="">
                                                 <b-form-group label="Trade Volume">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_trading_volume"
-                                                            v-numeric-only placeholder="min" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_trading_volume" v-numeric-only
+                                                            placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_trading_volume"
-                                                            v-numeric-only placeholder="max" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_trading_volume" v-numeric-only
+                                                            placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
@@ -644,14 +661,16 @@
                                             <div class="">
                                                 <b-form-group label="ROI %">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_roi_percentage"
-                                                            v-numeric-only placeholder="min" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_roi_percentage" v-numeric-only
+                                                            placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_roi_percentage"
-                                                            v-numeric-only placeholder="max" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_roi_percentage" v-numeric-only
+                                                            placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
@@ -660,13 +679,15 @@
                                             <div class="">
                                                 <b-form-group label="ROI in X's">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_roi_times" v-numeric-only
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_roi_times" v-numeric-only
                                                             placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_roi_times" v-numeric-only
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_roi_times" v-numeric-only
                                                             placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -677,7 +698,8 @@
                                                 <b-form-group label="Daily Price Change (%)"
                                                     label-for="price_change_percentage_24h">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" name="price_change_percentage_24h" v-numeric-only
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            name="price_change_percentage_24h" v-numeric-only
                                                             v-model="filterKey.min_price_change_percentage_24h"
                                                             placeholder="min" />
                                                         <span>
@@ -699,14 +721,16 @@
                                             <div class="">
                                                 <b-form-group label="Days in Market">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_genesis_date"
-                                                            v-numeric-only placeholder="min" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_genesis_date" v-numeric-only
+                                                            placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_genesis_date"
-                                                            v-numeric-only placeholder="max" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_genesis_date" v-numeric-only
+                                                            placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
@@ -715,14 +739,16 @@
                                             <div class="">
                                                 <b-form-group label="Total Supply (%)">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_total_supply_percent"
-                                                            v-numeric-only placeholder="min" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_total_supply_percent" v-numeric-only
+                                                            placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_total_supply_percent"
-                                                            v-numeric-only placeholder="max" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_total_supply_percent" v-numeric-only
+                                                            placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
@@ -731,13 +757,15 @@
                                             <div class="">
                                                 <b-form-group label="Seed Price">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_seed_price" v-numeric-only
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_seed_price" v-numeric-only
                                                             placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_seed_price" v-numeric-only
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_seed_price" v-numeric-only
                                                             placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -747,13 +775,15 @@
                                             <div class="">
                                                 <b-form-group label="Seed ROI">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_roi_seed" v-numeric-only
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_roi_seed" v-numeric-only
                                                             placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_roi_seed" v-numeric-only
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_roi_seed" v-numeric-only
                                                             placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -802,13 +832,15 @@
                                             <div class="">
                                                 <b-form-group label="Sentiment Change %">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_average_sentiment_change"
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_average_sentiment_change"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_average_sentiment_change"
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_average_sentiment_change"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -818,13 +850,15 @@
                                             <div class="">
                                                 <b-form-group label="Social Mentions Change %">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_social_mentions_change"
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_social_mentions_change"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_social_mentions_change"
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_social_mentions_change"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -834,13 +868,15 @@
                                             <div class="">
                                                 <b-form-group label="Social Engagement Change %">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_social_engagement_change"
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_social_engagement_change"
                                                             v-numeric-only placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_social_engagement_change"
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_social_engagement_change"
                                                             v-numeric-only placeholder="max" />
                                                     </div>
                                                 </b-form-group>
@@ -850,14 +886,16 @@
                                             <div class="">
                                                 <b-form-group label="Average Sentiment (1-5)">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_average_sentiment"
-                                                            v-numeric-only placeholder="min" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_average_sentiment" v-numeric-only
+                                                            placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_average_sentiment"
-                                                            v-numeric-only placeholder="max" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_average_sentiment" v-numeric-only
+                                                            placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
@@ -874,14 +912,16 @@
                                             <div class="">
                                                 <b-form-group label="Total Locked">
                                                     <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_total_locked"
-                                                            v-numeric-only placeholder="min" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.min_total_locked" v-numeric-only
+                                                            placeholder="min" />
                                                         <span>
                                                             <feather-icon icon="ArrowRightIcon" size="16"
                                                                 class="align-middle" style="margin:10px 6px 0 0px" />
                                                         </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_total_locked"
-                                                            v-numeric-only placeholder="max" />
+                                                        <cleave :options="NumberFormaVal" class="form-control"
+                                                            v-model="filterKey.max_total_locked" v-numeric-only
+                                                            placeholder="max" />
                                                     </div>
                                                 </b-form-group>
                                             </div>
@@ -1054,20 +1094,35 @@
         <b-modal id="modal-details" :hide-footer="true" v-if="activeData" centered size="lg">
             <template>
                 <div slot="modal-title">
-                    <div class="d-flex justify-content-between min-block">
-                        <div class="">
-
-                            <div>
+                    <div class="d-flex justify-content-between max-block">
+                        <div class="d-flex ">
+                            <div class="d-flex">
                                 <b-avatar class="bg-light" v-if="activeData.image" :src="activeData.image"></b-avatar>
-                                <span class="my-auto"> &nbsp;{{activeData.name +' - '+activeData.symbol}} &nbsp;
-                                    <span v-if="activeData.price_change_24h>= 0"
-                                        class="text-success">{{ roundData2(activeData.price_change_24h,6) }}<span v-if="activeData.price_change_24">$
-                                        <feather-icon icon="ChevronUpIcon" style="margin-left:px" /></span>
+                                <span class="marginx1"> {{activeData.name +' - '+activeData.symbol}}</span>
+                            </div>
+                            <div class="d-flex ">
+                                <div class="d-flex">
+                                    <span class=""
+                                        :class="{'greenFlash':activeData.flash == 1,'redFlash':activeData.flash ==2}"
+                                        v-if="activeData.current_price && activeData.current_price>= 0">{{ roundData(activeData.current_price) }}$
                                     </span>
-                                    <span v-else
-                                        class="text-danger text-base">{{ roundData2(activeData.price_change_24h,6) }}<span v-if="activeData.price_change_24">$
-                                        <feather-icon icon="ChevronDownIcon" style="margin-left:px" /></span></span>
-                                </span>
+                                </div>
+                                <div>
+                                    <span v-if="activeData.price_change_24h && activeData.price_change_24h>= 0"
+                                        class="text-success d-flex  marginx1"
+                                        style="font-size:12px; margin-top: 2px;"><span>{{ roundData(activeData.price_change_24h) }}</span>
+                                        <div>$
+                                            <feather-icon size="10" icon="ChevronUpIcon" />
+                                        </div>
+                                    </span>
+                                    <span v-else-if="activeData.price_change_24h"
+                                        style="font-size:12px; margin-top: 2px;"
+                                        class="text-danger d-flex marginx1"><span>{{ roundData(activeData.price_change_24h) }}</span>
+                                        <div>$
+                                            <feather-icon size="10" icon="ChevronDownIcon" />
+                                        </div>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div>
@@ -1100,34 +1155,43 @@
                 </div>
                 <app-collapse accordion>
                     <div class="rank_slot">Rank #{{toInterNationalNumber(activeData.market_cap_rank)}}</div>
-                    <app-collapse-item :isVisible="true" visible title="Market Data" class="open w-100">
+                    <app-collapse-item v-if="activeData.sparkline_in_7d&& activeData.sparkline_in_7d.length>0
+                        || activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0
+                         || activeData.total_volume
+                         ||activeData.market_cap
+                         ||activeData.total_supply_percent" :isVisible="true" visible title="Market Data"
+                        class="open w-100">
                         <b-card no-body class="mb-1">
                             <b-card-body>
                                 <b-row>
-                                    <b-col md="8" sm="7" class="text-center sparlineChat mb-2"  v-if="activeData.sparkline_in_7d&& activeData.sparkline_in_7d.length>0">
+                                    <b-col md="8" sm="7" class="text-center sparlineChat mb-2"
+                                        v-if="activeData.sparkline_in_7d&& activeData.sparkline_in_7d.length>0">
                                         <h5> 7 Days</h5>
-                                        <sparkline width="300" height="150">
+                                        <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line"
+                                            height="290" :options="seven_DaysChart" :series="seven_DaysChartseries">
+                                        </vue-apex-charts>
+                                        <!-- <sparkline width="300" height="150">
                                             <sparklineLine :data="activeData.sparkline_in_7d"
                                                 :limit="activeData.sparkline_in_7d?activeData.sparkline_in_7d.length:1000"
                                                 :styles="spLineStyles" />
-                                        </sparkline>
+                                        </sparkline> -->
                                     </b-col>
                                     <b-col>
                                         <div class="mb-1" v-if="activeData.total_volume">
-                                            <h5>{{ activeData.name }} Volume</h5>
+                                            <h5> Volume</h5>
                                             <div class="" style="font-size:16px; font-weight: 600;">
                                                 <span
                                                     class="">${{ toInterNationalNumber(activeData.total_volume) }}</span>
                                             </div>
                                         </div>
                                         <div class="mb-1" v-if="activeData.market_cap">
-                                            <h5>{{ activeData.name }} Market Cap</h5>
+                                            <h5> Market Cap</h5>
                                             <div class="" style="font-size:16px; font-weight: 600;">
                                                 <span>${{ toInterNationalNumber(activeData.market_cap) }}</span> </div>
                                         </div>
                                         <div class="mb-1"
                                             v-if="activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0">
-                                            <h5>{{ activeData.name }} X's from launch</h5>
+                                            <h5> X's from launch</h5>
                                             <div class="" style="font-size:16px; font-weight: 600;">
                                                 <span
                                                     v-if="activeData.roi_times">{{ xfromlunch(activeData.roi_times,'roi_times') }}X</span>
@@ -1136,7 +1200,7 @@
                                             </div>
                                         </div>
                                         <div class="mb-1" v-if="activeData.total_supply_percent">
-                                            <h5>{{ activeData.name }} Total Supply:</h5>
+                                            <h5>Total Supply:</h5>
                                             <div class="" style="font-size:16px; font-weight: 600;">
                                                 <span>{{ activeData.total_supply_percent }} %</span> </div>
                                         </div>
@@ -1147,7 +1211,7 @@
                             </b-card-body>
                         </b-card>
                     </app-collapse-item>
-                    <app-collapse-item title="Social Data">
+                    <app-collapse-item title="Social Data" class="w-100">
                         <b-card no-body class="mb-1">
                             <b-card-body>
 
@@ -1319,80 +1383,232 @@
                             </b-card-body>
                         </b-card>
                     </app-collapse-item>
-                    <app-collapse-item title="Unlocking">
+                    <app-collapse-item class="w-100" title="Unlocking" v-if="activeData.next_unlock_date_text || supplyChart.series.length >0 ||activeData.next_unlock_status || 
+                        activeData.first_vc_unlock
+                        ||activeData.end_vc_unlock
+                        ||activeData.next_unlock_number_of_tokens
+                        ||activeData.next_unlock_size
+                        ||activeData.next_unlock_percent_of_tokens
+                        ||activeData.seed_price
+                        ||activeData.roi_seed
+                        ||activeData.three_months_unlock_number_of_tokens
+                        ||activeData.three_months_unlock_percent_of_tokens
+                        ||activeData.three_months_unlock_size
+                        ||activeData.six_months_unlock_number_of_tokens
+                        ||activeData.six_months_unlock_percent_of_tokens
+                        ||activeData.six_months_unlock_size
+                        ">
                         <b-card no-body class="mb-1">
                             <b-card-body>
                                 <b-row class="">
-                                    <b-col md="12" xl="12" v-if="activeData.next_unlock_date">
-                                        <div class="d-flex">
-                                            <span class="mr-1">Next Unlock Date: </span>
-                                            <span style="font-weight:600" class=""
-                                                :class="{'blurry-text' :userData.currentPlan =='basic' && activeData.market_cap_rank < 1 ||userData.currentPlan =='basic' && activeData.market_cap_rank >5}">{{dateFormat(activeData.next_unlock_date)}}</span>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.next_unlock_date_text">
+                                        <div class="">
+                                            <div class="mr-1">Next Unlock Date: </div>
+                                            <div style="font-weight:600" class=""
+                                                :class="{'blurry-text' :checkUserPlan(activeData.market_cap_rank)}">
+                                                {{activeData.next_unlock_date_text}}</div>
                                         </div>
                                     </b-col>
-                                    <!-- <b-col md="12" xl="12" v-if="activeData.next_unlock_date_text">
-                                            <div class="d-flex m-2 justify-content-center">
-                                                <span class="mr-1">Next Unlock Date Text: </span>
-                                                <span class="">{{activeData.next_unlock_date_text}}</span>
-                                            </div>
-                                        </b-col>
-                                        <b-col md="12" xl="12" v-if="activeData.next_unlock_percent_of_tokens">
-                                            <div class="d-flex m-2 justify-content-center">
-                                                <span class="mr-1">Next Unlock Percent Of Tokens: </span>
-                                                <span class="">{{activeData.next_unlock_percent_of_tokens}}
-                                                    %</span>
-                                            </div>
-                                        </b-col>
-                                        <b-col md="12" xl="12" v-if="activeData.next_unlock_number_of_tokens">
-                                            <div class="d-flex m-2  justify-content-center">
-                                                <span class="mr-1">Next Unlock Number Of Tokens: </span>
-                                                <span>{{activeData.next_unlock_number_of_tokens}}</span>
-                                            </div>
-                                        </b-col>
-                                        <b-col md="12" xl="12" v-if="activeData.next_unlock_size">
-                                            <div class="d-flex m-2 justify-content-center">
-                                                <span class="mr-1">Next Unlock Size: </span>
-                                                <span class=""> {{activeData.next_unlock_size}}</span>
-                                            </div>
-                                        </b-col>
-                                        <b-col md="12" xl="12" v-if="activeData.next_unlock_Status">
-                                            <div class="d-flex m-2 justify-content-center">
-                                                <span class="mr-1">Next Unlock Status: </span>
-                                                <span class=""> {{activeData.next_unlock_Status}}</span>
-                                            </div>
-                                        </b-col> -->
-                                </b-row>
-                                <b-row class="mt-2">
-                                    <b-col cols="12" md="12">
-                                        <app-collapse accordion>
-                                            <app-collapse-item title="Trading Volume History Chart">
-                                                <div v-if="TradeHistoryseries[0].data.length>0">
-                                                    <vue-apex-charts class="full" width="100%" :dataLabels="true"
-                                                        type="line" height="290" :options="TradeHistoryOptions"
-                                                        :series="TradeHistoryseries">
-                                                    </vue-apex-charts>
-                                                </div>
-                                            </app-collapse-item>
-                                        </app-collapse>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.next_unlock_status">
+                                        <div class="">
+                                            <div class="mr-1">Next Unlock Status: </div>
+                                            <div style="font-weight:600" class=""
+                                                :class="{'blurry-text' :checkUserPlan(activeData.market_cap_rank)}">
+                                                {{activeData.next_unlock_status}}</div>
+                                        </div>
+                                    </b-col>
+
+                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.first_vc_unlock">
+                                        <div class="mr-1">First VC Unlock: </div>
+                                        <div v-if="checkUserPlan(activeData.market_cap_rank)" style="font-weight:600"
+                                            class="blurry-text">
+                                            {{activeData.first_vc_unlock}}
+                                        </div>
+                                        <div v-else style="font-weight:600">
+                                            {{dateFormat(activeData.first_vc_unlock)}}
+                                        </div>
+                                    </b-col>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.end_vc_unlock">
+                                        <div class="mr-1">End VC Unlock: </div>
+                                        <div v-if="checkUserPlan(activeData.market_cap_rank)" style="font-weight:600"
+                                            class="blurry-text">{{activeData.end_vc_unlock}}
+                                        </div>
+                                        <div v-else style="font-weight:600">{{dateFormat(activeData.end_vc_unlock)}}
+                                        </div>
+
 
                                     </b-col>
-                                    <b-col cols="12" md="12">
-                                        <app-collapse accordion>
-                                            <app-collapse-item title="Supply Chart">
-                                                <div v-if="supplyChart.series.length >0">
-
-                                                    <vue-apex-charts type="pie" height="300"
-                                                        :options="supplyChart.chartOptions"
-                                                        :series="supplyChart.series" />
-                                                </div>
-                                            </app-collapse-item>
-                                        </app-collapse>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                        v-if="activeData.next_unlock_number_of_tokens">
+                                        <div class="mr-1">Next Unlock Number Of Tokens: </div>
+                                        <div v-if="checkUserPlan(activeData.market_cap_rank)" style="font-weight:600"
+                                            class="blurry-text">
+                                            {{activeData.next_unlock_number_of_tokens}}</div>
+                                        <div v-else style="font-weight:600">
+                                            {{toInterNationalNumber(activeData.next_unlock_number_of_tokens)}}
+                                        </div>
                                     </b-col>
+
+                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                        v-if="activeData.next_unlock_percent_of_tokens">
+                                        <div class="">
+                                            <div class="mr-1">Next Unlock Percent Of Tokens: </div>
+                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                style="font-weight:600" class="blurry-text">
+                                                {{ activeData.next_unlock_percent_of_tokens }}
+                                            </div>
+                                            <div style="font-weight:600" v-else>
+                                                {{roundData(activeData.next_unlock_percent_of_tokens)}}
+                                                %</div>
+                                        </div>
+                                    </b-col>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.next_unlock_size">
+                                        <div class="mr-1">Next Unlock Size: </div>
+                                        <div class="" style="font-weight:600"
+                                            :class="{'blurry-text' :checkUserPlan(activeData.market_cap_rank)}">
+                                            {{activeData.next_unlock_size}}</div>
+                                    </b-col>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.seed_price">
+                                        <div class="">
+                                            <div class="mr-1">Seed Price: </div>
+                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                style="font-weight:600" class="blurry-text">
+                                                {{ activeData.seed_price }}
+                                            </div>
+                                            <div style="font-weight:600" v-else>
+                                                {{toInterNationalNumber(activeData.seed_price)}}
+                                            </div>
+                                        </div>
+                                    </b-col>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.roi_seed">
+                                        <div class="">
+                                            <div class="mr-1">ROI Seed: </div>
+                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                style="font-weight:600" class="blurry-text">
+                                                {{ activeData.roi_seed }}
+                                            </div>
+                                            <div style="font-weight:600" v-else>
+                                                {{activeData.roi_seed}}$
+                                            </div>
+                                        </div>
+                                    </b-col>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.total_locked">
+                                        <div class="">
+                                            <div class="mr-1">Total Locked: </div>
+                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                style="font-weight:600" class="blurry-text">
+                                                {{ activeData.total_locked }}
+                                            </div>
+                                            <div style="font-weight:600" v-else>
+                                                {{toInterNationalNumber(activeData.total_locked)}}
+                                            </div>
+                                        </div>
+                                    </b-col>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                        v-if="activeData.three_months_unlock_number_of_tokens">
+                                        <div class="">
+                                            <div class="mr-1">3 Months Unlock # of Tokens </div>
+                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                style="font-weight:600" class="blurry-text">
+                                                {{ activeData.three_months_unlock_number_of_tokens }}
+                                            </div>
+                                            <div style="font-weight:600" v-else>
+                                                {{toInterNationalNumber(activeData.three_months_unlock_number_of_tokens)}}
+                                            </div>
+                                        </div>
+                                    </b-col>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                        v-if="activeData.three_months_unlock_percent_of_tokens">
+                                        <div class="">
+                                            <div class="mr-1">3 Months Unlock Tokens % </div>
+                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                style="font-weight:600" class="blurry-text">
+                                                {{ activeData.three_months_unlock_percent_of_tokens }}
+                                            </div>
+                                            <div style="font-weight:600" v-else>
+                                                {{roundData(activeData.three_months_unlock_percent_of_tokens)}}%
+                                            </div>
+                                        </div>
+                                    </b-col>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                        v-if="activeData.three_months_unlock_size">
+                                        <div class="">
+                                            <div class="mr-1">3 Months Unlock Tokens % </div>
+                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                style="font-weight:600" class="blurry-text">
+                                                {{ activeData.three_months_unlock_size }}
+                                            </div>
+                                            <div style="font-weight:600" v-else>
+                                                {{activeData.three_months_unlock_size}}
+                                            </div>
+                                        </div>
+                                    </b-col>
+
+                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                        v-if="activeData.six_months_unlock_number_of_tokens">
+                                        <div class="">
+                                            <div class="mr-1">6 Months Unlock # of Tokens </div>
+                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                style="font-weight:600" class="blurry-text">
+                                                {{ activeData.six_months_unlock_number_of_tokens }}
+                                            </div>
+                                            <div style="font-weight:600" v-else>
+                                                {{toInterNationalNumber(activeData.six_months_unlock_number_of_tokens)}}
+                                            </div>
+                                        </div>
+                                    </b-col>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                        v-if="activeData.six_months_unlock_percent_of_tokens">
+                                        <div class="">
+                                            <div class="mr-1">6 Months Unlock Tokens % </div>
+                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                style="font-weight:600" class="blurry-text">
+                                                {{ activeData.six_months_unlock_percent_of_tokens }}
+                                            </div>
+                                            <div style="font-weight:600" v-else>
+                                                {{roundData(activeData.six_months_unlock_percent_of_tokens)}}%
+                                            </div>
+                                        </div>
+                                    </b-col>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                        v-if="activeData.six_months_unlock_size">
+                                        <div class="">
+                                            <div class="mr-1">6 Months Unlock Tokens % </div>
+                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                style="font-weight:600" class="blurry-text">
+                                                {{ activeData.six_months_unlock_size }}
+                                            </div>
+                                            <div style="font-weight:600" v-else>
+                                                {{activeData.six_months_unlock_size}}
+                                            </div>
+                                        </div>
+                                    </b-col>
+
+                                    <b-col cols="12" md="12">
+                                        <span class="mr-1">Supply chart: </span>
+                                        <div>
+
+                                            <vue-apex-charts type="pie" height="300" :options="supplyChart.chartOptions"
+                                                :series="supplyChart.series" />
+                                        </div>
+                                    </b-col>
+
+
                                 </b-row>
+
                             </b-card-body>
                         </b-card>
                     </app-collapse-item>
-                    <app-collapse-item title="Description">
+                    <app-collapse-item class="w-100" v-if="TradeHistoryseries[0].data.length>0"
+                        title="Trading Volume History">
+                        <div>
+                            <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line" height="290"
+                                :options="TradeHistoryOptions" :series="TradeHistoryseries">
+                            </vue-apex-charts>
+                        </div>
+                    </app-collapse-item>
+                    <app-collapse-item class="w-100" title="Description"
+                        v-if="activeData.coin_description && activeData.coin_description.trim() != ''">
                         <b-card no-body class="mb-1">
                             <b-card-body>
                                 <b-card-text class="model-desc" v-html="activeData.coin_description">
@@ -1658,6 +1874,73 @@
                         x: {
                             format: "dd.MM.yyyy HH:mm"
                         }
+                    },
+
+                },
+                seven_DaysChartseries: [{
+                    name: '7 Days History',
+                    data: []
+                }],
+                seven_DaysChart: {
+
+                    chart: {
+                        id: '7days-history',
+                        height: 290,
+                    },
+                    xaxis: {
+                        labels: {
+                            show: true,
+                            style: {
+                                colors: '#78909C',
+                            },
+                            x: {
+                                format: "dd.MM.yyyy HH:mm"
+                            }
+                        },
+                        categories: [],
+                        type: 'datetime',
+                    },
+                    colors: ['#c7361c'],
+                    yaxis: {
+                        labels: {
+                            show: true,
+                            style: {
+                                colors: '#78909C',
+                            },
+                            formatter: function (value) {
+                                return value.toFixed(2);
+                            }
+                        },
+                    },
+                    stroke: {
+                        show: true,
+                        curve: 'smooth',
+                        lineCap: 'butt',
+                        width: 1,
+                        dashArray: 0,
+                        labels: {
+                            show: true,
+                            hideOverlappingLabels: true,
+                        }
+                    },
+                    tooltip: {
+                        style: {
+                            colors: '#78909C',
+
+                        },
+                        shared: false,
+                        y: {
+                            formatter: function (value) {
+                                return new Intl.NumberFormat('en-US', {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 15,
+                                }).format(value);
+                            }
+                        },
+                        x: {
+                            format: "dd.MM.yyyy HH:mm"
+                        }
+
                     },
 
                 },
@@ -1953,7 +2236,6 @@
 
                 this.isBusy = true;
                 this.params.filters = [];
-                let strArray = [];
                 if (this.filterKey.min_market_cap) {
                     this.params.filters.push(["market_cap", ">=", this.filterKey.min_market_cap.replaceAll(",", "")]);
                 }
@@ -2209,6 +2491,8 @@
                 }
                 if (refresh_flag) {
                     this.loadCoins();
+                } else {
+                    this.isBusy = false;
                 }
 
             },
@@ -2283,20 +2567,34 @@
 
                 }
             },
-            detailsModel(item) {
+            async detailsModel(item) {
                 this.selectedContract = null;
                 this.supplyChart.series = [];
-
+                this.TradeHistoryOptions.xaxis.categories = [];
+                this.seven_DaysChartseries[0].data = [];
                 if (typeof item.sparkline_in_7d == 'string') {
                     let sparklines = item.sparkline_in_7d.split("|").map(Number);
                     sparklines = sparklines.slice(0, -1);
-                    item.sparkline_in_7d = sparklines;
+
+                    for (let i = 0; i < 7; i++) {
+                        for (let j = 0; j <= 23; j++) {
+                            var d = new Date();
+                            d.setUTCHours(0,0,0,0);
+                            d.setDate(d.getDate() - i);
+                            d.setHours(d.getHours() - j);
+                            this.seven_DaysChart.xaxis.categories.unshift(d.getTime());
+                        }
+                    }
+                    this.seven_DaysChartseries[0].data = item.sparkline_in_7d = sparklines;
+
+
+
                 }
                 if (typeof item.contract_address == 'string') {
                     item.contract_address = JSON.parse(item.contract_address);
                 }
                 this.activeData = item;
-                axios.post('api/get_trading_volume_history', {
+                await axios.post('api/get_trading_volume_history', {
                         coin_id: item.coin_id,
                         symbol: item.symbol
                     })
@@ -2308,24 +2606,33 @@
                                 .trading_volume_history_json);
                             if (this.activeData.trading_volume_history_json.total_volumes) {
                                 this.activeData.trading_volume_history_json.total_volumes.forEach(element => {
-                                    this.TradeHistoryseries[0].data.push([parseInt(element[0]), parseInt(
-                                        element[1])])
+                                    this.TradeHistoryseries[0].data.push([parseInt(element[0]),
+                                        parseInt(
+                                            element[1])
+                                    ])
                                 })
                             }
 
 
                         }
-                        if (this.activeData.max_supply != null && this.activeData.circulating_supply != null && this
-                            .activeData.next_unlock_number_of_tokens != null &&
+                        if (this.activeData.max_supply != null || this.activeData.circulating_supply != null ||
+                            this
+                            .activeData.next_unlock_number_of_tokens != null ||
                             this.activeData.three_months_unlock_number_of_tokens != null && this.activeData
-                            .six_months_unlock_number_of_tokens != null && this.userData.currentPlan != "basic") {
+                            .six_months_unlock_number_of_tokens != null) {
+                            var ms = parseFloat(this.activeData.max_supply);
+                            if (isNaN(ms))
+                                ms = 0.0;
+                            var cs = parseFloat(this.activeData.circulating_supply);
+                            if (isNaN(cs))
+                                cs = 0.0;
 
-
-                            var val1 = parseFloat(this.activeData.max_supply) - parseFloat(this.activeData
-                                .circulating_supply) - parseFloat(this.activeData
-                                .next_unlock_number_of_tokens);
-                            var val2 = parseFloat(this.activeData.circulating_supply)
-                            var val3 = parseFloat(this.activeData.next_unlock_number_of_tokens)
+                            var nt = parseFloat(this.activeData.next_unlock_number_of_tokens);
+                            if (isNaN(nt))
+                                nt = 0.0;
+                            var val1 = Math.max(ms - cs - nt, 0.0);
+                            var val2 = cs;
+                            var val3 = nt;
                             this.supplyChart.series = [val1, val2, val3];
 
                         }
@@ -2616,6 +2923,15 @@
 
 
             },
+            checkDefault(val) {
+                let index = this.presetFilters.map(item => item.id).indexOf(val);
+                var retVal = this.presetFilters[index].default;
+                if (retVal == 1) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
             checkExist(val) {
                 if (val && val.trim().length > 0) {
                     let checkval = this.presetFilters.filter(field => {
@@ -2818,6 +3134,12 @@
         }
     }
 
+    @media only screen and (max-width: 992px) {
+        .max-block {
+            display: block !important;
+        }
+    }
+
     .sparlineChat svg {
         height: 100%;
         width: 100%
@@ -2844,7 +3166,7 @@
     .rank_slot {
         position: relative;
         top: 36px;
-        right: 103px;
+        right: 189px;
         float: right;
         z-index: 999;
     }
@@ -2861,8 +3183,12 @@
     }
 
     .redFlash {
-        color: rgb(252, 8, 28);
+        color: #ea5455;
 
+    }
+
+    .marginx1 {
+        margin: 0 8px 0 8px
     }
 
 </style>
