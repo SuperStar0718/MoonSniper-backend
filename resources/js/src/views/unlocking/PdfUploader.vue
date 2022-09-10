@@ -93,7 +93,7 @@
                         this.pdfFile = this.$refs.pdffile.files[0];
                         let formData = new FormData();
                         formData.append('pdfFile', this.pdfFile);
-                        axios.post('api/upload-pdf', formData, {
+                        axios.post('/api/upload-pdf', formData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             }
@@ -102,12 +102,39 @@
                                 this.$toast({
                                     component: ToastificationContent,
                                     props: {
-                                        title: 'PDF has been upload',
+                                        title: 'PDF has been upload, Start parsing data and updating the db...',
                                         variant: 'success',
                                         icon: 'CheckCircleIcon',
                                     },
                                 })
-                                this.pdfFile = null;
+
+                                //Start parsing the data and updating db:
+                                axios.post('/api/parse-pdf', res.data).then(res => {
+                                    if (res.data.status == 'success') {
+                                        this.$toast({
+                                            component: ToastificationContent,
+                                            props: {
+                                                title: 'PDF Parsed and data updated successfully!',
+                                                variant: 'success',
+                                                icon: 'CheckCircleIcon',
+                                            },
+                                        })
+                                        this.pdfFile = null;
+                                    } else {
+                                        this.$toast({
+                                            component: ToastificationContent,
+                                            props: {
+                                                title: 'Something went wrong',
+                                                variant: 'error',
+                                                icon: 'CheckCircleIcon',
+                                            },
+                                        })
+                                    }
+                                })
+
+
+                                //End updating data
+                                //this.pdfFile = null;
                             } else {
                                 this.$toast({
                                     component: ToastificationContent,
@@ -125,7 +152,7 @@
                     }
 
                 })
-          
+
                 }
                   }
         }
