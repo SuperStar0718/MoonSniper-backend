@@ -111,131 +111,151 @@ class UnlockingController extends Controller
                 $coin = CoinsData::where('symbol', $row[1])->first();
                 if ($coin) {
 
-                    //Next token Date:
-                    if (str_contains($row[7], 'Linear across ')) {
-                        //we will add the first of this month:
-                        $str = substr($row[7], 14);
-                        $nextUnlockDate = new Carbon('first day of ' . $str);
-                        $nextUnlockText = $row[7];
-                    } elseif (str_contains($row[7], 'Weekly across ')) {
-                        //TODO: what do we need here?, Ill keep the same:
-                        //we will add the first of this month:
-                        $str = substr($row[7], 14);
-                        $nextUnlockDate = new Carbon('first day of ' . $str);
-                        $nextUnlockText = $row[7];
-                    } elseif (str_contains($row[7], 'No unlocks until ')) {
-                        //Save text only:
-                        $nextUnlockText = $row[7];
-                    } else {
-                        //probably a real date:
-                        $date = DateTime::createFromFormat('d-M-y', $row[7]);
-                        if ($date !== false) {
-                            // it's a date
-                            $nextUnlockDate = $date->format('Y-m-d 00:00:00');
-                            $nextUnlockText = null;
+                    $nextUnlockText = null;
+                    $nextUnlockDate = null;
+                    if (isset($row[7])) {
+                        //Next token Date:
+                        if (str_contains($row[7], 'Linear across ')) {
+                            //we will add the first of this month:
+                            $str = substr($row[7], 14);
+                            $nextUnlockDate = new Carbon('first day of ' . $str);
+                            $nextUnlockText = $row[7];
+                        } elseif (str_contains($row[7], 'Weekly across ')) {
+                            //TODO: what do we need here?, Ill keep the same:
+                            //we will add the first of this month:
+                            $str = substr($row[7], 14);
+                            $nextUnlockDate = new Carbon('first day of ' . $str);
+                            $nextUnlockText = $row[7];
+                        } elseif (str_contains($row[7], 'No unlocks until ')) {
+                            //Save text only:
+                            $nextUnlockText = $row[7];
+                        } else {
+                            //probably a real date:
+                            $date = DateTime::createFromFormat('d-M-y', $row[7]);
+                            if ($date !== false) {
+                                // it's a date
+                                $nextUnlockDate = $date->format('Y-m-d 00:00:00');
+                            }
                         }
                     }
 
                     //Number of tokens:
                     $re = '/^\d+(?:,\d+)*$/';
 
-                    if (preg_match($re, $row[8]))
-                        $NumOfTokens = intval(str_replace(",", "", $row[8]));
-                    else
-                        $NumOfTokens = null;
+                    $NumOfTokens = null;
+                    if (isset($row[8])) {
+                        if (preg_match($re, $row[8])) {
+                            $NumOfTokens = intval(str_replace(",", "", $row[8]));
+                        }
+                    }
 
                     //percent of circulating supply:
-                    if ($row[9] != '-') {
-                        $tokensSupplyPercent = str_replace("%", "", $row[9]);
-                    } else {
-                        $tokensSupplyPercent = null;
+                    $tokensSupplyPercent = null;
+                    if (isset($row[9])) {
+                        if ($row[9] != '-') {
+                            $tokensSupplyPercent = str_replace("%", "", $row[9]);
+                        }
                     }
 
                     //Next Unlock Size:
-                    if ($row[10] != '-') {
-                        $nextUnlockSize = $row[10];
-                    } else {
-                        $nextUnlockSize = null;
+                    $nextUnlockSize = null;
+                    if (isset($row[10])) {
+                        if ($row[10] != '-') {
+                            $nextUnlockSize = $row[10];
+                        }
                     }
 
                     //first vc unlock:
                     $firstVCUnlock = null;
                     $firstVCUnlockText = null;
-                    if ($row[5] != 'n.a.') {
-                        //probably a real date:
-                        $date = DateTime::createFromFormat('d-M-y', $row[5]);
-                        if ($date !== false) {
-                            // it's a date
-                            $firstVCUnlock = $date->format('Y-m-d 00:00:00');
+                    if (isset($row[5])) {
+                        if ($row[5] != 'n.a.') {
+                            //probably a real date:
+                            $date = DateTime::createFromFormat('d-M-y', $row[5]);
+                            if ($date !== false) {
+                                // it's a date
+                                $firstVCUnlock = $date->format('Y-m-d 00:00:00');
+                            }
+                        } else {
+                            $firstVCUnlockText = "Not Available";
                         }
-                    } else {
-                        $firstVCUnlockText = "Not Available";
                     }
 
 
                     //Last vc unlock:
                     $lastVCUnlock = null;
                     $lastVCUnlockText = null;
-                    if ($row[6] != 'n.a.') {
-                        //probably a real date:
-                        $date = DateTime::createFromFormat('d-M-y', $row[6]);
-                        if ($date !== false) {
-                            // it's a date
-                            $lastVCUnlock = $date->format('Y-m-d 00:00:00');
+                    if (isset($row[6])) {
+                        if ($row[6] != 'n.a.') {
+                            //probably a real date:
+                            $date = DateTime::createFromFormat('d-M-y', $row[6]);
+                            if ($date !== false) {
+                                // it's a date
+                                $lastVCUnlock = $date->format('Y-m-d 00:00:00');
+                            }
+                        } else {
+                            $lastVCUnlockText = "Not Available";
                         }
-                    } else {
-                        $lastVCUnlockText = "Not Available";
                     }
 
                     //3 Months
                     //num of tokens:
-                    if (preg_match($re, $row[11]))
-                        $threeMonthsNumberOfTokens = intval(str_replace(",", "", $row[11]));
-                    else
-                        $threeMonthsNumberOfTokens = null;
+                    $threeMonthsNumberOfTokens = null;
+                    if (isset($row[11])) {
+                        if (preg_match($re, $row[11])) {
+                            $threeMonthsNumberOfTokens = intval(str_replace(",", "", $row[11]));
+                        }
+                    }
 
                     //percent of circulating supply:
-                    if ($row[12] != '-') {
-                        $threeMonthsPercentTokens = str_replace("%", "", $row[12]);
-                    } else {
-                        $threeMonthsPercentTokens = null;
+                    $threeMonthsPercentTokens = null;
+                    if (isset($row[12])) {
+                        if ($row[12] != '-') {
+                            $threeMonthsPercentTokens = str_replace("%", "", $row[12]);
+                        }
                     }
 
                     //Size:
-                    if ($row[13] != '-') {
-                        $threeMonthsSize = $row[13];
-                    } else {
-                        $threeMonthsSize = null;
+                    $threeMonthsSize = null;
+                    if (isset($row[13])) {
+                        if ($row[13] != '-') {
+                            $threeMonthsSize = $row[13];
+                        }
                     }
 
                     //6 Months
                     //num of tokens:
-                    if (preg_match($re, $row[14]))
-                        $sixMonthsNumberOfTokens = intval(str_replace(",", "", $row[14]));
-                    else
-                        $sixMonthsNumberOfTokens = null;
+                    $sixMonthsNumberOfTokens = null;
+                    if (isset($row[14])) {
+                        if (preg_match($re, $row[14])) {
+                            $sixMonthsNumberOfTokens = intval(str_replace(",", "", $row[14]));
+                        }
+                    }
 
                     //percent of circulating supply:
-                    if ($row[15] != '-') {
-                        $sixMonthsPercentTokens = str_replace("%", "", $row[15]);
-                    } else {
-                        $sixMonthsPercentTokens = null;
+                    $sixMonthsPercentTokens = null;
+                    if (isset($row[15])) {
+                        if ($row[15] != '-') {
+                            $sixMonthsPercentTokens = str_replace("%", "", $row[15]);
+                        }
                     }
 
                     //Size:
-                    if ($row[16] != '-') {
-                        $sixMonthsSize = $row[16];
-                    } else {
-                        $sixMonthsSize = null;
+                    $sixMonthsSize = null;
+                    if (isset($row[16])) {
+                        if ($row[16] != '-') {
+                            $sixMonthsSize = $row[16];
+                        }
                     }
 
 
                     //Seed price:
-                    if ($row[3] != 'n.a.') {
-                        //probably a real date:
-                        $seedPrice = $row[3];
-                    } else {
-                        $seedPrice = null;
+                    $seedPrice = null;
+                    if (isset($row[3])) {
+                        if ($row[3] != 'n.a.') {
+                            //probably a real date:
+                            $seedPrice = $row[3];
+                        }
                     }
 
                     //$coin->total_locked = $request->total_locked;
