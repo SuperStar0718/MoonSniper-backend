@@ -101,161 +101,163 @@ class UnlockingController extends Controller
             //push to DB each line:
             $row = preg_split("/\t+/", $line);
 
-            $row = array_map(function($a){
+            $row = array_map(function ($a) {
                 return str_replace('A ', 'A', $a);
             }, $row);
 
             //start saving:
             //get (first!) coin by symbol:
-            $coin = CoinsData::where('symbol', $row[1])->first();
-            if($coin) {
+            if (isset($row[1])) {
+                $coin = CoinsData::where('symbol', $row[1])->first();
+                if ($coin) {
 
-                //Next token Date:
-                if (str_contains($row[7], 'Linear across ')) {
-                    //we will add the first of this month:
-                    $str = substr($row[7], 14);
-                    $nextUnlockDate = new Carbon('first day of ' . $str);
-                    $nextUnlockText = $row[7];
-                } elseif (str_contains($row[7], 'Weekly across ')) {
-                    //TODO: what do we need here?, Ill keep the same:
-                    //we will add the first of this month:
-                    $str = substr($row[7], 14);
-                    $nextUnlockDate = new Carbon('first day of ' . $str);
-                    $nextUnlockText = $row[7];
-                } elseif (str_contains($row[7], 'No unlocks until ')) {
-                    //Save text only:
-                    $nextUnlockText = $row[7];
-                } else {
-                    //probably a real date:
-                    $date = DateTime::createFromFormat('d-M-y', $row[7]);
-                    if ($date !== false) {
-                        // it's a date
-                        $nextUnlockDate = $date->format('Y-m-d 00:00:00');
-                        $nextUnlockText = null;
+                    //Next token Date:
+                    if (str_contains($row[7], 'Linear across ')) {
+                        //we will add the first of this month:
+                        $str = substr($row[7], 14);
+                        $nextUnlockDate = new Carbon('first day of ' . $str);
+                        $nextUnlockText = $row[7];
+                    } elseif (str_contains($row[7], 'Weekly across ')) {
+                        //TODO: what do we need here?, Ill keep the same:
+                        //we will add the first of this month:
+                        $str = substr($row[7], 14);
+                        $nextUnlockDate = new Carbon('first day of ' . $str);
+                        $nextUnlockText = $row[7];
+                    } elseif (str_contains($row[7], 'No unlocks until ')) {
+                        //Save text only:
+                        $nextUnlockText = $row[7];
+                    } else {
+                        //probably a real date:
+                        $date = DateTime::createFromFormat('d-M-y', $row[7]);
+                        if ($date !== false) {
+                            // it's a date
+                            $nextUnlockDate = $date->format('Y-m-d 00:00:00');
+                            $nextUnlockText = null;
+                        }
                     }
-                }
 
-                //Number of tokens:
-                $re = '/^\d+(?:,\d+)*$/';
+                    //Number of tokens:
+                    $re = '/^\d+(?:,\d+)*$/';
 
-                if (preg_match($re, $row[8]))
-                    $NumOfTokens = intval(str_replace(",", "", $row[8]));
-                else
-                    $NumOfTokens = null;
+                    if (preg_match($re, $row[8]))
+                        $NumOfTokens = intval(str_replace(",", "", $row[8]));
+                    else
+                        $NumOfTokens = null;
 
-                //percent of circulating supply:
-                if ($row[9] != '-') {
-                    $tokensSupplyPercent = str_replace("%", "", $row[9]);
-                } else {
-                    $tokensSupplyPercent = null;
-                }
-
-                //Next Unlock Size:
-                if ($row[10] != '-') {
-                    $nextUnlockSize = $row[10];
-                } else {
-                    $nextUnlockSize = null;
-                }
-
-                //first vc unlock:
-                $firstVCUnlock = null;
-                $firstVCUnlockText = null;
-                if ($row[5] != 'n.a.') {
-                    //probably a real date:
-                    $date = DateTime::createFromFormat('d-M-y', $row[5]);
-                    if ($date !== false) {
-                        // it's a date
-                        $firstVCUnlock = $date->format('Y-m-d 00:00:00');
+                    //percent of circulating supply:
+                    if ($row[9] != '-') {
+                        $tokensSupplyPercent = str_replace("%", "", $row[9]);
+                    } else {
+                        $tokensSupplyPercent = null;
                     }
-                } else {
-                    $firstVCUnlockText = "Not Available";
-                }
 
-
-                //Last vc unlock:
-                $lastVCUnlock = null;
-                $lastVCUnlockText = null;
-                if ($row[6] != 'n.a.') {
-                    //probably a real date:
-                    $date = DateTime::createFromFormat('d-M-y', $row[6]);
-                    if ($date !== false) {
-                        // it's a date
-                        $lastVCUnlock = $date->format('Y-m-d 00:00:00');
+                    //Next Unlock Size:
+                    if ($row[10] != '-') {
+                        $nextUnlockSize = $row[10];
+                    } else {
+                        $nextUnlockSize = null;
                     }
-                } else {
-                    $lastVCUnlockText = "Not Available";
+
+                    //first vc unlock:
+                    $firstVCUnlock = null;
+                    $firstVCUnlockText = null;
+                    if ($row[5] != 'n.a.') {
+                        //probably a real date:
+                        $date = DateTime::createFromFormat('d-M-y', $row[5]);
+                        if ($date !== false) {
+                            // it's a date
+                            $firstVCUnlock = $date->format('Y-m-d 00:00:00');
+                        }
+                    } else {
+                        $firstVCUnlockText = "Not Available";
+                    }
+
+
+                    //Last vc unlock:
+                    $lastVCUnlock = null;
+                    $lastVCUnlockText = null;
+                    if ($row[6] != 'n.a.') {
+                        //probably a real date:
+                        $date = DateTime::createFromFormat('d-M-y', $row[6]);
+                        if ($date !== false) {
+                            // it's a date
+                            $lastVCUnlock = $date->format('Y-m-d 00:00:00');
+                        }
+                    } else {
+                        $lastVCUnlockText = "Not Available";
+                    }
+
+                    //3 Months
+                    //num of tokens:
+                    if (preg_match($re, $row[11]))
+                        $threeMonthsNumberOfTokens = intval(str_replace(",", "", $row[11]));
+                    else
+                        $threeMonthsNumberOfTokens = null;
+
+                    //percent of circulating supply:
+                    if ($row[12] != '-') {
+                        $threeMonthsPercentTokens = str_replace("%", "", $row[12]);
+                    } else {
+                        $threeMonthsPercentTokens = null;
+                    }
+
+                    //Size:
+                    if ($row[13] != '-') {
+                        $threeMonthsSize = $row[13];
+                    } else {
+                        $threeMonthsSize = null;
+                    }
+
+                    //6 Months
+                    //num of tokens:
+                    if (preg_match($re, $row[14]))
+                        $sixMonthsNumberOfTokens = intval(str_replace(",", "", $row[14]));
+                    else
+                        $sixMonthsNumberOfTokens = null;
+
+                    //percent of circulating supply:
+                    if ($row[15] != '-') {
+                        $sixMonthsPercentTokens = str_replace("%", "", $row[15]);
+                    } else {
+                        $sixMonthsPercentTokens = null;
+                    }
+
+                    //Size:
+                    if ($row[16] != '-') {
+                        $sixMonthsSize = $row[16];
+                    } else {
+                        $sixMonthsSize = null;
+                    }
+
+
+                    //Seed price:
+                    if ($row[3] != 'n.a.') {
+                        //probably a real date:
+                        $seedPrice = $row[3];
+                    } else {
+                        $seedPrice = null;
+                    }
+
+                    //$coin->total_locked = $request->total_locked;
+
+                    $coin->next_unlock_date = $nextUnlockDate;
+                    $coin->next_unlock_date_text = $nextUnlockText;
+                    $coin->next_unlock_number_of_tokens = $NumOfTokens;
+                    $coin->next_unlock_percent_of_tokens = $tokensSupplyPercent;
+                    $coin->next_unlock_size = $nextUnlockSize;
+                    $coin->first_vc_unlock = $firstVCUnlock;
+                    $coin->end_vc_unlock = $lastVCUnlock;
+                    $coin->first_vc_unlock_text = $firstVCUnlockText;
+                    $coin->end_vc_unlock_text = $lastVCUnlockText;
+                    $coin->three_months_unlock_number_of_tokens = $threeMonthsNumberOfTokens;
+                    $coin->three_months_unlock_percent_of_tokens = $threeMonthsPercentTokens;
+                    $coin->three_months_unlock_size = $threeMonthsSize;
+                    $coin->six_months_unlock_number_of_tokens = $sixMonthsNumberOfTokens;
+                    $coin->six_months_unlock_percent_of_tokens = $sixMonthsPercentTokens;
+                    $coin->six_months_unlock_size = $sixMonthsSize;
+                    $coin->seed_price = $seedPrice;
+                    $coin->save();
                 }
-
-                //3 Months
-                //num of tokens:
-                if (preg_match($re, $row[11]))
-                    $threeMonthsNumberOfTokens = intval(str_replace(",", "", $row[11]));
-                else
-                    $threeMonthsNumberOfTokens = null;
-
-                //percent of circulating supply:
-                if ($row[12] != '-') {
-                    $threeMonthsPercentTokens = str_replace("%", "", $row[12]);
-                } else {
-                    $threeMonthsPercentTokens = null;
-                }
-
-                //Size:
-                if ($row[13] != '-') {
-                    $threeMonthsSize = $row[13];
-                } else {
-                    $threeMonthsSize = null;
-                }
-
-                //6 Months
-                //num of tokens:
-                if (preg_match($re, $row[14]))
-                    $sixMonthsNumberOfTokens = intval(str_replace(",", "", $row[14]));
-                else
-                    $sixMonthsNumberOfTokens = null;
-
-                //percent of circulating supply:
-                if ($row[15] != '-') {
-                    $sixMonthsPercentTokens = str_replace("%", "", $row[15]);
-                } else {
-                    $sixMonthsPercentTokens = null;
-                }
-
-                //Size:
-                if ($row[16] != '-') {
-                    $sixMonthsSize = $row[16];
-                } else {
-                    $sixMonthsSize = null;
-                }
-
-
-                //Seed price:
-                if ($row[3] != 'n.a.') {
-                    //probably a real date:
-                    $seedPrice = $row[3];
-                } else {
-                    $seedPrice = null;
-                }
-
-                //$coin->total_locked = $request->total_locked;
-
-                $coin->next_unlock_date = $nextUnlockDate;
-                $coin->next_unlock_date_text = $nextUnlockText;
-                $coin->next_unlock_number_of_tokens = $NumOfTokens;
-                $coin->next_unlock_percent_of_tokens = $tokensSupplyPercent;
-                $coin->next_unlock_size = $nextUnlockSize;
-                $coin->first_vc_unlock = $firstVCUnlock;
-                $coin->end_vc_unlock = $lastVCUnlock;
-                $coin->first_vc_unlock_text = $firstVCUnlockText;
-                $coin->end_vc_unlock_text = $lastVCUnlockText;
-                $coin->three_months_unlock_number_of_tokens = $threeMonthsNumberOfTokens;
-                $coin->three_months_unlock_percent_of_tokens = $threeMonthsPercentTokens;
-                $coin->three_months_unlock_size = $threeMonthsSize;
-                $coin->six_months_unlock_number_of_tokens = $sixMonthsNumberOfTokens;
-                $coin->six_months_unlock_percent_of_tokens = $sixMonthsPercentTokens;
-                $coin->six_months_unlock_size = $sixMonthsSize;
-                $coin->seed_price = $seedPrice;
-                $coin->save();
             }
         }
         return response()->json(['status'=>'success']);
