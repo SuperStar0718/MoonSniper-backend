@@ -1108,17 +1108,17 @@
                                     </span>
                                 </div>
                                 <div>
-                                    <span v-if="activeData.price_change_24h && activeData.price_change_24h>= 0"
+                                    <span v-if="activeData.price_change_percentage_24h && activeData.price_change_percentage_24h>= 0"
                                         class="text-success d-flex  marginx1"
-                                        style="font-size:12px; margin-top: 2px;"><span>{{ roundData(activeData.price_change_24h) }}</span>
-                                        <div>$
+                                        style="font-size:12px; margin-top: 2px;"><span>{{ roundData(activeData.price_change_percentage_24h) }}</span>
+                                        <div> %
                                             <feather-icon size="10" icon="ChevronUpIcon" />
                                         </div>
                                     </span>
-                                    <span v-else-if="activeData.price_change_24h"
+                                    <span v-else-if="activeData.price_change_percentage_24h"
                                         style="font-size:12px; margin-top: 2px;"
-                                        class="text-danger d-flex marginx1"><span>{{ roundData(activeData.price_change_24h) }}</span>
-                                        <div>$
+                                        class="text-danger d-flex marginx1"><span>{{ roundData(activeData.price_change_percentage_24h) }}</span>
+                                        <div> %
                                             <feather-icon size="10" icon="ChevronDownIcon" />
                                         </div>
                                     </span>
@@ -2572,7 +2572,6 @@
                 this.supplyChart.series = [];
                 this.TradeHistoryOptions.xaxis.categories = [];
                 this.seven_DaysChartseries[0].data = [];
-                if (typeof item.sparkline_in_7d == 'string') {
                     let sparklines = item.sparkline_in_7d.split("|").map(Number);
                     sparklines = sparklines.slice(0, -1);
 
@@ -2585,11 +2584,7 @@
                             this.seven_DaysChart.xaxis.categories.unshift(d.getTime());
                         }
                     }
-                    this.seven_DaysChartseries[0].data = item.sparkline_in_7d = sparklines;
-
-
-
-                }
+                    this.seven_DaysChartseries[0].data = sparklines;
                 if (typeof item.contract_address == 'string') {
                     item.contract_address = JSON.parse(item.contract_address);
                 }
