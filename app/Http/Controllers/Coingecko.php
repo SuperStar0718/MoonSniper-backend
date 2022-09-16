@@ -199,4 +199,8 @@ class Coingecko extends Controller
         $data = TradingVolumeHistory::where("coin_id", $coin_id)->where("symbol", $symbol)->get();
         echo json_encode($data);
     }
+    public function topFiveAverage()
+    {
+       return $average = CoinsData::where('market_cap_rank' ,'>=',1)->where('market_cap_rank' ,'<=',5)->select('roi_times')->get();
+    }
 }

@@ -297,7 +297,7 @@
                 suggestions: [],
                 sectionConfigs: {
                     coins: {
-                        limit: 30,
+                        limit: 100,
                         label: 'Coins',
                         onSelected: selected => {
                             this.isFocused = false;
@@ -428,11 +428,6 @@
                 "filters2": "",
                 sort: ["market_cap", "desc"]
             };
-            // {"filters":[],"filters2":"","sort":["market_cap","desc"]}
-
-            axios.post('api/get_coins', JSON.stringify(params)).then(res => {
-                console.log(res.data);
-            })
         }
     }
 

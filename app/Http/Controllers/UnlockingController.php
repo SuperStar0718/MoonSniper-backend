@@ -39,6 +39,9 @@ class UnlockingController extends Controller
                 'coin_data.six_months_unlock_percent_of_tokens',
                 'coin_data.six_months_unlock_size',
                 'coin_data.seed_price',
+                'coin_data.roi_times',
+                'coin_data.atl',
+                'coin_data.current_price',
             )
             ->first();
         return $coin;

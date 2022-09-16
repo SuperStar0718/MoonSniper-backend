@@ -212,6 +212,14 @@ export default [
     },
   },
   {
+    path: '/profitcalc',
+    name: 'profit-calc',
+    component: () => import('@/views/profitcalculator/ProfitCalc.vue'),
+    meta: {
+      resource: 'All',
+    },
+  },
+  {
     path: '/unlocking/update-from-pdf',
     name: 'update-from-pdf',
     component: () => import('@/views/unlocking/PdfUploader.vue'),

@@ -113,6 +113,13 @@ export default [{
         action: 'read'
     },
     {
+        title: 'Profit Calc',
+        icon: 'DollarSignIcon',
+        resource: 'All',
+        route:'profit-calc',
+        action: 'read'
+    },
+    {
         title: 'Pages',
         icon: 'FileIcon',
         children: [{
