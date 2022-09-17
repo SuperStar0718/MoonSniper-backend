@@ -23,7 +23,7 @@
             </b-col>
         </b-row>
 
-        <b-card v-if="show == 1&&selected != null">
+        <b-card v-if="show == 1&&selected != null &&selected.roi_times != null">
             <b-row class="">
                 <b-col md="6" xl="6" class="">
                     <b-card title="ATH Potential" class="mx-auto innerCard text-center" style="max-width:200px">
@@ -52,6 +52,35 @@
                                 </b-col>
                                 <b-col cols="12">
                                     {{  selected.atl? roundData(selected.atl):0 }}X
+                                </b-col>
+                            </div>
+                        </b-row>
+
+                    </b-card>
+                </b-col>
+            </b-row>
+        </b-card>
+        <b-card v-else-if="show==2&&selected != null">
+            <b-row class="">
+                <b-col md="6" xl="6" class="">
+                    <b-card title="ATH Potential" class="mx-auto innerCard text-center" style="max-width:200px">
+                        <b-row>
+                            <div class="text-center m-auto">
+                                <b-col cols="12">
+                                    {{  selected.ath}}
+                                </b-col>
+                            </div>
+                        </b-row>
+
+                    </b-card>
+                </b-col>
+                <b-col md="6" xl="6" class="">
+                    <b-card title="ATL Potential" class="mx-auto innerCard text-center" style="max-width:200px">
+                        <b-row>
+                            <div class="text-center m-auto">
+                               
+                                <b-col cols="12">
+                                    {{  selected.atl }}
                                 </b-col>
                             </div>
                         </b-row>
@@ -162,10 +191,12 @@
                                 coinid: selected.item.coin_id
                             }).then(res => {
                                 this.selected = res.data;
-                                if (this.selected != null && this.selected.roi_times) {
+                                if (this.selected != null && this.selected.roi_times != null ) {
                                     this.ATHPotential = parseInt(this.investPrice) * this.selected.roi_times
                                     this.ATLPotential = parseInt(this.investPrice) * this.selected.atl
                                     this.show = 1;
+                                } else if (this.selected != null) {
+                                    this.show = 2;
                                 } else {
                                     this.show = 0;
 
@@ -217,10 +248,10 @@
                 }).sort()
             },
             renderSuggestion(suggestion) {
-                return suggestion.item.name + ' ('+suggestion.item.symbol+')';
+                return suggestion.item.name + ' (' + suggestion.item.symbol + ')';
             },
             getSuggestionValue(suggestion) {
-                return suggestion.item.name + ' ('+suggestion.item.symbol+')';
+                return suggestion.item.name + ' (' + suggestion.item.symbol + ')';
             },
             toInterNationalNumber(val) {
                 if (val)
@@ -238,16 +269,19 @@
         mounted() {},
         watch: {
             'investPrice': function () {
-                if (this.selected != null && this.selected.roi_times) {
+                if (this.selected != null && this.selected.roi_times && this.selected.roi_times != null) {
                     this.ATHPotential = this.investPrice * this.selected.roi_times;
                     this.ATLPotential = this.investPrice * this.selected.atl;
                     this.show = 1
+                } else if (this.selected != null) {
+                    this.show = 2;
                 } else {
-                    this.show = 0
-                }
-            },
+                    this.show = 0;
+
+            }
+            }
+            }
         }
-    }
 
 </script>
 

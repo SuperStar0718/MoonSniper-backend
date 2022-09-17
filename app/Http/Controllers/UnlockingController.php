@@ -45,6 +45,7 @@ class UnlockingController extends Controller
                 'coin_data.seed_price',
                 'coin_data.roi_times',
                 'coin_data.atl',
+                'coin_data.ath',
                 'coin_data.current_price',
             )
             ->first();
