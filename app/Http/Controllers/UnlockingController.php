@@ -19,6 +19,7 @@ class UnlockingController extends Controller
         ->orWhere('coins.symbol', 'like', $request->key . '%')
         ->select('coins.coin_id', 'name','coins.symbol','coin_data.market_cap_rank')
          ->leftJoin('coin_data', 'coin_data.coin_id', '=', 'coins.coin_id')
+         ->orderBy(DB::raw('ISNULL(coin_data.market_cap_rank), coin_data.market_cap_rank'), 'ASC')
         ->get();
         return response()->json($coins);
     }
