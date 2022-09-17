@@ -163,8 +163,6 @@
                             }).then(res => {
                                 this.selected = res.data;
                                 if (this.selected != null) {
-                                    console.log(this.selected.ath , this.selected.current_price);
-                                    console.log(this.selected.ath /this.selected.current_price);
                                     this.selected.athX = (this.selected.ath / this.selected.current_price)
                                     this.selected.atlX = (this.selected.atl / this.selected.current_price)
                                     this.ATHPotential = this.investPrice * this.selected.athX;
