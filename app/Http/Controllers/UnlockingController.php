@@ -16,9 +16,9 @@ class UnlockingController extends Controller
     public function coinsForAutoSuggest(Request $request)
     {
         $coins = CoinsList::where('name', 'like',  $request->key .'%' )
-        ->select('coins.coin_id', 'name','symbol')
-        // ->Join('coin_data', 'coin_data.coin_id', '=', 'coins.coin_id')
-        // ->orderBy('coin_data.market_cap_rank','=' ,1,'asc')
+        ->orWhere('coins.symbol', 'like', $request->key . '%')
+        ->select('coins.coin_id', 'name','coins.symbol','coin_data.market_cap_rank')
+         ->leftJoin('coin_data', 'coin_data.coin_id', '=', 'coins.coin_id')
         ->get();
         return response()->json($coins);
     }
