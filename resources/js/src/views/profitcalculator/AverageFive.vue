@@ -32,10 +32,10 @@
                             <div class="text-center m-auto">
                                 <b-col cols="12">
                                     <span class="text-wrap">
-                                        {{ toInterNationalNumber(Potential)?toInterNationalNumber(Potential):0 }}$</span>
+                                        {{ roundData(Potential)?roundData(Potential):0 }}$</span>
                                 </b-col>
                                 <b-col cols="12">
-                                    <span class="text-wrap"> {{ this.averageFive }}X</span>
+                                    <span class="text-wrap"> {{ roundData(this.averageFive) }}X</span>
                                 </b-col>
                             </div>
                         </b-row>
@@ -222,10 +222,10 @@
                 }).sort()
             },
             renderSuggestion(suggestion) {
-                return suggestion.item.name
+                    return    suggestion.item.name + ' ('+suggestion.item.symbol+')';
             },
             getSuggestionValue(suggestion) {
-                return suggestion.item.name;
+                return suggestion.item.name + ' ('+suggestion.item.symbol+')';
             },
             toInterNationalNumber(val) {
                 if (val)
@@ -233,6 +233,11 @@
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 15,
                     }).format(val);
+            },
+            roundData(val) {
+                if (val) {
+                    return this.toInterNationalNumber(parseFloat(val).toFixed(2));
+                }
             },
             avarageFive() {
                 axios.get('api/gettopfive').then(res => {

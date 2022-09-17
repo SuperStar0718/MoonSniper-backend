@@ -51,7 +51,7 @@
                                     {{ roundData(ATLPotential)?roundData(ATLPotential):0 }}$
                                 </b-col>
                                 <b-col cols="12">
-                                    {{ selected.atl?selected.atl:0 }}X
+                                    {{  selected.atl? roundData(selected.atl):0 }}X
                                 </b-col>
                             </div>
                         </b-row>
@@ -162,11 +162,11 @@
                                 coinid: selected.item.coin_id
                             }).then(res => {
                                 this.selected = res.data;
-                                if (this.selected != null  && this.selected.roi_times) {
+                                if (this.selected != null && this.selected.roi_times) {
                                     this.ATHPotential = parseInt(this.investPrice) * this.selected.roi_times
                                     this.ATLPotential = parseInt(this.investPrice) * this.selected.atl
                                     this.show = 1;
-                                }else{
+                                } else {
                                     this.show = 0;
 
                                 }
@@ -200,7 +200,7 @@
                     Promise.all([coinsPromise]).then(values => {
                         this.suggestions = []
                         this.selected = null
-                        const coins = this.filterResults(values[0].data, query, 'name')
+                        const coins = values[0].data;
                         coins.length && this.suggestions.push({
                             name: 'coins',
                             data: coins
@@ -217,10 +217,10 @@
                 }).sort()
             },
             renderSuggestion(suggestion) {
-                return suggestion.item.name
+                return suggestion.item.name + ' ('+suggestion.item.symbol+')';
             },
             getSuggestionValue(suggestion) {
-                return suggestion.item.name;
+                return suggestion.item.name + ' ('+suggestion.item.symbol+')';
             },
             toInterNationalNumber(val) {
                 if (val)
@@ -238,7 +238,7 @@
         mounted() {},
         watch: {
             'investPrice': function () {
-                if ( this.selected != null && this.selected.roi_times) {
+                if (this.selected != null && this.selected.roi_times) {
                     this.ATHPotential = this.investPrice * this.selected.roi_times;
                     this.ATLPotential = this.investPrice * this.selected.atl;
                     this.show = 1

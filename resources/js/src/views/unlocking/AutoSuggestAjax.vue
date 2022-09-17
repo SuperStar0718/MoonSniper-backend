@@ -367,10 +367,10 @@
                 }).sort()
             },
             renderSuggestion(suggestion) {
-                return suggestion.item.name
+                 return suggestion.item.name + ' ('+suggestion.item.symbol+')';
             },
             getSuggestionValue(suggestion) {
-                return suggestion.item.name;
+                 return suggestion.item.name + ' ('+suggestion.item.symbol+')';
             },
             async updateCoinData(coinid, type) {
                 this.sendForm = true;
