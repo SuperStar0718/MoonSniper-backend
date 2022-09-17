@@ -23,7 +23,7 @@
             </b-col>
         </b-row>
 
-        <b-card v-if="show == 1&&selected != null &&selected.roi_times != null">
+        <b-card v-if="show == 1&&selected != null">
             <b-row class="">
                 <b-col md="6" xl="6" class="">
                     <b-card title="ATH Potential" class="mx-auto innerCard text-center" style="max-width:200px">
@@ -31,10 +31,10 @@
                             <div class="text-center m-auto">
                                 <b-col cols="12">
                                     <span class="text-wrap">
-                                        {{ toInterNationalNumber(ATHPotential)?toInterNationalNumber(ATHPotential):0 }}$</span>
+                                        {{ roundData(ATHPotential)?roundData(ATHPotential):0 }}$</span>
                                 </b-col>
                                 <b-col cols="12">
-                                    <span class="text-wrap"> {{ selected.roi_times?selected.roi_times:0 }}X</span>
+                                    <span class="text-wrap"> {{roundData(selected.athX) }}X</span>
 
 
                                 </b-col>
@@ -51,36 +51,7 @@
                                     {{ roundData(ATLPotential)?roundData(ATLPotential):0 }}$
                                 </b-col>
                                 <b-col cols="12">
-                                    {{  selected.atl? roundData(selected.atl):0 }}X
-                                </b-col>
-                            </div>
-                        </b-row>
-
-                    </b-card>
-                </b-col>
-            </b-row>
-        </b-card>
-        <b-card v-else-if="show==2&&selected != null">
-            <b-row class="">
-                <b-col md="6" xl="6" class="">
-                    <b-card title="ATH Potential" class="mx-auto innerCard text-center" style="max-width:200px">
-                        <b-row>
-                            <div class="text-center m-auto">
-                                <b-col cols="12">
-                                    {{  selected.ath}}
-                                </b-col>
-                            </div>
-                        </b-row>
-
-                    </b-card>
-                </b-col>
-                <b-col md="6" xl="6" class="">
-                    <b-card title="ATL Potential" class="mx-auto innerCard text-center" style="max-width:200px">
-                        <b-row>
-                            <div class="text-center m-auto">
-                               
-                                <b-col cols="12">
-                                    {{  selected.atl }}
+                                    <span class="text-wrap"> {{ roundData(selected.atlX) }}X</span>
                                 </b-col>
                             </div>
                         </b-row>
@@ -191,12 +162,14 @@
                                 coinid: selected.item.coin_id
                             }).then(res => {
                                 this.selected = res.data;
-                                if (this.selected != null && this.selected.roi_times != null ) {
-                                    this.ATHPotential = parseInt(this.investPrice) * this.selected.roi_times
-                                    this.ATLPotential = parseInt(this.investPrice) * this.selected.atl
+                                if (this.selected != null) {
+                                    console.log(this.selected.ath , this.selected.current_price);
+                                    console.log(this.selected.ath /this.selected.current_price);
+                                    this.selected.athX = (this.selected.ath / this.selected.current_price)
+                                    this.selected.atlX = (this.selected.atl / this.selected.current_price)
+                                    this.ATHPotential = this.investPrice * this.selected.athX;
+                                    this.ATLPotential = this.investPrice * this.selected.atlX;
                                     this.show = 1;
-                                } else if (this.selected != null) {
-                                    this.show = 2;
                                 } else {
                                     this.show = 0;
 
@@ -262,26 +235,25 @@
             },
             roundData(val) {
                 if (val) {
-                    return this.toInterNationalNumber(parseFloat(val).toFixed(2));
+                    return this.toInterNationalNumber(parseFloat(val).toFixed(5));
                 }
             },
         },
         mounted() {},
         watch: {
             'investPrice': function () {
-                if (this.selected != null && this.selected.roi_times && this.selected.roi_times != null) {
-                    this.ATHPotential = this.investPrice * this.selected.roi_times;
-                    this.ATLPotential = this.investPrice * this.selected.atl;
+                if (this.selected != null) {
+                    this.selected.athX = (this.selected.ath / this.selected.current_price)
+                    this.selected.atlX = (this.selected.atl / this.selected.current_price)
+                    this.ATHPotential = this.investPrice * this.selected.athX;
+                    this.ATLPotential = this.investPrice * this.selected.atlX;
                     this.show = 1
-                } else if (this.selected != null) {
-                    this.show = 2;
                 } else {
-                    this.show = 0;
-
-            }
-            }
-            }
+                    this.show = 0
+                }
+            },
         }
+    }
 
 </script>
 
