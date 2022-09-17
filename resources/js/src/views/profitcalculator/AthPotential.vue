@@ -48,7 +48,7 @@
                         <b-row>
                             <div class="text-center m-auto">
                                 <b-col cols="12">
-                                    {{ toInterNationalNumber(ATLPotential)?toInterNationalNumber(ATLPotential):0 }}$
+                                    {{ roundData(ATLPotential)?roundData(ATLPotential):0 }}$
                                 </b-col>
                                 <b-col cols="12">
                                     {{ selected.atl?selected.atl:0 }}X
@@ -228,6 +228,11 @@
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 15,
                     }).format(val);
+            },
+            roundData(val) {
+                if (val) {
+                    return this.toInterNationalNumber(parseFloat(val).toFixed(2));
+                }
             },
         },
         mounted() {},

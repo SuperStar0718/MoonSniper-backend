@@ -115,7 +115,7 @@ export default [{
     {
         title: 'Profit Calc',
         icon: 'DollarSignIcon',
-        resource: 'All',
+        resource: 'Calculator',
         route:'profit-calc',
         action: 'read'
     },

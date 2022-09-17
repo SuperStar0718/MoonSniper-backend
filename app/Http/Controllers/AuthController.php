@@ -51,6 +51,7 @@ class AuthController extends Controller
             ["action" => "read", "subject" => "Unautherize"],
             ["action" => "read", "subject" => "Profile"],
             ["action" => "read", "subject" => "Dashboard"],
+            ["action" => "read", "subject" => "Calculator"],
         ];
         }else {
             $ability = [
@@ -58,6 +59,7 @@ class AuthController extends Controller
                 ["action" => "read", "subject" => "Unautherize"],
                 ["action" => "read", "subject" => "Profile"],
                 ["action" => "read", "subject" => "Dashboard"],
+                ["action" => "read", "subject" => "Calculator"],
             ];
         }
         if ($user2->avatar) {

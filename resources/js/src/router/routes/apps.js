@@ -216,7 +216,7 @@ export default [
     name: 'profit-calc',
     component: () => import('@/views/profitcalculator/ProfitCalc.vue'),
     meta: {
-      resource: 'All',
+      resource: 'Calculator',
     },
   },
   {
