@@ -172,7 +172,7 @@
                                     this.selected.athX = (this.selected.ath / this.selected.current_price)
                                     this.selected.atlX = (this.selected.current_price /this.selected.atl )
                                     this.ATHPotential = this.investPrice * this.selected.athX;
-                                    this.ATLPotential = this.investPrice * this.selected.atlX;
+                                    this.ATLPotential = this.investPrice / this.selected.atlX;
                                     this.show = 1;
                                 } else {
                                     this.show = 0;
@@ -243,14 +243,16 @@
                 }
             },
         },
-        mounted() {},
+        mounted() {
+            
+        },
         watch: {
             'investPrice': function () {
                 if (this.selected != null && this.selected != "" ) {
                     this.selected.athX = (this.selected.ath / this.selected.current_price)
                     this.selected.atlX = (this.selected.current_price /this.selected.atl )
                     this.ATHPotential = this.investPrice * this.selected.athX;
-                    this.ATLPotential = this.investPrice * this.selected.atlX;
+                    this.ATLPotential = this.investPrice / this.selected.atlX;
                     this.show = 1
                 } else {
                     this.show = 0
