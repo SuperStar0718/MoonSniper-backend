@@ -31,11 +31,14 @@
                         <b-row>
                             <div class="text-center m-auto">
                                 <b-col cols="12">
-                                    <p class="text-wrap" style="width:160px">
+                                    <p v-if="Potential >= 1" class="text-wrap" style="width:160px">
                                         {{ roundData(Potential)?roundData(Potential):0 }}$</p>
+                                        <p v-else class="text-wrap" style="width:160px">
+                                            {{ Potential?Potential:0 }}$</p>
                                 </b-col>
                                 <b-col cols="12">
-                                    <p class="text-wrap" style="width:160px"> {{ roundData(this.avg5_Times) }}X</p>
+                                    <p v-if="avg5_Times>=1" class="text-wrap" style="width:160px"> {{ roundData(avg5_Times) }}X</p>
+                                    <p v-else class="text-wrap" style="width:160px"> {{ avg5_Times }}X</p>
                                 </b-col>
                             </div>
                         </b-row>

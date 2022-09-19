@@ -30,11 +30,14 @@
                         <b-row>
                             <div class="text-center m-auto">
                                 <b-col cols="12">
-                                    <p class="text-wrap" style="width:160px">
+                                    <p  v-if="ATHPotential >=1" class="text-wrap" style="width:160px">
                                         {{ roundData(ATHPotential)?roundData(ATHPotential):0 }}$</p>
+                                        <p v-else class="text-wrap" style="width:160px">
+                                            {{ATHPotential?ATHPotential:0 }}$</p>
                                 </b-col>
                                 <b-col cols="12">
-                                    <p class="text-wrap" style="width:160px"> {{roundData(selected.athX) }}X</p>
+                                    <p class="text-wrap" style="width:160px" v-if="selected.athX >=1"> {{roundData(selected.athX) }}X</p>
+                                    <p class="text-wrap" style="width:160px" v-else> {{selected.athX }}X</p>
 
 
                                 </b-col>
@@ -48,10 +51,12 @@
                         <b-row>
                             <div class="text-center m-auto">
                                 <b-col cols="12">
-                                    <p class="text-wrap" style="width:160px">   {{ roundData(ATLPotential)?roundData(ATLPotential):0 }}$</p>
+                                    <p class="text-wrap" style="width:160px" v-if="ATLPotential >= 1">   {{ roundData(ATLPotential)?roundData(ATLPotential):0 }}$</p>
+                                    <p class="text-wrap" style="width:160px" v-else>   {{ ATLPotential?ATLPotential:0 }}$</p>
                                 </b-col>
                                 <b-col cols="12">
-                                    <p class="text-wrap" style="width:160px"> {{ roundData(selected.atlX) }}X</p>
+                                    <p class="text-wrap  text-danger" style="width:160px"  v-if="selected.atlX >= 1"> {{ roundData(selected.atlX) }}X</p>
+                                    <p class="text-wrap text-danger" style="width:160px"  v-else> {{ selected.atlX }}X</p>
                                 </b-col>
                             </div>
                         </b-row>
@@ -164,9 +169,8 @@
                                 this.selected = res.data.coin;
                                
                                 if (this.selected != null && this.selected != "") {
-                                    console.log(this.selected.ath ,this.selected.current_price);
                                     this.selected.athX = (this.selected.ath / this.selected.current_price)
-                                    this.selected.atlX = (this.selected.atl / this.selected.current_price)
+                                    this.selected.atlX = (this.selected.current_price /this.selected.atl )
                                     this.ATHPotential = this.investPrice * this.selected.athX;
                                     this.ATLPotential = this.investPrice * this.selected.atlX;
                                     this.show = 1;
@@ -244,7 +248,7 @@
             'investPrice': function () {
                 if (this.selected != null && this.selected != "" ) {
                     this.selected.athX = (this.selected.ath / this.selected.current_price)
-                    this.selected.atlX = (this.selected.atl / this.selected.current_price)
+                    this.selected.atlX = (this.selected.current_price /this.selected.atl )
                     this.ATHPotential = this.investPrice * this.selected.athX;
                     this.ATLPotential = this.investPrice * this.selected.atlX;
                     this.show = 1

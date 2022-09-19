@@ -1763,7 +1763,7 @@
                 params: {
                     filters: [],
                     filters2: "",
-                    sort: ["market_cap", "desc"],
+                    sort: ["market_cap_rank", "asc"],
                     api_mode: 1,
                     perpage: 6
                 },

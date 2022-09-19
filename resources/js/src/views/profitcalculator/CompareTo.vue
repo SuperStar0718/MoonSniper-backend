@@ -40,12 +40,16 @@
                         <b-row>
                             <div class="text-center m-auto">
                                 <b-col cols="12">
-                                    <p class="text-wrap" style="width:160px">
+                                    <p v-if="Potential >=1" class="text-wrap" style="width:160px">
                                         {{ roundData(Potential)?roundData(Potential):0 }}$</p>
+                                        <p v-else class="text-wrap" style="width:160px">
+                                            {{ Potential?Potential:0 }}$</p>
                                 </b-col>
                                 <b-col cols="12">
-                                    <p class="text-wrap">
+                                    <p v-if="capTimes>=1" class="text-wrap">
                                         {{ roundData(capTimes) }}X</p>
+                                        <p v-else class="text-wrap">
+                                            {{ capTimes}}X</p>
                                 </b-col>
                             </div>
                         </b-row>
