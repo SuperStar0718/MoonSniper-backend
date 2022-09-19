@@ -30,11 +30,11 @@
                         <b-row>
                             <div class="text-center m-auto">
                                 <b-col cols="12">
-                                    <span class="text-wrap">
-                                        {{ roundData(ATHPotential)?roundData(ATHPotential):0 }}$</span>
+                                    <p class="text-wrap" style="width:160px">
+                                        {{ roundData(ATHPotential)?roundData(ATHPotential):0 }}$</p>
                                 </b-col>
                                 <b-col cols="12">
-                                    <span class="text-wrap"> {{roundData(selected.athX) }}X</span>
+                                    <p class="text-wrap" style="width:160px"> {{roundData(selected.athX) }}X</p>
 
 
                                 </b-col>
@@ -48,10 +48,10 @@
                         <b-row>
                             <div class="text-center m-auto">
                                 <b-col cols="12">
-                                    {{ roundData(ATLPotential)?roundData(ATLPotential):0 }}$
+                                    <p class="text-wrap" style="width:160px">   {{ roundData(ATLPotential)?roundData(ATLPotential):0 }}$</p>
                                 </b-col>
                                 <b-col cols="12">
-                                    <span class="text-wrap"> {{ roundData(selected.atlX) }}X</span>
+                                    <p class="text-wrap" style="width:160px"> {{ roundData(selected.atlX) }}X</p>
                                 </b-col>
                             </div>
                         </b-row>
@@ -161,8 +161,10 @@
                             axios.post('api/load-single-coin', {
                                 coinid: selected.item.coin_id
                             }).then(res => {
-                                this.selected = res.data;
-                                if (this.selected != null) {
+                                this.selected = res.data.coin;
+                               
+                                if (this.selected != null && this.selected != "") {
+                                    console.log(this.selected.ath ,this.selected.current_price);
                                     this.selected.athX = (this.selected.ath / this.selected.current_price)
                                     this.selected.atlX = (this.selected.atl / this.selected.current_price)
                                     this.ATHPotential = this.investPrice * this.selected.athX;
@@ -233,14 +235,14 @@
             },
             roundData(val) {
                 if (val) {
-                    return this.toInterNationalNumber(parseFloat(val).toFixed(5));
+                    return this.toInterNationalNumber(parseFloat(val).toFixed(2));
                 }
             },
         },
         mounted() {},
         watch: {
             'investPrice': function () {
-                if (this.selected != null) {
+                if (this.selected != null && this.selected != "" ) {
                     this.selected.athX = (this.selected.ath / this.selected.current_price)
                     this.selected.atlX = (this.selected.atl / this.selected.current_price)
                     this.ATHPotential = this.investPrice * this.selected.athX;

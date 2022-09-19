@@ -304,7 +304,7 @@
                             axios.post('api/load-single-coin', {
                                 coinid: selected.item.coin_id
                             }).then(res => {
-                                this.selected = res.data;
+                                this.selected = res.data.coin;
                             })
                             // this.selected = selected.item
 

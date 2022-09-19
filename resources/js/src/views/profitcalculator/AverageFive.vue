@@ -31,11 +31,11 @@
                         <b-row>
                             <div class="text-center m-auto">
                                 <b-col cols="12">
-                                    <span class="text-wrap">
-                                        {{ roundData(Potential)?roundData(Potential):0 }}$</span>
+                                    <p class="text-wrap" style="width:160px">
+                                        {{ roundData(Potential)?roundData(Potential):0 }}$</p>
                                 </b-col>
                                 <b-col cols="12">
-                                    <span class="text-wrap"> {{ roundData(this.averageFive) }}X</span>
+                                    <p class="text-wrap" style="width:160px"> {{ roundData(this.avg5_Times) }}X</p>
                                 </b-col>
                             </div>
                         </b-row>
@@ -45,14 +45,14 @@
 
             </b-row>
         </b-card>
-        <b-card v-else-if="show=0">
-            <b-card-text class="mt-1 text-center">
-                No coin selected
-            </b-card-text>
-        </b-card>
-        <b-card v-else>
+        <b-card v-else-if="show == 0">
             <b-card-text class="mt-1 text-center">
                 No Data To Show
+            </b-card-text>
+        </b-card>
+        <b-card v-else-if="show == 2">
+            <b-card-text class="mt-1 text-center text-danger">
+                No Category for the selected coin
             </b-card-text>
         </b-card>
     </b-card>
@@ -143,41 +143,46 @@
                 isFocused: false,
                 isFocused2: false,
                 suggestions: [],
-                show: 2,
+                show: 0,
                 top5Coins: null,
                 averageFive: 0,
+                avg5_Times: 0,
                 sectionConfigs: {
                     coins: {
                         limit: 100,
                         label: 'Coins',
-                        onSelected: selected => {
-
+                        onSelected: async selected => {
+                            this.avg5_Times = 0;
+                            this.Potential = 0;
+                            this.averageFive = 0;
                             this.isFocused = false;
-                            axios.post('api/load-single-coin', {
+                            await axios.post('api/load-single-coin-with-top-five', {
                                 coinid: selected.item.coin_id
                             }).then(res => {
-                                this.selected = res.data;
-                                if (this.selected != null && this.selected.roi_times) {
-                                    let basePrice = this.selected.current_price / this.selected.roi_times;
-                                    this.averageFive = 0;
-                                    this.top5Coins.forEach(element => {
-                                        if (element.roi_times != null) {
-                                            this.averageFive = this.averageFive + element.roi_times
+                                this.selected = res.data.coin;
+                                this.top5Coins = res.data.coins;
 
+                            });
+
+                            if (this.top5Coins != null) {
+                                if (this.selected != null && this.top5Coins != null) {
+                                    let marCap = 0;
+                                    this.top5Coins.forEach(element => {
+                                        if (element.market_cap != null) {
+                                            marCap = marCap + element.market_cap
                                         }
                                     });
-                                    
-                                    let compareROI = this.averageFive / 5;
-                                    var val = basePrice * compareROI
-                                    this.Potential = val * this.investPrice;
-                                    this.show = 1;
-                                } else if (this.selected != null) {
-                                    this.show = 0;
-                                } else {
-                                    this.show = 2;
-                                }
 
-                            })
+                                    this.avarageFive = marCap / 5;
+                                    this.avg5_Times = this.avarageFive.toFixed(2) / this.selected.market_cap
+                                    this.Potential = this.avg5_Times * this.investPrice;
+                                    this.show = 1;
+                                } else {
+                                    this.show = 0;
+                                }
+                            } else {
+                                this.show = 2;
+                            }
                         }
 
                         // this.selected = selected.item
@@ -222,10 +227,10 @@
                 }).sort()
             },
             renderSuggestion(suggestion) {
-                    return    suggestion.item.name + ' ('+suggestion.item.symbol+')';
+                return suggestion.item.name + ' (' + suggestion.item.symbol + ')';
             },
             getSuggestionValue(suggestion) {
-                return suggestion.item.name + ' ('+suggestion.item.symbol+')';
+                return suggestion.item.name + ' (' + suggestion.item.symbol + ')';
             },
             toInterNationalNumber(val) {
                 if (val)
@@ -239,32 +244,31 @@
                     return this.toInterNationalNumber(parseFloat(val).toFixed(2));
                 }
             },
-            avarageFive() {
-                axios.get('api/gettopfive').then(res => {
-                    this.top5Coins = res.data
-                })
+            async avarageFive() {
+
             }
         },
         mounted() {
-            this.avarageFive();
+
         },
         watch: {
             'investPrice': function (newVal) {
-                if (this.selected != null && this.selected.roi_times) {
-                    let basePrice = this.selected.current_price / this.selected.roi_times;
-                    this.averageFive = 0;
-                    this.top5Coins.forEach(element => {
-                        if (element.roi_times != null) {
-                            this.averageFive = this.averageFive + element.roi_times
-                        }
-                    });
-                    
-                    let compareROI = this.averageFive / 5;
-                    var val = basePrice * compareROI
-                    this.Potential = val * this.investPrice;
-                    this.show = 1;
-                } else if (this.selected != null) {
-                    this.show = 0;
+                if (this.top5Coins != null) {
+                    if (this.selected != null && this.top5Coins != null) {
+                        let marCap = 0;
+                        this.top5Coins.forEach(element => {
+                            if (element.market_cap != null) {
+                                marCap = marCap + element.market_cap
+                            }
+                        });
+
+                        this.avarageFive = marCap / 5;
+                        this.avg5_Times = this.avarageFive.toFixed(2) / this.selected.market_cap
+                        this.Potential = this.avg5_Times * this.investPrice;
+                        this.show = 1;
+                    } else {
+                        this.show = 0;
+                    }
                 } else {
                     this.show = 2;
                 }

@@ -40,11 +40,12 @@
                         <b-row>
                             <div class="text-center m-auto">
                                 <b-col cols="12">
-                                    <span class="text-wrap">
-                                        {{ roundData(Potential)?roundData(Potential):0 }}$</span>
+                                    <p class="text-wrap" style="width:160px">
+                                        {{ roundData(Potential)?roundData(Potential):0 }}$</p>
                                 </b-col>
                                 <b-col cols="12">
-                                    <span class="text-wrap"> {{ roundData(selectedCompare.roi_times/selected.roi_times) }}X</span>
+                                    <p class="text-wrap">
+                                        {{ roundData(capTimes) }}X</p>
                                 </b-col>
                             </div>
                         </b-row>
@@ -154,6 +155,7 @@
                 suggestions: [],
                 suggestionsCompare: [],
                 show: 2,
+                capTimes: 0,
                 sectionConfigs: {
                     coins: {
                         limit: 100,
@@ -164,15 +166,18 @@
                             axios.post('api/load-single-coin', {
                                 coinid: selected.item.coin_id
                             }).then(res => {
-                                this.selected = res.data;
-                                if (this.selected != null && this.selected.roi_times && this.selectedCompare != null && this.selectedCompare.roi_times) {
-                                    let basePrice = this.selected.current_price / this.selected.roi_times;
-                                    let compareROI = this.selectedCompare.roi_times;
-                                    var val = basePrice * compareROI
-                                    this.Potential = val * this.investPrice;
+                                this.selected = res.data.coin;
+                                if (this.selected != null && this.selected.market_cap != 0 && this
+                                    .selectedCompare != null && this.selectedCompare.market_cap != 0 && this
+                                    .investPrice != null && this.investPrice.trim() != '') {
+                                    this.capTimes = this.selectedCompare.market_cap.toFixed(2) / this
+                                        .selected
+                                        .market_cap.toFixed(2);
+
+                                    this.Potential = this.capTimes.toFixed(2) * this.investPrice;
                                     this.show = 1;
                                 } else {
-                                    this.show = 0;
+                                    this.show = 2;
                                 }
 
                             })
@@ -194,13 +199,15 @@
                                 coinid: selected.item.coin_id
                             }).then(res => {
 
-                                this.selectedCompare = res.data;
-                                if (this.selected != null && this.selected.roi_times && this.selectedCompare != null && this
-                                    .selectedCompare.roi_times) {
-                                    let basePrice = this.selected.current_price / this.selected.roi_times;
-                                    let compareROI = this.selectedCompare.roi_times;
-                                    var val = basePrice * compareROI
-                                    this.Potential = val * this.investPrice;
+                                this.selectedCompare = res.data.coin;
+                                if (this.selected != null && this.selected.market_cap != 0 && this
+                                    .selectedCompare != null && this.selectedCompare.market_cap != 0 && this
+                                    .investPrice != null && this.investPrice.trim() != '') {
+                                    this.capTimes = this.selectedCompare.market_cap.toFixed(2) / this
+                                        .selected
+                                        .market_cap.toFixed(2);
+
+                                    this.Potential = this.capTimes.toFixed(2) * this.investPrice;
                                     this.show = 1;
                                 } else {
                                     this.show = 0;
@@ -252,10 +259,10 @@
                 }).sort()
             },
             renderSuggestion(suggestion) {
-                return suggestion.item.name + ' ('+suggestion.item.symbol+')';
+                return suggestion.item.name + ' (' + suggestion.item.symbol + ')';
             },
             getSuggestionValue(suggestion) {
-                return suggestion.item.name + ' ('+suggestion.item.symbol+')';
+                return suggestion.item.name + ' (' + suggestion.item.symbol + ')';
             },
             fetchResultsCompare() {
                 const {
@@ -287,10 +294,10 @@
                 }).sort()
             },
             renderSuggestionCompare(suggestion) {
-                return suggestion.item.name + ' ('+suggestion.item.symbol+')';
+                return suggestion.item.name + ' (' + suggestion.item.symbol + ')';
             },
             getSuggestionValueCompare(suggestion) {
-                return suggestion.item.name + ' ('+suggestion.item.symbol+')';
+                return suggestion.item.name + ' (' + suggestion.item.symbol + ')';
             },
             toInterNationalNumber(val) {
                 if (val)
@@ -307,17 +314,16 @@
         },
         mounted() {},
         watch: {
-            'investPrice': function (newVal) {
-                if (this.selected != null && this.selected.roi_times && this.selectedCompare != null && this
-                    .selectedCompare.roi_times) {
-                    let basePrice = this.selected.current_price / this.selected.roi_times;
-                    let compareROI = this.selectedCompare.roi_times;
-                    var val = basePrice * compareROI
-                    this.Potential = val * this.investPrice;
+            'investPrice': function () {
+                if (this.selected != null && this.selected.market_cap != 0 && this.selectedCompare != null && this
+                    .selectedCompare.market_cap != 0 && this
+                    .investPrice != null && this.investPrice.trim() != '') {
+                    this.capTimes = this.selectedCompare.market_cap.toFixed(2) / this.selected
+                        .market_cap.toFixed(2);
+
+                    this.Potential = this.capTimes.toFixed(2) * this.investPrice;
                     this.show = 1;
-                } else if(this.selected != null) {
-                    this.show = 0;
-                }else{
+                } else {
                     this.show = 2;
                 }
             },

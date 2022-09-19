@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // Unlocking functions
     Route::post('/autosuggestcoins', [UnlockingController::class, 'coinsForAutoSuggest']);
     Route::post('/load-single-coin', [UnlockingController::class, 'loadSingleCoin']);
+    Route::post('/load-single-coin-with-top-five', [UnlockingController::class, 'loadSingleCoinWithTopFive']);
     Route::post('/update-coindata', [UnlockingController::class, 'updateCoinData']);
     Route::post('/upload-pdf', [UnlockingController::class, 'uploadPDF']);
     Route::post('/parse-pdf', 'App\Http\Controllers\UnlockingController@parsePDF');
@@ -62,7 +63,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/user/updateprofileinformation', [UserController::class, 'updateUserProfileInfo'])->name('/user/updateprofileinformation');
     Route::post('/user/updatenotofications', [UserController::class, 'updateUserNotifications'])->name('/user/updatenotofications');
     //Profit Calc
-    Route::get('/gettopfive', 'App\Http\Controllers\Coingecko@topFiveAverage');
+    Route::post('/gettopfive', 'App\Http\Controllers\Coingecko@topFiveAverage');
 
 });
 
