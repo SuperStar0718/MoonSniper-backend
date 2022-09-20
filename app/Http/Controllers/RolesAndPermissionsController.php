@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClientPermission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mockery\Undefined;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -15,6 +16,8 @@ class RolesAndPermissionsController extends Controller
     {
         $roles = Role::all()->pluck('name');
         $ArrayPermission = [];
+        $clientVals = [];
+
         foreach ($roles as $key => $value) {
 
             if ($value != 'Admin') {
@@ -23,7 +26,6 @@ class RolesAndPermissionsController extends Controller
             }
             $clientPermission = ClientPermission::get();
 
-            $clientVals = [];
             foreach ($clientPermission as $key => $value) {
                 $vals = json_decode($value->permissions);
                 $vals =  array_diff($vals ,[ 'Profile', 'Unautherize', 'All']);
@@ -31,7 +33,18 @@ class RolesAndPermissionsController extends Controller
             }
 
         }
-
+        if(!array_key_exists("free",$clientVals))
+        {
+            $clientVals['free'] = [];
+        }
+        if(!array_key_exists("subscriber",$clientVals))
+        {
+            $clientVals['subscriber'] = [];
+        }
+        if(!array_key_exists("alpha-member",$clientVals))
+        {
+            $clientVals['alpha-member'] = [];
+        }
         $permissions = Permission::whereNotIn('name', [ 'Profile', 'Unautherize'])->pluck('name');
         return response()->json(['rolepermissions' => $ArrayPermission, 'permissions' => $permissions,'clientrolepermissions'=>$clientVals]);
     }
