@@ -126,7 +126,10 @@
                 axios.post('api/roles-and-permissions', {}).then(res => {
                     console.log(res.data);
                     this.selected = res.data.rolepermissions;
-                    this.selectedClient = res.data.clientrolepermissions;
+                    this.selectedClient.free = res.data.clientrolepermissions.free;
+                    this.selectedClient.subscriber = res.data.clientrolepermissions.subscriber;
+                    this.selectedClient['alpha-member'] = res.data.clientrolepermissions['alpha-member'];
+                  
                     this.permissions = res.data.permissions;
                     this.loaded = true;
                 })
