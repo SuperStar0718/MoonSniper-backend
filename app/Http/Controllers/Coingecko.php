@@ -151,7 +151,7 @@ class Coingecko extends Controller
         }
         // Masking Data for Free Users
         $logged_in_user = Auth::user();
-        if ($logged_in_user->currentPlan == 'basic') {
+        if ($logged_in_user->currentPlan == 'free') {
             for ($data_index = 0; $data_index < count($data); $data_index++) {
                 // Don't Mask Values for Coins with Flag = 1
                 if (!(intval($data[$data_index]->market_cap_rank) >= 1 && intval($data[$data_index]->market_cap_rank) <= 5)) {

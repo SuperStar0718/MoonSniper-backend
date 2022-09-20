@@ -90,11 +90,24 @@
                             </validation-provider>
                         </b-form-group>
                     </b-col>
+                    <b-col cols="12" md="4">
 
+                        <b-form-group label="User Plan" label-for="user-plan">
+                            <validation-provider #default="validationContext" name="Plan"
+                                :rules="`required:${userData.id}`">
+                                <v-select label="label" v-model="userData.currentPlan" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                    :options="planOptions" :reduce="val => val.value" :clearable="false"
+                                    input-id="user-plan" />
+                                <b-form-invalid-feedback>
+                                    {{ validationContext.errors[0] }}
+                                </b-form-invalid-feedback>
+                            </validation-provider>
+                        </b-form-group>
+                    </b-col>
+                   
                     <b-col cols="12" md="4">
                         <b-form-group label="Company" label-for="company">
-                            <validation-provider #default="validationContext" name="Company"
-                                rules="">
+                            <validation-provider #default="validationContext" name="Company" rules="">
                                 <b-form-input id="company" v-model="userData.company" />
                                 <b-form-invalid-feedback>
                                     {{ validationContext.errors[0] }}
@@ -102,10 +115,9 @@
                             </validation-provider>
                         </b-form-group>
                     </b-col>
-                      <b-col cols="12" md="4">
+                    <b-col cols="12" md="4">
                         <b-form-group label="Password" label-for="password">
-                            <validation-provider #default="validationContext" name="Password"
-                                :rules="`password`">
+                            <validation-provider #default="validationContext" name="Password" :rules="`password`">
                                 <b-form-input id="password" v-model="userData.password" />
                                 <b-form-invalid-feedback>
                                     {{ validationContext.errors[0] }}
@@ -113,7 +125,7 @@
                             </validation-provider>
                         </b-form-group>
                     </b-col>
-                 
+
 
                 </b-row>
             </b-form>
@@ -232,11 +244,25 @@
                 uniqueMail,
                 uniqueUsername2,
                 uniqueMail2,
-                  confirmed,
-        password
+                confirmed,
+                password,
+                planOptions: []
             }
         },
-        setup(props,{refs}) {
+        methods: {
+            loadPlans() {
+                axios.post('api/plans').then(res => {
+                    this.planOptions = res.data.plans;
+                });
+
+            },
+        },
+        mounted() {
+            this.loadPlans()
+        },
+        setup(props, {
+            refs
+        }) {
             const toast = useToast()
             const {
                 resolveUserRoleVariant
@@ -245,8 +271,8 @@
             const roleOptions = [{
                     label: 'Admin',
                     value: 'Admin'
-            },
-               
+                },
+
                 {
                     label: 'Editor',
                     value: 'Editor'
@@ -332,7 +358,7 @@
                                 props: {
                                     title: 'Avatar has been updated',
                                     variant: 'success',
-                                      icon: 'CheckCircleIcon',
+                                    icon: 'CheckCircleIcon',
                                 },
                             })
                         }
@@ -340,8 +366,7 @@
                 // .catch(error => reject(error))                        
             })
             const removeAvatar = () => {
-                axios
-                    .post(`api/user/removeavatar/${props.userData.id}`)
+                axios.post(`api/user/removeavatar/${props.userData.id}`)
                     .then(response => {
                         if (response.data.status = 'success') {
                             props.userData.avatar = ''
@@ -350,7 +375,7 @@
                                 props: {
                                     title: 'Avatar has been updated',
                                     variant: 'success',
-                                      icon: 'CheckCircleIcon',
+                                    icon: 'CheckCircleIcon',
                                 },
                             })
                         }
@@ -369,7 +394,7 @@
                                         props: {
                                             title: 'Account details has been updated',
                                             variant: 'success',
-                                              icon: 'CheckCircleIcon',
+                                            icon: 'CheckCircleIcon',
                                         },
                                     })
                                 }

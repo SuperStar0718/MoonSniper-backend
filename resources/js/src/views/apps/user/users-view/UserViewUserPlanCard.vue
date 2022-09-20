@@ -8,7 +8,7 @@
         Current Plan
       </h5>
       <b-badge variant="light-primary">
-        {{ currentPlan }}
+        {{ this.userData.currentPlan.toUpperCase()  }}
       </b-badge>
       <small class="text-muted w-100 d-none" >July 22, 2021</small>
     </b-card-header>
@@ -25,7 +25,7 @@
           <span class="align-middle">Basic Support</span>
         </li>
       </ul>
-      <b-button
+      <b-button  :to="{ name: 'apps-users-edit', params: { id: userData.id } }"
         v-ripple.400="'rgba(255, 255, 255, 0.15)'"
         variant="primary"
         block

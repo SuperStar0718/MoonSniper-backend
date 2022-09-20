@@ -272,7 +272,7 @@
                     <template #cell(total_locked)="data">
                         <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
                             class="d-flex justify-content-start blurry-text">
-                            {{toInterNationalNumber(data.value)}}
+                            {{data.value}}
                         </div>
                         <div v-else style="text-align: center;" class="d-flex justify-content-start">
                             {{roundData(data.value)}}
@@ -2207,7 +2207,7 @@
                     }).format(val);
             },
             checkUserPlan(val) {
-                if (this.userData.currentPlan == 'basic' && val < 1 || this.userData.currentPlan == 'basic' && val >=
+                if (this.userData.currentPlan == 'free' && val < 1 || this.userData.currentPlan == 'free' && val >=
                     5) {
                     return true;
                 } else {

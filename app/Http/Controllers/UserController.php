@@ -151,6 +151,7 @@ class UserController extends Controller
             $user->role = $request->role;
             $user->company = $request->company;
             $user->status = $request->status;
+            $user->currentPlan = $request->currentPlan;
             if($request->password)
             {
                 $user->password = Hash::make($request->password);

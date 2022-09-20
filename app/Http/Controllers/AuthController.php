@@ -75,16 +75,15 @@ class AuthController extends Controller
             'email' => 'required|string|unique:users',
             'password' => 'required|string',
         ]);
-
         $user = new User();
         $user->fullName = $request->fullName;
         $user->email = $request->email;
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
-        $user->role = 'admin';
+        $user->role = 'Client';
 
         if ($user->save()) {
-
+            $user->assignRole('Client');
             $token = Str::random(64);
             $deleteOldTokens = UsersVerify::where('email', $request->email)->delete();
             $VerifyToken = new UsersVerify();
@@ -104,13 +103,26 @@ class AuthController extends Controller
     {
         $user = $request->user();
         $ability = [];
+        $user2 = User::find($user->id);
+        if ($user2->role == 'Admin') {
+            $ability[0] = ["action" => "manage", "subject" => "all"];
+
+        } else {
+            $permissions = $user2->roles[0]->permissions->pluck('permission_string');
+            foreach ($permissions as $key => $value) {
+                if ($value) {
+                    $value = json_decode($value);
+                    $ability[$key] = $value;
+                }
+            }
+        }
+       
         $user = User::find($user->id);
-        $ability[0] = ["action" => "manage", "subject" => "all"];
-        $user->notifications = $user->notifications ? unserialize($user->notifications) : [];
         $user->ability = $ability;
         if ($user->avatar) {
             $user->avatar = asset('/storage/user/avatars/' . $user->avatar);
         }
+        $user->notifications = $user->notifications ? unserialize($user->notifications) : [];
         return response()->json($user);
     }
 
@@ -221,6 +233,7 @@ class AuthController extends Controller
                     'role' => 'Client',
                     'password' => Hash::make($pass),
                 ]);
+                $saveuser->assignRole('Client');
                 $userData = Auth::loginUsingId($saveuser->id);
                 $tokenResult = $userData->createToken('Personal Access Token');
                 $token = $tokenResult->plainTextToken;
@@ -259,10 +272,10 @@ class AuthController extends Controller
     }
     public function CreateRoles()
     {
-        $role = Role::create(['name' => 'Editor']);
-        $role = Role::create(['name' => 'Client']);
-        $role = Role::create(['name' => 'Manager']);
-        $role = Role::create(['name' => 'Admin']);
+        // $role = Role::create(['name' => 'Editor']);
+        // $role = Role::create(['name' => 'Client']);
+        // $role = Role::create(['name' => 'Manager']);
+        // $role = Role::create(['name' => 'Admin']);
         // $users = User::get();
         // foreach ($users as $key => $user) {
         //     $user->assignRole($user->role);
