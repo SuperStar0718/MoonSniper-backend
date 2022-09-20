@@ -19,4 +19,5 @@ Route::get('/auth/facebook/callback',[AuthController::class,'facebookCallback'])
 Route::get('/auth/google/redirect',[AuthController::class,'googleRedirect'])->name('/auth/google/redirect');
 Route::get('/auth/facebook/redirect',[AuthController::class,'facebookRedirect'])->name('/auth/facebook/redirect');
 Route::get('/auth/logincompleted',[AuthController::class,'facebookRedirect'])->name('/auth/logincompleted');
+Route::get('/createroles',[AuthController::class,'CreateRoles'])->name('/createroles');
 Route::get('/{any}', [ApplicationController::class, 'index'])->where('any', '.*');

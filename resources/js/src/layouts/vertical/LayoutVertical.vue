@@ -16,7 +16,7 @@ import LayoutVertical from '@core/layouts/layout-vertical/LayoutVertical.vue'
 import AppCustomizer from '@core/layouts/components/app-customizer/AppCustomizer.vue'
 import { $themeConfig } from '@themeConfig'
 import navMenuItems from '@/navigation/vertical'
-
+import axios from '@axios';
 export default {
   components: {
     AppCustomizer,
@@ -28,5 +28,24 @@ export default {
       navMenuItems,
     }
   },
+  methods:{
+    loadPermissions()
+    {
+      axios.post('/api/abilities').then(res=>{
+        console.log(res);
+      let userData =  localStorage.getItem('userData')
+       let jsonUserData  =  JSON.parse(userData);
+       jsonUserData.ability = res.data
+       console.log(jsonUserData);
+
+       localStorage.setItem('userData', JSON.stringify(jsonUserData))
+        this.$ability.update(res.data)
+      })
+    }
+  },
+  mounted()
+  {
+      this.loadPermissions()
+  }
 }
 </script>

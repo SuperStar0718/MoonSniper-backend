@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
+use App\Models\ResetPassword;
 use App\Models\User;
 use App\Models\UsersVerify;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\ResetPassword;
-use Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\View\View;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Nette\Utils\Json;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -41,36 +42,30 @@ class AuthController extends Controller
         $token = $tokenResult->plainTextToken;
         $ability = [];
         $user2 = User::find($user->id);
-        if($user2->role == 'admin')
-        {
-        $ability[0] = ["action" => "manage", "subject" => "all"];
+        if ($user2->role == 'Admin') {
+            $ability[0] = ["action" => "manage", "subject" => "all"];
 
-        }else if($user2->role == 'client')
-        {
-        $ability = [
-            ["action" => "read", "subject" => "Unautherize"],
-            ["action" => "read", "subject" => "Profile"],
-            ["action" => "read", "subject" => "Dashboard"],
-            ["action" => "read", "subject" => "Calculator"],
-        ];
-        }else {
-            $ability = [
-                ["action" => "read", "subject" => "Unlocking"],
-                ["action" => "read", "subject" => "Unautherize"],
-                ["action" => "read", "subject" => "Profile"],
-                ["action" => "read", "subject" => "Dashboard"],
-                ["action" => "read", "subject" => "Calculator"],
-            ];
+        } else {
+            $permissions = $user2->roles[0]->permissions->pluck('permission_string');
+
+            foreach ($permissions as $key => $value) {
+                if ($value) {
+                    $value = json_decode($value);
+                    $ability[$key] = $value;
+
+                }
+            }
         }
         if ($user2->avatar) {
             $user2->avatar = asset('/storage/user/avatars/' . $user2->avatar);
         }
-        $user2->notifications = $user->notifications ? unserialize($user->notifications) : [];
-        $user2->ability = $ability;
+        $userData = User::find($user->id);
+        $userData->ability = $ability;
+        $userData->notifications = $user->notifications ? unserialize($user->notifications) : [];
         return response()->json([
             'accessToken' => $token,
             'refreshToken' => $token,
-            'userData' => $user2,
+            'userData' => $userData,
         ]);
     }
     public function registration(Request $request)
@@ -190,16 +185,30 @@ class AuthController extends Controller
                 $token = $tokenResult->plainTextToken;
                 $ability = [];
                 $user2 = User::find($userData->id);
-                $ability[0] = ["action" => "manage", "subject" => "all"];
-                if ($user->avatar) {
-                    $user->avatar = asset('/storage/user/avatars/' . $user->avatar);
+                $ability = [];
+                if ($user2->role == 'Admin') {
+                    $ability[0] = ["action" => "manage", "subject" => "all"];
+
+                } else {
+                    $permissions = $user2->roles[0]->permissions->pluck('permission_string');
+
+                    foreach ($permissions as $key => $value) {
+                        if ($value) {
+                            $value = json_decode($value);
+                            $ability[$key] = $value;
+
+                        }
+                    }
                 }
-                $user2->notifications = $user2->notifications ? unserialize($user2->notifications) : [];
-                $user2->ability = $ability;
-             
+                if ($userData->avatar) {
+                    $userData->avatar = asset('/storage/user/avatars/' . $userData->avatar);
+                }
+                $userData = User::find($userData->id);
+                $userData->ability = $ability;
+                $userData->notifications = $userData->notifications ? unserialize($user->notifications) : [];
                 return view('callback', [
                     'accessToken' => $token,
-                    'userData' => $user2,
+                    'userData' => $userData,
                 ]);
 
             } else {
@@ -210,28 +219,71 @@ class AuthController extends Controller
                     'username' => $user->getName() . rand(10000, 6666666666),
                     'email' => $user->getEmail(),
                     'contact' => $user->getName(),
-                    'role' => 'admin',
+                    'role' => 'Client',
                     'password' => Hash::make($pass),
                 ]);
                 $userData = Auth::loginUsingId($saveuser->id);
                 $tokenResult = $userData->createToken('Personal Access Token');
                 $token = $tokenResult->plainTextToken;
                 $user2 = User::find($userData->id);
-                $ability[0] = ["action" => "manage", "subject" => "all"];
-                if ($user->avatar) {
-                    $user->avatar = asset('/storage/user/avatars/' . $user->avatar);
+                $ability = [];
+                if ($user2->role == 'Admin') {
+                    $ability[0] = ["action" => "manage", "subject" => "all"];
+
+                } else {
+                    $permissions = $user2->roles[0]->permissions->pluck('permission_string');
+
+                    foreach ($permissions as $key => $value) {
+                        if ($value) {
+                            $value = json_decode($value);
+                            $ability[$key] = $value;
+
+                        }
+                    }
                 }
-                $user2->notifications = $user2->notifications ? unserialize($user2->notifications) : [];
-                $user2->ability = $ability;
+                if ($userData->avatar) {
+                    $userData->avatar = asset('/storage/user/avatars/' . $userData->avatar);
+                }
+                $userData = User::find($userData->id);
+                $userData->ability = $ability;
+                $userData->notifications = $userData->notifications ? unserialize($user->notifications) : [];
                 return view('callback', [
                     'accessToken' => $token,
-                    'userData' => $user2,
+                    'userData' => $userData,
                 ]);
             }
 
         } catch (\Exception$th) {
             return $th;
         }
+
+    }
+    public function CreateRoles()
+    {
+
+        // $users = User::get();
+        // foreach ($users as $key => $user) {
+        //     $user->assignRole($user->role);
+        // }
+        // return 'all';
+        // $user = User::find(4);
+        // $user->assignRole('client');
+        // $user->roles[0]->permissions->pluck('name', 'permission_string');
+        // $role = Role::create(['name' => 'editor']);
+        // $role = Role::create(['name' => 'author']);
+        // $role = Role::create(['name' => 'maintainer']);
+        $pString = json_encode(["action" => "read", "subject" => "Managemenu"]);
+        return $permission = Permission::create(['name' => 'Managemenu', 'permission_string' => $pString]);
+        // $permission = Permission::create(['name' => 'Unlocking']);
+        // $permission = Permission::create(['name' => 'Unautherize']);
+
+        return $role = Role::findByName('Client');
+        // return $role->givePermissionTo('Dashboard2');
+        // $role->givePermissionTo('Unautherize');
+        // $role->givePermissionTo('Dashboard');
+        // $role->givePermissionTo('Profile');
+        // $user = json_encode(["action" => "read", "subject" => "Users"]);
+        // $permission = Permission::create(['name' => 'Users', 'permission_string' => $user]);
 
     }
 

@@ -19,27 +19,27 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([
             'username' => 'admin1',
             'fullName'=>'Demo1',
-            'role' =>'admin',
+            'role' =>'Editor',
             'status' =>'active',
             'currentPlan'=>'team',
             'company'=>'dswebapp',                
-            'email' => 'admin@email.com',
+            'email' => 'editor@demo.com',
                 'password' => bcrypt('password'),
         ]);
         DB::table('users')->insert([
             'username' => 'admin2',
             'fullName'=>'Demo2',
-            'role' =>'admin',
+            'role' =>'Client',
             'status' =>'active',
             'currentPlan'=>'team',
             'company'=>'dswebapp',                
-            'email' => 'admin2@email.com',
+            'email' => 'client@demo.com',
                 'password' => bcrypt('password'),
         ]);
         DB::table('users')->insert([
             'username' => 'admin',
             'fullName'=>'Demo3',
-            'role' =>'admin',
+            'role' =>'Admin',
             'status' =>'active',
             'currentPlan'=>'team',
             'company'=>'dswebapp',                

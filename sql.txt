@@ -1,0 +1,5 @@
+UPDATE `users` SET `role`='Admin' WHERE role ='admin'; 
+UPDATE `users` SET `role`='Client' WHERE role ='client';
+UPDATE `users` SET `role`='Editor' WHERE role ='editor';
+UPDATE `users` SET `role`='Maintainer' WHERE role ='maintainer';
+UPDATE `users` SET `role`='Author' WHERE role ='author';

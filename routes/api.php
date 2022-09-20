@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlansController;
 use App\Http\Controllers\UnlockingController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RolesAndPermissionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +65,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/user/updatenotofications', [UserController::class, 'updateUserNotifications'])->name('/user/updatenotofications');
     //Profit Calc
     Route::post('/gettopfive', 'App\Http\Controllers\Coingecko@topFiveAverage');
+
+      //Roles And Permissions 
+      Route::post('/roles-and-permissions', [RolesAndPermissionsController::class, 'getRolesAndPermissions'])->name('/roles-and-permissions');
+      Route::post('/update-role-permissions', [RolesAndPermissionsController::class, 'updateRolePermissions'])->name('/update-role-permissions');
+      Route::post('/abilities', [RolesAndPermissionsController::class, 'loadAbilities'])->name('/abilities');
+  
 
 });
 

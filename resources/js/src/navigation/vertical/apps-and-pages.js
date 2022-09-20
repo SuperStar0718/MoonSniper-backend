@@ -86,6 +86,8 @@ export default [{
         children: [{
                 title: 'List',
                 route: 'apps-users-list',
+                resource: 'Users',
+                action: 'read'
             },
 
         ],
@@ -112,6 +114,7 @@ export default [{
         resource: 'Unlocking',
         action: 'read'
     },
+   
     {
         title: 'Profit Calc',
         icon: 'DollarSignIcon',

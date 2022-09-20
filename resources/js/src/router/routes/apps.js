@@ -195,11 +195,17 @@ export default [
   {
     path: '/apps/users/view/:id',
     name: 'apps-users-view',
+    meta: {
+      resource: 'Users',
+    },
     component: () => import('@/views/apps/user/users-view/UsersView.vue'),
   },
   {
     path: '/apps/users/edit/:id',
     name: 'apps-users-edit',
+    meta: {
+      resource: 'Users',
+    },
     component: () => import('@/views/apps/user/users-edit/UsersEdit.vue'),
   },
   //Coins
@@ -217,6 +223,14 @@ export default [
     component: () => import('@/views/profitcalculator/ProfitCalc.vue'),
     meta: {
       resource: 'Calculator',
+    },
+  },
+  {
+    path: '/managemenu',
+    name: 'manage-menu',
+    component: () => import('@/views/permissions/RolePermissions.vue'),
+    meta: {
+      resource: 'Managemenu',
     },
   },
   {
