@@ -164,6 +164,7 @@ export default [
         },
       ],
         resource: 'Profile',
+        action: 'read',
     },
   },
   {

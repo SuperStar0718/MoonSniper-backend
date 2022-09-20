@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Nette\Utils\Json;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
@@ -260,7 +259,10 @@ class AuthController extends Controller
     }
     public function CreateRoles()
     {
-
+        $role = Role::create(['name' => 'Editor']);
+        $role = Role::create(['name' => 'Client']);
+        $role = Role::create(['name' => 'Manager']);
+        $role = Role::create(['name' => 'Admin']);
         // $users = User::get();
         // foreach ($users as $key => $user) {
         //     $user->assignRole($user->role);
@@ -271,13 +273,13 @@ class AuthController extends Controller
         // $user->roles[0]->permissions->pluck('name', 'permission_string');
         // $role = Role::create(['name' => 'editor']);
         // $role = Role::create(['name' => 'author']);
-        // $role = Role::create(['name' => 'maintainer']);
-        $pString = json_encode(["action" => "read", "subject" => "Managemenu"]);
-        return $permission = Permission::create(['name' => 'Managemenu', 'permission_string' => $pString]);
+        // $role = Role::create(['name' => 'Manager']);
+        // $pString = json_encode(["action" => "read", "subject" => "Managemenu"]);
+        // return $permission = Permission::create(['name' => 'Managemenu', 'permission_string' => $pString]);
         // $permission = Permission::create(['name' => 'Unlocking']);
         // $permission = Permission::create(['name' => 'Unautherize']);
 
-        return $role = Role::findByName('Client');
+        // return $role = Role::findByName('Client');
         // return $role->givePermissionTo('Dashboard2');
         // $role->givePermissionTo('Unautherize');
         // $role->givePermissionTo('Dashboard');

@@ -16,19 +16,12 @@
         </b-col>
         <b-col cols="12" md="6" xl="6">
             <b-form-group>
-                <label for="">Author</label>
-                <v-select v-model="selected.Author" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'" multiple
+                <label for="">Manager</label>
+                <v-select v-model="selected.Manager" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'" multiple
                     label="title" :options="permissions" />
             </b-form-group>
         </b-col>
-        <b-col cols="12" md="6" xl="6">
-            <b-form-group>
-                <label for="">Maintainer</label>
-                <v-select v-model="selected.Maintainer" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'" multiple
-                    label="title" :options="permissions" />
-            </b-form-group>
-        </b-col>
-        <b-col>
+        <b-col cols="12">
             <b-button variant="primary" class="mb-1 mb-sm-0 mr-0 mr-sm-1" type="button" :disabled="sendForm"
                 @click="updatePermissions" :block="$store.getters['app/currentBreakPoint'] === 'xs'">
                 Save Changes

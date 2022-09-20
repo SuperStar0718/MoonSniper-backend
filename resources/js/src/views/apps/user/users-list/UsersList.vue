@@ -226,17 +226,14 @@
                     value: 'Admin'
                 },
                 {
-                    label: 'Author',
-                    value: 'Author'
+                    label: 'Manager',
+                    value: 'Manager'
                 },
                 {
                     label: 'Editor',
                     value: 'Editor'
                 },
-                {
-                    label: 'Maintainer',
-                    value: 'Maintainer'
-                },
+               
                 {
                     label: 'Client',
                     value: 'Client'
