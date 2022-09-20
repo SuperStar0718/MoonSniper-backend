@@ -4,7 +4,7 @@
             <b-form-group>
                 <label for="">Client</label>
                 <v-select v-model="selected.Client" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'" multiple
-                    label="title" :options="permissions" />
+                    label="title" :options="clientPermissions" />
             </b-form-group>
         </b-col>
         <b-col cols="12" md="6" xl="6">
@@ -14,6 +14,7 @@
                     label="title" :options="permissions" />
             </b-form-group>
         </b-col>
+       
         <b-col cols="12" md="6" xl="6">
             <b-form-group>
                 <label for="">Manager</label>
@@ -62,7 +63,15 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
                 loaded: false,
             }
         },
-
+        computed:{
+            clientPermissions()
+            {
+                return this.permissions.filter(item => {
+                        return item != 'Users' && item != 'Managemenu' && item != 'All';
+                    });
+                    
+            }
+        },
         methods: {
             loadPermissionsAndRoles() {
                 axios.post('api/roles-and-permissions', {}).then(res => {
