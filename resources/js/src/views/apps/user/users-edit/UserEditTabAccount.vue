@@ -244,23 +244,20 @@
 
             const roleOptions = [{
                     label: 'Admin',
-                    value: 'admin'
-                },
-                {
-                    label: 'Author',
-                    value: 'author'
-                },
+                    value: 'Admin'
+            },
+               
                 {
                     label: 'Editor',
-                    value: 'editor'
+                    value: 'Editor'
                 },
                 {
-                    label: 'Maintainer',
-                    value: 'maintainer'
+                    label: 'Manager',
+                    value: 'Manager'
                 },
                 {
                     label: 'Client',
-                    value: 'client'
+                    value: 'Client'
                 },
             ]
 

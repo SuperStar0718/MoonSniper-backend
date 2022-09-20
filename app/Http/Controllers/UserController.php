@@ -105,6 +105,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
         $user->save();
+        $user->assignRole($user->role);
         return response()->json(['status' => 'success']);
     }
     public function updateAvatar(Request $request)
@@ -143,6 +144,7 @@ class UserController extends Controller
     {
         $user = User::find($request->id);
         if ($user) {
+            $user->syncRoles([]);
             $user->fullName = $request->fullName;
             $user->email = $request->email;
             $user->username = $request->username;
@@ -154,6 +156,7 @@ class UserController extends Controller
                 $user->password = Hash::make($request->password);
             }
             $user->save();
+            $user->assignRole($user->role);
             return response()->json(['status' => 'success']);
 
         } else {
