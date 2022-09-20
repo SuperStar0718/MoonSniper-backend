@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
       //Roles And Permissions 
       Route::post('/roles-and-permissions', [RolesAndPermissionsController::class, 'getRolesAndPermissions'])->name('/roles-and-permissions');
       Route::post('/update-role-permissions', [RolesAndPermissionsController::class, 'updateRolePermissions'])->name('/update-role-permissions');
+      Route::post('/update-role-permissions-for-clients', [RolesAndPermissionsController::class, 'updateRolePermissionsForClient'])->name('/update-role-permissions-for-clients');
       Route::post('/abilities', [RolesAndPermissionsController::class, 'loadAbilities'])->name('/abilities');
   
 

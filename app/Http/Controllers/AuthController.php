@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClientPermission;
 use App\Models\ResetPassword;
 use App\Models\User;
 use App\Models\UsersVerify;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Nette\Utils\Json;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
@@ -44,6 +46,18 @@ class AuthController extends Controller
         if ($user2->role == 'Admin') {
             $ability[0] = ["action" => "manage", "subject" => "all"];
 
+        } else if ($user2->role == 'Client') {
+            $clientPermission = ClientPermission::where('plan', $user2->currentPlan)->first();
+
+            if ($clientPermission) {
+                $permissions = json_decode($clientPermission->permissions);
+
+                $permissionsStr = Permission::whereIn('name', $permissions)->pluck('permission_string');
+                foreach ($permissionsStr as $key => $value) {
+                    $ability[$key] = json_decode($value);
+                }
+
+            }
         } else {
             $permissions = $user2->roles[0]->permissions->pluck('permission_string');
 
@@ -107,6 +121,18 @@ class AuthController extends Controller
         if ($user2->role == 'Admin') {
             $ability[0] = ["action" => "manage", "subject" => "all"];
 
+        } else if ($user2->role == 'Client') {
+            $clientPermission = ClientPermission::where('plan', $user2->currentPlan)->first();
+
+            if ($clientPermission) {
+                $permissions = json_decode($clientPermission->permissions);
+
+                $permissionsStr = Permission::whereIn('name', $permissions)->pluck('permission_string');
+                foreach ($permissionsStr as $key => $value) {
+                    $ability[$key] = json_decode($value);
+                }
+
+            }
         } else {
             $permissions = $user2->roles[0]->permissions->pluck('permission_string');
             foreach ($permissions as $key => $value) {
@@ -116,7 +142,7 @@ class AuthController extends Controller
                 }
             }
         }
-       
+
         $user = User::find($user->id);
         $user->ability = $ability;
         if ($user->avatar) {
@@ -200,6 +226,18 @@ class AuthController extends Controller
                 if ($user2->role == 'Admin') {
                     $ability[0] = ["action" => "manage", "subject" => "all"];
 
+                } else if ($user2->role == 'Client') {
+                    $clientPermission = ClientPermission::where('plan', $user2->currentPlan)->first();
+
+                    if ($clientPermission) {
+                        $permissions = json_decode($clientPermission->permissions);
+
+                        $permissionsStr = Permission::whereIn('name', $permissions)->pluck('permission_string');
+                        foreach ($permissionsStr as $key => $value) {
+                            $ability[$key] = json_decode($value);
+                        }
+
+                    }
                 } else {
                     $permissions = $user2->roles[0]->permissions->pluck('permission_string');
 
@@ -242,6 +280,18 @@ class AuthController extends Controller
                 if ($user2->role == 'Admin') {
                     $ability[0] = ["action" => "manage", "subject" => "all"];
 
+                } else if ($user2->role == 'Client') {
+                    $clientPermission = ClientPermission::where('plan', $user2->currentPlan)->first();
+
+                    if ($clientPermission) {
+                        $permissions = json_decode($clientPermission->permissions);
+
+                        $permissionsStr = Permission::whereIn('name', $permissions)->pluck('permission_string');
+                        foreach ($permissionsStr as $key => $value) {
+                            $ability[$key] = json_decode($value);
+                        }
+
+                    }
                 } else {
                     $permissions = $user2->roles[0]->permissions->pluck('permission_string');
 
@@ -272,6 +322,7 @@ class AuthController extends Controller
     }
     public function CreateRoles()
     {
+        return ClientPermission::get();
         // $role = Role::create(['name' => 'Editor']);
         // $role = Role::create(['name' => 'Client']);
         // $role = Role::create(['name' => 'Manager']);
