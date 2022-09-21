@@ -116,7 +116,7 @@
         computed: {
             clientPermissions() {
                 return this.permissions.filter(item => {
-                    return item != 'Users' && item != 'Managemenu' && item != 'All';
+                    return item != 'Users' && item != 'Managemenu' && item != 'All'&& item != 'Unlocking';
                 });
 
             }

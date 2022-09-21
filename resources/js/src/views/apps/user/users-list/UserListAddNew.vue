@@ -82,7 +82,7 @@
                     </validation-provider>
 
                     <!-- Plan -->
-                    <validation-provider #default="validationContext" name="currentPlan" rules="required">
+                    <validation-provider v-if="userData.role == 'Client'" #default="validationContext" name="currentPlan" rules="required">
                         <b-form-group label="Plan" label-for="plan" :state="getValidationState(validationContext)">
                             <v-select v-model="userData.currentPlan" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                                 :options="planOptions" :reduce="val => val.value" :clearable="false" input-id="plan" />

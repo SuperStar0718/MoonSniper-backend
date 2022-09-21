@@ -75,6 +75,11 @@ class AuthController extends Controller
         $userData = User::find($user->id);
         $userData->ability = $ability;
         $userData->notifications = $user->notifications ? unserialize($user->notifications) : [];
+
+        $userRole =  $userData->getRoleNames();
+        if ($userRole->has(0)) {
+            $userData->role = $userRole[0];
+        }
         return response()->json([
             'accessToken' => $token,
             'refreshToken' => $token,
@@ -149,6 +154,10 @@ class AuthController extends Controller
             $user->avatar = asset('/storage/user/avatars/' . $user->avatar);
         }
         $user->notifications = $user->notifications ? unserialize($user->notifications) : [];
+         $userRole =  $user->getRoleNames();
+            if ($userRole->has(0)) {
+                $user->role = $userRole[0];
+            }
         return response()->json($user);
     }
 
@@ -255,6 +264,10 @@ class AuthController extends Controller
                 $userData = User::find($userData->id);
                 $userData->ability = $ability;
                 $userData->notifications = $userData->notifications ? unserialize($user->notifications) : [];
+                $userRole =  $userData->getRoleNames();
+                if ($userRole->has(0)) {
+                    $userData->role = $userRole[0];
+                }
                 return view('callback', [
                     'accessToken' => $token,
                     'userData' => $userData,
@@ -309,6 +322,10 @@ class AuthController extends Controller
                 $userData = User::find($userData->id);
                 $userData->ability = $ability;
                 $userData->notifications = $userData->notifications ? unserialize($user->notifications) : [];
+                $userRole =  $userData->getRoleNames();
+                if ($userRole->has(0)) {
+                    $userData->role = $userRole[0];
+                }
                 return view('callback', [
                     'accessToken' => $token,
                     'userData' => $userData,

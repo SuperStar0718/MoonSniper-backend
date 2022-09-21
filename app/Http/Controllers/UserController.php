@@ -59,6 +59,10 @@ class UserController extends Controller
         $users = $query->paginate($request->perPage ? $request->perPage : 10);
         foreach($users as $user)
         {
+            $userRole =  $user->getRoleNames();
+            if ($userRole->has(0)) {
+                $user->role = $userRole[0];
+            }
             if ($user->avatar) {
                 $user->avatar = asset('/storage/user/avatars/' . $user->avatar);
             }
@@ -68,7 +72,11 @@ class UserController extends Controller
     public function usersById(Request $request)
     {
         $user = User::where('id', $request->id)->first();
-        if ($user) {
+        $userRole =  $user->getRoleNames();
+        if ($userRole->has(0)) {
+            $user->role = $userRole[0];
+        }
+            if ($user) {
             if ($user->avatar) {
                 $user->avatar = asset('/storage/user/avatars/' . $user->avatar);
             }
@@ -90,10 +98,13 @@ class UserController extends Controller
             'username' => 'required|string|unique:users',
             'email' => 'required|string|unique:users',
             'role' => 'required|string',
-            'currentPlan' => 'required|string',
             'password' => 'required|string',
             'country' => 'required|string',
         ])->validate();
+        if($request->role != 'Client')
+        {
+            $request->currentPlan = null;
+        }
         $user = new User([
             'fullName' => $request->fullName,
             'email' => $request->email,
@@ -143,6 +154,10 @@ class UserController extends Controller
     public function updateUserAccount(Request $request)
     {
         $user = User::find($request->id);
+        if($request->role != 'Client')
+        {
+            $request->currentPlan = null;
+        }
         if ($user) {
             $user->syncRoles([]);
             $user->fullName = $request->fullName;

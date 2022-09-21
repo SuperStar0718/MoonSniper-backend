@@ -78,7 +78,7 @@
 
                     <b-col cols="12" md="4">
 
-                        <b-form-group label="User Role" label-for="user-role">
+                        <b-form-group  label="User Role" label-for="user-role">
                             <validation-provider #default="validationContext" name="Role"
                                 :rules="`required:${userData.id}`">
                                 <v-select v-model="userData.role" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
@@ -90,21 +90,21 @@
                             </validation-provider>
                         </b-form-group>
                     </b-col>
-                    <b-col cols="12" md="4">
+                    <b-col cols="12" md="4"  v-if="userData.role == 'Client'" >
 
                         <b-form-group label="User Plan" label-for="user-plan">
                             <validation-provider #default="validationContext" name="Plan"
                                 :rules="`required:${userData.id}`">
-                                <v-select label="label" v-model="userData.currentPlan" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                    :options="planOptions" :reduce="val => val.value" :clearable="false"
-                                    input-id="user-plan" />
+                                <v-select label="label" v-model="userData.currentPlan"
+                                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'" :options="planOptions"
+                                    :reduce="val => val.value" :clearable="false" input-id="user-plan" />
                                 <b-form-invalid-feedback>
                                     {{ validationContext.errors[0] }}
                                 </b-form-invalid-feedback>
                             </validation-provider>
                         </b-form-group>
                     </b-col>
-                   
+
                     <b-col cols="12" md="4">
                         <b-form-group label="Company" label-for="company">
                             <validation-provider #default="validationContext" name="Company" rules="">
@@ -385,6 +385,7 @@
             const updateProfile = () => {
                 refs.refFormObserver.validate().then(success => {
                     if (success) {
+                      
                         axios
                             .post(`api/user/updateaccount/${props.userData.id}`, props.userData)
                             .then(response => {

@@ -28,17 +28,17 @@
           cols="12"
           xl="9"
           lg="8"
-          md="7"
+          md="7" :class="{'col-lg-12 col-md-12 col-xl-12':userData.role != 'Client'}"
         >
           <user-view-user-info-card :user-data="userData" />
         </b-col>
-        <b-col
+        <b-col v-if="userData.role == 'Client'"
           cols="12"
           md="5"
           xl="3"
           lg="4"
         >
-          <user-view-user-plan-card :user-data="userData" />
+          <user-view-user-plan-card  :user-data="userData" />
         </b-col>
       </b-row>
 
