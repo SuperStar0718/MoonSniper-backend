@@ -116,6 +116,32 @@
     background: linear-gradient(180deg, rgba(22, 29, 49, 0.9) 44%, rgba(22, 29, 49, 0.43) 73%, rgba(22, 29, 49, 0));
   }
 
+
+  .darkBlackText{
+    border: none !important;
+    color: black !important;
+  }
+
+  .darkWhiteText{
+    color: white !important;
+  }
+
+  .cunningBtn > ul{
+    background: #232228  !important; 
+   }
+
+  .darkBackgroundBlack{
+    background: #0A070E !important;
+  }
+
+  .darkWhiteBorder{
+    border: 1px solid #FFFFFF !important;
+  }
+
+  .darkWhiteBackground{
+    background: white !important;
+  }
+
   // main header navbar dark style
 
   .horizontal-layout {
@@ -307,7 +333,7 @@
 
   // main menu
   .main-menu {
-    background-color: $theme-dark-card-bg;
+    background-color: #0A070E;
 
     .shadow-bottom {
       background: linear-gradient(
@@ -605,7 +631,9 @@
 
   // dropdown
   .dropdown-menu {
-    background-color: $theme-dark-card-bg;
+    background-color: transparent !important;
+    z-index: 999;
+    // background-color: $theme-dark-card-bg;
     box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.24);
 
     .dropdown-header {
@@ -2342,6 +2370,8 @@
             background: $theme-dark-card-bg !important;
           }
 
+          
+
           .nav-link {
             &.dropdown-toggle::after {
               background-image: url(str-replace(
@@ -2419,5 +2449,12 @@
         }
       }
     }
+
+    
+
+
+
+
+
   }
 }

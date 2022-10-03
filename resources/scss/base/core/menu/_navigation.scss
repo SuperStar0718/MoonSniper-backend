@@ -100,7 +100,8 @@
   }
 
   .main-menu-content {
-    height: calc(100% - #{$navbar-height}) !important;
+    // height: calc(100% - #{$navbar-height}) !important;
+    height: calc(50%) !important;
     position: relative;
     .ps__rail-y {
       z-index: 3;

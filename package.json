@@ -45,6 +45,7 @@
     "apexcharts": "^3.27.3",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
+    "bootstrap-icons": "^1.9.1",
     "bootstrap-vue": "^2.21.1",
     "browser-sync": "^2.27.7",
     "browser-sync-webpack-plugin": "2.0.1",
@@ -93,6 +94,7 @@
     "vue2-leaflet": "^2.7.1",
     "vuedraggable": "^2.24.3",
     "vuetrend": "^0.3.4",
-    "vuex": "^3.6.2"
+    "vuex": "^3.6.2",
+    "xml2js": "^0.4.23"
   }
 }
