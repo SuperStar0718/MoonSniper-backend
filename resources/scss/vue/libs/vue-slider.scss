@@ -58,5 +58,22 @@ body {
     .vue-slider-dot-handle {
       background-color: $theme-dark-body-bg;
     }
+
+    .vue-slider-rail {
+      background: url(/images/static/slider.png);
+      background-color: transparent;
+      background-size: cover;
+      height:7px;
+    }
+    .vue-slider-dot-handle{
+      border:3px white solid;
+      border-radius: 50%;
+      background-color: $theme-dark-body-bg;
+    }
+    .vue-slider-process{
+      background-color: white;
+      height:2px !important;
+      margin-top:3px;
+    }
   }
 }

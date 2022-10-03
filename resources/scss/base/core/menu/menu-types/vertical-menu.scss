@@ -15,11 +15,13 @@
 // Import first main menu mixin
 @import '../../mixins/main-menu-mixin';
 
+
 //  Vertical menu
 //=========================
 .vertical-layout {
   &.vertical-menu-modern {
     .main-menu {
+      box-shadow: none;     
       transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background 0s;
       transform: translate3d(0, 0, 0);
       backface-visibility: hidden;
@@ -52,7 +54,18 @@
     &.menu-expanded {
       // Main menu expanded
       .main-menu {
-        width: $menu-expanded-width;
+        // width: $menu-expanded-width;
+        background-image: url('/images/static/navbar_background.png');
+        background-repeat: no-repeat;
+        background-size:cover;
+        background-color:transparent;
+        min-height:100vh;
+        width:335px;
+
+        .main-menu-content, .user_logout{
+          margin-right: 55px;
+        }
+
         .navigation {
           .navigation-header {
             .feather-more-horizontal {
@@ -92,7 +105,6 @@
           }
           &.expanded {
             width: $menu-expanded-width;
-            z-index: 1000;
             .modern-nav-toggle {
               display: block;
             }
@@ -106,7 +118,7 @@
       }
       // Main menu collapsed
       .main-menu {
-        width: $menu-collapsed-width;
+        width: $menu-collapsed-width;   
 
         .navbar-header .brand-text,
         .modern-nav-toggle {
@@ -115,6 +127,15 @@
 
         // When menu is collapsed and mouse is not hovered over menu
         &:not(.expanded) {
+          background-image:none;
+          .user_info{
+            display: none;
+          }
+          
+          .user_logout{
+            display:none
+          }
+          
           .navigation-header {
             margin-left: 2.2rem;
             span {
@@ -142,8 +163,26 @@
         }
 
         // When menu is collapsed but mouse is hovered over menu
+        &.expanded.menu-light{
+          background-image: url('/images/static/white.png');
+        }
+        &.expanded.menu-dark{
+          background-image: url('/images/static/navbar_background1.png');
+        }
         &.expanded {
-          width: $menu-expanded-width;
+          background-repeat: no-repeat;
+          background-size:cover;
+          background-color:transparent;;
+          min-height:100vh;
+          width:335px;
+          // width: $menu-expanded-width;
+
+          .main-menu-content, .user_logout{
+            margin-right: 55px;
+          }
+
+          
+          
           .navigation {
             > li.navigation-header {
               span {

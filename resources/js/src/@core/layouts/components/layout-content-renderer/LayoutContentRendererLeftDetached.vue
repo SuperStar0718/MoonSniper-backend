@@ -17,7 +17,7 @@
           <app-breadcrumb />
         </slot>
         <div class="content-detached content-right">
-          <div class="content-wrapper">
+          <div class="content-wrapper"  style="padding-left:20px !important;">
             <div class="content-body">
               <slot />
             </div>

@@ -1,4 +1,5 @@
 <template>
+  <div class="d-inline-flex position-fixed" style="width:335px;height:100%;z-index:3;background: transparent;">
   <div
     class="main-menu menu-fixed menu-accordion menu-shadow"
     :class="[
@@ -7,11 +8,13 @@
     ]"
     @mouseenter="updateMouseHovered(true)"
     @mouseleave="updateMouseHovered(false)"
-  >
+    >
     <!-- main menu header-->
     <div class="navbar-header expanded">
       <slot
         name="header"
+        
+        
         :toggleVerticalMenuActive="toggleVerticalMenuActive"
         :toggleCollapsed="toggleCollapsed"
         :collapseTogglerIcon="collapseTogglerIcon"
@@ -19,7 +22,7 @@
         <ul class="nav navbar-nav flex-row">
 
           <!-- Logo & Text -->
-          <li class="nav-item mr-auto">
+          <!-- <li class="nav-item mr-auto">
             <b-link
               class="navbar-brand"
               to="/"
@@ -34,24 +37,29 @@
                 {{ appName }}
               </h2>
             </b-link>
-          </li>
+          </li> -->
 
           <!-- Toggler Button -->
-          <li class="nav-item nav-toggle">
+          <li class="nav-item mr-auto">
             <b-link class="nav-link modern-nav-toggle">
               <feather-icon
-                icon="XIcon"
-                size="20"
-                class="d-block d-xl-none"
-                @click="toggleVerticalMenuActive"
+              icon="XIcon" 
+              size="20"
+              class="d-block d-xl-none"
+              @click="toggleVerticalMenuActive"
               />
               <feather-icon
-                :icon="collapseTogglerIconFeather"
-                size="20"
-                class="d-none d-xl-block collapse-toggle-icon"
+              :icon="collapseTogglerIconFeather"
+              size="20" 
+              class="d-none d-xl-block collapse-toggle-icon"
                 @click="toggleCollapsed"
               />
             </b-link>
+          </li>
+
+          <!--Dark Toggle button-->
+          <li class="nav-item nav-toggle m-auto" style="margin-right:0 !important">
+            <dark-Toggler class="d-none d-lg-block"/>
           </li>
         </ul>
       </slot>
@@ -61,8 +69,33 @@
     <!-- Shadow -->
     <div
       :class="{'d-block': shallShadowBottom}"
-      class="shadow-bottom"
+      class=""
     />
+
+    <div class="row mt-2 mb-4 user_info">
+      <div class="d-none user-nav d-inline float-left w-50 text-center m-auto">
+        <p class="darkWhiteText" style="margin-bottom:5px;font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;">
+          {{ userData.fullName || userData.username }}
+        </p>
+        <p class="darkWhiteText" style="font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 18px;
+            opacity: 0.7; margin-bottom: 5px !important;">{{ userData.role }}</p>
+        <button class="darkWhiteBackground" style="padding: 4px 21px 4px 21px; font-family: 'Poppins';
+          font-style: normal; border-radius: 6px;
+          font-weight: 500;
+          font-size: 16px;">Upgrade</button>
+      </div>
+      <div class="float-right w-50 text-right pr-4">
+        <b-avatar size="80" :src="userData.avatar" variant="light-primary" badge class="badge-minimal" badge-variant="success">
+          <feather-icon v-if="!userData.fullName" icon="UserIcon" size="22" />
+        </b-avatar>
+      </div>
+    </div>
 
     <!-- main menu content-->
     <vue-perfect-scrollbar
@@ -73,27 +106,42 @@
     >
       <vertical-nav-menu-items
         :items="navMenuItems"
-        class="navigation navigation-main"
+        class="navigation navigation-main darkWhiteText"
+        style="background-color:transparent;"
       />
     </vue-perfect-scrollbar>
     <!-- /main menu content-->
+    <div class="text-center  user_logout" style="margin-top: 8rem !important;">
+      <i class="d-inline-flex bi bi-question-circle" style="font-size:23px;cursor:pointer; margin-right:20px;"></i>
+      <div class="d-inline-flex pl-1" style="padding-top: 5px;cursor:pointer">
+        <feather-icon size="24" icon="LogOutIcon" class="mr-50" @click="logout"/>
+      </div>
+    </div>
   </div>
+</div>
 </template>
 
 <script>
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import { BLink, BImg } from 'bootstrap-vue'
+import { BLink, BImg, BAvatar } from 'bootstrap-vue'
 import { provide, computed, ref } from '@vue/composition-api'
 import useAppConfig from '@core/app-config/useAppConfig'
 import { $themeConfig } from '@themeConfig'
 import VerticalNavMenuItems from './components/vertical-nav-menu-items/VerticalNavMenuItems.vue'
 import useVerticalNavMenu from './useVerticalNavMenu'
+import DarkToggler from '@core/layouts/components/app-navbar/components/DarkToggler.vue'
+import { avatarText } from '@core/utils/filter'
+import useJwt from '@/auth/jwt/useJwt'
+import "bootstrap-icons/font/bootstrap-icons.css";
+import { initialAbility } from '@/libs/acl/config'
 
 export default {
   components: {
     VuePerfectScrollbar,
     VerticalNavMenuItems,
+    DarkToggler,
     BLink,
+    BAvatar,
     BImg,
   },
   props: {
@@ -109,6 +157,12 @@ export default {
       type: Array,
       required: true,
     },
+  },
+  data() {
+    return {
+      userData: JSON.parse(localStorage.getItem('userData')),
+      avatarText,
+    }
   },
   setup(props) {
     const {
@@ -156,6 +210,26 @@ export default {
       appLogoImage,
     }
   },
+
+  methods: {
+    logout() {
+      // Remove userData from localStorage
+      // ? You just removed token from localStorage. If you like, you can also make API call to backend to blacklist used token
+      localStorage.removeItem(useJwt.jwtConfig.storageTokenKeyName)
+      localStorage.removeItem(useJwt.jwtConfig.storageRefreshTokenKeyName)
+
+      // Remove userData from localStorage
+      localStorage.removeItem('userData')
+
+      // Reset ability
+      this.$ability.update(initialAbility)
+
+      // Redirect to login page
+      this.$router.push({
+        name: 'auth-login'
+      })
+    },
+  }
 }
 </script>
 

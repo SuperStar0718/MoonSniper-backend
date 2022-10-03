@@ -1,13 +1,14 @@
 // Core variables and mixins
 @import '~@resources/scss/base/bootstrap-extended/include';
 @import '~@resources/scss/base/core/colors/palette-variables.scss';
+@import '~@resources/scss/vue/libs/vue-slider.scss';
 
 body {
   &.dark-layout {
     // ------------------------------------------------
     // Avatar Component
     // ------------------------------------------------
-
+    background-color: #0A070E;
     .b-avatar {
       &.badge-secondary {
         background-color: $theme-dark-body-bg;
@@ -117,15 +118,31 @@ body {
     // Modal
     // ------------------------------------------------
     .modal-content {
+      
       .modal-header {
         .close {
+          background: #232228 !important;
           color: $white;
+          display:none;
         }
       }
+
+
+
+
       .modal-body {
+        background: #232228 !important;
         color: $white;
       }
+
     }
+
+    .modal-content div ul li {
+        background: #232228 !important;
+        color: $white;
+    }
+
+
 
     // ------------------------------------------------
     // Switch
@@ -142,11 +159,27 @@ body {
     // ------------------------------------------------
     .pagination {
       .page-item {
-        &.disabled {
+        &.disabled{
           .page-link {
-            // background-color: ;
+            background-color: transparent !important;
             color: $theme-dark-text-muted-color !important;
           }
+        }
+        &.active{
+          .page-link {
+            background-color: transparent !important;
+          }
+          .page-item {
+            background-color: transparent !important;
+          }
+        }
+      }
+    }
+
+    .pagination {
+      .page-item {
+         .page-link {
+            background-color: transparent !important;
         }
       }
     }
@@ -425,5 +458,191 @@ body {
         }
       }
     }
+    .whiteLetter{
+      margin:auto;
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 14px;
+      color: #FFFFFF;
   }
+
+  .greyLetter{
+      margin:auto;
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 14px;
+      color: #FFFFFF;
+      opacity: 0.5;
+  }
+
+  .feerTitle{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #FFFFFF;
+  }
+
+  .searchdark{
+    color: #FFFFFF;
+    background: #18181A;
+    border:none;
+  }
+
+  th{
+    background-color:transparent !important;
+    border:none;
+  }
+
+  .cardBack{
+    background: #232228;
+  }
+
+  #dashboard table th {
+    color: white;
+  }
+
+  #dashboard table th {
+    color: white;
+  }
+
+  .card {
+      background: #232228 !important;
+  }
+
+  .modal-header{
+    background: #232228 !important;
+  }
+
+  .modal-content{
+    background: #232228 !important;
+  }
+
+  // button > ul,div,li,span,label,button,input {
+  //   color:white !important;
+  // }
+
+  input{
+    @extend .round;
+  }
+
+  input.form-control{
+    background: #18181A;
+  }
+  select{
+    @extend .round;
+  }
+
+  .custom-select{
+    background-color: #18181A;
+  }
+  
+
+  .input-group-append .input-group-text{
+    border-radius:40px 999em 999em 40px;
+    background: #18181A;
+  }
+
+  .str_green_gradient{
+    background: linear-gradient(146.03deg, rgba(43, 255, 77, 0.7) -300%, rgb(44, 44, 44) 52.77%), rgba(255, 255, 255, 1) !important;
+    border-radius:30px;
+  }
+  .str_green_gradient.card{
+    margin-bottom:0;
+  }
+
+  .radius_gradient{
+    max-width:202px;
+    margin:auto;
+    padding:1px;
+    border-radius:30px;
+    background: linear-gradient(146.03deg, rgba(0,255,0,1) 7%, rgba(255,255,255,0) 50%) !important;
+  }
+
+  ul.nav-tabs{
+    @extend .justify-content-center;
+  }
+
+  .graph_tab{
+    font-size:10px;
+  }
+
+  .graph_tab a{
+    padding: inherit !important;
+    margin-right: 1rem;
+    padding-bottom:3px !important;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 8px;
+    cursor: pointer;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 1px grey; 
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #ffffff; 
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #FFFFFF; 
+  }
+
+  .nav-tabs {
+    margin-bottom: 1rem;
+    position: relative;
+    // Basic nav item
+    .nav-item {
+      position: relative;
+      .nav-link {
+        color: white;
+        border: none;
+        min-width: auto;
+        font-weight: 450;
+        padding: 0.61rem 1.2rem;
+        border-radius: 0;
+        position: relative;
+        overflow: hidden;
+    
+        &:after {
+          content: '';
+    
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background: white !important;
+          transition: transform 0.3s;
+          transform: translate3d(0, 150%, 0);
+        }
+        &.active {
+          position: relative;
+          color: white;
+          background:none;
+    
+          &:after {
+            transform: translate3d(0, 0, 0);
+            // box-shadow: 0 0 8px 0 rgba($primary, 0.5) !important;
+          }
+        }
+      }
+    }
+  }
+
+
+  }
+
+  
+
 }
