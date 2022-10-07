@@ -1,7 +1,6 @@
 // Core variables and mixins
 @import '~@resources/scss/base/bootstrap-extended/include';
 @import '~@resources/scss/base/core/colors/palette-variables.scss';
-@import '~@resources/scss/vue/libs/vue-slider.scss';
 
 body {
   &.dark-layout {
@@ -123,7 +122,6 @@ body {
         .close {
           background: #232228 !important;
           color: $white;
-          display:none;
         }
       }
 
@@ -548,7 +546,7 @@ body {
   }
 
   .str_green_gradient{
-    background: linear-gradient(146.03deg, rgba(43, 255, 77, 0.7) -300%, rgb(44, 44, 44) 52.77%), rgba(255, 255, 255, 1) !important;
+    background: linear-gradient(146.03deg, rgba(43, 255, 77, 1) -241%, #1c1920 55.77%), white !important;
     border-radius:30px;
   }
   .str_green_gradient.card{
@@ -598,6 +596,10 @@ body {
     background: #FFFFFF; 
   }
 
+  b {
+    color:white;
+  }
+
   .nav-tabs {
     margin-bottom: 1rem;
     position: relative;
@@ -641,6 +643,12 @@ body {
   }
 
 
+  }
+
+  @media screen and (max-width: 1100px){
+    .fulfill-navbar {
+      display: none;
+    }
   }
 
   

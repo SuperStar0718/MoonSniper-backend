@@ -347,5 +347,10 @@
 
 <style lang="scss">
     @import '~@resources/scss/vue/libs/vue-select.scss';
-
+    tr td{
+        background: transparent !important;
+    }
+    .b-table-empty-row{
+        background: transparent !important;
+    }
 </style>

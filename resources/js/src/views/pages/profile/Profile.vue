@@ -105,4 +105,12 @@ export default {
 
 <style lang="scss" >
 @import '~@resources/scss/vue/pages/page-profile.scss';
+
+
+</style>
+
+<style>
+  .card-body {
+    padding: 1.5rem !important;
+  }
 </style>

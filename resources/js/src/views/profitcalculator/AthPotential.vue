@@ -1,5 +1,5 @@
 <template>
-    <b-card title="" class="w-75 mx-auto">
+    <b-card title="" class="w-75 mx-auto" style="background:transparent !important">
         <b-row>
             <b-col sm="12" md="6" lg="6" xl="6" class="mb-1">
                 <label>Invest in</label>
@@ -22,7 +22,7 @@
             </b-col>
         </b-row>
 
-        <b-card v-if="show == 1&&selected != null">
+        <b-card v-if="show == 1&&selected != null" style="background:transparent !important">
             <b-row class="">
                 <b-col md="6" xl="6" class="float-right">
                     <div class="radius_gradient">
@@ -78,7 +78,7 @@
                 </b-col>
             </b-row>
         </b-card>
-        <b-card v-else>
+        <b-card v-else style="background:transparent !important">
             <b-card-text class="mt-1 text-center">
                 No Data To Show
             </b-card-text>
@@ -298,7 +298,6 @@
     }
 
 </style>
-
 <style lang="scss">
     @import '~@resources/scss/vue/libs/vue-flatpicker.scss';
 

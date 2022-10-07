@@ -57,10 +57,10 @@
         // width: $menu-expanded-width;
         background-image: url('/images/static/navbar_background.png');
         background-repeat: no-repeat;
-        background-size:cover;
+        background-size:100%;
         background-color:transparent;
         min-height:100vh;
-        width:335px;
+        width:330px;
 
         .main-menu-content, .user_logout{
           margin-right: 55px;
@@ -100,14 +100,14 @@
       .navbar {
         .navbar-header {
           @include menu-navbar-width($menu-collapsed-width);
-          .modern-nav-toggle {
-            display: none;
-          }
+          // .modern-nav-toggle {
+          //   display: none;
+          // }
           &.expanded {
             width: $menu-expanded-width;
-            .modern-nav-toggle {
-              display: block;
-            }
+            // .modern-nav-toggle {
+            //   display: block;
+            // }
           }
         }
         // fixed-top navbar when menu-collapsed
@@ -117,12 +117,22 @@
         }
       }
       // Main menu collapsed
+
+      .main-menu:not(.expanded) + .fulfill-navbar {
+        display: none;
+      }
+      
+      .main-menu.expanded + .fulfill-navbar {
+        display: block;
+      }
+
       .main-menu {
         width: $menu-collapsed-width;   
 
         .navbar-header .brand-text,
         .modern-nav-toggle {
-          display: none;
+          display: block;
+          padding-left: 3px;
         }
 
         // When menu is collapsed and mouse is not hovered over menu
@@ -132,10 +142,9 @@
             display: none;
           }
           
-          .user_logout{
+	        .user_logout{
             display:none
           }
-          
           .navigation-header {
             margin-left: 2.2rem;
             span {
@@ -171,19 +180,18 @@
         }
         &.expanded {
           background-repeat: no-repeat;
-          background-size:cover;
+          background-size:100%;
           background-color:transparent;;
           min-height:100vh;
-          width:335px;
+          width:330px;
           // width: $menu-expanded-width;
 
           .main-menu-content, .user_logout{
             margin-right: 55px;
-          }
-
-          
+          }          
           
           .navigation {
+	  
             > li.navigation-header {
               span {
                 display: block;

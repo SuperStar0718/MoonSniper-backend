@@ -1,7 +1,7 @@
 <template>
     <b-row>
         <b-col cols="12">
-            <b-card title="">
+            <b-card title="" style="background:transparent !important">
                 <div class="darkWhiteText" style="font-family: 'Poppins';
                     font-style: normal;
                     font-weight: 600;
@@ -12,14 +12,14 @@
                     ">
                     Profit Calculator
                 </div>
-                <b-tabs content-class="pt-2">
-                    <b-tab active title="ATH Potential">
+                <b-tabs content-class="pt-2" class="profit-calc">
+                    <b-tab active title="Potential Calculator">
                         <AthPotentialVue />
                     </b-tab>
                     <b-tab title=" Compare to Token">
                         <CompareToVue/>
                     </b-tab>
-                    <b-tab title="Avagare top 5 potential calculators">
+                    <b-tab title="Avagare top 5 in Category">
                         <AverageFiveVue/>
                     </b-tab>
                 </b-tabs>
@@ -71,10 +71,14 @@ import AverageFiveVue from './AverageFive.vue'
     }
 
 </script>
-
-</style>
-
 <style lang="scss">
     @import '~@resources/scss/vue/libs/vue-flatpicker.scss';
 
+    .profit-calc .nav-item[role="presentation"]{
+        padding-right: 40px;
+    }
+
+    .profit-calc ul.nav-tabs{
+        justify-content:center;
+    }
 </style>

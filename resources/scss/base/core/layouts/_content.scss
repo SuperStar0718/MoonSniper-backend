@@ -166,7 +166,7 @@ html {
   //for navbar hidden
   .navbar-hidden {
     .app-content {
-      padding: #{$content-padding} #{$content-padding} 0 #{$content-padding} !important;
+      padding: #{$content-padding} #{$content-padding} 0 calc(#{$content-padding} * 3) !important;
     }
     &.footer-static {
       .app-content {

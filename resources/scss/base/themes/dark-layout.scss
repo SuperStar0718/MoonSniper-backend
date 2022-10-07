@@ -116,7 +116,6 @@
     background: linear-gradient(180deg, rgba(22, 29, 49, 0.9) 44%, rgba(22, 29, 49, 0.43) 73%, rgba(22, 29, 49, 0));
   }
 
-
   .darkBlackText{
     border: none !important;
     color: black !important;
@@ -141,7 +140,6 @@
   .darkWhiteBackground{
     background: white !important;
   }
-
   // main header navbar dark style
 
   .horizontal-layout {
@@ -359,12 +357,17 @@
         background-color: $theme-dark-body-bg;
       }
       .navigation > li.sidebar-group-active > a {
-        background-color: $theme-dark-body-bg;
+        // background-color: $theme-dark-body-bg;
+        background-color: transparent;
       }
     }
 
-    .collapse-toggle-icon {
-      color: $primary !important;
+    // .collapse-toggle-icon {
+    //   color: $primary !important;
+    // }
+
+    .toggle-icon{
+      color:white !important;
     }
   }
 
@@ -419,7 +422,8 @@
 
         &.open {
           > a {
-            background-color: $theme-dark-body-bg !important;
+            // background-color: $theme-dark-body-bg !important;
+            background-color: transparent !important;
           }
         }
 
@@ -428,7 +432,8 @@
         }
 
         .menu-content {
-          background-color: $theme-dark-card-bg;
+          // background-color: $theme-dark-card-bg;
+          background-color: transparent;
 
           .active {
             .menu-item {
@@ -448,7 +453,8 @@
 
       .sidebar-group-active {
         .menu-content {
-          background-color: $theme-dark-card-bg;
+          // background-color: $theme-dark-card-bg;
+          background-color: transparent;
 
           .active {
             z-index: 1;
@@ -633,7 +639,7 @@
   .dropdown-menu {
     background-color: transparent !important;
     z-index: 999;
-    // background-color: $theme-dark-card-bg;
+    //background-color: $theme-dark-card-bg;
     box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.24);
 
     .dropdown-header {
@@ -692,7 +698,7 @@
     &:not([class*='pagination-']) {
       .page-item {
         &.active {
-          background-color: $theme-dark-pagination-bg;
+          background-color: transparent;
 
           .page-link {
             background-color: $primary;
@@ -1326,7 +1332,7 @@
         th,
         td {
           border-color: $theme-dark-border-color;
-          color: $theme-dark-body-color;
+          color: white;
 
           code {
             background-color: $theme-dark-table-row-bg;
@@ -2306,6 +2312,43 @@
     }
   }
 
+  //sug class
+  .darkWhiteText{
+    color: white !important;
+  }
+
+  .btn-primary{
+    background: #FFFFFF !important;
+    /* botton Line */
+
+    border: 0.8px solid rgba(255, 255, 255, 0.35) !important;
+    border-radius: 10px !important;
+    color: black !important;
+  }
+
+  .greyBackground{
+    background: #232228;
+    box-shadow: 0px 0px 20px rgba(19, 20, 37, 0.5);
+    backdrop-filter: blur(7.5px);
+    border-radius: 30px;
+  }
+
+
+
+
+  .vs__selected{
+    background: none !important;
+    color: white !important;
+    border: white;
+  }
+
+  .vs__dropdown-toggle{
+    background: #0A070E !important;
+  }
+
+
+  //sug class
+
   // Users Application
   .app-user-view {
     .plan-card {
@@ -2369,8 +2412,6 @@
           &.navbar-dark {
             background: $theme-dark-card-bg !important;
           }
-
-          
 
           .nav-link {
             &.dropdown-toggle::after {
@@ -2449,12 +2490,5 @@
         }
       }
     }
-
-    
-
-
-
-
-
   }
 }

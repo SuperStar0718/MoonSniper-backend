@@ -78,3 +78,8 @@ export default {
   },
 }
 </script>
+<style>
+  .card-body {
+    padding: 1.5rem !important;
+  }
+</style>

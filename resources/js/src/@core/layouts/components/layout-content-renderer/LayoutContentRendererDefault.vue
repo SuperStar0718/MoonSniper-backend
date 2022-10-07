@@ -6,7 +6,7 @@
     <div class="content-overlay" />
     <div class="header-navbar-shadow" />
     <div
-      class="content-wrapper" style="padding-left:20px !important;"
+      class="content-wrapper"
       :class="contentWidth === 'boxed' ? 'container p-0' : null"
     >
       <slot name="breadcrumb">

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="greyBackground" style="padding: 20px;">
 
         <b-row class="mb-2" v-if="loaded">
             <b-col cols="12" md="12" xl="12">
@@ -176,5 +176,6 @@
 
 <style lang="scss">
     @import '~@resources/scss/vue/libs/vue-autosuggest.scss';
+ 
 
 </style>

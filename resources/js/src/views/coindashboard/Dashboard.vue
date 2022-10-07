@@ -1,6 +1,5 @@
 <template>
     <div id="dashboard">
-        
         <b-overlay :show="fagLoad" rounded="sm" class="pt-1" style="margin-top:10px; margin-bottom:30px;">
                 <div class="mx-auto" style="">
                         <b-row class=" mb-1">
@@ -14,9 +13,6 @@
                                     <div style="color:#6BBE83;">
                                         4.4%
                                     </div>
-
-        
-                                    
                                 </div>
 
                             </b-col>
@@ -71,10 +67,11 @@
                             <div class="mx-auto w-75 text-center">
                                 <h5 class="w-75 mx-auto margin16_b feerTitle">Fear and Greed</h5>
                                 <VueSvgGauge width="60%" class="w-75 mx-auto" :start-angle="-90" :end-angle="90"
-                                    :inner-radius="95" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
+                                    :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
                                     :max="50"
-                                    :gauge-color="[{ offset: 0, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
-                                    :scale-interval="3">
+                                    :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
+                                    :scale-interval="0" :transition-duration="0">
+                                    <div class="rounded-circle" id="marker_0" style="width:8px; height:8px; position: absolute"></div>
                                     <div class="inner-text" style="display:block;">
                                         <div style="margin-top: 2rem !important;"
                                             :class="{'text-danger':fag.data.fear_greed_index<50,'text-success':fag.data.fear_greed_index>=50}">
@@ -84,7 +81,7 @@
                                         <div class="row" style="margin: 0% 15% 0% 15%;">
                                             <span class="col-3 text-info" style="float:left; margin:auto;"><a
                                                 v-ripple.400="'rgba(113, 12, 240, 35)'" v-b-modal.modal-chart
-                                                variant="outline-primary"><i class="bi bi-clock-history" style="color:#FFFFFF;"></i></a>
+                                                variant="outline-primary"><i class="bi bi-clock-history darkWhiteText" style="color:#28c76f;"></i></a>
                                             </span>
                                             <span class="col-6 feerSmallGreen" style="text-align:center;">
                                                 {{fag.data.fear_greed_classification}}
@@ -103,10 +100,12 @@
                             <div class="mx-auto w-75 text-center">
                                 <h5 class="w-75 mx-auto margin16_b feerTitle">NFT Barometer</h5>
                                 <VueSvgGauge width="60%" class="w-75 mx-auto" :start-angle="-90" :end-angle="90"
-                                    :inner-radius="95" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
+                                    :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0" 
                                     :max="50"
-                                    :gauge-color="[{ offset: 0, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
-                                    :scale-interval="3">
+                                    :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
+                                    :scale-interval="0" :transition-duration="0">
+                                    <div class="rounded-circle" id="marker_1" style="width:8px; height:8px; position: absolute"></div>
+
                                     <div class="inner-text" style="display:block;">
                                         <div style="margin-top: 2rem !important;"
                                             :class="{'text-danger':fag.data.fear_greed_index<50,'text-success':fag.data.fear_greed_index>=50}">
@@ -116,7 +115,7 @@
                                         <div class="row" style="margin: 0% 15% 0% 15%;">
                                             <span class="col-3 text-info" style="float:left; margin:auto;"><a
                                                 v-ripple.400="'rgba(113, 12, 240, 35)'" v-b-modal.modal-chart
-                                                variant="outline-primary"><i class="bi bi-clock-history" style="color:#FFFFFF;"></i></a>
+                                                variant="outline-primary"><i class="bi bi-clock-history darkWhiteText" style="color:#28c76f;"></i></a>
                                             </span>
                                             <span class="col-6 feerSmallGreen" style="text-align:center;">
                                                 {{fag.data.fear_greed_classification}}
@@ -127,7 +126,6 @@
                                         </div>
                                         
                                     </div>
-                                    
                                 </VueSvgGauge>
                             </div>
                         </b-col>
@@ -135,10 +133,11 @@
                             <div class="mx-auto w-75 text-center">
                                 <h5 class="w-75 mx-auto margin16_b feerTitle">BTC in/outflow</h5>
                                 <VueSvgGauge width="60%" class="w-75 mx-auto" :start-angle="-90" :end-angle="90"
-                                    :inner-radius="95" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
+                                    :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
                                     :max="50"
-                                    :gauge-color="[{ offset: 0, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
-                                    :scale-interval="3">
+                                    :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
+                                    :scale-interval="0" :transition-duration="0">
+                                    <div class="rounded-circle" id="marker_2" style="width:8px; height:8px; position: absolute"></div>
                                     <div class="inner-text" style="display:block;">
                                         <div style="margin-top: 2rem !important;"
                                             :class="{'text-danger':fag.data.fear_greed_index<50,'text-success':fag.data.fear_greed_index>=50}">
@@ -148,7 +147,7 @@
                                         <div class="row" style="margin: 0% 15% 0% 15%;">
                                             <span class="col-3 text-info" style="float:left; margin:auto;"><a
                                                 v-ripple.400="'rgba(113, 12, 240, 35)'" v-b-modal.modal-chart
-                                                variant="outline-primary"><i class="bi bi-clock-history" style="color:#FFFFFF;"></i></a>
+                                                variant="outline-primary"><i class="bi bi-clock-history darkWhiteText" style="color:#28c76f;"></i></a>
                                             </span>
                                             <span class="col-6 feerSmallGreen" style="text-align:center;">
                                                 {{fag.data.fear_greed_classification}}
@@ -159,7 +158,6 @@
                                         </div>
                                         
                                     </div>
-                                    
                                 </VueSvgGauge>
                             </div>
                         </b-col>
@@ -167,10 +165,11 @@
                             <div class="mx-auto w-75 text-center">
                                 <h5 class="w-75 mx-auto margin16_b feerTitle">BTC Outflow</h5>
                                 <VueSvgGauge width="60%" class="w-75 mx-auto" :start-angle="-90" :end-angle="90"
-                                    :inner-radius="95" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
+                                    :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
                                     :max="50"
-                                    :gauge-color="[{ offset: 0, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
-                                    :scale-interval="3">
+                                    :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'},  { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
+                                    :scale-interval="0" :transition-duration="0">
+                                    <div class="rounded-circle" id="marker_3" style="width:8px; height:8px; position: absolute"></div>
                                     <div class="inner-text" style="display:block;">
                                         <div style="margin-top: 2rem !important;"
                                             :class="{'text-danger':fag.data.fear_greed_index<50,'text-success':fag.data.fear_greed_index>=50}">
@@ -180,7 +179,7 @@
                                         <div class="row" style="margin: 0% 15% 0% 15%;">
                                             <span class="col-3 text-info" style="float:left; margin:auto;"><a
                                                 v-ripple.400="'rgba(113, 12, 240, 35)'" v-b-modal.modal-chart
-                                                variant="outline-primary"><i class="bi bi-clock-history" style="color:#FFFFFF;"></i></a>
+                                                variant="outline-primary"><i class="bi bi-clock-history darkWhiteText" style="color:#28c76f;"></i></a>
                                             </span>
                                             <span class="col-6 feerSmallGreen" style="text-align:center;">
                                                 {{fag.data.fear_greed_classification}}
@@ -191,7 +190,6 @@
                                         </div>
                                         
                                     </div>
-                                    
                                 </VueSvgGauge>
                             </div>
                         </b-col>
@@ -205,7 +203,7 @@
                 box-shadow: 0px 0px 20px rgba(19, 20, 37, 0.5);
                 backdrop-filter: blur(7.5px);
                 border-radius: 30px;">
-                <div class="searchbar mt-1 mb-1">
+                <div class="searchbar mt-1">
                     <b-row>
                         <b-col cols="8" md="6" xl="6">
                             <b-input-group class="input-group-merge mb-1">
@@ -218,23 +216,23 @@
                         <b-col cols="12" md="4" xl="2">
                             <div class="d-flex jusctify-content-between float-right">
                                 <div v-b-modal.modal-filters >
-                                            <b-button style="padding:5px; " v-ripple.400="'rgba(255, 255, 255,1)'" title="Filter" variant="flat-success"
-                                                 class="btn-icon mx-1 ">
-                                                <feather-icon icon="FilterIcon" size="20" class="darkWhiteText text-black cursor-pointer" style=" " />
+                                            <b-button style="padding:5px; color:white;" v-ripple.400="'rgba(255, 255, 255,1)'" title="Filter" variant="flat-success"
+                                                 class="btn-icon mx-1">
+                                                <feather-icon icon="FilterIcon" size="20" class="text-black cursor-pointer darkWhiteText" style="color:#28c76f; " />
                                             </b-button>
                                 </div>
                                 <div>
-                                    <b-button  v-if="!locked" @click="lockedFilter" style=" padding:5px; width:33px" variant="flat-success"
+                                    <b-button  v-if="!locked" @click="lockedFilter" style="color:white; padding:5px; width:33px" variant="flat-success"
                                         title="Unlocking" v-ripple.400="'rgba(255, 255, 255,1)'"  
                                         class="btn-icon mr-1 ">
-                                        <feather-icon icon="UnlockIcon" size="20" class="darkWhiteText text-black cursor-pointer" style=" " />
+                                        <feather-icon icon="UnlockIcon" size="20" class="text-black cursor-pointer darkWhiteText" style="color:#28c76f; " />
 
                                     </b-button>
-                                    <b-button v-else @click="lockedFilter" style=" padding:5px; width:33px" title="All Tokens" variant="flat-success"
+                                    <b-button v-else @click="lockedFilter" style="color:white; padding:5px; width:33px" title="All Tokens" variant="flat-success"
                                         v-ripple.400="'rgba(255, 255, 255,1)'"  
                                         class="btn-icon mr-1 ">
                                         
-                                        <b-img class=" cursor-pointer rounded-full darkWhiteText" width="25px" height="25px" fluid
+                                        <b-img class=" cursor-pointer rounded-full" width="25px" height="25px" fluid
                                         src="/images/static/noun-cryptocurrency-3262833.svg" />
                                     </b-button>
                                         
@@ -242,9 +240,9 @@
                                 
                                 <div @click="clearFilters(true)">
                                     <b-button style="padding:5px; " v-ripple.400="'rgba(255, 255, 255,1)'" title="Refresh" variant="flat-success"
-                                         class="btn-icon ml-1 ">
-                                        <feather-icon icon="RefreshCcwIcon" size="20" class=" darkWhiteText text-black cursor-pointer"
-                                            style="" />
+                                         class="btn-icon ml-1">
+                                        <feather-icon icon="RefreshCcwIcon" size="20" class="text-black cursor-pointer darkWhiteText"
+                                            style="color:#28c76f;" />
                                     </b-button>
 
                                 </div>
@@ -253,10 +251,9 @@
                                     <b-dropdown size="lg" variant="flat-dark" style="padding:0px !important; color: white !important;" class="cunningBtn"
                                         id="dropdown-left" no-caret   dropright>
                                         <template #button-content>
-                                            
-                                            <feather-icon  icon="SlidersIcon" size="20" class=" text-black cursor-pointer darkWhiteText" style="color:#28c76f;"/>
+                                            <feather-icon  icon="SlidersIcon" size="20" class=" text-black cursor-pointer darkWhiteText" style="color:#28c76f;rotate:-90deg"/>
                                         </template>
-                                        <b-dropdown-form href="#" class="dropdown-mine" name="dropdownform">
+                                        <b-dropdown-form href="#" class="dropdown-mine">
                                             <div style="font-family: 'Poppins';
                                                 font-style: normal;
                                                 font-weight: 500;
@@ -268,10 +265,7 @@
                                                 <div class="accordion" role="tablist">
                                                     <app-collapse accordion>
                                                         <app-collapse-item :isVisible="true" title="Market Filters">
-                                                            <b-card class="mb-1">
-                                                                
-                                                                <b-card-body>
-                                                                    <b-row style="margin-left:20px;">
+                                                            <b-row>
                                                                         <b-col md="6" xl="6">
                                                                             <div class="margin20">
                                                                                 <b-form-radio
@@ -440,9 +434,7 @@
                                                                         </b-col>
 
                                                                     
-                                                                    </b-row>
-                                                                </b-card-body>
-                                                            </b-card>
+                                                            </b-row>
                                                         </app-collapse-item>
                                                     
                                                         
@@ -453,10 +445,7 @@
                                                 <div class="accordion" role="tablist">
                                                     <app-collapse accordion>
                                                         <app-collapse-item :isVisible="true" title="SociaL Filters">
-                                                            <b-card class="mb-1">
-                                                                
-                                                                <b-card-body>
-                                                                    <b-row style="margin-left:20px;">
+                                                            <b-row >
                                                                         <b-col md="12" xl="12">
                                                                             <div class="margin20">
                                                                                 <b-form-radio
@@ -495,8 +484,6 @@
 
                                                                     
                                                                     </b-row>
-                                                                </b-card-body>
-                                                            </b-card>
                                                         </app-collapse-item>
                                                     
                                                         
@@ -507,10 +494,7 @@
                                                 <div class="accordion" role="tablist">
                                                     <app-collapse accordion>
                                                         <app-collapse-item :isVisible="true" title="Unlocking Filter">
-                                                            <b-card class="mb-1">
-                                                                
-                                                                <b-card-body>
-                                                                    <b-row style="margin-left:20px;">
+                                                            <b-row >
                                                                         <b-col md="6" xl="6">
                                                                             <div class="margin20">
                                                                                 <b-form-radio
@@ -642,8 +626,6 @@
                                                                             </div>
                                                                         </b-col>
                                                                     </b-row>
-                                                                </b-card-body>
-                                                            </b-card>
                                                         </app-collapse-item>
                                                     
                                                         
@@ -654,10 +636,7 @@
                                                 <div class="accordion" role="tablist">
                                                     <app-collapse accordion>
                                                         <app-collapse-item :isVisible="true" title="Market Indicators">
-                                                            <b-card class="mb-1">
-                                                                
-                                                                <b-card-body>
-                                                                    <b-row style="margin-left:20px;">
+                                                            <b-row >
                                                                         <b-col md="6" xl="6">
                                                                             <div class="margin20">
                                                                                 <b-form-radio
@@ -704,8 +683,6 @@
                                                                             </div>
                                                                         </b-col>
                                                                     </b-row>
-                                                                </b-card-body>
-                                                            </b-card>
                                                         </app-collapse-item>
                                                     
                                                         
@@ -727,7 +704,7 @@
                 </div>
                 <div id="ctable">
                     <b-overlay :show="isBusy" rounded="sm">
-                        <b-table sticky-header :no-border-collapse="true" tbody-tr-class="cursor-pointer" show-empty 
+                        <b-table sticky-header :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill" show-empty 
                             @row-clicked="detailsModel($event)" style="white-space: nowrap; border-spacing: 0 15px !important; " responsive :items="items.data"
                             :fields="visibleFields">
                             <template #empty="scope">
@@ -737,31 +714,33 @@
                             <template #head()="scope">
                                 <div class="text-nowrap cursor-pointer text-center " style=""
                                     @click="sortingCols(scope.field.key)">
-                                    <div class="d-flex justify-content-center">
-                                        <span> {{ scope.label }} </span> <span class="">
-                                            <feather-icon icon="ChevronUpIcon" size="8" class="align-middle d-block"
-                                                :class="{'text-danger':params.sort[1] =='asc'&& params.sort[0] ==scope.field.key}" />
-                                            <feather-icon icon="ChevronDownIcon" size="8"
-                                                :class="{'text-danger':params.sort[1] =='desc'&& params.sort[0] ==scope.field.key}"
-                                                class="align-middle d-block" /> </span>
+                                    <div v-if="scope.label" class="d-flex justify-content-center">
+                                        <span> {{ scope.label }} </span> 
+                                        <span class="my-auto d-inline">
+                                            <feather-icon icon="TriangleIcon" size="12" style="rotate:180deg;margin-left: 5px;"
+                                            :class="{'text-danger':params.sort[1] =='asc'&& params.sort[0] ==scope.field.key}" />
+                                        <!-- <feather-icon icon="ChevronDownIcon" size="8"
+                                            :class="{'text-danger':params.sort[1] =='desc'&& params.sort[0] ==scope.field.key}"
+                                            class="align-middle d-block" />  -->
+                                        </span>
                                     </div>
                                 </div>
                             </template>
 
                             <template #cell(coin_platform)="data">
                                 <div class="" v-html="getPlatformTags(data.value)"></div>
-                                <div class="" v-if="checkSeemore(data.value)"><span
+                                <!-- <div class="" v-if="checkSeemore(data.value)"><span
                                         v-b-popover.hover.top="platformTagsSeemore(data.value)"
                                         v-ripple.400="'rgba(113, 102, 240, 0.15)'" title="Platforms" variant="outline-primary">
                                         See more...
-                                    </span></div>
+                                    </span></div> -->
                             </template>
                             <template #cell(market_cap_rank)="data">
                                 <div class="d-flex">
                                     <div class="mx-1">
-                                        <feather-icon icon="StarIcon" size="14" />
+                                        <feather-icon icon="StarIcon" size="22" />
                                     </div>
-                                    <div class="" style="">{{ toInterNationalNumber(data.value?data.value:0) }}</div>
+                                    <div style="padding-top:3px">{{ toInterNationalNumber(data.value?data.value:0) }}</div>
                                 </div>
                             </template>
                             <template #cell(name)="data">
@@ -769,11 +748,11 @@
                                     <b-avatar class="text-center mx-1" style="" :src="data.item.image" />
 
                                     <div class="">
-                                        <div class="text-nowrap text-truncate" style="max-width: 100px;">
+                                        <div class="text-nowrap text-truncate" style="max-width: 100px; font-weight: 600;">
                                             <b>{{ data.value }}</b>   
                                         </div>
                                         <div class="text-nowrap text-truncate text-left"
-                                            style="max-width: 100px; font-size:12px;">
+                                            style="max-width: 100px;  opacity: 0.8;">
                                             {{ data.item.symbol }}
                                         </div>
                                         
@@ -908,8 +887,6 @@
                                     {{ data.value }}
                                 </div>
                             </template>
-
-
 
                             <template #cell(six_months_unlock_number_of_tokens)="data">
                                 <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
@@ -1074,15 +1051,15 @@
 
                     </b-col>
                     <b-col class="m-auto">
-                        <b-button v-ripple.400="'rgb(31, 103, 211)'"
+                        <b-button v-ripple.400="'rgb(31, 103, 211)'" style="    margin-right: 10px !important;"
                             v-if="selectedPreset && checkDefault(selectedPreset)" @click="savePresetFilter"
-                            title="Save preset" variant="flat-primary" class="btn-icon">
-                            <feather-icon icon="SaveIcon" />
+                            title="Save preset" variant="primary" class="btn-icon">
+                            <feather-icon icon="SaveIcon" size="16"/>
                         </b-button>
                         <b-button v-ripple.400="'rgba(255, 255, 255, 0.15)'"
                             v-if="selectedPreset && checkDefault(selectedPreset)" @click="deletePreset"
-                            title="Delete preset" variant="flat-primary" class="btn-icon">
-                            <feather-icon icon="Trash2Icon" />
+                            title="Delete preset" variant="primary" class="btn-icon">
+                            <feather-icon icon="Trash2Icon" size="16"/>
                         </b-button>
                         
 
@@ -1090,356 +1067,350 @@
                 </b-row>
                 <hr style="padding:0px; margin:0px 0px 10px 0px;">
                 <div class="accordion" role="tablist">
-                    <app-collapse accordion>
+                    <app-collapse accordion style="padding:0px;">
                         <app-collapse-item :isVisible="true" title="Market Data Filters">
-                            <b-card class="mb-1">
-                                <b-card-body style="margin-left: 10px; margin-top: 19px;">
-                                    <b-row>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Market Cap">
-                                                    <div class="d-flex">
-                                                        <cleave id="min_market_cap" v-model="ldot"
-                                                            class="form-control" :raw="false" :options="NumberFormaVal"
-                                                            placeholder="min" />
+                            <b-row>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Market Cap">
+                                            <div class="d-flex">
+                                                <cleave id="min_market_cap" v-model="ldot"
+                                                    class="form-control" :raw="false" :options="NumberFormaVal"
+                                                    placeholder="min" />
 
-                                                        <span>
-                                                            <feather-icon icon="MinusIcon" size="16"
-                                                                class="align-middle" style="margin:10px 6px 0 0px" />
-                                                        </span>
-                                                        <cleave id="max_market_cap" v-model="rdot"
-                                                            class="form-control" :raw="false" :options="NumberFormaVal"
-                                                            placeholder="max" />
-                                                    </div>
-                                                </b-form-group>
-                                                <vue-slider
-                                                    v-model="value"
-                                                    :direction="direction"
-                                                    class="mb-2"
-                                                />
+                                                <span>
+                                                    <feather-icon icon="MinusIcon" size="16"
+                                                        class="align-middle" style="margin:10px 6px 0 0px" />
+                                                </span>
+                                                <cleave id="max_market_cap" v-model="rdot"
+                                                    class="form-control" :raw="false" :options="NumberFormaVal"
+                                                    placeholder="max" />
                                             </div>
-                                        </b-col>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Token Price">
-                                                    <div class="d-flex">
-                                                        <cleave id="min_market_cap"
-                                                            v-model="filterKey.min_current_price" class="form-control"
-                                                            :raw="false" :options="NumberFormaVal" placeholder="min" />
-                                                        <span>
-                                                            <feather-icon icon="MinusIcon" size="16"
-                                                                class="align-middle" style="margin:10px 6px 0 0px" />
-                                                        </span>
-                                                        <cleave id="max_market_cap"
-                                                            v-model="filterKey.max_current_price" class="form-control"
-                                                            :raw="false" :options="NumberFormaVal" placeholder="max" />
-                                                    </div>
-                                                </b-form-group>
-                                                <vue-slider
-                                                    
-                                                    :direction="direction"
-                                                    class="mb-2"
-                                                />
+                                        </b-form-group>
+                                        <vue-slider
+                                            v-model="value"
+                                            :direction="direction"
+                                            class="mb-2"
+                                        />
+                                    </div>
+                                </b-col>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Token Price">
+                                            <div class="d-flex">
+                                                <cleave id="min_market_cap"
+                                                    v-model="filterKey.min_current_price" class="form-control"
+                                                    :raw="false" :options="NumberFormaVal" placeholder="min" />
+                                                <span>
+                                                    <feather-icon icon="MinusIcon" size="16"
+                                                        class="align-middle" style="margin:10px 6px 0 0px" />
+                                                </span>
+                                                <cleave id="max_market_cap"
+                                                    v-model="filterKey.max_current_price" class="form-control"
+                                                    :raw="false" :options="NumberFormaVal" placeholder="max" />
                                             </div>
-                                        </b-col>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Circulating Supply">
-                                                    <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.min_circulating_supply" v-numeric-only
-                                                            placeholder="min" />
-                                                        <span>
-                                                            <feather-icon icon="MinusIcon" size="16"
-                                                                class="align-middle" style="margin:10px 6px 0 0px" />
-                                                        </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.max_circulating_supply" v-numeric-only
-                                                            placeholder="max" />
-                                                    </div>
-                                                </b-form-group>
-                                                <vue-slider
-                                                    
-                                                    :direction="direction"
-                                                    class="mb-2"
-                                                />
+                                        </b-form-group>
+                                        <vue-slider
+                                            
+                                            :direction="direction"
+                                            class="mb-2"
+                                        />
+                                    </div>
+                                </b-col>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Circulating Supply">
+                                            <div class="d-flex">
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.min_circulating_supply" v-numeric-only
+                                                    placeholder="min" />
+                                                <span>
+                                                    <feather-icon icon="MinusIcon" size="16"
+                                                        class="align-middle" style="margin:10px 6px 0 0px" />
+                                                </span>
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.max_circulating_supply" v-numeric-only
+                                                    placeholder="max" />
                                             </div>
-                                        </b-col>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Total Supply">
-                                                    <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.min_total_supply" v-numeric-only
-                                                            placeholder="min" />
-                                                        <span>
-                                                            <feather-icon icon="MinusIcon" size="16"
-                                                                class="align-middle" style="margin:10px 6px 0 0px" />
-                                                        </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.max_total_supply" v-numeric-only
-                                                            placeholder="max" />
-                                                    </div>
-                                                </b-form-group>
-                                                <vue-slider
-                                                    
-                                                    :direction="direction"
-                                                    class="mb-2"
-                                                />
+                                        </b-form-group>
+                                        <vue-slider
+                                            
+                                            :direction="direction"
+                                            class="mb-2"
+                                        />
+                                    </div>
+                                </b-col>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Total Supply">
+                                            <div class="d-flex">
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.min_total_supply" v-numeric-only
+                                                    placeholder="min" />
+                                                <span>
+                                                    <feather-icon icon="MinusIcon" size="16"
+                                                        class="align-middle" style="margin:10px 6px 0 0px" />
+                                                </span>
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.max_total_supply" v-numeric-only
+                                                    placeholder="max" />
                                             </div>
-                                        </b-col>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Market Cap. Rank">
-                                                    <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.min_market_cap_rank" v-numeric-only
-                                                            placeholder="min" />
-                                                        <span>
-                                                            <feather-icon icon="MinusIcon" size="16"
-                                                                class="align-middle" style="margin:10px 6px 0 0px" />
-                                                        </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.max_market_cap_rank" v-numeric-only
-                                                            placeholder="max" />
-                                                    </div>
-                                                </b-form-group>
-                                                <vue-slider
-                                                    
-                                                    :direction="direction"
-                                                    class="mb-2"
-                                                />
+                                        </b-form-group>
+                                        <vue-slider
+                                            
+                                            :direction="direction"
+                                            class="mb-2"
+                                        />
+                                    </div>
+                                </b-col>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Market Cap. Rank">
+                                            <div class="d-flex">
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.min_market_cap_rank" v-numeric-only
+                                                    placeholder="min" />
+                                                <span>
+                                                    <feather-icon icon="MinusIcon" size="16"
+                                                        class="align-middle" style="margin:10px 6px 0 0px" />
+                                                </span>
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.max_market_cap_rank" v-numeric-only
+                                                    placeholder="max" />
                                             </div>
-                                        </b-col>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Trade Volume">
-                                                    <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.min_trading_volume" v-numeric-only
-                                                            placeholder="min" />
-                                                        <span>
-                                                            <feather-icon icon="MinusIcon" size="16"
-                                                                class="align-middle" style="margin:10px 6px 0 0px" />
-                                                        </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.max_trading_volume" v-numeric-only
-                                                            placeholder="max" />
-                                                    </div>
-                                                </b-form-group>
-                                                <vue-slider
-                                                    
-                                                    :direction="direction"
-                                                    class="mb-2"
-                                                />
+                                        </b-form-group>
+                                        <vue-slider
+                                            
+                                            :direction="direction"
+                                            class="mb-2"
+                                        />
+                                    </div>
+                                </b-col>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Trade Volume">
+                                            <div class="d-flex">
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.min_trading_volume" v-numeric-only
+                                                    placeholder="min" />
+                                                <span>
+                                                    <feather-icon icon="MinusIcon" size="16"
+                                                        class="align-middle" style="margin:10px 6px 0 0px" />
+                                                </span>
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.max_trading_volume" v-numeric-only
+                                                    placeholder="max" />
                                             </div>
-                                        </b-col>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="ROI %">
-                                                    <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.min_roi_percentage" v-numeric-only
-                                                            placeholder="min" />
-                                                        <span>
-                                                            <feather-icon icon="MinusIcon" size="16"
-                                                                class="align-middle" style="margin:10px 6px 0 0px" />
-                                                        </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.max_roi_percentage" v-numeric-only
-                                                            placeholder="max" />
-                                                    </div>
-                                                </b-form-group>
-                                                <vue-slider
-                                                    
-                                                    :direction="direction"
-                                                    class="mb-2"
-                                                />
+                                        </b-form-group>
+                                        <vue-slider
+                                            
+                                            :direction="direction"
+                                            class="mb-2"
+                                        />
+                                    </div>
+                                </b-col>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="ROI %">
+                                            <div class="d-flex">
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.min_roi_percentage" v-numeric-only
+                                                    placeholder="min" />
+                                                <span>
+                                                    <feather-icon icon="MinusIcon" size="16"
+                                                        class="align-middle" style="margin:10px 6px 0 0px" />
+                                                </span>
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.max_roi_percentage" v-numeric-only
+                                                    placeholder="max" />
                                             </div>
-                                        </b-col>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="ROI in X's">
-                                                    <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.min_roi_times" v-numeric-only
-                                                            placeholder="min" />
-                                                        <span>
-                                                            <feather-icon icon="MinusIcon" size="16"
-                                                                class="align-middle" style="margin:10px 6px 0 0px" />
-                                                        </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.max_roi_times" v-numeric-only
-                                                            placeholder="max" />
-                                                    </div>
-                                                </b-form-group>
-                                                <vue-slider
-                                                    
-                                                    :direction="direction"
-                                                    class="mb-2"
-                                                />
+                                        </b-form-group>
+                                        <vue-slider
+                                            
+                                            :direction="direction"
+                                            class="mb-2"
+                                        />
+                                    </div>
+                                </b-col>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="ROI in X's">
+                                            <div class="d-flex">
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.min_roi_times" v-numeric-only
+                                                    placeholder="min" />
+                                                <span>
+                                                    <feather-icon icon="MinusIcon" size="16"
+                                                        class="align-middle" style="margin:10px 6px 0 0px" />
+                                                </span>
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.max_roi_times" v-numeric-only
+                                                    placeholder="max" />
                                             </div>
-                                        </b-col>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Daily Price Change (%)"
-                                                    label-for="price_change_percentage_24h">
-                                                    <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            name="price_change_percentage_24h" v-numeric-only
-                                                            v-model="filterKey.min_price_change_percentage_24h"
-                                                            placeholder="min" />
-                                                        <span>
-                                                            <feather-icon icon="MinusIcon" size="16"
-                                                                class="align-middle" style="margin:10px 6px 0 0px" />
-                                                        </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.max_price_change_percentage_24h"
-                                                            v-numeric-only placeholder="max" />
-                                                    </div>
-                                                </b-form-group>
-                                                <vue-slider
-                                                    
-                                                    :direction="direction"
-                                                    class="mb-2"
-                                                />
+                                        </b-form-group>
+                                        <vue-slider
+                                            
+                                            :direction="direction"
+                                            class="mb-2"
+                                        />
+                                    </div>
+                                </b-col>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Daily Price Change (%)"
+                                            label-for="price_change_percentage_24h">
+                                            <div class="d-flex">
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    name="price_change_percentage_24h" v-numeric-only
+                                                    v-model="filterKey.min_price_change_percentage_24h"
+                                                    placeholder="min" />
+                                                <span>
+                                                    <feather-icon icon="MinusIcon" size="16"
+                                                        class="align-middle" style="margin:10px 6px 0 0px" />
+                                                </span>
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.max_price_change_percentage_24h"
+                                                    v-numeric-only placeholder="max" />
                                             </div>
-                                        </b-col>
+                                        </b-form-group>
+                                        <vue-slider
+                                            
+                                            :direction="direction"
+                                            class="mb-2"
+                                        />
+                                    </div>
+                                </b-col>
 
 
 
 
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Days in Market">
-                                                    <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.min_genesis_date" v-numeric-only
-                                                            placeholder="min" />
-                                                        <span>
-                                                            <feather-icon icon="MinusIcon" size="16"
-                                                                class="align-middle" style="margin:10px 6px 0 0px" />
-                                                        </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.max_genesis_date" v-numeric-only
-                                                            placeholder="max" />
-                                                    </div>
-                                                </b-form-group>
-                                                <vue-slider
-                                                    
-                                                    :direction="direction"
-                                                    class="mb-2"
-                                                />
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Days in Market">
+                                            <div class="d-flex">
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.min_genesis_date" v-numeric-only
+                                                    placeholder="min" />
+                                                <span>
+                                                    <feather-icon icon="MinusIcon" size="16"
+                                                        class="align-middle" style="margin:10px 6px 0 0px" />
+                                                </span>
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.max_genesis_date" v-numeric-only
+                                                    placeholder="max" />
                                             </div>
-                                        </b-col>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Total Supply (%)">
-                                                    <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.min_total_supply_percent" v-numeric-only
-                                                            placeholder="min" />
-                                                        <span>
-                                                            <feather-icon icon="MinusIcon" size="16"
-                                                                class="align-middle" style="margin:10px 6px 0 0px" />
-                                                        </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.max_total_supply_percent" v-numeric-only
-                                                            placeholder="max" />
-                                                    </div>
-                                                </b-form-group>
-                                                <vue-slider
-                                                    
-                                                    :direction="direction"
-                                                    class="mb-2"
-                                                />
+                                        </b-form-group>
+                                        <vue-slider
+                                            
+                                            :direction="direction"
+                                            class="mb-2"
+                                        />
+                                    </div>
+                                </b-col>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Total Supply (%)">
+                                            <div class="d-flex">
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.min_total_supply_percent" v-numeric-only
+                                                    placeholder="min" />
+                                                <span>
+                                                    <feather-icon icon="MinusIcon" size="16"
+                                                        class="align-middle" style="margin:10px 6px 0 0px" />
+                                                </span>
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.max_total_supply_percent" v-numeric-only
+                                                    placeholder="max" />
                                             </div>
-                                        </b-col>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Seed Price">
-                                                    <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.min_seed_price" v-numeric-only
-                                                            placeholder="min" />
-                                                        <span>
-                                                            <feather-icon icon="MinusIcon" size="16"
-                                                                class="align-middle" style="margin:10px 6px 0 0px" />
-                                                        </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.max_seed_price" v-numeric-only
-                                                            placeholder="max" />
-                                                    </div>
-                                                </b-form-group>
-                                                <vue-slider
-                                                    
-                                                    :direction="direction"
-                                                    class="mb-2"
-                                                />
+                                        </b-form-group>
+                                        <vue-slider
+                                            
+                                            :direction="direction"
+                                            class="mb-2"
+                                        />
+                                    </div>
+                                </b-col>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Seed Price">
+                                            <div class="d-flex">
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.min_seed_price" v-numeric-only
+                                                    placeholder="min" />
+                                                <span>
+                                                    <feather-icon icon="MinusIcon" size="16"
+                                                        class="align-middle" style="margin:10px 6px 0 0px" />
+                                                </span>
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.max_seed_price" v-numeric-only
+                                                    placeholder="max" />
                                             </div>
-                                        </b-col>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Seed ROI">
-                                                    <div class="d-flex">
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.min_roi_seed" v-numeric-only
-                                                            placeholder="min" />
-                                                        <span>
-                                                            <feather-icon icon="MinusIcon" size="16"
-                                                                class="align-middle" style="margin:10px 6px 0 0px" />
-                                                        </span>
-                                                        <cleave :options="NumberFormaVal" class="form-control"
-                                                            v-model="filterKey.max_roi_seed" v-numeric-only
-                                                            placeholder="max" />
-                                                    </div>
-                                                </b-form-group>
-                                                <vue-slider
-                                                    
-                                                    :direction="direction"
-                                                    class="mb-2"
-                                                />
+                                        </b-form-group>
+                                        <vue-slider
+                                            
+                                            :direction="direction"
+                                            class="mb-2"
+                                        />
+                                    </div>
+                                </b-col>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Seed ROI">
+                                            <div class="d-flex">
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.min_roi_seed" v-numeric-only
+                                                    placeholder="min" />
+                                                <span>
+                                                    <feather-icon icon="MinusIcon" size="16"
+                                                        class="align-middle" style="margin:10px 6px 0 0px" />
+                                                </span>
+                                                <cleave :options="NumberFormaVal" class="form-control"
+                                                    v-model="filterKey.max_roi_seed" v-numeric-only
+                                                    placeholder="max" />
                                             </div>
-                                        </b-col>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Platform" label-for="">
-                                                    <div class="d-flex">
-                                                        <b-form-select id="" v-model="filterKey.coin_platform"
-                                                            :options="platforms" />
-                                                    </div>
-                                                </b-form-group>
+                                        </b-form-group>
+                                        <vue-slider
+                                            
+                                            :direction="direction"
+                                            class="mb-2"
+                                        />
+                                    </div>
+                                </b-col>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Platform" label-for="">
+                                            <div class="d-flex">
+                                                <b-form-select id="" v-model="filterKey.coin_platform"
+                                                    :options="platforms" />
                                             </div>
-                                        </b-col>
+                                        </b-form-group>
+                                    </div>
+                                </b-col>
 
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Keywords" label-for="">
-                                                    <div class="d-flex">
-                                                        <b-form-input v-model="filterKey.keywords"
-                                                            placeholder="key words" />
-                                                    </div>
-                                                </b-form-group>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Keywords" label-for="">
+                                            <div class="d-flex">
+                                                <b-form-input v-model="filterKey.keywords"
+                                                    placeholder="key words" />
                                             </div>
-                                        </b-col>
-                                        <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                            <div class="">
-                                                <b-form-group label="Category" label-for="">
-                                                    <div class="d-flex">
-                                                        <b-form-select id="" v-model="filterKey.coin_category"
-                                                            :options="categories" />
-                                                    </div>
-                                                </b-form-group>
+                                        </b-form-group>
+                                    </div>
+                                </b-col>
+                                <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
+                                    <div class="">
+                                        <b-form-group label="Category" label-for="">
+                                            <div class="d-flex">
+                                                <b-form-select id="" v-model="filterKey.coin_category"
+                                                    :options="categories" />
                                             </div>
-                                        </b-col>
-                                    </b-row>
-                                </b-card-body>
-                            </b-card>
+                                        </b-form-group>
+                                    </div>
+                                </b-col>
+                            </b-row>
                         </app-collapse-item>
                         <app-collapse-item title="Social Sentiments">
-                            <b-card no-body class="mb-1">
-                                <b-card-body style="margin-left: 10px; margin-top: 19px;">
-                                    <b-row>
+                            <b-row>
                                         <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
                                             <div class="">
                                                 <b-form-group label="Sentiment Change %">
@@ -1541,13 +1512,9 @@
                                         <b-col md="6" xl="6">
                                         </b-col>
                                     </b-row>
-                                </b-card-body>
-                            </b-card>
                         </app-collapse-item>
                         <app-collapse-item title="Unlocking">
-                            <b-card no-body class="mb-1">
-                                <b-card-body style="margin-left: 10px; margin-top: 19px;">
-                                    <b-row>
+                            <b-row>
                                         <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
                                             <div class="">
                                                 <b-form-group label="Total Locked">
@@ -1751,8 +1718,6 @@
                                             </div>
                                         </b-col>
                                     </b-row>
-                                </b-card-body>
-                            </b-card>
                         </app-collapse-item>
                     </app-collapse>
 
@@ -1775,7 +1740,7 @@
         <b-modal id="modal-details" :hide-footer="true" v-if="activeData" centered size="lg">
             <template>
                 <div slot="modal-title">
-                    <div class="w-full justify-content-between d-flex" style="margin-top: 10px; margin-left: 5px;">
+                    <div class="w-full justify-content-between d-flex" style="margin-top: 10px; margin-left: 10px;">
                         <div class="d-inline">
                             <div class="rank_slot" style="margin-bottom: 8px;font-family: 'Poppins';
                                 font-style: normal;
@@ -1788,6 +1753,10 @@
                                     <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins';
                                             font-style: normal;
                                             font-weight: 400;
+                                            text-overflow: ellipsis;
+                                            width: 100px;
+                                            white-space: nowrap;
+                                            overflow: hidden;
                                             font-size: 20px; margin-right:10px !important;"> 
                                         {{activeData.name}}
                                         <!-- <span style="font-family: 'Poppins';
@@ -1814,12 +1783,12 @@
                                             class="btn-success d-flex  marginx1"
                                             style="font-family: 'Poppins';
                                             font-style: normal;
-                                            font-weight: 600;
-                                            font-size: 24px; margin-top: 2px;border-radius:5px; padding:0px 5px"><div style="display: inline; margin:auto;"><feather-icon size="20" icon="ChevronUpIcon" /></div><span>{{ roundData(activeData.price_change_percentage_24h) }}%</span>
+                                            font-weight: 300;
+                                            font-size: 12px; margin-top: 2px;border-radius:5px; padding:0px 5px"><div style="display: inline; margin:auto;"><feather-icon size="20" icon="ChevronUpIcon" /></div><span>{{ roundData(activeData.price_change_percentage_24h) }}%</span>
                                            
                                         </span>
                                         <span v-else-if="activeData.price_change_percentage_24h"
-                                            style="font-size:12px; margin-top: 2px;border-radius:5px; padding:0px 5px"
+                                            style="font-size:12px; font-weight: 300; margin-top: 2px;border-radius:5px; padding:0px 5px"
                                             class="btn-danger d-flex marginx1"><div style="display: inline; margin:auto;"><feather-icon size="20" icon="ChevronDownIcon" /></div><span>{{ roundData(activeData.price_change_percentage_24h) }}%</span>
                                           
                                         </span>
@@ -1843,20 +1812,17 @@
                                         id="dropdown-left1" no-caret class="cunningDrop">
                                             <template #button-content>
                                                 <div class="darkBackgroundBlack" v-for="(address,index) in activeData.contract_address"
-                                                    :key="index" style="display:block; padding: 8px 8px 14px 8px; border-radius: 20px;" v-if="index==0">
+                                                    :key="index" style="display:block; padding: 4px; border-radius: 20px;" v-if="index==0">
                                                     <div v-if="index==0">
-                                                        <b-img v-if="activeData.image" :src="activeData.image" fluid alt="Responsive image" style="margin-right:5px; width:30px;" />
-                                                            <div style="font-family: 'Poppins'; display:inline-block;
+                                                            <b-img v-if="activeData.image" :src="activeData.image" fluid alt="Responsive image" style="margin-right:5px; height:30px;" />
+                                                            <div style="font-family: 'Poppins'; display:inline-block; margin-top:10px;
                                                                 font-style: normal;
                                                                 font-weight: 500;
                                                                 font-size: 14px;
-                                                                line-height: 14px;
-                                                                ">
-                                                                <div style="white-space: nowrap; width:90px;
+                                                                line-height: 14px; width:90px;white-space: nowrap; 
                                                                 overflow: hidden;
-                                                                text-overflow: ellipsis;">
+                                                                text-overflow: ellipsis;" class="darkWhiteText">
                                                                     {{address.contract_address}}    
-                                                                </div>
                                                                                                          
                                                         </div>
                                                         <div style="display:inline-block; float:right;">
@@ -1866,8 +1832,8 @@
                                                                 v-clipboard:success="onCopy" v-clipboard:error="onError"
                                                                 v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary" pill><feather-icon  icon="CopyIcon" class="cursor-pointer darkWhiteText" size="20" />
                                                             </b-button>
-                                                            <img src='/images/static/metamask.png' class="img-fluid" alt="metamask" style="cursor:pointer; width:25px; margin-right:13px;" @click="say('hello')">
-                                                            <feather-icon  icon="ChevronDownIcon" class="cursor-pointer darkWhiteText" size="20" style="margin-right:13px;"/>
+                                                            <img src='/images/static/metamask.png' class="img-fluid" alt="metamask" style="cursor:pointer; width:23px; margin-right:13px;" @click="say('hello')">
+                                                            <feather-icon  icon="ChevronDownIcon" class="cursor-pointer darkWhiteText" size="20" style="margin-right:13px; margin-bottom: 6px;"/>
                                                             
                                                         </div>
 
@@ -1879,15 +1845,15 @@
                                             </template>
                                             <b-dropdown-form href="#" class="cunningDrop dropdown-mine darkBackgroundBlack" name="dropdownform2" style="z-index:999;">
                                                 <div class="darkBackgroundBlack" v-for="(address,index) in activeData.contract_address"
-                                                    :key="index" style="display:block; padding: 8px 8px 14px 8px;">
+                                                    :key="index" style="display:flex; padding: 4px;">
                                                     <b-img v-if="activeData.image" :src="activeData.image" fluid alt="Responsive image" style="margin-right:5px; width:30px;" />
-                                                        <div style="font-family: 'Poppins'; display:inline-block;
+                                                        <div class="m-auto" style="font-family: 'Poppins'; display:inline-block;
                                                             font-style: normal;
                                                             font-weight: 500;
                                                             font-size: 14px;
                                                             line-height: 14px;
                                                             ">
-                                                            <div style="white-space: nowrap; width:90px;
+                                                            <div class="darkWhiteText" style="white-space: nowrap; width:90px;
                                                             overflow: hidden;
                                                             text-overflow: ellipsis;">
                                                                 {{address.contract_address}}    
@@ -1901,7 +1867,7 @@
                                                             v-clipboard:success="onCopy" v-clipboard:error="onError"
                                                             v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary" pill><feather-icon  icon="CopyIcon" class="cursor-pointer darkWhiteText" size="20" />
                                                         </b-button>
-                                                        <img src='/images/static/metamask.png' class="img-fluid" alt="metamask" style="cursor:pointer; width:25px; margin-right:13px;" @click="say('hello')">
+                                                        <img src='/images/static/metamask.png' class="img-fluid" alt="metamask" style="cursor:pointer; width:23px;" @click="say('hello')">
                                                         
                                                     </div>
                                                     
@@ -1996,20 +1962,22 @@
                                                 :styles="spLineStyles" />
                                         </sparkline> -->
                                     </b-col>
-                                    <b-col>
-                                        <div class="mb-1" v-if="activeData.total_volume">
+                                    <b-col style="display: flex;
+                                        justify-content: space-between;
+                                        flex-direction: column;">
+                                        <div  v-if="activeData.total_volume">
                                             <h5> Volume</h5>
                                             <div class="" style="font-size:16px; font-weight: 600;">
                                                 <span
                                                     class="">${{ toInterNationalNumber(activeData.total_volume) }}</span>
                                             </div>
                                         </div>
-                                        <div class="mb-1 mt-2" v-if="activeData.market_cap">
+                                        <div  v-if="activeData.market_cap">
                                             <h5> Market Cap</h5>
                                             <div class="" style="font-size:16px; font-weight: 600;">
                                                 <span>${{ toInterNationalNumber(activeData.market_cap) }}</span> </div>
                                         </div>
-                                        <div class="mb-1 mt-2"
+                                        <div 
                                             v-if="activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0">
                                             <h5> X's from launch</h5>
                                             <div class="" style="font-size:16px; font-weight: 600;">
@@ -2019,12 +1987,12 @@
                                                     v-else-if="activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0 ">{{ xfromlunch(activeData.current_price,activeData.round_price) }}X</span>
                                             </div>
                                         </div>
-                                        <div class="mb-1 mt-2" v-if="activeData.total_supply_percent">
+                                        <div  v-if="activeData.total_supply_percent">
                                             <h5>Total Supply:</h5>
                                             <div class="" style="font-size:16px; font-weight: 600;">
                                                 <span>{{ activeData.total_supply_percent }} %</span> </div>
                                         </div>
-                                        <div class="mb-1 mt-2 float-left">
+                                        <div class="float-left">
                                             <button class="rounded-pill fs-6 " style="font-size: 14px; padding:6px 14px;">Price Prediction</button>
                                         </div>
                                     </b-col>
@@ -2036,10 +2004,22 @@
                     </app-collapse-item>
                     <app-collapse-item title="Social Data" class="w-100">
                         <b-card no-body class="mb-1">
-                            <b-card-body style="margin-left: 10px; margin-top: 19px;">
+                            <b-card-body>
 
-                                <b-row class="justify-content-center">
-                                    <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
+                                <b-row class="justify-content-center" >
+                                    <b-col v-if="activeData.website && activeData.website != '' "   cols="1" md="2" lg="2" sm="2" class="radius_gradient">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <a :href="activeData.website" target="_blank" class="d-block" 
+                                                style="margin-top:20px; margin-bottom:10px;">
+                                            <b-img rounded :src="'/images/static/website.png'" fluid class="w-50"
+                                                alt="Responsive image" />
+                                            </a>
+                                            <div class="socialText">
+                                                Website
+                                            </div>
+                                        </b-card>
+                                    </b-col>
+                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
                                         v-if="activeData.website && activeData.website != '' ">
                                         <a :href="activeData.website" target="_blank" class="d-block" 
                                         style="margin-top:20px; margin-bottom:10px;">
@@ -2048,8 +2028,22 @@
                                         </a>
                                         <span class="text-center" style="font-size:12px; font-weight:500">Website
                                         </span>
+                                    </b-col> -->
+                                    <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient" v-if="activeData.twitter && activeData.twitter != '' ">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <a :href="activeData.twitter" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
+                                                <b-img rounded :src="'/images/static/twitter.png'" fluid class="w-50"
+                                                    alt="Responsive image" />
+                                            </a>
+                                            <div class="socialText" v-if="activeData.twitter_followers">
+                                                {{kFormatter(activeData.twitter_followers)}}
+                                            </div>
+                                            <div class="socialText" v-else>
+                                                Twitter
+                                            </div>
+                                        </b-card>
                                     </b-col>
-                                    <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
+                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
                                         v-if="activeData.twitter && activeData.twitter != '' ">
                                         <a :href="activeData.twitter" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                             <b-img rounded :src="'/images/static/twitter.png'" fluid class="w-50"
@@ -2060,8 +2054,23 @@
                                         </span>
                                         <span class="text-center" style="font-size:12px; font-weight:500" v-else>Twitter
                                         </span>
+                                    </b-col> -->
+                                    <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient" v-if="activeData.telegram && activeData.telegram != '' ">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <a :href="activeData.telegram" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
+                                                <b-img rounded :src="'/images/static/telegram.png'" fluid class="w-50"
+                                                    alt="Responsive image" />
+
+                                            </a>
+                                            <div class="socialText" v-if="activeData.telegram_members">
+                                                {{kFormatter(activeData.telegram_members)}}
+                                            </div>
+                                            <div class="socialText" v-else>
+                                                Telegram
+                                            </div>
+                                        </b-card>
                                     </b-col>
-                                    <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
+                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
                                         v-if="activeData.telegram && activeData.telegram != '' ">
                                         <a :href="activeData.telegram" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                             <b-img rounded :src="'/images/static/telegram.png'" fluid class="w-50"
@@ -2074,8 +2083,21 @@
                                         <span class="text-center" style="font-size:12px; font-weight:500"
                                             v-else>Telegram
                                         </span>
+                                    </b-col> -->
+                                    <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient"  
+                                        v-if="activeData.discord && activeData.discord != '' ">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <a :href="activeData.discord" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
+                                                <b-img rounded :src="'/images/static/discord.png'" fluid class="w-50"
+                                                    alt="Responsive image" />
+                                            </a>
+                                            <div class="socialText" v-if="activeData.medium_followers">{{kFormatter(activeData.medium_followers)}}
+                                            </div>
+                                            <div class="socialText" v-else>Medium
+                                            </div>
+                                        </b-card>
                                     </b-col>
-                                    <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
+                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
                                         v-if="activeData.discord && activeData.discord != '' ">
                                         <a :href="activeData.discord" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                             <b-img rounded :src="'/images/static/discord.png'" fluid class="w-50"
@@ -2087,8 +2109,23 @@
                                         </span>
                                         <span class="text-center" style="font-size:12px; font-weight:500" v-else>Discord
                                         </span>
+                                    </b-col> -->
+                                    <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient"  
+                                        v-if="activeData.medium && activeData.medium != '' ">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <a :href="activeData.medium" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
+                                                <b-img rounded :src="'/images/static/medium.png'" fluid class="w-50"
+                                                    alt="Responsive image" />
+
+                                            </a>
+                                            <div class="socialText" 
+                                                v-if="activeData.medium_followers">{{kFormatter(activeData.medium_followers)}}
+                                            </div>
+                                            <div class="socialText" v-else>Medium
+                                            </div>
+                                        </b-card>
                                     </b-col>
-                                    <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
+                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
                                         v-if="activeData.medium && activeData.medium != '' ">
                                         <a :href="activeData.medium" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                             <b-img rounded :src="'/images/static/medium.png'" fluid class="w-50"
@@ -2100,8 +2137,23 @@
                                         </span>
                                         <span class="text-center" style="font-size:12px; font-weight:500" v-else>Medium
                                         </span>
+                                    </b-col> -->
+                                    <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient"  
+                                        v-if="activeData.reddit && activeData.reddit != '' ">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <a :href="activeData.reddit" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
+                                                <b-img rounded :src="'/images/static/reddit.png'" fluid class="w-50"
+                                                    alt="Responsive image" />
+
+                                            </a>
+                                            <div class="socialText" 
+                                                v-if="activeData.reddit_followers">{{kFormatter(activeData.reddit_followers)}}
+                                            </div>
+                                            <div class="socialText" v-else>Reddit
+                                            </div>
+                                        </b-card>
                                     </b-col>
-                                    <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
+                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
                                         v-if="activeData.reddit && activeData.reddit != '' ">
                                         <a :href="activeData.reddit" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                             <b-img rounded :src="'/images/static/reddit.png'" fluid class="w-50"
@@ -2113,8 +2165,23 @@
                                         </span>
                                         <span class="text-center" style="font-size:12px; font-weight:500" v-else>Reddit
                                         </span>
+                                    </b-col> -->
+                                    <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient"  
+                                        v-if="activeData.whitepaper && activeData.whitepaper != '' ">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <a :href="activeData.whitepaper" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
+                                                <b-img rounded :src="'/images/static/whitepaper.png'" fluid
+                                                    class="w-50 bg-light" alt="Responsive image" />
+
+                                            </a>
+                                            <div class="socialText" 
+                                                v-if="activeData.whitepaper_followers">{{kFormatter(activeData.whitepaper_followers)}}
+                                            </div>
+                                            <div class="socialText" v-else>Whitepaper
+                                            </div>
+                                        </b-card>
                                     </b-col>
-                                    <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
+                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
                                         v-if="activeData.whitepaper && activeData.whitepaper != '' ">
                                         <a :href="activeData.whitepaper" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                             <b-img rounded :src="'/images/static/whitepaper.png'" fluid
@@ -2127,8 +2194,22 @@
                                         <span class="text-center" style="font-size:12px; font-weight:500"
                                             v-else>Whitepaper
                                         </span>
+                                    </b-col> -->
+                                    <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient"  
+                                        v-if="activeData.github && activeData.github != '' ">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <a :href="activeData.github" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
+                                                <b-img rounded :src="'/images/static/github.png'" fluid class="w-50"
+                                                    alt="Responsive image" />
+                                            </a>
+                                            <div class="socialText" 
+                                                v-if="activeData.github_followers">{{kFormatter(activeData.github_followers)}}
+                                            </div>
+                                            <div class="socialText" v-else>Github
+                                            </div>
+                                        </b-card>
                                     </b-col>
-                                    <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
+                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
                                         v-if="activeData.github && activeData.github != '' ">
                                         <a :href="activeData.github" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                             <b-img rounded :src="'/images/static/github.png'" fluid class="w-50"
@@ -2139,51 +2220,118 @@
                                         </span>
                                         <span class="text-center" style="font-size:12px; font-weight:500" v-else>Github
                                         </span>
-                                    </b-col>
+                                    </b-col> -->
                                 </b-row>
                                 <b-row class="text-center mt-1 mb-1 justify-content-center">
-                                    <b-col sm="3" md="2" v-if="activeData">
+                                    <b-col   sm="3" md="2" v-if="activeData" class="radius_gradient" >
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;">
+                                                {{ calculate_social_score(activeData) }}/10
+                                            </div>
+                                            <div class="soicalLable darkWhiteText">Social Score: </div>
+                                            <div class="soicalLable darkWhiteText">&nbsp; </div>
+                                        </b-card>
+                                    </b-col>
+                                    <!-- <b-col sm="3" md="2" v-if="activeData">
                                         <div class="border border-2 rounded border-dark greenGradient">
                                             <div class="d-flex justify-content-center text-nowrap" style="margin: 13px 0 16px 0; font-size: 14px;">
                                                 {{ calculate_social_score(activeData) }}/10</div>
-                                            <div class="soicalLable">Social Score: </div>
+                                            <div class="soicalLable darkWhiteText">Social Score: </div>
                                         </div>
+                                    </b-col> -->
+                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.total_supply_percent">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" >
+                                                {{ activeData.total_supply_percent}} %
+                                            </div>
+                                            
+                                            <div class="soicalLable darkWhiteText">Total Supply %: </div>
+                                            <div class="soicalLable darkWhiteText">&nbsp; </div>
+
+                                        </b-card>
                                     </b-col>
-                                    <b-col sm="3" md="2" v-if="activeData.total_supply_percent">
+                                    <!-- <b-col sm="3" md="2" v-if="activeData.total_supply_percent">
                                         <div class="border border-2 rounded border-dark greenGradient">
                                             <div class="d-flex justify-content-center text-nowrap" style="margin: 13px 0 16px 0; font-size: 14px;">
                                                 {{ activeData.total_supply_percent}} %</div>
-                                            <div class="soicalLable">Total Supply %: </div>
+                                            <div class="soicalLable darkWhiteText">Total Supply %: </div>
                                         </div>
+                                    </b-col> -->
+                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_mentions">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  v-if="activeData.social_mentions>=0">
+                                                +{{toInterNationalNumber(activeData.social_mentions)}} %
+                                            </div>
+                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" v-else>
+                                                {{toInterNationalNumber(activeData.social_mentions)}} %
+                                            </div>
+                                            <div class="soicalLable darkWhiteText">Social Mentions: </div>
+                                            <div class="soicalLable darkWhiteText">&nbsp; </div>
+
+                                        </b-card>
                                     </b-col>
-                                    <b-col sm="3" md="2" v-if="activeData.social_mentions">
+                                    <!-- <b-col sm="3" md="2" v-if="activeData.social_mentions">
                                         <div class="border border-2 rounded border-dark greenGradient">
                                             <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success d-flex justify-content-center text-nowrap"
                                                 v-if="activeData.social_mentions>=0">
                                                 +{{toInterNationalNumber(activeData.social_mentions)}} %</div>
                                             <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger d-flex justify-content-center text-nowrap"
                                                 v-else> {{toInterNationalNumber(activeData.social_mentions)}} %</div>
-                                            <div class="soicalLable">Social Mentions: </div>
+                                            <div class="soicalLable darkWhiteText">Social Mentions: </div>
                                         </div>
+                                    </b-col> -->
+                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  >
+                                                {{roundData(activeData.average_sentiment)}}</div>
+                                            
+                                            <div class="soicalLable darkWhiteText">Average Sentiment:  </div>
+
+                                        </b-card>
                                     </b-col>
-                                    <b-col sm="3" md="2" v-if="activeData.average_sentiment">
+                                    <!-- <b-col sm="3" md="2" v-if="activeData.average_sentiment">
                                         <div class=" border-2 rounded border-dark greenGradient">
                                             <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-success d-flex justify-content-center text-nowrap">
                                                 {{roundData(activeData.average_sentiment)}}</div>
-                                            <div class="soicalLable">Average Sentiment: </div>
+                                            <div class="soicalLable darkWhiteText">Average Sentiment: </div>
                                         </div>
+                                    </b-col> -->
+                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_engagement">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
+                                                v-if="activeData.social_mentions>=0">
+                                                 +{{toInterNationalNumber(activeData.social_engagement)}} %</div>
+                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" 
+                                                v-else> {{toInterNationalNumber(activeData.social_engagement)}} %</div>
+                                            <div class="soicalLable darkWhiteText">Social Engagement: </div>
+
+                                        </b-card>
                                     </b-col>
-                                    <b-col sm="3" md="2" v-if="activeData.social_engagement">
+                                    <!-- <b-col sm="3" md="2" v-if="activeData.social_engagement">
                                         <div class=" border-2 rounded border-dark greenGradient">
                                             <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success d-flex justify-content-center text-nowrap"
                                                 v-if="activeData.social_mentions>=0">
                                                 +{{toInterNationalNumber(activeData.social_engagement)}} %</div>
                                             <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger d-flex justify-content-center text-nowrap"
                                                 v-else> {{toInterNationalNumber(activeData.social_engagement)}} %</div>
-                                            <div class="soicalLable">Social Engagement: </div>
+                                            <div class="soicalLable darkWhiteText">Social Engagement: </div>
                                         </div>
+                                    </b-col> -->
+                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment_change">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
+                                                v-if="roundData(activeData.average_sentiment_change)>=0">
+                                                    +{{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
+                                                    %</div>
+                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" 
+                                                v-else>
+                                                    {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
+                                                    %</div>
+                                            <div class="soicalLable darkWhiteText">Social Engagement:  </div>
+
+                                        </b-card>
                                     </b-col>
-                                    <b-col sm="3" md="2" v-if="activeData.average_sentiment_change">
+                                    <!-- <b-col sm="3" md="2" v-if="activeData.average_sentiment_change">
                                         <div class="border border-3 rounded border-dark greenGradient">
                                             <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success d-flex justify-content-center text-nowrap"
                                                 v-if="roundData(activeData.average_sentiment_change)>=0">
@@ -2193,9 +2341,9 @@
                                                 v-else>
                                                 {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                 %</div>
-                                            <div class="soicalLable">Social Engagement: </div>
+                                            <div class="soicalLable darkWhiteText">Social Engagement: </div>
                                         </div>
-                                    </b-col>
+                                    </b-col> -->
 
                                 </b-row>
                             </b-card-body>
@@ -2217,13 +2365,16 @@
                         ||activeData.six_months_unlock_size
                         ">
 
-                        <div class="container d-flex">
-                            <div class="d-inline" style="width:20%">
-                                <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 14px;">Next Unlock Date</span><br>
-                                <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 18px;">05 Sep 22</span><br>
-                                <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 12px;">15:00</span>
+                        <div class="container d-flex" style="padding:0px;">
+                            <div class="d-inline" style="width:20%; font-family: 'Poppins'; margin-right: 24px;
+                                font-style: normal;
+                                font-weight: 400;
+                                font-size: 12px;">
+                                <span style="opacity: 0.5;">Next Unlock Date</span><br>
+                                <span>05 Sep 22</span><br>
+                                <span style="opacity: 0.5;">15:00</span>
                             </div>
-                            <div class="d-inline-flex justify-content-between" style="width:40%">
+                            <div class="d-inline-flex justify-content-between" style="">
                                 <div class="d-iline" style="max-width:65px">
                                     <div class="radius_gradient" style="border-radius:10px">
                                         <div class="str_green_gradient text-center m-auto vertical-items-center" style="width:64px; height:64px; border-radius: 10px; background: black !important;"> 
@@ -2232,7 +2383,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="d-iline text-center">
+                                <div class="d-iline text-center" style="margin-left: 12px;">
                                     <div style="max-width:40px">
                                         <div class="radius_gradient" style="border-radius:10px">
                                             <div class="str_green_gradient text-center" style="width:39px; height:39px; border-radius: 10px;"> 
@@ -2242,7 +2393,7 @@
                                     </div>
                                     <div>D</div>
                                 </div>
-                                <div class="d-iline text-center">
+                                <div class="d-iline text-center" style="margin-left: 12px;">
                                     <div style="max-width:40px">
                                         <div class="radius_gradient" style="border-radius:10px">
                                             <div class="str_green_gradient text-center" style="width:39px; height:39px; border-radius: 10px;"> 
@@ -2252,7 +2403,7 @@
                                     </div>
                                     <div>H</div>
                                 </div>
-                                <div class="d-iline text-center">
+                                <div class="d-iline text-center" style="margin-left: 12px;">
                                     <div style="max-width:40px">
                                         <div class="radius_gradient" style="border-radius:10px">
                                             <div class="str_green_gradient text-center" style="width:39px; height:39px; border-radius: 10px;"> 
@@ -2262,7 +2413,7 @@
                                     </div>
                                     <div>M</div>
                                 </div>
-                                <div class="d-iline text-center">
+                                <div class="d-iline text-center" style="margin-left: 12px;">
                                     <div style="max-width:40px">
                                         <div class="radius_gradient" style="border-radius:10px">
                                             <div class="str_green_gradient text-center" style="width:39px; height:39px; border-radius: 10px;"> 
@@ -2273,12 +2424,12 @@
                                     <div>S</div>
                                 </div>
                             </div>
-                            <div class="d-inline ml-2 mt-1" style="width:40%;border-radius: 10px;">
+                            <div class="d-inline ml-2 mt-1" style="border-radius: 10px; margin-left: 45px;">
                                 <button class="rounded-pill px-2" style="padding:6px"><feather-icon size="15" icon="BellIcon"/> Notify Me</button>
                             </div>
                         </div>
                         <b-card no-body class="mb-1">
-                            <b-card-body style="margin-left: 10px; margin-top: 19px;">
+                            <b-card-body style=" margin-top: 19px;">
                                 <b-row class="">
                                     <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.next_unlock_date_text">
                                         <div class="">
@@ -2530,7 +2681,7 @@
 <script>
     import {
         BTable,
-        BTabs,
+	    BTabs,
         BTab,
         BFormCheckbox,
         BAvatar,
@@ -2546,6 +2697,7 @@
         VBModal,
         BDropdown,
         BDropdownItem,
+        BDropdownForm,
         BFormRadioGroup,
         BFormRadio,
         BInputGroup,
@@ -2561,13 +2713,12 @@
         BSpinner,
         BOverlay,
         VBPopover
-
     } from 'bootstrap-vue'
     import Ripple from 'vue-ripple-directive'
     import axios from '@axios'
     import {
         VueSvgGauge
-    } from 'vue-svg-gauge'
+    } from 'vue-svg-gauge';
     import VueApexCharts from 'vue-apexcharts'
     import platformData from './platforms'
     import fieldsData from './fields'
@@ -2591,7 +2742,6 @@
 
     export default {
         components: {
-            
             BTable,
             BTabs,
             BFormCheckbox,
@@ -2609,6 +2759,7 @@
             VueApexCharts,
             BDropdown,
             BDropdownItem,
+            BDropdownForm,
             BFormRadioGroup,
             BFormRadio,
             BInputGroup,
@@ -2653,6 +2804,7 @@
                 sortBy: '',
                 isBusy: true,
                 locked: false,
+                value_2: [0, 50],
                 params: {
                     filters: [],
                     filters2: "",
@@ -2777,7 +2929,6 @@
                 }],
                 seven_DaysChart: {
 
-                    
                     chart: {
                         toolbar:{
                             show:false,
@@ -4063,11 +4214,32 @@
                 this.Cpagpage = 1
                 this.loadCoins()
             }
+        },
+
+        updated(){
+            var meter_array = document.querySelectorAll('g path:not(:first-child)');
+            for (let index = 0; index < meter_array.length; index++) {
+                var element = meter_array[index]; 
+                let path_array = element.getAttribute('d').split(' ');
+                if(document.getElementById("marker_"+index) != null){
+                    document.getElementById("marker_"+index).style.background="#b6e7b6";            
+                    document.getElementById("marker_"+index).style.boxShadow="0px 0px 7px 3.5px #0f0";
+                    if(Number(path_array[9]) > 100) {
+                        document.getElementById("marker_"+index).style.left=Number(path_array[9])-6+"px";
+                        document.getElementById("marker_"+index).style.top=Number(path_array[10])-4+"px";
+                    } else {
+                        document.getElementById("marker_"+index).style.left=Number(path_array[9])-6+"px";
+                        document.getElementById("marker_"+index).style.top=Number(path_array[10])+"px";
+                    }
+                }
+            }
         }
     }
 
 </script>
-
+<style lang="scss" >
+    @import '~@resources/scss/vue/libs/vue-slider.scss';
+</style>
 <style>
     .model-desc {
         color: #757094 !important;
@@ -4152,11 +4324,11 @@
     }
 
     .soicalLable {
-        font-size: 12px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 40px;
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 10px;
+        opacity:0.8;
         margin: auto;
     }
 
@@ -4219,17 +4391,19 @@
     thead tr th{
         font-family: 'Poppins';
         font-style: normal;
-        font-weight: 400;
+        font-weight: 500;
         font-size: 14px;
     }
     
     tbody tr{
         font-family: 'Poppins';
         font-style: normal;
-        font-weight: 300;
-        font-size: 20px;
+        font-weight: 400;
+        font-size: 14px;
         background: linear-gradient(172deg, rgba(43, 255, 77, 0.3) 3.11%, rgba(0, 0, 0, 0) 20.06%), rgba(255, 255, 255, 0.07);
-        
+    }        
+    tbody tr:has(td:not(:first-child)) {
+        box-shadow: inset 1px 2px 1px 0px rgb(82, 243, 109);
     }
 
     table {
@@ -4239,17 +4413,11 @@
 
     td {
         border: solid 0px #000000;
-        padding: 30px;
+        padding: 15px;
     }
 
-    tr td:first-child { border-top-left-radius: 30px; border-bottom-left-radius: 30px; }
-    tr td:last-child { border-top-right-radius: 30px;  border-bottom-right-radius: 30px;}
-
-    tr td:first-child { border-bottom-left-radius: 30px;  border-top-left-radius: 30px;}
-    tr td:last-child { border-bottom-right-radius: 30px;  border-top-right-radius: 30px;}
-
-    tr td { border-top-style: solid; }
-    tr td:first-child { border-left-style: solid; }
+    tr td:first-child { border-top-left-radius: 50em; border-bottom-left-radius: 50em; }
+    tr td:last-child { border-top-right-radius: 50em;  border-bottom-right-radius: 50em;}
 
     #pagination button span{
         background-color: transparent !important;
@@ -4276,24 +4444,34 @@
     }
 
     .cunningBtn > ul{
-        /* background: #232228  !important; */
+        background: #232228  !important;
         min-width: 500px !important;
         /* border:1px solid rgba(43, 255, 77, 1); */
         border-radius:  10px;
     }
 
+    .dropdown-menu{
+        max-height: 500px;
+        overflow: scroll;
+    }
    
    
-    .card {
-        padding: 0px !important;
+    /* .card {
+        padding: 0px;
     }
 
     .card-body{
-        padding: 0px !important;
-    }
+        padding: 0px;
+    } */
 
     #dropdown-left1__BV_toggle_{
         padding: 0px !important;
+
+
+    }
+
+    #dropdown-left1__BV_toggle_:hover{
+        background:none;
     }
 
     .cunningDrop > ul {
@@ -4310,8 +4488,39 @@
         padding-bottom:3px !important;
     }
 
+    g path:not(:first-child) {
+        filter: transparent;
+    }
 
+    .socialText{
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+    }
+
+    .socialText2{
+        text-overflow: ellipsis;
+        width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+    }
+
+    .apexcharts-menu-open{
+        background: black;
+    }
+ 
+    body.dark-layout .modal-content div ul li.cunningDrop{
+        background: #0A070E !important;
+    }
+
+    body.dark-layout .modal-content div ul:has(li.cunningDrop){
+        padding:0px;
+    }
+   
 
 </style>
-
-

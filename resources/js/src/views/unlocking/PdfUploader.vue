@@ -1,5 +1,5 @@
 <template>
-    <b-card title="Upload PDF">
+    <b-card title="Upload PDF" >
         <validation-observer ref="uploadPDF" #default="{invalid}">
             <b-form @submit.prevent="uploadPDF">
                 <b-row>
@@ -162,5 +162,5 @@
 
 <style lang="scss">
     @import '~@resources/scss/vue/libs/vue-autosuggest.scss';
-
+   
 </style>

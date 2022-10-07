@@ -127,5 +127,8 @@ export default {
 </script>
 
 <style>
-
+  .content-wrapper{
+    color: white;
+ 
+  }
 </style>

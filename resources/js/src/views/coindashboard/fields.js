@@ -1,7 +1,7 @@
 const data = [
     {
         key: 'market_cap_rank',
-        label: '#',
+        label: '',
         stickyColumn: false,
         sortable: false,
         visible: 3
@@ -21,6 +21,12 @@ const data = [
     {
         key: 'current_price',
         label: 'Price($)',
+        stickyColumn: false,
+        visible: 1
+    },
+    {
+        key: 'price_change_percentage_24h',
+        label: '24h %',
         stickyColumn: false,
         visible: 1
     },
@@ -61,12 +67,7 @@ const data = [
         stickyColumn: false,
         visible: 1
     },
-    {
-        key: 'price_change_percentage_24h',
-        label: '24h %',
-        stickyColumn: false,
-        visible: 1
-    },
+    
     {
         key: 'ath',
         label: 'ATH($)',
