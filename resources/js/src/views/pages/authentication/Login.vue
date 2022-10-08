@@ -6,7 +6,7 @@
       <b-link class="brand-logo">
         <vuexy-logo />
         <h2 class="brand-text text-primary ml-1">
-          Vuexy
+          MoonSniper
         </h2>
       </b-link>
       <!-- /Brand logo-->
@@ -31,21 +31,24 @@
         lg="4"
         class="d-flex align-items-center auth-bg px-2 p-lg-5"
       >
-        <b-col
+        <!-- <b-col
           sm="8"
           md="6"
           lg="12"
           class="px-xl-2 mx-auto"
-        >
+        > -->
+        <div class="m-auto" style="padding: 30px 29px; border-radius: 30px; background-color: #0A070E;">
           <b-card-title
-            class="mb-1 font-weight-bold"
+            class="mb-1"
             title-tag="h2"
+            style="font-family: 'Poppins';font-style: normal;font-weight: 400;font-size: 17.2994px;"
           >
-            Welcome to Vuexy! 👋
+            <!-- Welcome to Vuexy! 👋 -->
+            Sign In
           </b-card-title>
-          <b-card-text class="mb-2">
+          <!-- <b-card-text class="mb-2">
             Please sign-in to your account and start the adventure
-          </b-card-text>
+          </b-card-text> -->
 
       
 
@@ -60,7 +63,7 @@
             >
               <!-- email -->
               <b-form-group
-                label="Email"
+                label=""
                 label-for="login-email"
               >
                 <validation-provider
@@ -69,13 +72,24 @@
                   vid="email"
                   rules="required|email"
                 >
-                  <b-form-input
-                    id="login-email"
-                    v-model="userEmail"
-                    :state="errors.length > 0 ? false:null"
-                    name="login-email"
-                    placeholder="john@example.com"
-                  />
+                  <b-input-group
+                    class="input-group-merge log-in"
+                    :class="errors.length > 0 ? 'is-invalid':null"
+                  >
+                    <b-input-group-append is-text>
+                      <feather-icon
+                        class="cursor-pointer"
+                        icon="MailIcon"
+                      />
+                    </b-input-group-append>
+                    <b-form-input
+                      id="login-email"
+                      v-model="userEmail"
+                      :state="errors.length > 0 ? false:null"
+                      name="login-email"
+                      placeholder="Email"
+                    />
+                  </b-input-group>
                   <small class="text-danger">{{ errors[0] }}</small>
                 </validation-provider>
               </b-form-group>
@@ -83,10 +97,7 @@
               <!-- forgot password -->
               <b-form-group>
                 <div class="d-flex justify-content-between">
-                  <label for="login-password">Password</label>
-                  <b-link :to="{name:'auth-forgot-password'}">
-                    <small>Forgot Password?</small>
-                  </b-link>
+                  <label for="login-password"></label>
                 </div>
                 <validation-provider
                   #default="{ errors }"
@@ -95,9 +106,16 @@
                   rules="required"
                 >
                   <b-input-group
-                    class="input-group-merge"
+                    class="input-group-merge log-in"
                     :class="errors.length > 0 ? 'is-invalid':null"
                   >
+                    <b-input-group-append is-text>
+                      <feather-icon
+                        class="cursor-pointer"
+                        icon="LockIcon"
+                        @click="togglePasswordVisibility"
+                      />
+                    </b-input-group-append>
                     <b-form-input
                       id="login-password"
                       v-model="password"
@@ -107,20 +125,20 @@
                       name="login-password"
                       placeholder="Password"
                     />
-                    <b-input-group-append is-text>
+                    <!-- <b-input-group-append is-text>
                       <feather-icon
                         class="cursor-pointer"
                         :icon="passwordToggleIcon"
                         @click="togglePasswordVisibility"
                       />
-                    </b-input-group-append>
+                    </b-input-group-append> -->
                   </b-input-group>
                   <small class="text-danger">{{ errors[0] }}</small>
                 </validation-provider>
               </b-form-group>
 
               <!-- checkbox -->
-              <b-form-group>
+              <!-- <b-form-group>
                 <b-form-checkbox
                   id="remember-me"
                   v-model="status"
@@ -128,37 +146,46 @@
                 >
                   Remember Me
                 </b-form-checkbox>
-              </b-form-group>
+              </b-form-group> -->
+
+              <b-card-text class="text-center mt-2" style="font-family: 'Poppins';font-style: normal;font-weight: 300;font-size: 10px;line-height: 1.2em;">
+                <span>Are you new to MoonSniper?</span>
+                <br>
+                <b-link :to="{name:'auth-register'}">
+                  <span style="color: #2BFF4D ">Create an account</span>
+                </b-link>
+              </b-card-text>
 
               <!-- submit buttons -->
-              <b-button
-                type="submit"
-                variant="primary"
-                block
-                :disabled="invalid"
-              >
-                Sign in
-              </b-button>
+              <div class="d-flex">
+                <b-button
+                  type="submit"
+                  variant="primary"
+                  block
+                  :disabled="invalid"
+                  style=" padding:0px;width:145px; height: 31px; font-family: 'Poppins';font-style: normal;font-weight: 400;font-size: 12px;"
+                >
+                  Login
+                </b-button>
+                <b-link :to="{name:'auth-forgot-password'}" class="float-right m-auto">
+                  <span class="forget" style="font-family: 'Poppins';font-style: normal;font-weight: 400;font-size: 12px;">Forgot?</span>
+                </b-link>
+              </div>
             </b-form>
           </validation-observer>
 
-          <b-card-text class="text-center mt-2">
-            <span>New on our platform? </span>
-            <b-link :to="{name:'auth-register'}">
-              <span>&nbsp;Create an account</span>
-            </b-link>
-          </b-card-text>
+          
 
           <!-- divider -->
-          <div class="divider my-2">
+          <!-- <div class="divider my-2">
             <div class="divider-text">
               or
             </div>
-          </div>
+          </div> -->
 
           <!-- social buttons -->
-          <div class="auth-footer-btn d-flex justify-content-center">
-            <GoogleLoginVue/>
+          <!-- <div class="auth-footer-btn d-flex justify-content-center">
+            <GoogleLoginVue/> -->
             <!-- <b-button
               variant="facebook"
               href="javascript:void(0)"
@@ -183,8 +210,9 @@
             >
               <feather-icon icon="GithubIcon" />
             </b-button> -->
-          </div>
-        </b-col>
+          <!-- </div> -->
+        </div>
+        <!-- </b-col> -->
       </b-col>
     <!-- /Login-->
     </b-row>
@@ -320,5 +348,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@resources/scss/vue/pages/page-auth.scss';
+  @import '~@resources/scss/vue/pages/page-auth.scss';
 </style>

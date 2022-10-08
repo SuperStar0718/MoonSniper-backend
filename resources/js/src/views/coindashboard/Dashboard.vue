@@ -1914,9 +1914,9 @@
                                     <b-col md="9" sm="7" class="text-center sparlineChat mb-2"
                                         v-if="activeData.sparkline_in_7d&& activeData.sparkline_in_7d.length>0">
                                         <!-- <h5> 7 Days</h5> -->
-                                        <div class="ml-5">
+                                        <div class="position-absolute w-100" style="z-index:99">
 
-                                            <b-tabs content-class="pt-2 ml-4 pl-4" class="graph_tab float-left">
+                                            <b-tabs content-class="" class="graph_tab float-left w-50" style="font-family: Poppins;font-style: normal;font-weight: 400;font-size: 10px;">
                                                 <b-tab active title="Price">
                                                     <div></div>
                                                 </b-tab>
@@ -1924,37 +1924,34 @@
                                                     <div></div>
                                                 </b-tab>
                                             </b-tabs>
-
-                                            <b-tabs content-class="pt-2" class="graph_tab float-right">
-                                                <b-tab active title="1D">
-                                                    <div></div>
-                                                </b-tab>
-                                                <b-tab title="7D">
-                                                    <div></div>
-                                                </b-tab>
-                                                <b-tab title="1M">
-                                                    <div></div>
-                                                </b-tab>
-                                                <b-tab title="3M">
-                                                    <div></div>
-                                                </b-tab>
-                                                <b-tab title="1Y">
-                                                    <div></div>
-                                                </b-tab>
-                                                <b-tab title="ALL">
-                                                    <div></div>
-                                                </b-tab>
-                                                <b-tab>
-                                                    <template #title>
-                                                        <feather-icon size='12' icon='CalendarIcon'/>
-                                                    </template>
-                                                    <div></div>
-                                                </b-tab>
-                                            </b-tabs>
+                                            <div class="d-inline-flex float-right" style="padding-right: 40px !important;">
+                                                <b-tabs content-class="" class="graph_tab my-auto" style="font-family: Poppins;font-style: normal;font-weight: 400;font-size: 10px;">
+                                                    <b-tab active title="1D">
+                                                        <div></div>
+                                                    </b-tab>
+                                                    <b-tab title="7D">
+                                                        <div></div>
+                                                    </b-tab>
+                                                    <b-tab title="1M">
+                                                        <div></div>
+                                                    </b-tab>
+                                                    <b-tab title="3M">
+                                                        <div></div>
+                                                    </b-tab>
+                                                    <b-tab title="1Y">
+                                                        <div></div>
+                                                    </b-tab>
+                                                    <b-tab title="ALL">
+                                                        <div></div>
+                                                    </b-tab>
+                                                </b-tabs>
+                                                <div style="width:20px">
+                                                    <feather-icon size='12' icon='CalendarIcon'/>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <br>
                                         <vue-apex-charts class="full" width="100%" :dataLabels="true" type="area"
-                                            height="290" :options="seven_DaysChart" :series="seven_DaysChartseries">
+                                        height="290" :options="seven_DaysChart" :series="seven_DaysChartseries">
                                         </vue-apex-charts>
                                         <!-- <sparkline width="300" height="150">
                                             <sparklineLine :data="activeData.sparkline_in_7d"
@@ -1962,38 +1959,37 @@
                                                 :styles="spLineStyles" />
                                         </sparkline> -->
                                     </b-col>
-                                    <b-col style="display: flex;
+                                    <b-col style="
                                         justify-content: space-between;
                                         flex-direction: column;">
-                                        <div  v-if="activeData.total_volume">
-                                            <h5> Volume</h5>
+                                        <div  v-if="activeData.total_volume" style="margin-bottom: 24px;">
+                                            <span style="font-family: 'Poppins';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;"> Volume</span>
                                             <div class="" style="font-size:16px; font-weight: 600;">
-                                                <span
-                                                    class="">${{ toInterNationalNumber(activeData.total_volume) }}</span>
+                                                <span style="font-family: 'Poppins';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.total_volume) }}</span>
                                             </div>
                                         </div>
-                                        <div  v-if="activeData.market_cap">
-                                            <h5> Market Cap</h5>
+                                        <div  v-if="activeData.market_cap" style="margin-bottom: 24px;">
+                                            <span style="font-family: 'Poppins';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;"> Market Cap</span>
                                             <div class="" style="font-size:16px; font-weight: 600;">
-                                                <span>${{ toInterNationalNumber(activeData.market_cap) }}</span> </div>
+                                                <span style="font-family: 'Poppins';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.market_cap) }}</span> </div>
                                         </div>
-                                        <div 
+                                        <div  style="margin-bottom: 24px;"
                                             v-if="activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0">
-                                            <h5> X's from launch</h5>
+                                            <span style="font-family: 'Poppins';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;"> X's from launch</span>
                                             <div class="" style="font-size:16px; font-weight: 600;">
-                                                <span
+                                                <span style="font-family: 'Poppins';font-style: normal;font-weight: 400;font-size: 15px;"
                                                     v-if="activeData.roi_times">{{ xfromlunch(activeData.roi_times,'roi_times') }}X</span>
-                                                <span
+                                                <span style="font-family: 'Poppins';font-style: normal;font-weight: 400;font-size: 15px;"
                                                     v-else-if="activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0 ">{{ xfromlunch(activeData.current_price,activeData.round_price) }}X</span>
                                             </div>
                                         </div>
-                                        <div  v-if="activeData.total_supply_percent">
-                                            <h5>Total Supply:</h5>
+                                        <div  v-if="activeData.total_supply_percent" style="margin-bottom: 24px;">
+                                            <span style="font-family: 'Poppins';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;"> Total Supply:</span>
                                             <div class="" style="font-size:16px; font-weight: 600;">
-                                                <span>{{ activeData.total_supply_percent }} %</span> </div>
+                                                <span  style="font-family: 'Poppins';font-style: normal;font-weight: 400;font-size: 15px;">{{ activeData.total_supply_percent }} %</span> </div>
                                         </div>
                                         <div class="float-left">
-                                            <button class="rounded-pill fs-6 " style="font-size: 14px; padding:6px 14px;">Price Prediction</button>
+                                            <button class="fs-6 " style="border-radius: 10px; font-size: 12px; font-weight: 400; font-family: 'Poppins'; font-style: normal; padding:6px 14px;">Price Prediction</button>
                                         </div>
                                     </b-col>
 
@@ -2384,9 +2380,9 @@
                                     </div>
                                 </div>
                                 <div class="d-iline text-center" style="margin-left: 12px;">
-                                    <div style="max-width:40px">
+                                    <div style="max-width:50px">
                                         <div class="radius_gradient" style="border-radius:10px">
-                                            <div class="str_green_gradient text-center" style="width:39px; height:39px; border-radius: 10px;"> 
+                                            <div class="str_green_gradient text-center" style="width:49px; height:49px; border-radius: 10px;"> 
                                                 <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: greenyellow">1</span><br>
                                             </div>
                                         </div>
@@ -2394,9 +2390,9 @@
                                     <div>D</div>
                                 </div>
                                 <div class="d-iline text-center" style="margin-left: 12px;">
-                                    <div style="max-width:40px">
+                                    <div style="max-width:50px">
                                         <div class="radius_gradient" style="border-radius:10px">
-                                            <div class="str_green_gradient text-center" style="width:39px; height:39px; border-radius: 10px;"> 
+                                            <div class="str_green_gradient text-center" style="width:49px ; height:49px ; border-radius: 10px;"> 
                                                 <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: greenyellow">22</span><br>
                                             </div>
                                         </div>
@@ -2404,9 +2400,9 @@
                                     <div>H</div>
                                 </div>
                                 <div class="d-iline text-center" style="margin-left: 12px;">
-                                    <div style="max-width:40px">
+                                    <div style="max-width:50px">
                                         <div class="radius_gradient" style="border-radius:10px">
-                                            <div class="str_green_gradient text-center" style="width:39px; height:39px; border-radius: 10px;"> 
+                                            <div class="str_green_gradient text-center" style="width:49px ; height:49px ; border-radius: 10px;"> 
                                                 <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: greenyellow">44</span><br>
                                             </div>
                                         </div>
@@ -2414,9 +2410,9 @@
                                     <div>M</div>
                                 </div>
                                 <div class="d-iline text-center" style="margin-left: 12px;">
-                                    <div style="max-width:40px">
+                                    <div style="max-width:50px">
                                         <div class="radius_gradient" style="border-radius:10px">
-                                            <div class="str_green_gradient text-center" style="width:39px; height:39px; border-radius: 10px;"> 
+                                            <div class="str_green_gradient text-center" style="width:49px ; height:49px ; border-radius: 10px;"> 
                                                 <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: greenyellow">21</span><br>
                                             </div>
                                         </div>
