@@ -581,6 +581,7 @@
     }
     [data-toggle='collapse'] {
       &:after {
+        left: 95% !important;
         background-image: url(str-replace(
           str-replace($chevron-down, 'currentColor', $theme-dark-body-color),
           '#',
@@ -2313,6 +2314,11 @@
   }
 
   //sug class
+
+  .opacityGradient{
+    background: linear-gradient(90deg, rgba(35, 34, 40, 0) 0%, #232228 100%) !important;
+  }
+
   .darkWhiteText{
     color: white !important;
   }
