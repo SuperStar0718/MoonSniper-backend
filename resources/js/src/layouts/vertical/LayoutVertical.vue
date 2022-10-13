@@ -49,3 +49,9 @@ export default {
   }
 }
 </script>
+<style>
+@font-face {
+  font-family: Poppins-Light;
+  src: url('../../../../../public/fonts/Poppins-Light.ttf');
+}
+</style>
