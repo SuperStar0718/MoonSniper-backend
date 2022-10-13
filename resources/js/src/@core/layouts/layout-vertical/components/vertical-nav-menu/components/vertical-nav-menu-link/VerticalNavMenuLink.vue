@@ -11,7 +11,10 @@
       v-bind="linkProps"
       class="d-flex align-items-center"
     >
-      <feather-icon :icon="item.icon || 'CircleIcon'" />
+      <div v-if="item.title && item.title == 'Profit Calculator'" style="margin-right: 15px; margin-top: -1px;">
+        <img src='/images/static/calculator.png' alt="calc">
+      </div>
+      <feather-icon v-else :icon="item.icon || 'CircleIcon'" />
       <span class="menu-title text-truncate">{{ t(item.title) }}</span>
       <b-badge
         v-if="item.tag"

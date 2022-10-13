@@ -728,7 +728,7 @@
                                     <div v-if="scope.label" class="d-flex justify-content-center">
                                         <span> {{ scope.label }} </span> 
                                         <span class="my-auto d-inline">
-                                            <feather-icon icon="TriangleIcon" size="12" style="rotate:180deg;margin-left: 5px;"
+                                            <feather-icon icon="TriangleIcon" size="8" style="rotate:180deg;margin-left: 5px; margin-top: -9px; "
                                             :class="{'text-danger':params.sort[1] =='asc'&& params.sort[0] ==scope.field.key}" />
                                         <!-- <feather-icon icon="ChevronDownIcon" size="8"
                                             :class="{'text-danger':params.sort[1] =='desc'&& params.sort[0] ==scope.field.key}"
@@ -754,20 +754,36 @@
                                     <div style="padding-top:3px">{{ toInterNationalNumber(data.value?data.value:0) }}</div>
                                 </div>
                             </template>
+                        
                             <template #cell(name)="data">
-                                <div style="text-align: center;" class="d-flex justify-content-start">
-                                    <b-avatar class="text-center mx-1" style="" :src="data.item.image" />
+                                <div style="text-align: center;" class="d-flex justify-content-between">
+                                    <div style="display:flex; margin-right: 10px;">
+                                        <div style="margin: auto;">
+                                            <b-avatar class="text-center mx-1" :src="data.item.image"  />
+                                        </div>
 
-                                    <div class="">
-                                        <div class="text-nowrap text-truncate" style="max-width: 100px; font-weight: 600;">
-                                            <b>{{ data.value }}</b>   
+                                        <div class="">
+                                            
+                                            <div class="text-nowrap text-truncate" style="float: left; max-width: 100px; font-weight: 600;">
+                                                <b>{{ data.value }}</b>   
+                                            </div>
+                                            <div class="text-nowrap text-truncate text-left"
+                                                style="float: left; max-width: 100px; width: 100px;  opacity: 0.8;">
+                                                {{ data.item.symbol }}
+                                            </div>
+                                            
+                                            
                                         </div>
-                                        <div class="text-nowrap text-truncate text-left"
-                                            style="max-width: 100px;  opacity: 0.8;">
-                                            {{ data.item.symbol }}
-                                        </div>
-                                        
                                     </div>
+
+                                    <div class="btn-primary"  style="display:inline-block;  float: right; padding: 3px 12px 3px 12px;
+                                        font-family: 'Poppins'; height: 26px; margin: auto;
+                                        font-style: normal; border-radius: 16px !important;
+                                        font-weight: 400;
+                                        font-size: 12px;">
+                                            Buy
+    
+                                        </div>
                               
                                 </div>
                             </template>
@@ -928,7 +944,7 @@
                                 <div v-if="data.value"
                                     :class="{'greenFlash':data.item.flash == 1,'redFlash':data.item.flash ==2}"
                                     style="width: 100px;">
-                                    {{toInterNationalNumber(data.value)}}$</div>
+                                    ${{toInterNationalNumber(data.value)}}</div>
                             </template>
                             <template #cell(market_cap)="data">
                                 <div v-if="data.value" style="">{{toInterNationalNumber(data.value)}}$</div>
@@ -4355,8 +4371,8 @@
     }
 
     #dashboard table th {
-        padding-left: 4px !important;
-        padding-right: 4px !important;
+        padding-left: 18px !important;
+        padding-right: 15px !important;
         font-size: 12px;
         font-weight: 300;
         font-family: 'Poppins';
@@ -4606,8 +4622,18 @@
         background: black;
     }
 
-    
- 
+    .modal-content{
+        border-radius:30px;
+    }
+
+    .modal-header{
+        border-radius:30px;
+    }
+
+    .modal-body{
+        border-radius:30px;
+    }
+
     body.dark-layout .modal-content div ul li.cunningDrop{
         background: #0A070E !important;
     }

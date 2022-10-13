@@ -1,5 +1,6 @@
 <template>
   <ul>
+ 
     <component
       :is="resolveNavItemComponent(item)"
       v-for="item in items"
