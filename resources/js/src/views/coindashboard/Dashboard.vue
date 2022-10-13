@@ -2158,7 +2158,7 @@
                                             <div class="soicalLable darkWhiteText">Social Score: </div>
                                         </div>
                                     </b-col> -->
-                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.total_supply_percent">
+                                    <!-- <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.total_supply_percent">
                                         <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" >
                                                 {{ activeData.total_supply_percent}} %
@@ -2168,7 +2168,7 @@
                                             <div class="soicalLable darkWhiteText">&nbsp; </div>
 
                                         </b-card>
-                                    </b-col>
+                                    </b-col> -->
                                     <!-- <b-col sm="3" md="2" v-if="activeData.total_supply_percent">
                                         <div class="border border-2 rounded border-dark greenGradient">
                                             <div class="d-flex justify-content-center text-nowrap" style="margin: 13px 0 16px 0; font-size: 14px;">
@@ -2176,13 +2176,13 @@
                                             <div class="soicalLable darkWhiteText">Total Supply %: </div>
                                         </div>
                                     </b-col> -->
-                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_mentions">
+                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_mentions_change">
                                         <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
-                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  v-if="activeData.social_mentions>=0">
-                                                +{{toInterNationalNumber(activeData.social_mentions)}} %
+                                            <div class="justify-content-center text-nowrap socialText2 text-success " style="margin-top:20px; margin-bottom: 30px;"  v-if="activeData.social_mentions_change>=0">
+                                                +{{roundData(activeData.social_mentions_change)}} %
                                             </div>
-                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" v-else>
-                                                {{toInterNationalNumber(activeData.social_mentions)}} %
+                                            <div class="justify-content-center text-nowrap socialText2 text-danger " style="margin-top:20px; margin-bottom: 30px;" v-else>
+                                                {{roundData(activeData.social_mentions_change)}} %
                                             </div>
                                             <div class="soicalLable darkWhiteText">Social Mentions: </div>
                                             <div class="soicalLable darkWhiteText">&nbsp; </div>
@@ -2201,7 +2201,11 @@
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment">
                                         <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
-                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  >
+                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
+                                            v-if="userData.currentPlan == 'free'">
+                                            <feather-icon icon="LockIcon" size="30" style=""/>
+                                            </div>
+                                            <div v-else class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  >
                                                 {{roundData(activeData.average_sentiment)}}</div>
                                             
                                             <div class="soicalLable darkWhiteText">Average Sentiment:  </div>
@@ -2215,14 +2219,30 @@
                                             <div class="soicalLable darkWhiteText">Average Sentiment: </div>
                                         </div>
                                     </b-col> -->
-                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_engagement">
+                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_engagement_change">
                                         <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
-                                                v-if="activeData.social_mentions>=0">
-                                                 +{{toInterNationalNumber(activeData.social_engagement)}} %</div>
-                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" 
-                                                v-else> {{toInterNationalNumber(activeData.social_engagement)}} %</div>
+                                                v-if="userData.currentPlan == 'free'">
+                                                <feather-icon icon="LockIcon" size="30" style=""/>
+                                                </div>
+                                            <div class="justify-content-center text-nowrap socialText2 text-success" style="margin-top:20px; margin-bottom: 30px;"  
+                                                v-else-if="activeData.social_engagement_change>=0">
+                                                 +{{roundData(activeData.social_engagement_change)}} %</div>
+                                            <div class="justify-content-center text-nowrap socialText2  text-danger" style="margin-top:20px; margin-bottom: 30px;" 
+                                                v-else> {{roundData(activeData.social_engagement_change)}} %</div>
                                             <div class="soicalLable darkWhiteText">Social Engagement: </div>
+
+                                        </b-card>
+                                    </b-col>
+                                    <b-col   sm="3" md="2" class="radius_gradient">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
+                                                v-if="userData.currentPlan == 'free'">
+                                                <feather-icon icon="LockIcon" size="30" style=""/>
+                                                </div>
+                                            <div class="justify-content-center text-nowrap socialText2" style="margin-top:20px; margin-bottom: 30px;" 
+                                                v-else>2</div>
+                                            <div class="soicalLable darkWhiteText">Bearish Sentiment: </div>
 
                                         </b-card>
                                     </b-col>
@@ -2238,15 +2258,15 @@
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment_change">
                                         <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
-                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
+                                            <div class="justify-content-center text-nowrap socialText2 text-success" style="margin-top:20px; margin-bottom: 30px;"  
                                                 v-if="roundData(activeData.average_sentiment_change)>=0">
                                                     +{{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                     %</div>
-                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" 
+                                            <div class="justify-content-center text-nowrap socialText2 text-danger" style="margin-top:20px; margin-bottom: 30px;" 
                                                 v-else>
                                                     {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                     %</div>
-                                            <div class="soicalLable darkWhiteText">Social Engagement:  </div>
+                                            <div class="soicalLable darkWhiteText">Average Sentiment change  </div>
 
                                         </b-card>
                                     </b-col>
@@ -2282,7 +2302,7 @@
                         ||activeData.six_months_unlock_number_of_tokens
                         ||activeData.six_months_unlock_percent_of_tokens
                         ||activeData.six_months_unlock_size
-                        ">
+                        ||activeData.total_supply_percent ">
 
                         <div class="container d-flex" style="padding:0px;">
                             <div class="d-inline" style="width:20%; font-family: 'Poppins'; margin-right: 24px;
@@ -2532,6 +2552,19 @@
                                             </div>
                                         </div>
                                     </b-col>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                    v-if="activeData.total_supply_percent">
+                                    <div class="">
+                                        <div class="mr-1">Total Supply %</div>
+                                        <div v-if="checkUserPlan(activeData.total_supply_percent)"
+                                            style="font-weight:600" class="">
+                                            {{ activeData.total_supply_percent}} %
+                                        </div>
+                                        <div style="font-weight:600" v-else>
+                                            {{activeData.total_supply_percent}}%
+                                        </div>
+                                    </div>
+                                </b-col>
 
                                     <b-col cols="12" md="12">
                                         <span class="mr-1">Supply chart: </span>
@@ -2729,7 +2762,7 @@
                     filters2: "",
                     sort: ["market_cap_rank", "asc"],
                     api_mode: 1,
-                    perpage: 6
+                    perpage: 50,
                 },
                 perPageOptions: [5, 6, 8, 9, 10, 20, 30, 50, 100],
                 fag: {
@@ -3243,7 +3276,7 @@
                     if(index==1) break;
                     if (tagsArray[index] != undefined && tagsArray[index] != "")
                         tags = tags +
-                        ' <div class="d-block " style="margin-bottom:1px;"><span class="bg-success text-white customBadge" style="padding:5px; font-size:14px;">' +
+                        ' <div class="d-block " style="margin-bottom:1px;"><span class="" style="padding:5px; font-size:14px;">' +
                         tagsArray[index] + '</span></div>';
                 }
                 return tags;
@@ -4316,13 +4349,30 @@
 
     #dashboard .b-table-sticky-header {
         overflow-y: auto;
-        max-height: 80vh;
+        overflow-x: hidden;
+        max-height: 55vh;
+        
     }
-
+    #dashboard .b-table-sticky-header:hover {
+        overflow-x: scroll !important;
+      }
+      
     #dashboard td {
         text-align: center;
     }
 
+    #dashboard .b-table-sticky-header::-webkit-scrollbar
+    {
+        height: 6px;
+        
+    }
+    #dashboard .b-table-sticky-header::-webkit-scrollbar-thumb
+    {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(233, 229, 229, 0.3);
+        background-color: #bab6b6;
+    }
+    
     #dashboard .inner-text {
         height: 100%;
         width: 100%;
@@ -4580,7 +4630,11 @@
         background: black;
     }
 
-    
+    .modal-content{
+    height: 70vh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    }
  
     body.dark-layout .modal-content div ul li.cunningDrop{
         background: #0A070E !important;
