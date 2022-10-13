@@ -52,6 +52,6 @@ export default {
 <style>
 @font-face {
   font-family: Poppins-Light;
-  src: url('../../../../../public/fonts/Poppins-Light.ttf');
+  src: url('../../../../assets/fonts/Poppins-Light.ttf');
 }
 </style>
