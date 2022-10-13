@@ -1,8 +1,7 @@
 <template>
     <b-row>
         <b-col cols="12">
-            <b-card title="" style="background:transparent !important">
-                <div class="darkWhiteText" style="font-family: 'Poppins';
+            <div class="darkWhiteText" style="font-family: 'Poppins';
                     font-style: normal;
                     font-weight: 600;
                     font-size: 24px;
@@ -23,7 +22,6 @@
                         <AverageFiveVue/>
                     </b-tab>
                 </b-tabs>
-            </b-card>
         </b-col>
     </b-row>
 </template>

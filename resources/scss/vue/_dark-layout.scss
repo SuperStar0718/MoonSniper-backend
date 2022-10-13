@@ -553,8 +553,16 @@ body {
     margin-bottom:0;
   }
 
+  .str_grey_gradient{
+    background: linear-gradient(146.03deg, rgba(43, 255, 77, 1) -241%, rgb(44,43,49) 55.77%), white !important;
+    border-radius:30px;
+  }
+  .str_grey_gradient.card{
+    margin-bottom:0;
+  }
+
   .radius_gradient{
-    max-width:202px;
+    max-width:240px;
     margin:auto;
     padding:1px;
     border-radius:30px;

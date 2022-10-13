@@ -1,6 +1,6 @@
 export default [
     {
-        title: 'Profit Calc',
+        title: 'Profit Calculator',
         icon: 'DollarSignIcon',
         resource: 'Calculator',
         route:'profit-calc',

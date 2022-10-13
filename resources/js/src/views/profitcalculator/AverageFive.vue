@@ -28,15 +28,8 @@
             <b-row class="">
                 <b-col md="12" xl="12" class="text-center">
                     <div class="radius_gradient m-auto" style="max-width: 350px;">
-                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:350px">
-                            <div style="font-family: 'Poppins'; margin-top:16px;
-                                font-style: normal;
-                                margin-bottom: 50px;
-                                font-weight: 500;
-                                font-size: 16px;
-                                text-align: center;">
-                                Potential Profit
-                            </div>
+                        <b-card title="Potential Profit" class="mx-auto innerCard text-center str_green_gradient" style="max-width:350px">
+                           
                             <b-row>
                                 <div class="text-center m-auto">
                                     <b-col cols="12" class="darkWhiteText" style="font-family: 'Poppins';

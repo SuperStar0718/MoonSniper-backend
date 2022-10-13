@@ -5,7 +5,7 @@
                         <b-row class=" mb-1">
                             <b-col md="3" sm="6" xl="3">
                                 <div class="d-flex mx-auto justify-content-center">
-                                    <div class="greyLetter" style="margin-right:8px;">MCC:</div>
+                                    <div class="greyLetter" style="margin-right:8px;">MC:</div>
                                     <div class="whiteLetter" v-if="loaded">{{fag.data.market_cap?fag.data.market_cap:'-'}}</div>
                                     <div style="margin-left: 10px; margin-right:10px;">
                                         <i class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
@@ -1038,7 +1038,7 @@
             <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line" :options="chartOptions"
                 :series="series"></vue-apex-charts>
         </b-modal>
-        <b-modal id="modal-filters" :hide-footer="true" size="lg" title="">
+        <b-modal id="modal-filters" :hide-footer="true" size="lg" title="" style="border-radius: 30px;">
             <template>
                 <b-row style="margin:0px 0px 24px 0px;">
                     
@@ -1653,19 +1653,20 @@
                 <div slot="modal-title">
                     <div class="w-full justify-content-between d-flex" style="margin-top: 10px; margin-left: 10px;">
                         <div class="d-inline">
-                            <div class="rank_slot" style="margin-bottom: 8px;font-family: 'Poppins';
+                            <div class="rank_slot darkWhiteText" style="margin-bottom: 8px;font-family: 'Poppins';
+                                opacity: 0.6 !important;
                                 font-style: normal;
-                                font-weight: 500;
-                                font-size: 16px;
+                                font-weight: 300;
+                                font-size: 12px;
                                 ">Rank #{{toInterNationalNumber(activeData.market_cap_rank)}}</div>
-                            <div class="d-flex">
+                            <div class="d-flex" style="margin-top:11px;">
                                 <div class="d-flex m-auto">
                                     <b-avatar class="bg-light mr-1" v-if="activeData.image" :src="activeData.image"></b-avatar>
                                     <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins';
-                                            font-size: 20px; margin-right:10px !important;
+                                            font-size: 20px; 
                                             font-style: normal;
                                             font-weight: 400;
-                                            width: 100px;
+                                            width: 105px;
                                             text-overflow: ellipsis;
                                             white-space: nowrap;
                                             overflow: hidden;"
@@ -1674,20 +1675,32 @@
                                             > 
                                         {{activeData.name}}
                                         
+                                           
                                     </span>
                                     <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins';
-                                            font-size: 20px; margin-right:10px !important;
+                                            font-size: 20px; 
                                             font-style: normal;
                                             font-weight: 400;
-                                            width: 100px;
+                                            width: 105px;
                                             text-overflow: ellipsis;
                                             white-space: nowrap;
                                             overflow: hidden;"
                                             v-else
                                             > 
-                                        {{activeData.name}}
+                                            {{activeData.name}}
+                                     
                                         
                                     </span>
+                                    
+                                    <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins';
+                                            font-size: 14px; position: relative;
+                                            font-style: normal; opacity: 0.7;
+                                            font-weight: 300; margin-right: 40px !important;">
+                                            <div style="position: absolute; top:-29px;">
+                                                &nbsp; {{activeData.symbol}}
+                                            </div> 
+                                    </span> 
+                                    
                                 </div>
                                 <div class="d-flex m-auto">
                                     <div class="d-flex">
@@ -1726,16 +1739,16 @@
                                 <div>
                                     <div class="my-auto darkWhiteText" style="margin-bottom: 8px !important; margin-right: 4px;padding-left:10px; font-family: 'Poppins';
                                         font-style: normal;
-                                        font-weight: 500;
-                                        font-size: 16px;
-                                       ">Contract </div>
+                                        font-weight: 300;
+                                        font-size: 12px;
+                                       ">Contact </div>
 
 
                                        <b-dropdown size="lg" variant="flat-secondary" style="padding:0px !important;"
                                         id="dropdown-left1" no-caret class="cunningDrop">
                                             <template #button-content>
                                                 <div class="darkBackgroundBlack" v-for="(address,index) in activeData.contract_address"
-                                                    :key="index" style="display:block; padding: 4px; border-radius: 20px;" v-if="index==0">
+                                                    :key="index" style="display:block; padding: 2px; border-radius: 20px;" v-if="index==0">
                                                     <div v-if="index==0">
                                                             <b-img v-if="activeData.image" :src="activeData.image" fluid alt="Responsive image" style="margin-right:5px; height:30px;" />
                                                             <div style="font-family: 'Poppins'; display:inline-block; margin-top:10px;
@@ -1831,10 +1844,10 @@
                          ||activeData.market_cap
                          ||activeData.total_supply_percent" :isVisible="true" visible title="Market Data"
                         class="open w-100">
-                        <b-card no-body class="mb-1">
+                        <b-card no-body>
                             <b-card-body style="margin-left: 10px; margin-top: 19px;">
                                 <b-row>
-                                    <b-col md="9" sm="7" class="text-center sparlineChat mb-2"
+                                    <b-col md="10" sm="8" class="text-center sparlineChat mb-1" style="margin-left: -40px;"
                                         v-if="activeData.sparkline_in_7d&& activeData.sparkline_in_7d.length>0">
                                         <!-- <h5> 7 Days</h5> -->
                                         <div class="position-absolute w-100" style="z-index:99">
@@ -1883,6 +1896,7 @@
                                         </sparkline> -->
                                     </b-col>
                                     <b-col style="
+                                        padding-left: 0px !important;
                                         justify-content: space-between;
                                         flex-direction: column;">
                                         <div  v-if="activeData.total_volume" style="margin-bottom: 24px;">
@@ -1927,7 +1941,7 @@
 
                                 <b-row class="justify-content-center" >
                                     <b-col v-if="activeData.website && activeData.website != '' "   cols="1" md="2" lg="2" sm="2" class="radius_gradient">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <a :href="activeData.website" target="_blank" class="d-block" 
                                                 style="margin-top:20px; margin-bottom:10px;">
                                             <b-img rounded :src="'/images/static/website.png'" fluid class="w-50"
@@ -1949,7 +1963,7 @@
                                         </span>
                                     </b-col> -->
                                     <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient" v-if="activeData.twitter && activeData.twitter != '' ">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <a :href="activeData.twitter" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                                 <b-img rounded :src="'/images/static/twitter.png'" fluid class="w-50"
                                                     alt="Responsive image" />
@@ -1975,7 +1989,7 @@
                                         </span>
                                     </b-col> -->
                                     <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient" v-if="activeData.telegram && activeData.telegram != '' ">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <a :href="activeData.telegram" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                                 <b-img rounded :src="'/images/static/telegram.png'" fluid class="w-50"
                                                     alt="Responsive image" />
@@ -2005,7 +2019,7 @@
                                     </b-col> -->
                                     <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient"  
                                         v-if="activeData.discord && activeData.discord != '' ">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <a :href="activeData.discord" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                                 <b-img rounded :src="'/images/static/discord.png'" fluid class="w-50"
                                                     alt="Responsive image" />
@@ -2031,7 +2045,7 @@
                                     </b-col> -->
                                     <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient"  
                                         v-if="activeData.medium && activeData.medium != '' ">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <a :href="activeData.medium" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                                 <b-img rounded :src="'/images/static/medium.png'" fluid class="w-50"
                                                     alt="Responsive image" />
@@ -2059,7 +2073,7 @@
                                     </b-col> -->
                                     <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient"  
                                         v-if="activeData.reddit && activeData.reddit != '' ">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <a :href="activeData.reddit" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                                 <b-img rounded :src="'/images/static/reddit.png'" fluid class="w-50"
                                                     alt="Responsive image" />
@@ -2087,7 +2101,7 @@
                                     </b-col> -->
                                     <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient"  
                                         v-if="activeData.whitepaper && activeData.whitepaper != '' ">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <a :href="activeData.whitepaper" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                                 <b-img rounded :src="'/images/static/whitepaper.png'" fluid
                                                     class="w-50 bg-light" alt="Responsive image" />
@@ -2116,7 +2130,7 @@
                                     </b-col> -->
                                     <b-col   cols="1" md="2" lg="2" sm="2" class="radius_gradient"  
                                         v-if="activeData.github && activeData.github != '' ">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <a :href="activeData.github" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
                                                 <b-img rounded :src="'/images/static/github.png'" fluid class="w-50"
                                                     alt="Responsive image" />
@@ -2143,7 +2157,7 @@
                                 </b-row>
                                 <b-row class="text-center mt-1 mb-1 justify-content-center">
                                     <b-col   sm="3" md="2" v-if="activeData" class="radius_gradient" >
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;">
                                                 {{ calculate_social_score(activeData) }}/10
                                             </div>
@@ -2159,7 +2173,7 @@
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.total_supply_percent">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" >
                                                 {{ activeData.total_supply_percent}} %
                                             </div>
@@ -2177,7 +2191,7 @@
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_mentions">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  v-if="activeData.social_mentions>=0">
                                                 +{{toInterNationalNumber(activeData.social_mentions)}} %
                                             </div>
@@ -2200,7 +2214,7 @@
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  >
                                                 {{roundData(activeData.average_sentiment)}}</div>
                                             
@@ -2216,7 +2230,7 @@
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_engagement">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
                                                 v-if="activeData.social_mentions>=0">
                                                  +{{toInterNationalNumber(activeData.social_engagement)}} %</div>
@@ -2237,7 +2251,7 @@
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment_change">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
                                                 v-if="roundData(activeData.average_sentiment_change)>=0">
                                                     +{{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
@@ -2297,8 +2311,8 @@
                                 <div class="d-iline" style="max-width:65px">
                                     <div class="radius_gradient" style="border-radius:10px">
                                         <div class="str_green_gradient text-center m-auto vertical-items-center" style="width:64px; height:64px; border-radius: 10px; background: black !important;"> 
-                                            <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 26px; color: greenyellow">2%</span><br>
-                                            <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 14px; color: greenyellow">0.2mil</span>
+                                            <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 26px; color: #2BFF4D">2%</span><br>
+                                            <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 14px; color: #2BFF4D">0.2mil</span>
                                         </div>
                                     </div>
                                 </div>
@@ -2306,7 +2320,7 @@
                                     <div style="max-width:50px">
                                         <div class="radius_gradient" style="border-radius:10px">
                                             <div class="str_green_gradient text-center" style="width:49px; height:49px; border-radius: 10px;"> 
-                                                <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: greenyellow">1</span><br>
+                                                <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">1</span><br>
                                             </div>
                                         </div>
                                     </div>
@@ -2316,7 +2330,7 @@
                                     <div style="max-width:50px">
                                         <div class="radius_gradient" style="border-radius:10px">
                                             <div class="str_green_gradient text-center" style="width:49px ; height:49px ; border-radius: 10px;"> 
-                                                <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: greenyellow">22</span><br>
+                                                <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">22</span><br>
                                             </div>
                                         </div>
                                     </div>
@@ -2326,7 +2340,7 @@
                                     <div style="max-width:50px">
                                         <div class="radius_gradient" style="border-radius:10px">
                                             <div class="str_green_gradient text-center" style="width:49px ; height:49px ; border-radius: 10px;"> 
-                                                <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: greenyellow">44</span><br>
+                                                <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">44</span><br>
                                             </div>
                                         </div>
                                     </div>
@@ -2336,7 +2350,7 @@
                                     <div style="max-width:50px">
                                         <div class="radius_gradient" style="border-radius:10px">
                                             <div class="str_green_gradient text-center" style="width:49px ; height:49px ; border-radius: 10px;"> 
-                                                <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: greenyellow">21</span><br>
+                                                <span style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">21</span><br>
                                             </div>
                                         </div>
                                     </div>
@@ -4343,7 +4357,8 @@
     #dashboard table th {
         padding-left: 4px !important;
         padding-right: 4px !important;
-        font-size: 14px;
+        font-size: 12px;
+        font-weight: 300;
         font-family: 'Poppins';
     }
 
@@ -4356,6 +4371,9 @@
     #modal-details___BV_modal_title_ {
         width: 100%;
     }
+
+
+
 
     @media only screen and (max-width: 500px) {
         .min-block {
@@ -4442,8 +4460,8 @@
     thead tr th{
         font-family: 'Poppins';
         font-style: normal;
-        font-weight: 500;
-        font-size: 14px;
+        font-weight: 300;
+        font-size: 12px;
     }
     
     tbody tr{
@@ -4453,6 +4471,14 @@
         font-size: 14px;
         background: linear-gradient(172deg, rgba(43, 255, 77, 0.3) 3.11%, rgba(0, 0, 0, 0) 20.06%), rgba(255, 255, 255, 0.07);
         position: relative;
+    }
+
+    [class*=collapse-] .collapse-title{
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        opacity: 0.7;
     }
     
     /* tbody tr:before {
@@ -4608,6 +4634,8 @@
         transition-duration: 0.5s;
     }
 
+
+
     /* .oneToFive .vue-slider-dot{
         width: 14px;
         height: 14px;
@@ -4616,6 +4644,7 @@
         left: 0%;
         transition: left 0.5s ease 0s;
     } */
+
    
 
 </style>

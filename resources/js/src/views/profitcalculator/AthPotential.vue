@@ -25,25 +25,53 @@
         <b-card v-if="show == 1&&selected != null" style="background:transparent !important">
             <b-row class="">
                 <b-col md="6" xl="6" class="float-right">
-                    <div class="radius_gradient">
-                        <b-card title="ATH Potential" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                    <!-- <div class="radius_gradient m-auto" style="max-width: 350px;">
+                        <b-card title="Potential Profit" class="mx-auto innerCard text-center str_green_gradient" style="max-width:350px">
                             <b-row>
                                 <div class="text-center m-auto">
-                                    <b-col cols="12" style="margin-bottom:20px; font-family: 'Poppins';
+                                    <b-col cols="12" class="darkWhiteText" style="margin-top:30px; font-family: 'Poppins';
                                         font-style: normal;
                                         font-weight: 500;
-                                        font-size: 18px;" >
-                                        <p  v-if="ATHPotential >=1" class="text-wrap" style="width:160px">
+                                        font-size: 32px;">
+                                        <p v-if="Potential >=1" class="text-wrap" style="width:210px;">
+                                            {{ roundData(Potential)?roundData(Potential):0 }}$</p>
+                                            <p v-else class="text-wrap" style="width:210px;">
+                                                {{ Potential?Potential:0 }}$</p>
+                                    </b-col>
+                                    <b-col cols="12" style="font-family: 'Poppins';
+                                        font-style: normal;
+                                        font-weight: 500;
+                                        font-size: 18px;
+                                        color: #50DC5F;">
+                                        <p v-if="capTimes>=1" class="text-wrap">
+                                            {{ roundData(capTimes) }}X</p>
+                                            <p v-else class="text-wrap">
+                                                {{ capTimes}}X</p>
+                                    </b-col>
+                                </div>
+                            </b-row>
+                        </b-card>
+                    </div> -->
+                    <div class="radius_gradient">
+                        <b-card title="ATH Potential" class="mx-auto innerCard text-center str_green_gradient" style="max-width:240px;">
+                            <b-row>
+                                <div class="text-center m-auto">
+                                    <b-col cols="12" class="darkWhiteText" style="margin-top:30px; font-family: 'Poppins';
+                                        font-style: normal;
+                                        font-weight: 500;
+                                        font-size: 32px;" >
+                                        <p  v-if="ATHPotential >=1" class="text-wrap" >
                                             {{ roundData(ATHPotential)?roundData(ATHPotential):0 }}$</p>
-                                            <p v-else class="text-wrap" style="width:160px">
+                                            <p v-else class="text-wrap" >
                                                 {{ATHPotential?ATHPotential:0 }}$</p>
                                     </b-col>
-                                    <b-col cols="12" class="darkWhiteText" style="font-family: 'Poppins';
+                                    <b-col cols="12" style="font-family: 'Poppins';
                                         font-style: normal;
-                                        font-weight: 600;
-                                        font-size: 36px;">
-                                        <p class="text-wrap" style="width:160px" v-if="selected.athX >=1"> {{roundData(selected.athX) }}X</p>
-                                        <p class="text-wrap" style="width:160px" v-else> {{selected.athX }}X</p>
+                                        font-weight: 500;
+                                        font-size: 18px;
+                                        color: #50DC5F;">
+                                        <p class="text-wrap"  v-if="selected.athX >=1"> {{roundData(selected.athX) }}X</p>
+                                        <p class="text-wrap"  v-else> {{selected.athX }}X</p>
                                     </b-col>
                                 </div>
                             </b-row>
@@ -53,22 +81,23 @@
                 </b-col>
                 <b-col md="6" xl="6" class="">
                     <div class="radius_gradient">
-                        <b-card title="ATL Potential" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                        <b-card title="ATL Potential" class="mx-auto innerCard text-center str_green_gradient" style="max-width:240px;">
                             <b-row>
                                 <div class="text-center m-auto">
+                                    <b-col cols="12" style="margin-top:30px; font-family: 'Poppins';
+                                        font-style: normal;
+                                        font-weight: 500;
+                                        font-size: 32px;">
+                                        <p class="text-wrap" style="line-height: 30px; max-width: 204px;" v-if="ATLPotential >= 1">   {{ roundData(ATLPotential)?roundData(ATLPotential):0 }}$</p>
+                                        <p class="text-wrap" style="line-height: 30px; max-width: 204px;" v-else>   {{ ATLPotential?ATLPotential:0 }}$</p>
+                                    </b-col>
                                     <b-col cols="12" style="font-family: 'Poppins';
                                         font-style: normal;
                                         font-weight: 500;
-                                        font-size: 18px;">
-                                        <p class="text-wrap" style="width:160px" v-if="ATLPotential >= 1">   {{ roundData(ATLPotential)?roundData(ATLPotential):0 }}$</p>
-                                        <p class="text-wrap" style="width:160px" v-else>   {{ ATLPotential?ATLPotential:0 }}$</p>
-                                    </b-col>
-                                    <b-col cols="12" class="darkWhiteText" style="font-family: 'Poppins';
-                                        font-style: normal;
-                                        font-weight: 600;
-                                        font-size: 36px;">
-                                        <p class="text-wrap  text-danger" style="width:160px"  v-if="selected.atlX >= 1"> {{ roundData(selected.atlX) }}X</p>
-                                        <p class="text-wrap text-danger" style="width:160px"  v-else> {{ selected.atlX }}X</p>
+                                        font-size: 18px;
+                                        color: #50DC5F;">
+                                        <p class="text-wrap  text-danger"    v-if="selected.atlX >= 1"> {{ roundData(selected.atlX) }}X</p>
+                                        <p class="text-wrap text-danger"    v-else> {{ selected.atlX }}X</p>
                                     </b-col>
                                 </div>
                             </b-row>
