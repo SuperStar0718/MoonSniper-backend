@@ -1653,30 +1653,17 @@
                 <div slot="modal-title">
                     <div class="w-full justify-content-between d-flex" style="margin-top: 10px; margin-left: 10px;">
                         <div class="d-inline">
-<<<<<<< HEAD
                             <div class="rank_slot darkWhiteText" style="margin-bottom: 8px;font-family: 'Poppins';
                                 opacity: 0.6 !important;
                                 font-style: normal;
                                 font-weight: 300;
                                 font-size: 12px;
-=======
-                            <div class="rank_slot" style="margin-bottom: 8px;font-family: 'Poppins-Light';
-                                font-style: normal;
-                                font-weight: 300;
-                                font-size: 10px;
-                                line-height:14px;
->>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                 ">Rank #{{toInterNationalNumber(activeData.market_cap_rank)}}</div>
                             <div class="d-flex" style="margin-top:11px;">
                                 <div class="d-flex m-auto">
                                     <b-avatar class="bg-light mr-1" v-if="activeData.image" :src="activeData.image"></b-avatar>
-<<<<<<< HEAD
                                     <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins';
                                             font-size: 20px; 
-=======
-                                    <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins-Light';
-                                            font-size: 20px; margin-right:10px !important;
->>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                             font-style: normal;
                                             font-weight: 400;
                                             width: 105px;
@@ -1690,13 +1677,8 @@
                                         
                                            
                                     </span>
-<<<<<<< HEAD
                                     <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins';
                                             font-size: 20px; 
-=======
-                                    <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins-Light';
-                                            font-size: 20px; margin-right:10px !important;
->>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                             font-style: normal;
                                             font-weight: 400;
                                             width: 105px;
@@ -2190,13 +2172,8 @@
                                             <div class="soicalLable darkWhiteText">Social Score: </div>
                                         </div>
                                     </b-col> -->
-<<<<<<< HEAD
-                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.total_supply_percent">
-                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
-=======
                                     <!-- <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.total_supply_percent">
                                         <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
->>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" >
                                                 {{ activeData.total_supply_percent}} %
                                             </div>
@@ -2213,17 +2190,10 @@
                                             <div class="soicalLable darkWhiteText">Total Supply %: </div>
                                         </div>
                                     </b-col> -->
-<<<<<<< HEAD
-                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_mentions">
-                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
-                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  v-if="activeData.social_mentions>=0">
-                                                +{{toInterNationalNumber(activeData.social_mentions)}} %
-=======
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_mentions_change">
                                         <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 text-success-green " style="margin-top:20px; margin-bottom: 30px;"  v-if="activeData.social_mentions_change>=0">
                                                 +{{roundData(activeData.social_mentions_change)}} %
->>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                             </div>
                                             <div class="justify-content-center text-nowrap socialText2 text-danger " style="margin-top:20px; margin-bottom: 30px;" v-else>
                                                 {{roundData(activeData.social_mentions_change)}} %
@@ -2244,17 +2214,12 @@
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment">
-<<<<<<< HEAD
-                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
-                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  >
-=======
                                         <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
                                             v-if="userData.currentPlan == 'free'">
                                             <feather-icon icon="LockIcon" size="30" style=""/>
                                             </div>
                                             <div v-else class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  >
->>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                                 {{roundData(activeData.average_sentiment)}}</div>
                                             
                                             <div class="soicalLable darkWhiteText">Average Sentiment:  </div>
@@ -2268,13 +2233,8 @@
                                             <div class="soicalLable darkWhiteText">Average Sentiment: </div>
                                         </div>
                                     </b-col> -->
-<<<<<<< HEAD
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_engagement">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
-=======
-                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_engagement_change">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
->>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
                                                 v-if="userData.currentPlan == 'free'">
                                                 <feather-icon icon="LockIcon" size="30" style=""/>
@@ -2311,13 +2271,8 @@
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment_change">
-<<<<<<< HEAD
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
-=======
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
-                                            <div class="justify-content-center text-nowrap socialText2 text-success-green" style="margin-top:20px; margin-bottom: 30px;"  
->>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                                 v-if="roundData(activeData.average_sentiment_change)>=0">
                                                     +{{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                     %</div>
@@ -4463,16 +4418,9 @@
     #dashboard table th {
         padding-left: 4px !important;
         padding-right: 4px !important;
-<<<<<<< HEAD
         font-size: 12px;
         font-weight: 300;
         font-family: 'Poppins';
-=======
-        font-size: 14px;
-        font-family: 'Poppins-Light';
-        font-weight:400;
-
->>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
     }
 
     #dashboard .b-avatar {
@@ -4759,15 +4707,9 @@
         transition-property: width, left;
         transition-duration: 0.5s;
     }
-<<<<<<< HEAD
-
-
-
-=======
     .text-success-green{
         color:#6BBE84
     }
->>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
     /* .oneToFive .vue-slider-dot{
         width: 14px;
         height: 14px;
