@@ -257,7 +257,7 @@
                                             <div style="font-family: 'Poppins-Light';
                                                 font-style: normal;
                                                 font-weight: 500;
-                                                font-size: 20px;margin-bottom: 20px; margin-top: 20px;" class="text-center">
+                                                font-size: 18px;margin-bottom: 20px; margin-top: 20px;" class="text-center darkWhiteText">
                                                     Customise your Dashboard
                                             </div>
                                             <hr style="margin:0px !important;">
@@ -490,7 +490,7 @@
                                                     </app-collapse>
 
                                                 </div>
-                                                <hr>
+                                                <hr style="margin:0px !important;">
                                                 <div class="accordion" role="tablist">
                                                     <app-collapse accordion>
                                                         <app-collapse-item :isVisible="true" title="Unlocking Filter">
@@ -728,7 +728,7 @@
                                     <div v-if="scope.label" class="d-flex justify-content-center text-capitalize">
                                         <span> {{ scope.label }} </span> 
                                         <span class="my-auto d-inline">
-                                            <feather-icon icon="TriangleIcon" size="12" style="rotate:180deg;margin-left: 5px;"
+                                            <feather-icon icon="TriangleIcon" size="8" style="rotate:180deg;margin-left: 5px; margin-top: -9px; "
                                             :class="{'text-danger':params.sort[1] =='asc'&& params.sort[0] ==scope.field.key}" />
                                         <!-- <feather-icon icon="ChevronDownIcon" size="8"
                                             :class="{'text-danger':params.sort[1] =='desc'&& params.sort[0] ==scope.field.key}"
@@ -754,20 +754,36 @@
                                     <div style="padding-top:3px">{{ toInterNationalNumber(data.value?data.value:0) }}</div>
                                 </div>
                             </template>
+                        
                             <template #cell(name)="data">
-                                <div style="text-align: center;" class="d-flex justify-content-start">
-                                    <b-avatar class="text-center mx-1" style="" :src="data.item.image" />
+                                <div style="text-align: center;" class="d-flex justify-content-between">
+                                    <div style="display:flex; margin-right: 10px;">
+                                        <div style="margin: auto;">
+                                            <b-avatar class="text-center mx-1" :src="data.item.image"  />
+                                        </div>
 
-                                    <div class="">
-                                        <div class="text-nowrap text-truncate" style="max-width: 100px; font-weight: 600;">
-                                            <b>{{ data.value }}</b>   
+                                        <div class="">
+                                            
+                                            <div class="text-nowrap text-truncate" style="float: left; max-width: 100px; font-weight: 600;">
+                                                <b>{{ data.value }}</b>   
+                                            </div>
+                                            <div class="text-nowrap text-truncate text-left"
+                                                style="float: left; max-width: 100px; width: 100px;  opacity: 0.8;">
+                                                {{ data.item.symbol }}
+                                            </div>
+                                            
+                                            
                                         </div>
-                                        <div class="text-nowrap text-truncate text-left"
-                                            style="max-width: 100px;  opacity: 0.8;">
-                                            {{ data.item.symbol }}
-                                        </div>
-                                        
                                     </div>
+
+                                    <div class="btn-primary"  style="display:inline-block;  float: right; padding: 3px 12px 3px 12px;
+                                        font-family: 'Poppins'; height: 26px; margin: auto;
+                                        font-style: normal; border-radius: 16px !important;
+                                        font-weight: 400;
+                                        font-size: 12px;">
+                                            Buy
+    
+                                        </div>
                               
                                 </div>
                             </template>
@@ -4416,8 +4432,8 @@
     }
 
     #dashboard table th {
-        padding-left: 4px !important;
-        padding-right: 4px !important;
+        padding-left: 18px !important;
+        padding-right: 15px !important;
         font-size: 12px;
         font-weight: 300;
         font-family: 'Poppins';
@@ -4606,15 +4622,20 @@
     }
 
     .cunningBtn > ul{
-        background: #232228  !important;
+   
         min-width: 500px !important;
         /* border:1px solid rgba(43, 255, 77, 1); */
         border-radius:  10px;
     }
 
+    .cunningBtn .dropdown-menu{
+        max-height: 2000px;
+    }
+
     .dropdown-menu{
+        border-radius: 20px;
         max-height: 500px;
-        overflow: scroll;
+        overflow: auto;
     }
    
    
@@ -4638,6 +4659,10 @@
 
     .cunningDrop > ul {
         background: none;
+    }
+
+    .cunningDrop > form{
+        padding: 7px 36px 10px 0px;
     }
 
     .graph_tab{
@@ -4677,13 +4702,20 @@
     }
 
     .modal-content{
-    max-height: 70vh !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
+        border-radius:30px;
     }
- 
+
+    .modal-header{
+        border-radius:30px;
+    }
+
+    .modal-body{
+        border-radius:30px;
+    }
+
     body.dark-layout .modal-content div ul li.cunningDrop{
         background: #0A070E !important;
+        padding-right: 15px;
     }
 
     body .modal-content div ul li.cunningDrop{
@@ -4700,6 +4732,7 @@
         background-color: transparent !important;
         background-size: cover !important;
     }
+
     .oneToFive .vue-slider-process{
         top: 3px !important;
         left: 0%;
@@ -4710,6 +4743,19 @@
     .text-success-green{
         color:#6BBE84
     }
+
+    #modal-preset-create___BV_modal_body_{
+        background: linear-gradient(146.03deg, rgba(43, 255, 77, 1) -102%, rgb(44,43,49) 21.77%), white !important;
+    }
+
+    #modal-preset-create___BV_modal_content_{
+        padding:1px;
+        border-radius:30px;
+        background: linear-gradient(146.03deg, rgba(0,255,0,1) 7%, rgba(255,255,255,0) 50%) !important;
+    }
+
+/* modal-preset-create___BV_modal_content_ */
+
     /* .oneToFive .vue-slider-dot{
         width: 14px;
         height: 14px;
