@@ -4563,6 +4563,7 @@
     }
 
     .dropdown-menu{
+        border-radius: 20px;
         max-height: 500px;
         overflow: auto;
     }
@@ -4588,6 +4589,10 @@
 
     .cunningDrop > ul {
         background: none;
+    }
+
+    .cunningDrop > form{
+        padding: 7px 36px 10px 0px;
     }
 
     .graph_tab{
@@ -4640,6 +4645,7 @@
 
     body.dark-layout .modal-content div ul li.cunningDrop{
         background: #0A070E !important;
+        padding-right: 15px;
     }
 
     body .modal-content div ul li.cunningDrop{
