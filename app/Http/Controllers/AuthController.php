@@ -365,8 +365,8 @@ class AuthController extends Controller
         // $role->givePermissionTo('Unautherize');
         // $role->givePermissionTo('Dashboard');
         // $role->givePermissionTo('Profile');
-        // $user = json_encode(["action" => "read", "subject" => "User-Profile"]);
-        // $permission = Permission::create(['name' => 'User-Profile', 'permission_string' => $user]);
+        $user = json_encode(["action" => "read", "subject" => "User-Profile"]);
+        $permission = Permission::create(['name' => 'User-Profile', 'permission_string' => $user]);
 
     }
 
