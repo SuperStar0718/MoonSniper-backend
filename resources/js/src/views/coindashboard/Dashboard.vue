@@ -2207,7 +2207,7 @@
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_mentions_change">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 text-success-green " style="margin-top:20px; margin-bottom: 30px;"  v-if="activeData.social_mentions_change>=0">
                                                 +{{roundData(activeData.social_mentions_change)}} %
                                             </div>
@@ -2230,7 +2230,7 @@
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
                                             v-if="userData.currentPlan == 'free'">
                                             <feather-icon icon="LockIcon" size="30" style=""/>
@@ -2265,7 +2265,7 @@
                                         </b-card>
                                     </b-col>
                                     <b-col   sm="3" md="2" class="radius_gradient">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
                                                 v-if="userData.currentPlan == 'free'">
                                                 <feather-icon icon="LockIcon" size="30" style=""/>
