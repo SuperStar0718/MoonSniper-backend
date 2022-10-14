@@ -1798,7 +1798,7 @@
                                             <b-dropdown-form href="#" class="cunningDrop dropdown-mine darkBackgroundBlack" name="dropdownform2" style="z-index:999;">
                                                 <div class="darkBackgroundBlack" v-for="(address,index) in activeData.contract_address"
                                                     :key="index" style="display:flex; padding: 4px;">
-                                                    <b-img v-if="activeData.image" :src="activeData.image" fluid alt="Responsive image" style="margin-right:5px; width:30px;" />
+                                                    <b-img v-if="activeData.image" :src="activeData.image" fluid alt="Responsive image" style="margin-right:5px; height:30px;" />
                                                         <div class="m-auto" style="font-family: 'Poppins-Light'; display:inline-block;
                                                             font-style: normal;
                                                             font-weight: 500;
@@ -4662,7 +4662,7 @@
     }
 
     .cunningDrop > form{
-        padding: 7px 36px 10px 0px;
+        padding: 7px 30px 10px 0px;
     }
 
     .graph_tab{
