@@ -32,12 +32,9 @@ export default {
     loadPermissions()
     {
       axios.post('/api/abilities').then(res=>{
-        console.log(res);
       let userData =  localStorage.getItem('userData')
        let jsonUserData  =  JSON.parse(userData);
        jsonUserData.ability = res.data
-       console.log(jsonUserData);
-
        localStorage.setItem('userData', JSON.stringify(jsonUserData))
         this.$ability.update(res.data)
       })
@@ -49,3 +46,9 @@ export default {
   }
 }
 </script>
+<style>
+@font-face {
+  font-family: Poppins-Light;
+  src: url('../../../../assets/fonts/Poppins-Light.ttf');
+}
+</style>

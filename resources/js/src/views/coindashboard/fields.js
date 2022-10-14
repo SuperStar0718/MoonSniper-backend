@@ -51,7 +51,7 @@ const data = [
     },
     {
         key: 'total_volume',
-        label: 'VOL.',
+        label: 'VOL(24h)',
         stickyColumn: false,
         visible: 1
     },

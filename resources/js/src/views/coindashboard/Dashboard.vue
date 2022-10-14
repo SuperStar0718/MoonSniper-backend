@@ -74,7 +74,7 @@
                                     <div class="rounded-circle" id="marker_0" style="width:8px; height:8px; position: absolute"></div>
                                     <div class="inner-text" style="display:block;">
                                         <div style="margin-top: 2rem !important;"
-                                            :class="{'text-danger':fag.data.fear_greed_index<50,'text-success':fag.data.fear_greed_index>=50}">
+                                            :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}">
                                             <span class="d-block feerGreen"
                                                 >{{fag.data.fear_greed_index}}</span>
                                         </div>
@@ -108,7 +108,7 @@
 
                                     <div class="inner-text" style="display:block;">
                                         <div style="margin-top: 2rem !important;"
-                                            :class="{'text-danger':fag.data.fear_greed_index<50,'text-success':fag.data.fear_greed_index>=50}">
+                                            :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}">
                                             <span class="d-block feerGreen"
                                                 >{{fag.data.fear_greed_index}}</span>
                                         </div>
@@ -140,7 +140,7 @@
                                     <div class="rounded-circle" id="marker_2" style="width:8px; height:8px; position: absolute"></div>
                                     <div class="inner-text" style="display:block;">
                                         <div style="margin-top: 2rem !important;"
-                                            :class="{'text-danger':fag.data.fear_greed_index<50,'text-success':fag.data.fear_greed_index>=50}">
+                                            :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}">
                                             <span class="d-block feerGreen"
                                                 >{{fag.data.fear_greed_index}}</span>
                                         </div>
@@ -172,7 +172,7 @@
                                     <div class="rounded-circle" id="marker_3" style="width:8px; height:8px; position: absolute"></div>
                                     <div class="inner-text" style="display:block;">
                                         <div style="margin-top: 2rem !important;"
-                                            :class="{'text-danger':fag.data.fear_greed_index<50,'text-success':fag.data.fear_greed_index>=50}">
+                                            :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}">
                                             <span class="d-block feerGreen"
                                                 >{{fag.data.fear_greed_index}}</span>
                                         </div>
@@ -254,7 +254,7 @@
                                             <feather-icon  icon="SlidersIcon" size="20" class=" text-black cursor-pointer darkWhiteText" style="color:#28c76f;rotate:-90deg"/>
                                         </template>
                                         <b-dropdown-form href="#" class="dropdown-mine">
-                                            <div style="font-family: 'Poppins';
+                                            <div style="font-family: 'Poppins-Light';
                                                 font-style: normal;
                                                 font-weight: 500;
                                                 font-size: 20px;margin-bottom: 20px; margin-top: 20px;" class="text-center">
@@ -704,17 +704,17 @@
                 </div>
                 <div id="ctable" style="position: relative;">
                     <div class="opacityGradient" style="position: absolute;
-                        right: -6px;
+                        right: 4px;
                         top: 0px;
                         height: 100%;
-                        width: 100px;
+                        width: 61px;
                         z-index: 3;
                         background: linear-gradient(90deg, rgba(248,248,248, 0) 0%, rgba(248,248,248, 1) 100%);">
 
                     </div>
                     <b-overlay :show="isBusy" rounded="sm" >
                         
-                        <b-table sticky-header :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill" show-empty 
+                        <b-table :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill " show-empty  class="b-table-1"
                             @row-clicked="detailsModel($event)" style=" white-space: nowrap; border-spacing: 0 15px !important; " responsive :items="items.data"
                             :fields="visibleFields">
                             
@@ -723,9 +723,9 @@
                             </template>
 
                             <template #head()="scope">
-                                <div class="text-nowrap cursor-pointer text-center " style=""
+                                <div class="text-nowrap cursor-pointer text-center" style=""
                                     @click="sortingCols(scope.field.key)">
-                                    <div v-if="scope.label" class="d-flex justify-content-center">
+                                    <div v-if="scope.label" class="d-flex justify-content-center text-capitalize">
                                         <span> {{ scope.label }} </span> 
                                         <span class="my-auto d-inline">
                                             <feather-icon icon="TriangleIcon" size="12" style="rotate:180deg;margin-left: 5px;"
@@ -740,11 +740,11 @@
 
                             <template #cell(coin_platform)="data">
                                 <div class="" v-html="getPlatformTags(data.value)"></div>
-                                <!-- <div class="" v-if="checkSeemore(data.value)"><span
-                                        v-b-popover.hover.top="platformTagsSeemore(data.value)"
-                                        v-ripple.400="'rgba(113, 102, 240, 0.15)'" title="Platforms" variant="outline-primary">
-                                        See more...
-                                    </span></div> -->
+                                <div class=""   v-ripple.400="'rgba(113, 102, 240, 0.15)'"  variant="outline-success" v-if="checkSeemore(data.value)"  v-b-tooltip.hover.bottom="platformTagsSeemore(data.value)">
+                                    <span>
+                                       <small class="text-sm"> See more...</small>
+                                    </span></div>
+                                    
                             </template>
                             <template #cell(market_cap_rank)="data">
                                 <div class="d-flex">
@@ -889,7 +889,7 @@
                                     {{data.value}}
                                 </div>
                                 <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                                    {{roundData(data.value)}} <span v-if="data.value">%</span>
+                                    <span v-if="data.value">%</span>{{roundData(data.value)}} 
                                 </div>
                             </template>
                             <template #cell(three_months_unlock_size)="data">
@@ -905,7 +905,7 @@
                                     {{data.value}}
                                 </div>
                                 <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                                    {{toInterNationalNumber(data.value)}} <span v-if="data.value">$</span>
+                                    <span v-if="data.value">$</span>{{toInterNationalNumber(data.value)}} 
                                 </div>
                             </template>
                             <template #cell(six_months_unlock_percent_of_tokens)="data">
@@ -914,7 +914,7 @@
                                     {{data.value}}
                                 </div>
                                 <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                                    {{roundData(data.value)}} <span v-if="data.value">$</span>
+                                    <span v-if="data.value">$</span>{{roundData(data.value)}} 
                                 </div>
                             </template>
                             <template #cell(six_months_unlock_size)="data">
@@ -928,35 +928,35 @@
                                 <div v-if="data.value"
                                     :class="{'greenFlash':data.item.flash == 1,'redFlash':data.item.flash ==2}"
                                     style="width: 100px;">
-                                    {{toInterNationalNumber(data.value)}}$</div>
+                                    ${{toInterNationalNumber(data.value)}}</div>
                             </template>
                             <template #cell(market_cap)="data">
-                                <div v-if="data.value" style="">{{toInterNationalNumber(data.value)}}$</div>
+                                <div v-if="data.value" style="">${{toInterNationalNumber(data.value)}}</div>
                             </template>
                             <template #cell(high_24h)="data">
-                                <div v-if="data.value !=''" style="">{{toInterNationalNumber(data.value)}}$</div>
+                                <div v-if="data.value !=''" style="">${{toInterNationalNumber(data.value)}}</div>
                             </template>
                             <template #cell(low_24h)="data">
-                                <div v-if="data.value !=''" style="">{{toInterNationalNumber(data.value)}}$</div>
+                                <div v-if="data.value !=''" style="">${{toInterNationalNumber(data.value)}}</div>
                             </template>
 
                             <template #cell(price_change_percentage_24h)="data">
                                 <div v-if="data.value">
-                                    <span v-if="data.value>= 0" class="text-success"
+                                    <span v-if="data.value>= 0" class="text-success-green"
                                         style="">{{ toInterNationalNumber(data.value) }}
                                         <span v-if="data.value"> %</span></span>
                                     <span v-else class="text-danger" style="">{{ toInterNationalNumber(data.value) }} %</span>
                                 </div>
                             </template>
                             <template #cell(roi_percentage)="data">
-                                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
+                                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
                                         @click="sortingCols(data.value)" style="">{{ roundData(data.value) }}
                                         <span v-if="data.value"> %</span></span>
                                     <span v-else-if="data.value!=null" class="text-danger" style="">{{ roundData(data.value) }}
                                         <span v-if="data.value"> %</span></span></div>
                             </template>
                             <template #cell(total_supply_percent)="data">
-                                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
+                                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
                                         @click="sortingCols(data.value)" style="">{{ roundData(data.value) }}
                                         <span v-if="data.value"> %</span></span>
                                     <span v-else-if="data.value!=null" class="text-danger" style="">{{ roundData(data.value) }}
@@ -964,30 +964,30 @@
                             </template>
                             <template #cell(ath)="data">
                                 <div v-if="data.value">
-                                    <span style="">{{toInterNationalNumber(data.value)}} <span v-if="data.value">$</span></span>
+                                    <span style=""><span v-if="data.value">$</span>{{toInterNationalNumber(data.value)}} </span>
                                 </div>
                             </template>
                             <template #cell(atl)="data">
                                 <div v-if="data.value">
-                                    <span style="">{{toInterNationalNumber(data.value)}} <span v-if="data.value">$</span></span>
+                                    <span style=""><span v-if="data.value">$</span>{{toInterNationalNumber(data.value)}}</span>
                                 </div>
                             </template>
                             <template #cell(social_mentions_change)="data">
-                                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
+                                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
                                         @click="sortingCols(data.value)" style="">{{ roundData(data.value) }}
                                         <span v-if="data.value"> %</span></span>
                                     <span v-else-if="data.value!=null" class="text-danger" style="">{{ roundData(data.value) }}
                                         <span v-if="data.value"> %</span></span></div>
                             </template>
                             <template #cell(social_engagement_change)="data">
-                                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
+                                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
                                         @click="sortingCols(data.value)" style="">{{ roundData(data.value) }}
                                         <span v-if="data.value"> %</span></span>
                                     <span v-else-if="data.value!=null" class="text-danger" style="">{{ roundData(data.value) }}
                                         <span v-if="data.value"> %</span></span></div>
                             </template>
                             <template #cell(average_sentiment_change)="data">
-                                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success"
+                                <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
                                         @click="sortingCols(data.value)" style="">{{ roundData(data.value) }}
                                         <span v-if="data.value"> %</span></span>
                                     <span v-else-if="data.value!=null" class="text-danger" style="">{{ roundData(data.value) }}
@@ -1653,17 +1653,30 @@
                 <div slot="modal-title">
                     <div class="w-full justify-content-between d-flex" style="margin-top: 10px; margin-left: 10px;">
                         <div class="d-inline">
+<<<<<<< HEAD
                             <div class="rank_slot darkWhiteText" style="margin-bottom: 8px;font-family: 'Poppins';
                                 opacity: 0.6 !important;
                                 font-style: normal;
                                 font-weight: 300;
                                 font-size: 12px;
+=======
+                            <div class="rank_slot" style="margin-bottom: 8px;font-family: 'Poppins-Light';
+                                font-style: normal;
+                                font-weight: 300;
+                                font-size: 10px;
+                                line-height:14px;
+>>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                 ">Rank #{{toInterNationalNumber(activeData.market_cap_rank)}}</div>
                             <div class="d-flex" style="margin-top:11px;">
                                 <div class="d-flex m-auto">
                                     <b-avatar class="bg-light mr-1" v-if="activeData.image" :src="activeData.image"></b-avatar>
+<<<<<<< HEAD
                                     <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins';
                                             font-size: 20px; 
+=======
+                                    <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins-Light';
+                                            font-size: 20px; margin-right:10px !important;
+>>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                             font-style: normal;
                                             font-weight: 400;
                                             width: 105px;
@@ -1677,8 +1690,13 @@
                                         
                                            
                                     </span>
+<<<<<<< HEAD
                                     <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins';
                                             font-size: 20px; 
+=======
+                                    <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins-Light';
+                                            font-size: 20px; margin-right:10px !important;
+>>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                             font-style: normal;
                                             font-weight: 400;
                                             width: 105px;
@@ -1706,10 +1724,10 @@
                                     <div class="d-flex">
                                         <span class=""
                                             :class="{'greenFlash':activeData.flash == 1,'redFlash':activeData.flash ==2}"
-                                            style="font-family: 'Poppins';
+                                            style="font-family: 'Poppins-Light';
                                             font-style: normal;
-                                            font-weight: 600;
-                                            font-size: 24px;
+                                            font-weight: 400;
+                                            font-size: 20px;
                                             "
                                             v-if="activeData.current_price && activeData.current_price>= 0">${{ roundData(activeData.current_price) }}
                                         </span>
@@ -1717,7 +1735,7 @@
                                     <div class="d-flex m-auto">
                                         <span v-if="activeData.price_change_percentage_24h && activeData.price_change_percentage_24h>= 0"
                                             class="btn-success d-flex  marginx1"
-                                            style="font-family: 'Poppins';
+                                            style="font-family: 'Poppins-Light';
                                             font-style: normal;
                                             font-weight: 300;
                                             font-size: 12px; margin-top: 2px;border-radius:5px; padding:0px 5px"><div style="display: inline; margin:auto;"><feather-icon size="20" icon="ChevronUpIcon" /></div><span>{{ roundData(activeData.price_change_percentage_24h) }}%</span>
@@ -1737,7 +1755,7 @@
                                 v-if="activeData.contract_address && activeData.contract_address.length>0">
 
                                 <div>
-                                    <div class="my-auto darkWhiteText" style="margin-bottom: 8px !important; margin-right: 4px;padding-left:10px; font-family: 'Poppins';
+                                    <div class="my-auto darkWhiteText" style="margin-bottom: 8px !important; margin-right: 4px;padding-left:10px; font-family: 'Poppins-Light';
                                         font-style: normal;
                                         font-weight: 300;
                                         font-size: 12px;
@@ -1751,7 +1769,7 @@
                                                     :key="index" style="display:block; padding: 2px; border-radius: 20px;" v-if="index==0">
                                                     <div v-if="index==0">
                                                             <b-img v-if="activeData.image" :src="activeData.image" fluid alt="Responsive image" style="margin-right:5px; height:30px;" />
-                                                            <div style="font-family: 'Poppins'; display:inline-block; margin-top:10px;
+                                                            <div style="font-family: 'Poppins-Light'; display:inline-block; margin-top:10px;
                                                                 font-style: normal;
                                                                 font-weight: 500;
                                                                 font-size: 14px;
@@ -1783,7 +1801,7 @@
                                                 <div class="darkBackgroundBlack" v-for="(address,index) in activeData.contract_address"
                                                     :key="index" style="display:flex; padding: 4px;">
                                                     <b-img v-if="activeData.image" :src="activeData.image" fluid alt="Responsive image" style="margin-right:5px; width:30px;" />
-                                                        <div class="m-auto" style="font-family: 'Poppins'; display:inline-block;
+                                                        <div class="m-auto" style="font-family: 'Poppins-Light'; display:inline-block;
                                                             font-style: normal;
                                                             font-weight: 500;
                                                             font-size: 14px;
@@ -1852,7 +1870,7 @@
                                         <!-- <h5> 7 Days</h5> -->
                                         <div class="position-absolute w-100" style="z-index:99">
 
-                                            <b-tabs content-class="" class="graph_tab float-left w-50" style="font-family: Poppins;font-style: normal;font-weight: 400;font-size: 10px;">
+                                            <b-tabs content-class="" class="graph_tab float-left w-50" style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
                                                 <b-tab active title="Price">
                                                     <div></div>
                                                 </b-tab>
@@ -1861,7 +1879,7 @@
                                                 </b-tab>
                                             </b-tabs>
                                             <div class="d-inline-flex float-right" style="padding-right: 40px !important;">
-                                                <b-tabs content-class="" class="graph_tab my-auto" style="font-family: Poppins;font-style: normal;font-weight: 400;font-size: 10px;">
+                                                <b-tabs content-class="" class="graph_tab my-auto" style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
                                                     <b-tab active title="1D">
                                                         <div></div>
                                                     </b-tab>
@@ -1900,33 +1918,33 @@
                                         justify-content: space-between;
                                         flex-direction: column;">
                                         <div  v-if="activeData.total_volume" style="margin-bottom: 24px;">
-                                            <span style="font-family: 'Poppins';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;"> Volume</span>
+                                            <span style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;"> Volume</span>
                                             <div class="" style="font-size:16px; font-weight: 600;">
-                                                <span style="font-family: 'Poppins';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.total_volume) }}</span>
+                                                <span style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.total_volume) }}</span>
                                             </div>
                                         </div>
                                         <div  v-if="activeData.market_cap" style="margin-bottom: 24px;">
-                                            <span style="font-family: 'Poppins';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;"> Market Cap</span>
+                                            <span style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;"> Market Cap</span>
                                             <div class="" style="font-size:16px; font-weight: 600;">
-                                                <span style="font-family: 'Poppins';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.market_cap) }}</span> </div>
+                                                <span style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.market_cap) }}</span> </div>
                                         </div>
                                         <div  style="margin-bottom: 24px;"
                                             v-if="activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0">
-                                            <span style="font-family: 'Poppins';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;"> X's from launch</span>
+                                            <span style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;"> X's from launch</span>
                                             <div class="" style="font-size:16px; font-weight: 600;">
-                                                <span style="font-family: 'Poppins';font-style: normal;font-weight: 400;font-size: 15px;"
+                                                <span style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;"
                                                     v-if="activeData.roi_times">{{ xfromlunch(activeData.roi_times,'roi_times') }}X</span>
-                                                <span style="font-family: 'Poppins';font-style: normal;font-weight: 400;font-size: 15px;"
+                                                <span style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;"
                                                     v-else-if="activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0 ">{{ xfromlunch(activeData.current_price,activeData.round_price) }}X</span>
                                             </div>
                                         </div>
                                         <div  v-if="activeData.total_supply_percent" style="margin-bottom: 24px;">
-                                            <span style="font-family: 'Poppins';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;"> Total Supply:</span>
+                                            <span style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;"> Total Supply:</span>
                                             <div class="" style="font-size:16px; font-weight: 600;">
-                                                <span  style="font-family: 'Poppins';font-style: normal;font-weight: 400;font-size: 15px;">{{ activeData.total_supply_percent }} %</span> </div>
+                                                <span  style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">{{ activeData.total_supply_percent }} %</span> </div>
                                         </div>
                                         <div class="float-left">
-                                            <button class="fs-6 " style="border-radius: 10px; font-size: 12px; font-weight: 400; font-family: 'Poppins'; font-style: normal; padding:6px 14px;">Price Prediction</button>
+                                            <button class="fs-6 " style="border-radius: 10px; font-size: 12px; font-weight: 400; font-family: 'Poppins-Light'; font-style: normal; padding:6px 14px;">Price Prediction</button>
                                         </div>
                                     </b-col>
 
@@ -2172,8 +2190,13 @@
                                             <div class="soicalLable darkWhiteText">Social Score: </div>
                                         </div>
                                     </b-col> -->
+<<<<<<< HEAD
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.total_supply_percent">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
+=======
+                                    <!-- <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.total_supply_percent">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+>>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" >
                                                 {{ activeData.total_supply_percent}} %
                                             </div>
@@ -2182,7 +2205,7 @@
                                             <div class="soicalLable darkWhiteText">&nbsp; </div>
 
                                         </b-card>
-                                    </b-col>
+                                    </b-col> -->
                                     <!-- <b-col sm="3" md="2" v-if="activeData.total_supply_percent">
                                         <div class="border border-2 rounded border-dark greenGradient">
                                             <div class="d-flex justify-content-center text-nowrap" style="margin: 13px 0 16px 0; font-size: 14px;">
@@ -2190,13 +2213,20 @@
                                             <div class="soicalLable darkWhiteText">Total Supply %: </div>
                                         </div>
                                     </b-col> -->
+<<<<<<< HEAD
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_mentions">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  v-if="activeData.social_mentions>=0">
                                                 +{{toInterNationalNumber(activeData.social_mentions)}} %
+=======
+                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_mentions_change">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <div class="justify-content-center text-nowrap socialText2 text-success-green " style="margin-top:20px; margin-bottom: 30px;"  v-if="activeData.social_mentions_change>=0">
+                                                +{{roundData(activeData.social_mentions_change)}} %
+>>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                             </div>
-                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" v-else>
-                                                {{toInterNationalNumber(activeData.social_mentions)}} %
+                                            <div class="justify-content-center text-nowrap socialText2 text-danger " style="margin-top:20px; margin-bottom: 30px;" v-else>
+                                                {{roundData(activeData.social_mentions_change)}} %
                                             </div>
                                             <div class="soicalLable darkWhiteText">Social Mentions: </div>
                                             <div class="soicalLable darkWhiteText">&nbsp; </div>
@@ -2205,7 +2235,7 @@
                                     </b-col>
                                     <!-- <b-col sm="3" md="2" v-if="activeData.social_mentions">
                                         <div class="border border-2 rounded border-dark greenGradient">
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success d-flex justify-content-center text-nowrap"
+                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success-green d-flex justify-content-center text-nowrap"
                                                 v-if="activeData.social_mentions>=0">
                                                 +{{toInterNationalNumber(activeData.social_mentions)}} %</div>
                                             <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger d-flex justify-content-center text-nowrap"
@@ -2214,8 +2244,17 @@
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment">
+<<<<<<< HEAD
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  >
+=======
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
+                                            v-if="userData.currentPlan == 'free'">
+                                            <feather-icon icon="LockIcon" size="30" style=""/>
+                                            </div>
+                                            <div v-else class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  >
+>>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                                 {{roundData(activeData.average_sentiment)}}</div>
                                             
                                             <div class="soicalLable darkWhiteText">Average Sentiment:  </div>
@@ -2224,25 +2263,46 @@
                                     </b-col>
                                     <!-- <b-col sm="3" md="2" v-if="activeData.average_sentiment">
                                         <div class=" border-2 rounded border-dark greenGradient">
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-success d-flex justify-content-center text-nowrap">
+                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-success-green d-flex justify-content-center text-nowrap">
                                                 {{roundData(activeData.average_sentiment)}}</div>
                                             <div class="soicalLable darkWhiteText">Average Sentiment: </div>
                                         </div>
                                     </b-col> -->
+<<<<<<< HEAD
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_engagement">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
+=======
+                                    <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_engagement_change">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+>>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
-                                                v-if="activeData.social_mentions>=0">
-                                                 +{{toInterNationalNumber(activeData.social_engagement)}} %</div>
-                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" 
-                                                v-else> {{toInterNationalNumber(activeData.social_engagement)}} %</div>
+                                                v-if="userData.currentPlan == 'free'">
+                                                <feather-icon icon="LockIcon" size="30" style=""/>
+                                                </div>
+                                            <div class="justify-content-center text-nowrap socialText2 text-success-green" style="margin-top:20px; margin-bottom: 30px;"  
+                                                v-else-if="activeData.social_engagement_change>=0">
+                                                 +{{roundData(activeData.social_engagement_change)}} %</div>
+                                            <div class="justify-content-center text-nowrap socialText2  text-danger" style="margin-top:20px; margin-bottom: 30px;" 
+                                                v-else> {{roundData(activeData.social_engagement_change)}} %</div>
                                             <div class="soicalLable darkWhiteText">Social Engagement: </div>
+
+                                        </b-card>
+                                    </b-col>
+                                    <b-col   sm="3" md="2" class="radius_gradient">
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
+                                                v-if="userData.currentPlan == 'free'">
+                                                <feather-icon icon="LockIcon" size="30" style=""/>
+                                                </div>
+                                            <div class="justify-content-center text-nowrap socialText2" style="margin-top:20px; margin-bottom: 30px;" 
+                                                v-else>2</div>
+                                            <div class="soicalLable darkWhiteText">Bearish Sentiment: </div>
 
                                         </b-card>
                                     </b-col>
                                     <!-- <b-col sm="3" md="2" v-if="activeData.social_engagement">
                                         <div class=" border-2 rounded border-dark greenGradient">
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success d-flex justify-content-center text-nowrap"
+                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success-green d-flex justify-content-center text-nowrap"
                                                 v-if="activeData.social_mentions>=0">
                                                 +{{toInterNationalNumber(activeData.social_engagement)}} %</div>
                                             <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger d-flex justify-content-center text-nowrap"
@@ -2251,22 +2311,27 @@
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment_change">
+<<<<<<< HEAD
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient" style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  
+=======
+                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
+                                            <div class="justify-content-center text-nowrap socialText2 text-success-green" style="margin-top:20px; margin-bottom: 30px;"  
+>>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
                                                 v-if="roundData(activeData.average_sentiment_change)>=0">
                                                     +{{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                     %</div>
-                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" 
+                                            <div class="justify-content-center text-nowrap socialText2 text-danger" style="margin-top:20px; margin-bottom: 30px;" 
                                                 v-else>
                                                     {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                     %</div>
-                                            <div class="soicalLable darkWhiteText">Social Engagement:  </div>
+                                            <div class="soicalLable darkWhiteText">Average Sentiment change  </div>
 
                                         </b-card>
                                     </b-col>
                                     <!-- <b-col sm="3" md="2" v-if="activeData.average_sentiment_change">
                                         <div class="border border-3 rounded border-dark greenGradient">
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success d-flex justify-content-center text-nowrap"
+                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success-green d-flex justify-content-center text-nowrap"
                                                 v-if="roundData(activeData.average_sentiment_change)>=0">
                                                 +{{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                 %</div>
@@ -2296,10 +2361,10 @@
                         ||activeData.six_months_unlock_number_of_tokens
                         ||activeData.six_months_unlock_percent_of_tokens
                         ||activeData.six_months_unlock_size
-                        ">
+                        ||activeData.total_supply_percent ">
 
                         <div class="container d-flex" style="padding:0px;">
-                            <div class="d-inline" style="width:20%; font-family: 'Poppins'; margin-right: 24px;
+                            <div class="d-inline" style="width:20%; font-family: 'Poppins-Light'; margin-right: 24px;
                                 font-style: normal;
                                 font-weight: 400;
                                 font-size: 12px;">
@@ -2451,7 +2516,7 @@
                                                 {{ activeData.roi_seed }}
                                             </div>
                                             <div style="font-weight:600" v-else>
-                                                {{activeData.roi_seed}}$
+                                                ${{activeData.roi_seed}}
                                             </div>
                                         </div>
                                     </b-col>
@@ -2546,6 +2611,19 @@
                                             </div>
                                         </div>
                                     </b-col>
+                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                    v-if="activeData.total_supply_percent">
+                                    <div class="">
+                                        <div class="mr-1">Total Supply %</div>
+                                        <div v-if="checkUserPlan(activeData.total_supply_percent)"
+                                            style="font-weight:600" class="">
+                                            {{ activeData.total_supply_percent}} %
+                                        </div>
+                                        <div style="font-weight:600" v-else>
+                                            {{activeData.total_supply_percent}}%
+                                        </div>
+                                    </div>
+                                </b-col>
 
                                     <b-col cols="12" md="12">
                                         <span class="mr-1">Supply chart: </span>
@@ -2578,7 +2656,7 @@
             title="" style="background: transparent !important;">
                 <div style="border-radius:10px;">
                     <template >
-                        <div style="font-family: 'Poppins'; padding:20px; margin-top:10px;
+                        <div style="font-family: 'Poppins-Light'; padding:20px; margin-top:10px;
                             font-style: normal;
                             font-weight: 500;
                             font-size: 20px;
@@ -2645,7 +2723,8 @@
         BFormSelectOption,
         BSpinner,
         BOverlay,
-        VBPopover
+        VBPopover,
+        VBTooltip
     } from 'bootstrap-vue'
     import Ripple from 'vue-ripple-directive'
     import axios from '@axios'
@@ -2743,7 +2822,7 @@
                     filters2: "",
                     sort: ["market_cap_rank", "asc"],
                     api_mode: 1,
-                    perpage: 6
+                    perpage: 50,
                 },
                 perPageOptions: [5, 6, 8, 9, 10, 20, 30, 50, 100],
                 fag: {
@@ -3171,6 +3250,7 @@
             'b-modal': VBModal,
             'b-toggle': VBToggle,
             'b-popover': VBPopover,
+            'b-tooltip': VBPopover,
             Ripple,
 
         },
@@ -3257,7 +3337,7 @@
                     if(index==1) break;
                     if (tagsArray[index] != undefined && tagsArray[index] != "")
                         tags = tags +
-                        ' <div class="d-block " style="margin-bottom:1px;"><span class="bg-success text-white customBadge" style="padding:5px; font-size:14px;">' +
+                        ' <div class="d-block " style="margin-bottom:1px;"><span class="" style="padding:5px; font-size:14px;">' +
                         tagsArray[index] + '</span></div>';
                 }
                 return tags;
@@ -4328,15 +4408,40 @@
         border-radius: 5px;
     }
 
-    #dashboard .b-table-sticky-header {
-        overflow-y: auto;
-        max-height: 80vh;
+    #dashboard .b-table-1 {
+        overflow-y: auto !important;
+        max-height: 56vh;
+        
     }
-
+    #dashboard .b-table-1:hover {
+        overflow-x: scroll !important;
+      }
+      
     #dashboard td {
         text-align: center;
     }
-
+    
+    #dashboard .b-table-1::-webkit-scrollbar
+    {
+        height: 2px;
+       
+    }
+    #dashboard .b-table-1:hover::-webkit-scrollbar
+    {
+        height: 8px;
+    }
+    
+    #dashboard .b-table-1::-webkit-scrollbar-corner {
+        background: rgba(0,0,0,0);
+      }
+    #dashboard .b-table-1::-webkit-scrollbar-thumb
+    {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(233, 229, 229, 0.3);
+        background-color: #676565;
+        
+    }
+    
     #dashboard .inner-text {
         height: 100%;
         width: 100%;
@@ -4350,16 +4455,24 @@
     #dashboard table td {
         padding-left: 4px !important;
         padding-right: 4px !important;
-        font-family: 'Poppins'
+        font-family: 'Poppins-Light';
+        font-weight:300;
 
     }
 
     #dashboard table th {
         padding-left: 4px !important;
         padding-right: 4px !important;
+<<<<<<< HEAD
         font-size: 12px;
         font-weight: 300;
         font-family: 'Poppins';
+=======
+        font-size: 14px;
+        font-family: 'Poppins-Light';
+        font-weight:400;
+
+>>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
     }
 
     #dashboard .b-avatar {
@@ -4393,7 +4506,7 @@
     }
 
     .soicalLable {
-        font-family: 'Poppins';
+        font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 500;
         font-size: 10px;
@@ -4405,7 +4518,16 @@
         text-shadow: 0 0 32px white;
         color: transparent;
     }
-
+    .popover{
+        border-radius: 50px;
+    }
+    .popover-body{
+       background: linear-gradient(172deg, rgba(39, 179, 62, 0.3) 10.11%, rgba(0, 0, 0, 0) 20.06%), rgba(9, 9, 9, 0.725);
+       border-radius:20px;
+    }
+    .popover .arrow{
+        color:gray;
+    }
     .blurry-text {
         text-shadow: 0px -2px 5px #d13e3e;
     }
@@ -4423,7 +4545,7 @@
 
 
     .greenFlash {
-        color: rgb(54, 197, 57);
+        color: #6BBE84;
 
     }
 
@@ -4441,7 +4563,7 @@
     }
 
     .feerGreen{
-        font-family: 'Poppins';
+        font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 600;
         font-size: 35px;
@@ -4450,7 +4572,7 @@
     }
    
     .feerSmallGreen{
-        font-family: 'Poppins';
+        font-family: 'Poppins-Light';
         font-style: normal;
         text-align: center;
         color: #6BD863;
@@ -4458,14 +4580,14 @@
     }
 
     thead tr th{
-        font-family: 'Poppins';
+        font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 300;
         font-size: 12px;
     }
     
     tbody tr{
-        font-family: 'Poppins';
+        font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 400;
         font-size: 14px;
@@ -4524,7 +4646,7 @@
 
     .margin20{
         margin: 10px;
-        font-family: 'Poppins';
+        font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 400;
         font-size: 16px !important;
@@ -4585,7 +4707,7 @@
     }
 
     .socialText{
-        font-family: 'Poppins';
+        font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 400;
         font-size: 16px;
@@ -4596,7 +4718,7 @@
         width: 100px;
         white-space: nowrap;
         overflow: hidden;
-        font-family: 'Poppins';
+        font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 400;
         font-size: 20px;
@@ -4606,7 +4728,11 @@
         background: black;
     }
 
-    
+    .modal-content{
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    }
  
     body.dark-layout .modal-content div ul li.cunningDrop{
         background: #0A070E !important;
@@ -4633,9 +4759,15 @@
         transition-property: width, left;
         transition-duration: 0.5s;
     }
+<<<<<<< HEAD
 
 
 
+=======
+    .text-success-green{
+        color:#6BBE84
+    }
+>>>>>>> fa1e227bf4d90a689f21e675117ffb4f206d55a3
     /* .oneToFive .vue-slider-dot{
         width: 14px;
         height: 14px;
