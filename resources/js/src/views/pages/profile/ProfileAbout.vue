@@ -3,7 +3,7 @@
     <!-- about -->
     <div
       v-for="(data,key,index) in aboutData"
-      :key="data.title"
+      :key="data.id"
       :class="index ? 'mt-2':''"
     >
       <h5 class="text-capitalize mb-75">
@@ -18,7 +18,6 @@
 
 <script>
 import { BCard, BCardText } from 'bootstrap-vue'
-
 export default {
   components: {
     BCard,

@@ -714,7 +714,7 @@
                     </div>
                     <b-overlay :show="isBusy" rounded="sm" >
                         
-                        <b-table sticky-header :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill" show-empty 
+                        <b-table :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill " show-empty  class="b-table-1"
                             @row-clicked="detailsModel($event)" style=" white-space: nowrap; border-spacing: 0 15px !important; " responsive :items="items.data"
                             :fields="visibleFields">
                             
@@ -740,11 +740,11 @@
 
                             <template #cell(coin_platform)="data">
                                 <div class="" v-html="getPlatformTags(data.value)"></div>
-                                <!-- <div class="" v-if="checkSeemore(data.value)"><span
-                                        v-b-popover.hover.top="platformTagsSeemore(data.value)"
-                                        v-ripple.400="'rgba(113, 102, 240, 0.15)'" title="Platforms" variant="outline-primary">
-                                        See more...
-                                    </span></div> -->
+                                <div class=""   v-ripple.400="'rgba(113, 102, 240, 0.15)'"  variant="outline-success" v-if="checkSeemore(data.value)"  v-b-tooltip.hover.bottom="platformTagsSeemore(data.value)">
+                                    <span>
+                                       <small class="text-sm"> See more...</small>
+                                    </span></div>
+                                    
                             </template>
                             <template #cell(market_cap_rank)="data">
                                 <div class="d-flex">
@@ -2665,7 +2665,8 @@
         BFormSelectOption,
         BSpinner,
         BOverlay,
-        VBPopover
+        VBPopover,
+        VBTooltip
     } from 'bootstrap-vue'
     import Ripple from 'vue-ripple-directive'
     import axios from '@axios'
@@ -3191,6 +3192,7 @@
             'b-modal': VBModal,
             'b-toggle': VBToggle,
             'b-popover': VBPopover,
+            'b-tooltip': VBPopover,
             Ripple,
 
         },
@@ -4348,12 +4350,12 @@
         border-radius: 5px;
     }
 
-    #dashboard .b-table-sticky-header {
+    #dashboard .b-table-1 {
         overflow-y: auto !important;
-        max-height: 55vh;
+        max-height: 56vh;
         
     }
-    #dashboard .b-table-sticky-header:hover {
+    #dashboard .b-table-1:hover {
         overflow-x: scroll !important;
       }
       
@@ -4361,20 +4363,20 @@
         text-align: center;
     }
     
-    #dashboard .b-table-sticky-header::-webkit-scrollbar
+    #dashboard .b-table-1::-webkit-scrollbar
     {
         height: 2px;
        
     }
-    #dashboard .b-table-sticky-header:hover::-webkit-scrollbar
+    #dashboard .b-table-1:hover::-webkit-scrollbar
     {
         height: 8px;
     }
     
-    #dashboard .b-table-sticky-header::-webkit-scrollbar-corner {
+    #dashboard .b-table-1::-webkit-scrollbar-corner {
         background: rgba(0,0,0,0);
       }
-    #dashboard .b-table-sticky-header::-webkit-scrollbar-thumb
+    #dashboard .b-table-1::-webkit-scrollbar-thumb
     {
         border-radius: 10px;
         -webkit-box-shadow: inset 0 0 6px rgba(233, 229, 229, 0.3);
@@ -4449,7 +4451,16 @@
         text-shadow: 0 0 32px white;
         color: transparent;
     }
-
+    .popover{
+        border-radius: 50px;
+    }
+    .popover-body{
+       background: linear-gradient(172deg, rgba(39, 179, 62, 0.3) 10.11%, rgba(0, 0, 0, 0) 20.06%), rgba(9, 9, 9, 0.725);
+       border-radius:20px;
+    }
+    .popover .arrow{
+        color:gray;
+    }
     .blurry-text {
         text-shadow: 0px -2px 5px #d13e3e;
     }

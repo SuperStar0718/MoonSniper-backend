@@ -168,20 +168,22 @@ export default [
     },
   },
   {
-    path: '/pages/profile',
+    path: '/user/profile',
     name: 'pages-profile',
     component: () => import('@/views/pages/profile/Profile.vue'),
     meta: {
       pageTitle: 'Profile',
       breadcrumb: [
         {
-          text: 'Pages',
+          text: 'User',
         },
         {
           text: 'Profile',
           active: true,
         },
       ],
+      resource: 'User-Profile',
+      action: 'read',
     },
   },
 
