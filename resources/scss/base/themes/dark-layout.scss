@@ -125,6 +125,11 @@
     color: white !important;
   }
 
+  .btn-primary:hover:not(.disabled):not(:disabled){
+    box-shadow:none !important;
+
+  }
+
   .cunningBtn > ul{
     background: #232228  !important; 
    }
@@ -2314,6 +2319,14 @@
   }
 
   //sug class
+  .cunningBtn .collapse-title{
+    color: white !important; opacity:1 !important;
+  }
+
+  .custom-control-input:checked ~ .custom-control-label::before{
+    border: none !important;
+    background-color : white !important;
+  }
 
   .opacityGradient{
     background: linear-gradient(90deg, rgba(35, 34, 40, 0) 0%, #232228 100%) !important;

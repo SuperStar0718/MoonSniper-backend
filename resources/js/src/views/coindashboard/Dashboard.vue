@@ -257,7 +257,7 @@
                                             <div style="font-family: 'Poppins';
                                                 font-style: normal;
                                                 font-weight: 500;
-                                                font-size: 20px;margin-bottom: 20px; margin-top: 20px;" class="text-center">
+                                                font-size: 18px;margin-bottom: 20px; margin-top: 20px;" class="text-center darkWhiteText">
                                                     Customise your Dashboard
                                             </div>
                                             <hr style="margin:0px !important;">
@@ -490,7 +490,7 @@
                                                     </app-collapse>
 
                                                 </div>
-                                                <hr>
+                                                <hr style="margin:0px !important;">
                                                 <div class="accordion" role="tablist">
                                                     <app-collapse accordion>
                                                         <app-collapse-item :isVisible="true" title="Unlocking Filter">
@@ -4552,15 +4552,19 @@
     }
 
     .cunningBtn > ul{
-        background: #232228  !important;
+   
         min-width: 500px !important;
         /* border:1px solid rgba(43, 255, 77, 1); */
         border-radius:  10px;
     }
 
+    .cunningBtn .dropdown-menu{
+        max-height: 2000px;
+    }
+
     .dropdown-menu{
         max-height: 500px;
-        overflow: scroll;
+        overflow: auto;
     }
    
    
@@ -4652,6 +4656,7 @@
         background-color: transparent !important;
         background-size: cover !important;
     }
+
     .oneToFive .vue-slider-process{
         top: 3px !important;
         left: 0%;
@@ -4661,7 +4666,17 @@
     }
 
 
+    #modal-preset-create___BV_modal_body_{
+        background: linear-gradient(146.03deg, rgba(43, 255, 77, 1) -102%, rgb(44,43,49) 21.77%), white !important;
+    }
 
+    #modal-preset-create___BV_modal_content_{
+        padding:1px;
+        border-radius:30px;
+        background: linear-gradient(146.03deg, rgba(0,255,0,1) 7%, rgba(255,255,255,0) 50%) !important;
+    }
+
+/* modal-preset-create___BV_modal_content_ */
     /* .oneToFive .vue-slider-dot{
         width: 14px;
         height: 14px;
