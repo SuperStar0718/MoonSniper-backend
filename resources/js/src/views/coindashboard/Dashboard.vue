@@ -2177,15 +2177,15 @@
                                             <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;">
                                                 {{ calculate_social_score(activeData) }}/10
                                             </div>
-                                            <div class="soicalLable darkWhiteText">Social Score: </div>
-                                            <div class="soicalLable darkWhiteText">&nbsp; </div>
+                                            <div class="soicalLable darkWhiteText w-75">Social Score: </div>
+                                            <div class="soicalLable darkWhiteText w-75">&nbsp; </div>
                                         </b-card>
                                     </b-col>
                                     <!-- <b-col sm="3" md="2" v-if="activeData">
                                         <div class="border border-2 rounded border-dark greenGradient">
                                             <div class="d-flex justify-content-center text-nowrap" style="margin: 13px 0 16px 0; font-size: 14px;">
                                                 {{ calculate_social_score(activeData) }}/10</div>
-                                            <div class="soicalLable darkWhiteText">Social Score: </div>
+                                            <div class="soicalLable darkWhiteText w-75">Social Score: </div>
                                         </div>
                                     </b-col> -->
                                     <!-- <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.total_supply_percent">
@@ -2194,8 +2194,8 @@
                                                 {{ activeData.total_supply_percent}} %
                                             </div>
                                             
-                                            <div class="soicalLable darkWhiteText">Total Supply %: </div>
-                                            <div class="soicalLable darkWhiteText">&nbsp; </div>
+                                            <div class="soicalLable darkWhiteText w-75">Total Supply %: </div>
+                                            <div class="soicalLable darkWhiteText w-75">&nbsp; </div>
 
                                         </b-card>
                                     </b-col> -->
@@ -2203,7 +2203,7 @@
                                         <div class="border border-2 rounded border-dark greenGradient">
                                             <div class="d-flex justify-content-center text-nowrap" style="margin: 13px 0 16px 0; font-size: 14px;">
                                                 {{ activeData.total_supply_percent}} %</div>
-                                            <div class="soicalLable darkWhiteText">Total Supply %: </div>
+                                            <div class="soicalLable darkWhiteText w-75">Total Supply %: </div>
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_mentions_change">
@@ -2214,8 +2214,8 @@
                                             <div class="justify-content-center text-nowrap socialText2 text-danger " style="margin-top:20px; margin-bottom: 30px;" v-else>
                                                 {{roundData(activeData.social_mentions_change)}} %
                                             </div>
-                                            <div class="soicalLable darkWhiteText">Social Mentions: </div>
-                                            <div class="soicalLable darkWhiteText">&nbsp; </div>
+                                            <div class="soicalLable darkWhiteText w-75">Social Mentions: </div>
+                                            <div class="soicalLable darkWhiteText w-75">&nbsp; </div>
 
                                         </b-card>
                                     </b-col>
@@ -2226,7 +2226,7 @@
                                                 +{{toInterNationalNumber(activeData.social_mentions)}} %</div>
                                             <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger d-flex justify-content-center text-nowrap"
                                                 v-else> {{toInterNationalNumber(activeData.social_mentions)}} %</div>
-                                            <div class="soicalLable darkWhiteText">Social Mentions: </div>
+                                            <div class="soicalLable darkWhiteText w-75">Social Mentions: </div>
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment">
@@ -2238,7 +2238,7 @@
                                             <div v-else class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;"  >
                                                 {{roundData(activeData.average_sentiment)}}</div>
                                             
-                                            <div class="soicalLable darkWhiteText">Average Sentiment:  </div>
+                                            <div class="soicalLable darkWhiteText w-75">Average Sentiment:  </div>
 
                                         </b-card>
                                     </b-col>
@@ -2246,7 +2246,7 @@
                                         <div class=" border-2 rounded border-dark greenGradient">
                                             <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-success-green d-flex justify-content-center text-nowrap">
                                                 {{roundData(activeData.average_sentiment)}}</div>
-                                            <div class="soicalLable darkWhiteText">Average Sentiment: </div>
+                                            <div class="soicalLable darkWhiteText w-75">Average Sentiment: </div>
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.social_engagement">
@@ -2260,7 +2260,7 @@
                                                  +{{roundData(activeData.social_engagement_change)}} %</div>
                                             <div class="justify-content-center text-nowrap socialText2  text-danger" style="margin-top:20px; margin-bottom: 30px;" 
                                                 v-else> {{roundData(activeData.social_engagement_change)}} %</div>
-                                            <div class="soicalLable darkWhiteText">Social Engagement: </div>
+                                            <div class="soicalLable darkWhiteText w-75">Social Engagement: </div>
 
                                         </b-card>
                                     </b-col>
@@ -2272,7 +2272,7 @@
                                                 </div>
                                             <div class="justify-content-center text-nowrap socialText2" style="margin-top:20px; margin-bottom: 30px;" 
                                                 v-else>2</div>
-                                            <div class="soicalLable darkWhiteText">Bearish Sentiment: </div>
+                                            <div class="soicalLable darkWhiteText w-75">Bearish Sentiment: </div>
 
                                         </b-card>
                                     </b-col>
@@ -2283,7 +2283,7 @@
                                                 +{{toInterNationalNumber(activeData.social_engagement)}} %</div>
                                             <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger d-flex justify-content-center text-nowrap"
                                                 v-else> {{toInterNationalNumber(activeData.social_engagement)}} %</div>
-                                            <div class="soicalLable darkWhiteText">Social Engagement: </div>
+                                            <div class="soicalLable darkWhiteText w-75">Social Engagement: </div>
                                         </div>
                                     </b-col> -->
                                     <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment_change">
@@ -2296,7 +2296,7 @@
                                                 v-else>
                                                     {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                     %</div>
-                                            <div class="soicalLable darkWhiteText">Average Sentiment change  </div>
+                                            <div class="soicalLable darkWhiteText w-75">Average Sentiment change  </div>
 
                                         </b-card>
                                     </b-col>
@@ -2310,7 +2310,7 @@
                                                 v-else>
                                                 {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                 %</div>
-                                            <div class="soicalLable darkWhiteText">Social Engagement: </div>
+                                            <div class="soicalLable darkWhiteText w-75">Social Engagement: </div>
                                         </div>
                                     </b-col> -->
 
