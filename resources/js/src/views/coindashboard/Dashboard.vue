@@ -1019,7 +1019,7 @@
                             </template>
                             <b-dropdown-form href="#" class="preset-form dropdown-mine  " name="dropdownform2"
                                 style="z-index:999;">
-                                <div class="" :key="index" >
+                                <div class=""  >
                                     <div class="d-flex justify-content-between">
                                         <div class="text-secondary cursor-pointer px-2 text-capitalize" style="white-space: nowrap;
                                             overflow: hidden;
@@ -3636,6 +3636,8 @@
                 if (refresh_flag) {
                     this.isBusy = true;
                     this.loadCoins();
+                    this.selectedPreset = null;
+                    this.selectedPresetData = null;
 
                 } else {
                     this.isBusy = false;
