@@ -1003,23 +1003,63 @@
                 <b-row style="margin:0px 0px 24px 0px;">
 
                     <b-col>
-                        <b-form-select v-model="selectedPreset">
+                        <b-dropdown size="lg" variant="flat-secondary" style="padding:0px !important;"
+                            id="dropdown-left1" no-caret class="cunningDrop preset-dropdown">
+                            <template #button-content>
+                                <div class="d-flex justify-content-between preset-button-style">
+                                    <div v-if="selectedPreset" class="" style="font-size:1rem; padding-left: 28px;">
+                                        {{ selectedPresetData.preset_name }}
+                                    </div>
+                                    <div v-else class="" style="font-size:1rem; padding-left: 28px;">
+                                        Preset Filter
+                                    </div>
+                                    <feather-icon icon="ChevronDownIcon" class="cursor-pointer darkWhiteText" size="20"
+                                        style="margin-right: 8px;" />
+                                </div>
+                            </template>
+                            <b-dropdown-form href="#" class="preset-form dropdown-mine  " name="dropdownform2"
+                                style="z-index:999;">
+                                <div class="" :key="index" >
+                                    <div class="d-flex justify-content-between">
+                                        <div class="text-secondary cursor-pointer px-2 text-capitalize" style="white-space: nowrap;
+                                            overflow: hidden;
+                                            text-overflow: ellipsis; ">
+                                            Preset Filter
+                                        </div>
+                                        <feather-icon icon="ChevronUpIcon" class="cursor-pointer darkWhiteText"
+                                            size="20" style="" />
+                                    </div>
+                                </div>
+                                <div class="" v-for="(preset,index) in presetFiltersapp1" :key="index"
+                                    style="display:flex; padding: 4px;">
+                                    <div @click="selectPreset(preset)"
+                                        class="darkWhiteText cursor-pointer px-2 text-capitalize" style="white-space: nowrap;
+                                            overflow: hidden;
+                                            text-overflow: ellipsis;">
+                                        {{preset.preset_name}}
+                                    </div>
+                                </div>
+                                <hr v-if="presetFiltersapp2.length>0" />
+                                <div style="margin-left:24px">
+                                    <h5 class="text-secondary" v-if="presetFiltersapp2.length>0">My Filters</h5>
+                                </div>
+
+                                <div class=" d-flex justify-content-between" v-for="(preset,index) in presetFiltersapp2"
+                                    :key="preset.preset_name+index" style="display:flex; padding: 4px;">
+                                    <div @click="selectPreset(preset)"
+                                        class="darkWhiteText cursor-pointer px-2 text-capitalize" style="white-space: nowrap; 
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;">
+                                        {{preset.preset_name}} (Custom Filter)
+                                    </div>
+                                    <div class="cursor-pointer">
+                                        <feather-icon icon="Trash2Icon" size="16" @click="deletePreset(preset.id)" />
+                                    </div>
+                                </div>
+                            </b-dropdown-form>
 
 
-                            <b-form-select-option :value="null" selected>Select A Preset</b-form-select-option>
-                            <b-form-select-option v-for="(preset,index) in presetFilters" :key="index"
-                                :value="preset.id">
-                                {{ preset.preset_name }} <span v-if="preset.default !=1">(Custom Filter)</span>
-                            </b-form-select-option>
-
-                            <!-- <b-form-select-option :value="null" selected>Select A Preset</b-form-select-option>
-                                <b-form-select-option v-for="(preset,index) in presetFilters" :key="index"
-                                    :value="preset.id">
-                                    {{ preset.preset_name }} <span v-if="preset.default !=1">(Custom Filter)</span>
-                                </b-form-select-option> -->
-
-                        </b-form-select>
-
+                        </b-dropdown>
                     </b-col>
                     <b-col class="m-auto">
                         <b-button v-ripple.400="'rgb(31, 103, 211)'" style="    margin-right: 10px !important;"
@@ -1142,7 +1182,7 @@
                                         <vue-slider v-model="value3" :direction="direction" class="mb-2" />
                                     </div>
                                     <div class="mb-2">
-                                        <b-form-group label="Seed ROI">
+                                        <b-form-group label="Public ROI">
                                             <div class="d-flex">
                                                 <cleave :options="NumberFormaVal" class="form-control"
                                                     v-model="filterKey.min_roi_seed" v-numeric-only placeholder="min" />
@@ -1251,7 +1291,7 @@
 
                                     </div>
                                     <div class="mb-2">
-                                        <b-form-group label="Seed Price">
+                                        <b-form-group label="Public Price">
                                             <div class="d-flex">
                                                 <cleave :options="NumberFormaVal" class="form-control"
                                                     v-model="filterKey.min_seed_price" v-numeric-only
@@ -1528,20 +1568,21 @@
             </template>
             <div class="d-flex justify-content-between max-block"
                 style="margin-top:50px; margin-bottom:50px; margin-left: 88px; margin-right: 88px;">
-                <b-button class="darkWhiteBackground darkBlackText" size="md" v-b-modal.modal-preset-create
-                    v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary" pill>Create New Preset
+                <b-button class="darkWhiteBackground darkBlackText rounded-lg text-[16px]" size="md"
+                    v-b-modal.modal-preset-create v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary">
+                    Add new preset
                 </b-button>
 
-                <b-button class="darkWhiteBackground darkBlackText" @click="filterCoins(true)"
-                    v-ripple.400="'rgba(113, 8, 150, 0.15)'" variant="outline-primary" pill>
+                <b-button class="darkWhiteBackground darkBlackText rounded-lg text-[16px]" @click="filterCoins(true)"
+                    v-ripple.400="'rgba(113, 8, 150, 0.15)'" variant="outline-primary">
                     Apply filters</b-button>
 
-                <b-button class="darkWhiteText darkWhiteBorder" @click="clearFilters(true)"
-                    v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary" pill>Clear filter</b-button>
+                <b-button class="darkWhiteText darkWhiteBorder rounded-lg text-[16px]" @click="clearFilters(true)"
+                    v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary">Clear filter</b-button>
             </div>
         </b-modal>
 
-        <b-modal id="modal-details" :hide-footer="true" v-if="activeData" centered size="lg">
+        <b-modal id="modal-details" :hide-footer="true" v-if="activeData" centered>
             <template>
                 <div slot="modal-title">
                     <div class="w-full justify-content-between d-flex" style="margin-top: 10px; margin-left: 10px;">
@@ -1556,10 +1597,7 @@
                                 <div class="d-flex m-auto">
                                     <b-avatar class="bg-light mr-1" v-if="activeData.image" :src="activeData.image">
                                     </b-avatar>
-                                    <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins';
-                                            font-size: 20px; 
-                                            font-style: normal;
-                                            font-weight: 400;
+                                    <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins';   font-size: 20px;  font-style: normal;  font-weight: 400;
                                             width: 105px;
                                             text-overflow: ellipsis;
                                             white-space: nowrap;
@@ -1632,7 +1670,7 @@
                             <div class="bg-theme rounded d-inline" style="float: right;"
                                 v-if="activeData.contract_address && activeData.contract_address.length>0">
 
-                                <div>
+                                <div style="margin-top:-2px">
                                     <div class="my-auto darkWhiteText" style="margin-bottom: 8px !important; margin-right: 4px;padding-left:10px; font-family: 'Poppins-Light';
                                         font-style: normal;
                                         font-weight: 300;
@@ -1644,24 +1682,32 @@
                                         id="dropdown-left1" no-caret class="cunningDrop">
                                         <template #button-content>
                                             <div class="darkBackgroundBlack"
-                                                v-for="(address,index) in activeData.contract_address" :key="index"
-                                                style="display:block; padding: 2px; border-radius: 20px;"
-                                               >
-                                                <div v-if="index==0">
+                                                v-for="(address,index) in activeData.contract_address.slice(0, 1)"
+                                                :key="index" style="display:block; padding: 2px; border-radius: 20px;">
+                                                <div class="flex">
+
                                                     <b-img v-if="activeData.image" :src="activeData.image" fluid
-                                                        alt="Responsive image" style="margin-right:5px; height:30px;" />
-                                                    <div style="font-family: 'Poppins-Light'; display:inline-block; margin-top:10px;
-                                                                font-style: normal;
-                                                                font-weight: 500;
-                                                                font-size: 14px;
-                                                                line-height: 14px; width:90px;white-space: nowrap; 
-                                                                overflow: hidden;
-                                                                text-overflow: ellipsis;" class="darkWhiteText">
-                                                        {{address.contract_address}}
-
+                                                        alt="Responsive image" style="margin-right:5px; height:30px;     position: relative;
+                                                        bottom: 4px;" />
+                                                    <div style="font-family: 'Poppins-Light'; display:inline-block;
+                                                        font-style: normal;    position: relative;
+                                                        top: 4px;
+                                                        font-weight: 500;
+                                                        font-size: 14px;
+                                                        line-height: 14px; width:90px;white-space: nowrap; 
+                                                        text-align: start;
+                                                        overflow: hidden;
+                                                        text-overflow: ellipsis;">
+                                                        <div style="white-space: nowrap; width:90px;  overflow: hidden;
+                                                    text-overflow: ellipsis;" class="darkWhiteText text-capitalize">
+                                                            {{address.platform}}
+                                                        </div>
+                                                        <div style="white-space: nowrap; width:90px;  overflow: hidden;
+                                                    text-overflow: ellipsis;" class="text-secondary ">
+                                                            {{address.contract_address}}
+                                                        </div>
                                                     </div>
-                                                    <div style="display:inline-block; float:right;">
-
+                                                    <div style="display:inline-block; float:right; margin-top:-3px">
 
                                                         <b-button size="sm" class="ml-1"
                                                             v-clipboard:copy="address.contract_address"
@@ -1669,13 +1715,15 @@
                                                             v-clipboard:success="onCopy" v-clipboard:error="onError"
                                                             v-ripple.400="'rgba(113, 12, 240, 0.15)'"
                                                             variant="outline-primary" pill>
-                                                            <feather-icon icon="CopyIcon"
-                                                                class="cursor-pointer darkWhiteText" size="20" />
+                                                            <i
+                                                                class="fa-regular fa-copy cursor-pointer darkWhiteText fa-lg m-1"></i>
+                                                            <!-- <feather-icon icon="CopyIcon"
+                                                                class="cursor-pointer darkWhiteText" size="20" /> -->
                                                         </b-button>
                                                         <img src='/images/static/metamask.png' class="img-fluid"
                                                             alt="metamask"
                                                             style="cursor:pointer; width:23px; margin-right:13px;"
-                                                            @click="say('hello')">
+                                                            @click="say('say')">
                                                         <feather-icon icon="ChevronDownIcon"
                                                             class="cursor-pointer darkWhiteText" size="20"
                                                             style="margin-right:13px; margin-bottom: 6px;" />
@@ -1695,13 +1743,17 @@
                                                 style="display:flex; padding: 4px;">
                                                 <b-img v-if="activeData.image" :src="activeData.image" fluid
                                                     alt="Responsive image" style="margin-right:5px; height:30px;" />
-                                                <div class="m-auto" style="font-family: 'Poppins-Light'; display:inline-block;
-                                                            font-style: normal;
+                                                <div class="" style="font-family: 'Poppins-Light'; display:inline-block; font-style: normal;
                                                             font-weight: 500;
                                                             font-size: 14px;
                                                             line-height: 14px;
                                                             ">
-                                                    <div class="darkWhiteText" style="white-space: nowrap; width:90px;
+                                                    <div class="darkWhiteText text-capitalize" style="white-space: nowrap; width:90px;
+                                                            overflow: hidden;
+                                                            text-overflow: ellipsis;">
+                                                        {{address.platform}}
+                                                    </div>
+                                                    <div class=" text-secondary" style="white-space: nowrap; width:90px;
                                                             overflow: hidden;
                                                             text-overflow: ellipsis;">
                                                         {{address.contract_address}}
@@ -1717,8 +1769,8 @@
                                                         v-clipboard:success="onCopy" v-clipboard:error="onError"
                                                         v-ripple.400="'rgba(113, 12, 240, 0.15)'"
                                                         variant="outline-primary" pill>
-                                                        <feather-icon icon="CopyIcon"
-                                                            class="cursor-pointer darkWhiteText" size="20" />
+                                                        <i
+                                                            class="fa-regular fa-copy cursor-pointer darkWhiteText fa-xl m-1"></i>
                                                     </b-button>
                                                     <img src='/images/static/metamask.png' class="img-fluid"
                                                         alt="metamask" style="cursor:pointer; width:23px;"
@@ -1772,7 +1824,7 @@
                                         <!-- <h5> 7 Days</h5> -->
                                         <div class="position-absolute w-100" style="z-index:99">
 
-                                            <b-tabs content-class="" class="graph_tab float-left w-50"
+                                            <b-tabs content-class="" class="graph_tab graph_tab-1 float-left w-50"
                                                 style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
                                                 <b-tab active title="Price">
                                                     <div></div>
@@ -1871,6 +1923,13 @@
                                     </b-col>
 
                                 </b-row>
+                                <b-row>
+                                    <b-col class="p-0">
+                                        <p class="poppins-font chart-desc" v-html="activeData.coin_description">
+
+                                        </p>
+                                    </b-col>
+                                </b-row>
 
                             </b-card-body>
                         </b-card>
@@ -1879,9 +1938,9 @@
                         <b-card no-body class="mb-1">
                             <b-card-body>
 
-                                <b-row class="justify-content-center">
-                                    <b-col v-if="activeData.website && activeData.website != '' " cols="1" md="2" lg="2"
-                                        sm="2" class="radius_gradient">
+                                <div class="d-flex flex-wrap justify-content-center">
+                                    <div v-if="activeData.website && activeData.website != '' " cols="1" md="2" lg="2"
+                                        sm="2" class="radius_gradient" style="width:110px">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
                                             <a :href="activeData.website" target="_blank" class="d-block"
@@ -1889,22 +1948,12 @@
                                                 <b-img rounded :src="'/images/static/website.png'" fluid class="w-50"
                                                     alt="Responsive image" />
                                             </a>
-                                            <div class="socialText">
+                                            <div class="soicalLable soicalLable-2">
                                                 Website
                                             </div>
                                         </b-card>
-                                    </b-col>
-                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
-                                        v-if="activeData.website && activeData.website != '' ">
-                                        <a :href="activeData.website" target="_blank" class="d-block" 
-                                        style="margin-top:20px; margin-bottom:10px;">
-                                            <b-img rounded :src="'/images/static/website.png'" fluid class="w-50"
-                                                alt="Responsive image" />
-                                        </a>
-                                        <span class="text-center" style="font-size:12px; font-weight:500">Website
-                                        </span>
-                                    </b-col> -->
-                                    <b-col cols="1" md="2" lg="2" sm="2" class="radius_gradient"
+                                    </div>
+                                    <div class="radius_gradient" style="width:110px"
                                         v-if="activeData.twitter && activeData.twitter != '' ">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -1913,27 +1962,16 @@
                                                 <b-img rounded :src="'/images/static/twitter.png'" fluid class="w-50"
                                                     alt="Responsive image" />
                                             </a>
-                                            <div class="socialText" v-if="activeData.twitter_followers">
+                                            <div class="soicalLable soicalLable-2" v-if="activeData.twitter_followers">
                                                 {{kFormatter(activeData.twitter_followers)}}
                                             </div>
-                                            <div class="socialText" v-else>
+                                            <div class="soicalLable soicalLable-2" v-else>
                                                 Twitter
                                             </div>
                                         </b-card>
-                                    </b-col>
-                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
-                                        v-if="activeData.twitter && activeData.twitter != '' ">
-                                        <a :href="activeData.twitter" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
-                                            <b-img rounded :src="'/images/static/twitter.png'" fluid class="w-50"
-                                                alt="Responsive image" />
-                                        </a>
-                                        <span class="text-center" style="font-size:12px; font-weight:500"
-                                            v-if="activeData.twitter_followers">{{kFormatter(activeData.twitter_followers)}}
-                                        </span>
-                                        <span class="text-center" style="font-size:12px; font-weight:500" v-else>Twitter
-                                        </span>
-                                    </b-col> -->
-                                    <b-col cols="1" md="2" lg="2" sm="2" class="radius_gradient"
+                                    </div>
+
+                                    <div class="radius_gradient" style="width:110px"
                                         v-if="activeData.telegram && activeData.telegram != '' ">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -1943,29 +1981,15 @@
                                                     alt="Responsive image" />
 
                                             </a>
-                                            <div class="socialText" v-if="activeData.telegram_members">
+                                            <div class="soicalLable soicalLable-2" v-if="activeData.telegram_members">
                                                 {{kFormatter(activeData.telegram_members)}}
                                             </div>
-                                            <div class="socialText" v-else>
+                                            <div class="soicalLable soicalLable-2" v-else>
                                                 Telegram
                                             </div>
                                         </b-card>
-                                    </b-col>
-                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
-                                        v-if="activeData.telegram && activeData.telegram != '' ">
-                                        <a :href="activeData.telegram" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
-                                            <b-img rounded :src="'/images/static/telegram.png'" fluid class="w-50"
-                                                alt="Responsive image" />
-
-                                        </a>
-                                        <span class="text-center" style="font-size:12px; font-weight:500"
-                                            v-if="activeData.telegram_members">{{kFormatter(activeData.telegram_members)}}
-                                        </span>
-                                        <span class="text-center" style="font-size:12px; font-weight:500"
-                                            v-else>Telegram
-                                        </span>
-                                    </b-col> -->
-                                    <b-col cols="1" md="2" lg="2" sm="2" class="radius_gradient"
+                                    </div>
+                                    <div class="radius_gradient" style="width:110px"
                                         v-if="activeData.discord && activeData.discord != '' ">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -1974,27 +1998,14 @@
                                                 <b-img rounded :src="'/images/static/discord.png'" fluid class="w-50"
                                                     alt="Responsive image" />
                                             </a>
-                                            <div class="socialText" v-if="activeData.medium_followers">
+                                            <div class="soicalLable soicalLable-2" v-if="activeData.medium_followers">
                                                 {{kFormatter(activeData.medium_followers)}}
                                             </div>
-                                            <div class="socialText" v-else>Medium
+                                            <div class="soicalLable soicalLable-2" v-else>Discord
                                             </div>
                                         </b-card>
-                                    </b-col>
-                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
-                                        v-if="activeData.discord && activeData.discord != '' ">
-                                        <a :href="activeData.discord" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
-                                            <b-img rounded :src="'/images/static/discord.png'" fluid class="w-50"
-                                                alt="Responsive image" />
-
-                                        </a>
-                                        <span class="text-center" style="font-size:12px; font-weight:500"
-                                            v-if="activeData.discord_followers">{{kFormatter(activeData.discord_followers)}}
-                                        </span>
-                                        <span class="text-center" style="font-size:12px; font-weight:500" v-else>Discord
-                                        </span>
-                                    </b-col> -->
-                                    <b-col cols="1" md="2" lg="2" sm="2" class="radius_gradient"
+                                    </div>
+                                    <div class="radius_gradient" style="width:110px"
                                         v-if="activeData.medium && activeData.medium != '' ">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -2004,27 +2015,14 @@
                                                     alt="Responsive image" />
 
                                             </a>
-                                            <div class="socialText" v-if="activeData.medium_followers">
+                                            <div class="soicalLable soicalLable-2" v-if="activeData.medium_followers">
                                                 {{kFormatter(activeData.medium_followers)}}
                                             </div>
-                                            <div class="socialText" v-else>Medium
+                                            <div class="soicalLable soicalLable-2" v-else>Medium
                                             </div>
                                         </b-card>
-                                    </b-col>
-                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
-                                        v-if="activeData.medium && activeData.medium != '' ">
-                                        <a :href="activeData.medium" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
-                                            <b-img rounded :src="'/images/static/medium.png'" fluid class="w-50"
-                                                alt="Responsive image" />
-
-                                        </a>
-                                        <span class="text-center" style="font-size:12px; font-weight:500"
-                                            v-if="activeData.medium_followers">{{kFormatter(activeData.medium_followers)}}
-                                        </span>
-                                        <span class="text-center" style="font-size:12px; font-weight:500" v-else>Medium
-                                        </span>
-                                    </b-col> -->
-                                    <b-col cols="1" md="2" lg="2" sm="2" class="radius_gradient"
+                                    </div>
+                                    <div class="radius_gradient" style="width:110px"
                                         v-if="activeData.reddit && activeData.reddit != '' ">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -2034,27 +2032,14 @@
                                                     alt="Responsive image" />
 
                                             </a>
-                                            <div class="socialText" v-if="activeData.reddit_followers">
+                                            <div class="soicalLable soicalLable-2" v-if="activeData.reddit_followers">
                                                 {{kFormatter(activeData.reddit_followers)}}
                                             </div>
-                                            <div class="socialText" v-else>Reddit
+                                            <div class="soicalLable soicalLable-2" v-else>Reddit
                                             </div>
                                         </b-card>
-                                    </b-col>
-                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
-                                        v-if="activeData.reddit && activeData.reddit != '' ">
-                                        <a :href="activeData.reddit" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
-                                            <b-img rounded :src="'/images/static/reddit.png'" fluid class="w-50"
-                                                alt="Responsive image" />
-
-                                        </a>
-                                        <span class="text-center" style="font-size:12px; font-weight:500"
-                                            v-if="activeData.reddit_followers">{{kFormatter(activeData.reddit_followers)}}
-                                        </span>
-                                        <span class="text-center" style="font-size:12px; font-weight:500" v-else>Reddit
-                                        </span>
-                                    </b-col> -->
-                                    <b-col cols="1" md="2" lg="2" sm="2" class="radius_gradient"
+                                    </div>
+                                    <div class="radius_gradient" style="width:110px"
                                         v-if="activeData.whitepaper && activeData.whitepaper != '' ">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -2064,28 +2049,15 @@
                                                     class="w-50 bg-light" alt="Responsive image" />
 
                                             </a>
-                                            <div class="socialText" v-if="activeData.whitepaper_followers">
+                                            <div class="soicalLable soicalLable-2"
+                                                v-if="activeData.whitepaper_followers">
                                                 {{kFormatter(activeData.whitepaper_followers)}}
                                             </div>
-                                            <div class="socialText" v-else>Whitepaper
+                                            <div class="soicalLable soicalLable-2" v-else>Whitepaper
                                             </div>
                                         </b-card>
-                                    </b-col>
-                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
-                                        v-if="activeData.whitepaper && activeData.whitepaper != '' ">
-                                        <a :href="activeData.whitepaper" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
-                                            <b-img rounded :src="'/images/static/whitepaper.png'" fluid
-                                                class="w-50 bg-light" alt="Responsive image" />
-
-                                        </a>
-                                        <span class="text-center" style="font-size:12px; font-weight:500"
-                                            v-if="activeData.whitepaper_followers">{{kFormatter(activeData.whitepaper_followers)}}
-                                        </span>
-                                        <span class="text-center" style="font-size:12px; font-weight:500"
-                                            v-else>Whitepaper
-                                        </span>
-                                    </b-col> -->
-                                    <b-col cols="1" md="2" lg="2" sm="2" class="radius_gradient"
+                                    </div>
+                                    <div class="radius_gradient" style="width:110px"
                                         v-if="activeData.github && activeData.github != '' ">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -2094,193 +2066,125 @@
                                                 <b-img rounded :src="'/images/static/github.png'" fluid class="w-50"
                                                     alt="Responsive image" />
                                             </a>
-                                            <div class="socialText" v-if="activeData.github_followers">
+                                            <div class="soicalLable soicalLable-2" v-if="activeData.github_followers">
                                                 {{kFormatter(activeData.github_followers)}}
                                             </div>
-                                            <div class="socialText" v-else>Github
+                                            <div class="soicalLable soicalLable-2" v-else>Github
                                             </div>
                                         </b-card>
-                                    </b-col>
-                                    <!-- <b-col class="text-center greenGradient" cols="1" md="2" lg="2" sm="2" style="margin-top:20px; margin-bottom: 10px;"
-                                        v-if="activeData.github && activeData.github != '' ">
-                                        <a :href="activeData.github" target="_blank" class="d-block" style="margin-top:20px; margin-bottom:10px;">
-                                            <b-img rounded :src="'/images/static/github.png'" fluid class="w-50"
-                                                alt="Responsive image" />
-                                        </a>
-                                        <span class="text-center" style="font-size:12px; font-weight:500"
-                                            v-if="activeData.github_followers">{{kFormatter(activeData.github_followers)}}
-                                        </span>
-                                        <span class="text-center" style="font-size:12px; font-weight:500" v-else>Github
-                                        </span>
-                                    </b-col> -->
-                                </b-row>
-                                <b-row class="text-center mt-1 mb-1 justify-content-center">
-                                    <b-col sm="3" md="2" v-if="activeData" class="radius_gradient">
-                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                            style="max-width:200px;">
+                                    </div>
+                                </div>
+                                <div class="text-center mt-1 mb-1 justify-content-center d-flex flex-wrap socialData">
+
+
+                                    <div class="radius_gradient" style="width:110px;"
+                                        v-if="activeData.average_sentiment">
+                                        <b-card title="" class="mx-auto  innerCard text-center str_grey_gradient"
+                                            style="max-width:120px;">
+
                                             <div class="justify-content-center text-nowrap socialText2 "
-                                                style="margin-top:20px; margin-bottom: 30px;">
-                                                {{ calculate_social_score(activeData) }}/10
-                                            </div>
-                                            <div class="soicalLable darkWhiteText w-75">Social Score: </div>
-                                            <div class="soicalLable darkWhiteText w-75">&nbsp; </div>
-                                        </b-card>
-                                    </b-col>
-                                    <!-- <b-col sm="3" md="2" v-if="activeData">
-                                        <div class="border border-2 rounded border-dark greenGradient">
-                                            <div class="d-flex justify-content-center text-nowrap" style="margin: 13px 0 16px 0; font-size: 14px;">
+                                                style="margin-top: 10px; margin-bottom: 12px;">
                                                 {{ calculate_social_score(activeData) }}/10</div>
-                                            <div class="soicalLable darkWhiteText w-75">Social Score: </div>
-                                        </div>
-                                    </b-col> -->
-                                    <!-- <b-col   sm="3" md="2" class="radius_gradient" v-if="activeData.total_supply_percent">
-                                        <b-card title="" class="mx-auto innerCard text-center str_green_gradient" style="max-width:200px;">
-                                            <div class="justify-content-center text-nowrap socialText2 " style="margin-top:20px; margin-bottom: 30px;" >
-                                                {{ activeData.total_supply_percent}} %
-                                            </div>
-                                            
-                                            <div class="soicalLable darkWhiteText w-75">Total Supply %: </div>
-                                            <div class="soicalLable darkWhiteText w-75">&nbsp; </div>
+
+                                            <div class="soicalLable darkWhiteText lableText">Social Score: </div>
 
                                         </b-card>
-                                    </b-col> -->
-                                    <!-- <b-col sm="3" md="2" v-if="activeData.total_supply_percent">
-                                        <div class="border border-2 rounded border-dark greenGradient">
-                                            <div class="d-flex justify-content-center text-nowrap" style="margin: 13px 0 16px 0; font-size: 14px;">
-                                                {{ activeData.total_supply_percent}} %</div>
-                                            <div class="soicalLable darkWhiteText w-75">Total Supply %: </div>
-                                        </div>
-                                    </b-col> -->
-                                    <b-col sm="3" md="2" class="radius_gradient"
+                                    </div>
+                                    <div class="radius_gradient" style="width:110px;"
                                         v-if="activeData.social_mentions_change">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 text-success-green "
-                                                style="margin-top:20px; margin-bottom: 30px;"
+                                                style="margin-top: 10px; margin-bottom: 12px;"
                                                 v-if="activeData.social_mentions_change>=0">
                                                 +{{roundData(activeData.social_mentions_change)}} %
                                             </div>
                                             <div class="justify-content-center text-nowrap socialText2 text-danger "
-                                                style="margin-top:20px; margin-bottom: 30px;" v-else>
+                                                style="margin-top: 10px; margin-bottom: 12px;" v-else>
                                                 {{roundData(activeData.social_mentions_change)}} %
                                             </div>
-                                            <div class="soicalLable darkWhiteText w-75">Social Mentions: </div>
-                                            <div class="soicalLable darkWhiteText w-75">&nbsp; </div>
+                                            <div class="soicalLable darkWhiteText lableText">Social Mentions: </div>
 
                                         </b-card>
-                                    </b-col>
-                                    <!-- <b-col sm="3" md="2" v-if="activeData.social_mentions">
-                                        <div class="border border-2 rounded border-dark greenGradient">
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success-green d-flex justify-content-center text-nowrap"
-                                                v-if="activeData.social_mentions>=0">
-                                                +{{toInterNationalNumber(activeData.social_mentions)}} %</div>
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger d-flex justify-content-center text-nowrap"
-                                                v-else> {{toInterNationalNumber(activeData.social_mentions)}} %</div>
-                                            <div class="soicalLable darkWhiteText w-75">Social Mentions: </div>
-                                        </div>
-                                    </b-col> -->
-                                    <b-col sm="3" md="2" class="radius_gradient" v-if="activeData.average_sentiment">
+                                    </div>
+
+                                    <div class="radius_gradient" style="width:110px;"
+                                        v-if="activeData.average_sentiment">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 "
-                                                style="margin-top:20px; margin-bottom: 30px;"
+                                                style="margin-top: 10px; margin-bottom: 12px;"
                                                 v-if="userData.currentPlan == 'free'">
                                                 <feather-icon icon="LockIcon" size="30" style="" />
                                             </div>
                                             <div v-else class="justify-content-center text-nowrap socialText2 "
-                                                style="margin-top:20px; margin-bottom: 30px;">
+                                                style="margin-top: 10px; margin-bottom: 12px;">
                                                 {{roundData(activeData.average_sentiment)}}</div>
 
-                                            <div class="soicalLable darkWhiteText w-75">Average Sentiment: </div>
+                                            <div class="soicalLable darkWhiteText lableText">Average Sentiment: </div>
 
                                         </b-card>
-                                    </b-col>
-                                    <!-- <b-col sm="3" md="2" v-if="activeData.average_sentiment">
-                                        <div class=" border-2 rounded border-dark greenGradient">
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-success-green d-flex justify-content-center text-nowrap">
-                                                {{roundData(activeData.average_sentiment)}}</div>
-                                            <div class="soicalLable darkWhiteText w-75">Average Sentiment: </div>
-                                        </div>
-                                    </b-col> -->
-                                    <b-col sm="3" md="2" class="radius_gradient" v-if="activeData.social_engagement">
+                                    </div>
+
+                                    <div class="radius_gradient" style="width:110px;"
+                                        v-if="activeData.social_engagement">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 "
-                                                style="margin-top:20px; margin-bottom: 30px;"
+                                                style="margin-top: 10px; margin-bottom: 12px;"
                                                 v-if="userData.currentPlan == 'free'">
                                                 <feather-icon icon="LockIcon" size="30" style="" />
                                             </div>
                                             <div class="justify-content-center text-nowrap socialText2 text-success-green"
-                                                style="margin-top:20px; margin-bottom: 30px;"
+                                                style="margin-top: 10px; margin-bottom: 12px;"
                                                 v-else-if="activeData.social_engagement_change>=0">
                                                 +{{roundData(activeData.social_engagement_change)}} %</div>
                                             <div class="justify-content-center text-nowrap socialText2  text-danger"
-                                                style="margin-top:20px; margin-bottom: 30px;" v-else>
+                                                style="margin-top: 10px; margin-bottom: 12px;" v-else>
                                                 {{roundData(activeData.social_engagement_change)}} %</div>
-                                            <div class="soicalLable darkWhiteText w-75">Social Engagement: </div>
+                                            <div class="soicalLable darkWhiteText lableText">Social Engagement: </div>
 
                                         </b-card>
-                                    </b-col>
-                                    <b-col sm="3" md="2" class="radius_gradient">
+                                    </div>
+                                    <div class="radius_gradient" style="width:110px;">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 "
-                                                style="margin-top:20px; margin-bottom: 30px;"
+                                                style="margin-top: 10px; margin-bottom: 12px;"
                                                 v-if="userData.currentPlan == 'free'">
                                                 <feather-icon icon="LockIcon" size="30" style="" />
                                             </div>
                                             <div class="justify-content-center text-nowrap socialText2"
-                                                style="margin-top:20px; margin-bottom: 30px;" v-else>2</div>
-                                            <div class="soicalLable darkWhiteText w-75">Bearish Sentiment: </div>
+                                                style="margin-top: 10px; margin-bottom: 12px;" v-else>2</div>
+                                            <div class="soicalLable darkWhiteText lableText">Bearish Sentiment: </div>
 
                                         </b-card>
-                                    </b-col>
-                                    <!-- <b-col sm="3" md="2" v-if="activeData.social_engagement">
-                                        <div class=" border-2 rounded border-dark greenGradient">
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success-green d-flex justify-content-center text-nowrap"
-                                                v-if="activeData.social_mentions>=0">
-                                                +{{toInterNationalNumber(activeData.social_engagement)}} %</div>
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger d-flex justify-content-center text-nowrap"
-                                                v-else> {{toInterNationalNumber(activeData.social_engagement)}} %</div>
-                                            <div class="soicalLable darkWhiteText w-75">Social Engagement: </div>
-                                        </div>
-                                    </b-col> -->
-                                    <b-col sm="3" md="2" class="radius_gradient"
+                                    </div>
+
+                                    <div class="radius_gradient" style="width:110px;"
                                         v-if="activeData.average_sentiment_change">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 "
-                                                style="margin-top:20px; margin-bottom: 30px;"
+                                                style="margin-top: 10px; margin-bottom: 12px;"
                                                 v-if="roundData(activeData.average_sentiment_change)>=0">
                                                 +{{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                 %</div>
                                             <div class="justify-content-center text-nowrap socialText2 text-danger"
-                                                style="margin-top:20px; margin-bottom: 30px;" v-else>
+                                                style="margin-top: 10px; margin-bottom: 12px;" v-else>
                                                 {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                 %</div>
-                                            <div class="soicalLable darkWhiteText w-75">Average Sentiment change </div>
+                                            <div class="soicalLable darkWhiteText lableText">Average Sentiment change
+                                            </div>
 
                                         </b-card>
-                                    </b-col>
-                                    <!-- <b-col sm="3" md="2" v-if="activeData.average_sentiment_change">
-                                        <div class="border border-3 rounded border-dark greenGradient">
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px" class="text-success-green d-flex justify-content-center text-nowrap"
-                                                v-if="roundData(activeData.average_sentiment_change)>=0">
-                                                +{{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
-                                                %</div>
-                                            <div style="margin: 13px 0 16px 0; font-size: 14px;" class="text-danger d-flex justify-content-center text-nowrap"
-                                                v-else>
-                                                {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
-                                                %</div>
-                                            <div class="soicalLable darkWhiteText w-75">Social Engagement: </div>
-                                        </div>
-                                    </b-col> -->
+                                    </div>
 
-                                </b-row>
+                                </div>
                             </b-card-body>
                         </b-card>
                     </app-collapse-item>
-                    <app-collapse-item class="w-100" title="Unlocking" v-if="activeData.next_unlock_date_text || supplyChart.series.length >0 ||activeData.next_unlock_status || 
+                    <app-collapse-item class="w-100" title="Unlocking Data" v-if="activeData.next_unlock_date_text || supplyChart.series.length >0 ||activeData.next_unlock_status || 
                         activeData.first_vc_unlock
                         ||activeData.end_vc_unlock
                         ||activeData.next_unlock_number_of_tokens
@@ -2295,12 +2199,9 @@
                         ||activeData.six_months_unlock_percent_of_tokens
                         ||activeData.six_months_unlock_size
                         ||activeData.total_supply_percent ">
-
                         <div class="container d-flex" style="padding:0px;">
-                            <div class="d-inline" style="width:20%; font-family: 'Poppins-Light'; margin-right: 24px;
-                                font-style: normal;
-                                font-weight: 400;
-                                font-size: 12px;">
+                            <div class="d-inline"
+                                style="width:20%; font-family: 'Poppins-Light'; margin-right: 24px;  font-style: normal;  font-weight: 400; font-size: 12px;">
                                 <span style="opacity: 0.5;">Next Unlock Date</span><br>
                                 <span>05 Sep 22</span><br>
                                 <span style="opacity: 0.5;">15:00</span>
@@ -2909,6 +2810,12 @@
                         }
                     },
                     xaxis: {
+                        axisBorder: {
+                            show: true,
+                            color: '#78909C',
+                            offsetX: 0,
+                            offsetY: 0
+                        },
                         labels: {
                             show: true,
                             style: {
@@ -2920,6 +2827,32 @@
                         },
                         categories: [],
                         type: 'datetime',
+                    },
+
+                    grid: {
+                        show: true,
+                        borderColor: '#424244',
+                        strokeDashArray: 0,
+                        position: 'back',
+                        xaxis: {
+                            lines: {
+                                show: false
+                            }
+                        },
+                        yaxis: {
+                            lines: {
+                                show: true
+                            }
+                        },
+                        row: {
+                            colors: undefined,
+                            opacity: 0.5
+                        },
+                        column: {
+                            colors: undefined,
+                            opacity: 0.5
+                        },
+
                     },
                     yaxis: {
                         axisBorder: {
@@ -3089,6 +3022,7 @@
                 presetName: null,
                 presetFilters: [],
                 selectedPreset: null,
+                selectedPresetData: null,
 
 
                 //slider value
@@ -4008,6 +3942,7 @@
                         })
 
                         this.selectedPreset = updated_val[0].id;
+                        this.selectedPresetData = updated_val[0];
                         this.presetName = "";
                         this.$bvModal.hide('modal-preset-create');
                         this.$toast({
@@ -4082,10 +4017,12 @@
                 }
                 return false;
             },
-            deletePreset() {
-
+            deletePreset(id) {
+                if (id == null || id == undefined) {
+                    id = this.selectedPreset;
+                }
                 axios.post('api/delete_preset_filter', {
-                    preset_id: this.selectedPreset
+                    preset_id: id
                 }).then(res => {
                     if (res) {
                         this.presetFilters = res.data;
@@ -4141,6 +4078,10 @@
 
                 }
 
+            },
+            selectPreset(preset) {
+                this.selectedPresetData = preset;
+                this.selectedPreset = preset.id;
             }
 
         },
@@ -4254,6 +4195,17 @@
                     this.ldot10 = ldot10
                     this.rdot10 = rdot10
                 },
+
+            },
+            presetFiltersapp1() {
+                return this.presetFilters.filter(filter => {
+                    return filter.default == 1
+                })
+            },
+            presetFiltersapp2() {
+                return this.presetFilters.filter(filter => {
+                    return filter.default != 1
+                })
             },
 
 
@@ -4619,6 +4571,10 @@
         max-height: 2000px;
     }
 
+    .cunningDrop .dropdown-menu.show {
+        max-height: 275px !important;
+    }
+
     .dropdown-menu {
         border-radius: 20px;
         max-height: 500px;
@@ -4675,7 +4631,6 @@
 
     .socialText2 {
         text-overflow: ellipsis;
-        width: 100px;
         white-space: nowrap;
         overflow: hidden;
         font-family: 'Poppins-Light';
@@ -4741,11 +4696,78 @@
         border-radius: 30px;
         background: linear-gradient(146.03deg, rgba(0, 255, 0, 1) 7%, rgba(255, 255, 255, 0) 50%) !important;
     }
-    #modal-details___BV_modal_content_{
+
+    #modal-details___BV_modal_content_ {
         max-height: 90vh !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
+
+    body.dark-layout .graph_tab-1 ul {
+        justify-content: normal !important;
+        margin-left: 87px !important;
+    }
+
+    .poppins-font {
+        font-family: 'Poppins-Light'
+    }
+
+    .chart-desc,
+    .chart-desc a {
+        color: gray !important;
+    }
+
+    .dark-layout .chart-desc,
+    .dark-layout .chart-desc a {
+        color: white !important;
+    }
+
+    .socialText2 {
+        height: 33px;
+    }
+
+    .soicalLable.darkWhiteText.lableText {
+        height: 32px;
+    }
+
+    .preset-button-style {
+        background-color: #333237;
+        padding: 10px !important;
+        border-radius: 22px;
+
+    }
+
+    .preset-dropdown {
+        width: 88%;
+        background-color: #333237;
+    }
+
+    .preset-dropdown ul {
+        top: -58px !important;
+        width: 100%;
+    }
+
+    .dark-layout .preset-form form {
+        background-color: #333237 !important;
+    }
+
+    .socialData .innerCard card-body {
+        padding: 5px;
+    }
+
+    .socialData .innerCard .radius_gradient {
+        max-width: 140px
+    }
+
+    #modal-details .modal-dialog {
+        max-width: 900px !important;
+    }
+
+    .soicalLable-2 {
+        font-size: 15px;
+        height: 30px;
+    }
+
     /* modal-preset-create___BV_modal_content_ */
 
     /* .oneToFive .vue-slider-dot{
