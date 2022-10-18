@@ -735,11 +735,12 @@
                         <!-- end of button -->
                         <template #cell(seed_price)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
-                                class="d-flex justify-content-start blurry-text">
+                                class="blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                                {{toInterNationalNumber(data.value)}} <span v-if="data.value">$</span>
+                            <div v-else-if="data.value" style="text-align: center;" class="">
+                                
+                                {{twenty4HConversation(data.value)}} <span v-if="data.value">$</span>
                             </div>
                         </template>
                         <template #cell(roi_seed)="data">
@@ -747,8 +748,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                                {{roundData(data.value)}} <span v-if="data.value">X</span>
+                            <div v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                                {{twenty4HConversation(data.value)}} <span v-if="data.value">X</span>
                             </div>
                         </template>
                         <template #cell(total_locked)="data">
@@ -756,8 +757,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                                {{roundData(data.value)}}
+                            <div v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                                {{twenty4HConversation(data.value)}}
                             </div>
                         </template>
                         <template #cell(next_unlock_date_text)="data">
@@ -777,8 +778,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                                {{roundData(data.value)}}
+                            <div v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                                {{twenty4HConversation(data.value)}}
                             </div>
 
                         </template>
@@ -787,8 +788,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                                {{roundData(data.value)}} <span v-if="data.value"> %</span>
+                            <div  v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                                {{twenty4HConversation(data.value)}} <span v-if="data.value"> %</span>
                             </div>
                         </template>
                         <template #cell(next_unlock_size)="data">
@@ -826,8 +827,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                                {{toInterNationalNumber(data.value)}}
+                            <div  v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                                {{twenty4HConversation(data.value)}}
                             </div>
                         </template>
                         <template #cell(three_months_unlock_percent_of_tokens)="data">
@@ -835,8 +836,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                                <span v-if="data.value">%</span>{{roundData(data.value)}}
+                            <div v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                                <span v-if="data.value">%</span>{{twenty4HConversation(data.value)}}
                             </div>
                         </template>
                         <template #cell(three_months_unlock_size)="data">
@@ -851,8 +852,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                                <span v-if="data.value">$</span>{{toInterNationalNumber(data.value)}}
+                            <div v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                                <span v-if="data.value">$</span>{{twenty4HConversation(data.value)}}
                             </div>
                         </template>
                         <template #cell(six_months_unlock_percent_of_tokens)="data">
@@ -860,8 +861,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else style="text-align: center;" class="d-flex justify-content-start">
-                                <span v-if="data.value">$</span>{{roundData(data.value)}}
+                            <div v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                                <span v-if="data.value">$</span>{{twenty4HConversation(data.value)}}
                             </div>
                         </template>
                         <template #cell(six_months_unlock_size)="data">
@@ -875,82 +876,82 @@
                             <div v-if="data.value"
                                 :class="{'greenFlash':data.item.flash == 1,'redFlash':data.item.flash ==2}"
                                 style="width: 100px;">
-                                ${{toInterNationalNumber(data.value)}}</div>
+                                ${{priceConversation(data.value)}}</div>
                         </template>
                         <template #cell(market_cap)="data">
-                            <div v-if="data.value" style="">${{toInterNationalNumber(data.value)}}</div>
+                            <div v-if="data.value" style="">${{twenty4HConversation(data.value)}}</div>
                         </template>
                         <template #cell(high_24h)="data">
-                            <div v-if="data.value !=''" style="">${{toInterNationalNumber(data.value)}}</div>
+                            <div v-if="data.value && data.value !=''" style="">${{twenty4HConversation(data.value)}}</div>
                         </template>
                         <template #cell(low_24h)="data">
-                            <div v-if="data.value !=''" style="">${{toInterNationalNumber(data.value)}}</div>
+                            <div v-if="data.value &&  data.value !=''" style="">${{twenty4HConversation(data.value)}}</div>
                         </template>
 
                         <template #cell(price_change_percentage_24h)="data">
                             <div v-if="data.value">
                                 <span v-if="data.value>= 0" class="text-success-green"
-                                    style="">{{ toInterNationalNumber(data.value) }}
+                                    style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span>
-                                <span v-else class="text-danger" style="">{{ toInterNationalNumber(data.value) }}
+                                <span v-else class="text-danger" style="">{{ twenty4HConversation(data.value) }}
                                     %</span>
                             </div>
                         </template>
                         <template #cell(roi_percentage)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    @click="sortingCols(data.value)" style="">{{ roundData(data.value) }}
+                                    @click="sortingCols(data.value)" style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span>
-                                <span v-else-if="data.value!=null" class="text-danger"
-                                    style="">{{ roundData(data.value) }}
+                                <span v-else-if="data.value" class="text-danger"
+                                    style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span></div>
                         </template>
                         <template #cell(total_supply_percent)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    @click="sortingCols(data.value)" style="">{{ roundData(data.value) }}
+                                    @click="sortingCols(data.value)" style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span>
-                                <span v-else-if="data.value!=null" class="text-danger"
-                                    style="">{{ roundData(data.value) }}
+                                <span v-else-if="data.value" class="text-danger"
+                                    style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span></div>
                         </template>
                         <template #cell(ath)="data">
                             <div v-if="data.value">
-                                <span style=""><span v-if="data.value">$</span>{{toInterNationalNumber(data.value)}}
+                                <span style=""><span v-if="data.value">$</span>{{twenty4HConversation(data.value)}}
                                 </span>
                             </div>
                         </template>
                         <template #cell(atl)="data">
                             <div v-if="data.value">
                                 <span style=""><span
-                                        v-if="data.value">$</span>{{toInterNationalNumber(data.value)}}</span>
+                                        v-if="data.value">$</span>{{twenty4HConversation(data.value)}}</span>
                             </div>
                         </template>
                         <template #cell(social_mentions_change)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    @click="sortingCols(data.value)" style="">{{ roundData(data.value) }}
+                                    @click="sortingCols(data.value)" style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span>
                                 <span v-else-if="data.value!=null" class="text-danger"
-                                    style="">{{ roundData(data.value) }}
+                                    style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span></div>
                         </template>
                         <template #cell(social_engagement_change)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    @click="sortingCols(data.value)" style="">{{ roundData(data.value) }}
+                                    @click="sortingCols(data.value)" style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span>
                                 <span v-else-if="data.value!=null" class="text-danger"
-                                    style="">{{ roundData(data.value) }}
+                                    style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span></div>
                         </template>
                         <template #cell(average_sentiment_change)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    @click="sortingCols(data.value)" style="">{{ roundData(data.value) }}
+                                    @click="sortingCols(data.value)" style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span>
                                 <span v-else-if="data.value!=null" class="text-danger"
-                                    style="">{{ roundData(data.value) }}
+                                    style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span></div>
                         </template>
                         <template #cell(average_sentiment)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class=""
-                                    @click="sortingCols(data.value)" style="">{{ roundData(data.value) }}
+                                    @click="sortingCols(data.value)" style="">{{ twenty4HConversation(data.value) }}
                                 </span>
                             </div>
                         </template>
@@ -2077,7 +2078,7 @@
                                 <div class="text-center mt-1 mb-1 justify-content-center d-flex flex-wrap socialData">
 
 
-                                    <div class="radius_gradient" style="width:110px;"
+                                    <div class="radius_gradient cursor-pointer"  v-b-tooltip.hover.bottom="'Social Score'" style="width:110px;"
                                         v-if="activeData.average_sentiment">
                                         <b-card title="" class="mx-auto  innerCard text-center str_grey_gradient"
                                             style="max-width:120px;">
@@ -2090,7 +2091,7 @@
 
                                         </b-card>
                                     </div>
-                                    <div class="radius_gradient" style="width:110px;"
+                                    <div class="radius_gradient cursor-pointer" style="width:110px;" v-b-tooltip.hover.bottom="'Social Mentions'"
                                         v-if="activeData.social_mentions_change">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -2108,7 +2109,7 @@
                                         </b-card>
                                     </div>
 
-                                    <div class="radius_gradient" style="width:110px;"
+                                    <div class="radius_gradient cursor-pointer" style="width:110px;" v-b-tooltip.hover.bottom="'Average Sentiment'"
                                         v-if="activeData.average_sentiment">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -2126,7 +2127,7 @@
                                         </b-card>
                                     </div>
 
-                                    <div class="radius_gradient" style="width:110px;"
+                                    <div class="radius_gradient cursor-pointer" style="width:110px;"  v-b-tooltip.hover.bottom="'Social Engagement'"
                                         v-if="activeData.social_engagement">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -2146,7 +2147,7 @@
 
                                         </b-card>
                                     </div>
-                                    <div class="radius_gradient" style="width:110px;">
+                                    <div class="radius_gradient cursor-pointer" style="width:110px;"   v-b-tooltip.hover.bottom="'Bearish Sentiment'">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 "
@@ -2161,7 +2162,7 @@
                                         </b-card>
                                     </div>
 
-                                    <div class="radius_gradient" style="width:110px;"
+                                    <div class="radius_gradient cursor-pointer" style="width:110px;"  v-b-tooltip.hover.bottom="'Average Sentiment change  '"
                                         v-if="activeData.average_sentiment_change">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -3280,6 +3281,48 @@
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 15,
                     }).format(val);
+            },
+            priceConversation(val){
+               
+                if(1 >parseInt(val)){
+                    return parseFloat(val).toFixed(6);
+                }else{
+                   val = parseFloat(val).toFixed(2);
+                    return new Intl.NumberFormat('en-US', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 15,
+                    }).format(val);
+                }
+
+            }, twenty4HConversation(value){
+                let checkval = 0;
+              if(value != null)
+              {
+                if(value >= 0)
+                {
+                    for (let index = 1; index < 10; index++) {
+                    if(0 >= checkval){
+                        checkval = parseFloat(value).toFixed(index);
+                    } else{
+                        break;
+                    }
+                }
+                }else {
+                    for (let index = 1; index < 10; index++) {
+                    if(0 <=  checkval){
+                        checkval = parseFloat(value).toFixed(index);
+                    } else{
+                        break;
+                    }
+                }
+                }
+               
+                return new Intl.NumberFormat('en-US', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 15,
+                    }).format(checkval);
+              }
+                
             },
             checkUserPlan(val) {
                 if (this.userData.currentPlan == 'free' && val < 1 || this.userData.currentPlan == 'free' && val >=
