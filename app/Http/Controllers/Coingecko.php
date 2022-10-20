@@ -7,6 +7,7 @@ use App\Models\CoinsList;
 use App\Models\Dashboard;
 use App\Models\TradingVolumeHistory;
 use App\Models\User;
+use App\Models\UserColumn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -199,8 +200,34 @@ class Coingecko extends Controller
         $data = TradingVolumeHistory::where("coin_id", $coin_id)->where("symbol", $symbol)->get();
         echo json_encode($data);
     }
-    public function topFiveAverage(Request $request)
+    public function updateVisibleFields(Request $request)
     {
-       
+         
+        $Columns = UserColumn::where('user_id','=',Auth::user()->id)->first();
+        if($Columns)
+        {
+            $Columns->columns = $request->fields;
+            $Columns->save();
+        }else{
+            $Columns = new UserColumn();
+            $Columns->columns = $request->fields;
+            $Columns->user_id = Auth::user()->id;
+            $Columns->save();
+        }
+      
+        
+        $columnsObject = json_decode($Columns->columns);
+        return response()->json(['status'=>true,'fields'=>$columnsObject]);
+    }
+    public function loadVisibleFileds()
+    {
+       $Columns = UserColumn::where('user_id','=',Auth::user()->id)->first();
+       if($Columns)
+       {
+        $columnsObject = json_decode($Columns->columns);
+        return response()->json(['status'=>true,'fields'=>$columnsObject]);
+       }else{
+        return response()->json(['status'=>false,'fields'=>null]);
+       }
     }
 }

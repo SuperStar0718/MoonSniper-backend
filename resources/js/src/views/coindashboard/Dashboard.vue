@@ -66,7 +66,7 @@
             </div>
             <!-- graph -->
             <b-row class="" style="margin-bottom: 25px;">
-                <b-col sm="3" md="3" cols="6">
+                <b-col sm="3" md="3" cols="6" v-if="mi_fear_greed">
                     <div class="mx-auto w-75 text-center">
                         <h5 class="w-75 mx-auto margin16_b feerTitle">Fear and Greed</h5>
                         <VueSvgGauge width="60%" class="w-75 mx-auto" :start-angle="-90" :end-angle="90"
@@ -100,7 +100,7 @@
                         </VueSvgGauge>
                     </div>
                 </b-col>
-                <b-col sm="3" md="3" cols="6">
+                <b-col sm="3" md="3" cols="6" v-if="mi_fear_nft">
                     <div class="mx-auto w-75 text-center">
                         <h5 class="w-75 mx-auto margin16_b feerTitle">NFT Barometer</h5>
                         <VueSvgGauge width="60%" class="w-75 mx-auto" :start-angle="-90" :end-angle="90"
@@ -134,7 +134,7 @@
                         </VueSvgGauge>
                     </div>
                 </b-col>
-                <b-col sm="3" md="3" cols="6">
+                <b-col sm="3" md="3" cols="6" v-if="mi_fear_btc_in_out">
                     <div class="mx-auto w-75 text-center">
                         <h5 class="w-75 mx-auto margin16_b feerTitle">BTC in/outflow</h5>
                         <VueSvgGauge width="60%" class="w-75 mx-auto" :start-angle="-90" :end-angle="90"
@@ -167,7 +167,7 @@
                         </VueSvgGauge>
                     </div>
                 </b-col>
-                <b-col sm="3" md="3" cols="6">
+                <b-col sm="3" md="3" cols="6" v-if="mi_fear_btc_alt">
                     <div class="mx-auto w-75 text-center">
                         <h5 class="w-75 mx-auto margin16_b feerTitle">BTC Outflow</h5>
                         <VueSvgGauge width="60%" class="w-75 mx-auto" :start-angle="-90" :end-angle="90"
@@ -205,11 +205,8 @@
         </b-overlay>
         <div class="body-content-overlay" />
         <!-- search bar and table -->
-        <div class="cardBack" style="
-                padding:20px;
-                box-shadow: 0px 0px 20px rgba(19, 20, 37, 0.5);
-                backdrop-filter: blur(7.5px);
-                border-radius: 30px;">
+        <div class="cardBack"
+            style="padding:20px; box-shadow: 0px 0px 20px rgba(19, 20, 37, 0.5);backdrop-filter: blur(7.5px); border-radius: 30px;">
             <div class="searchbar mt-1">
                 <b-row>
                     <b-col cols="8" md="6" xl="6">
@@ -282,128 +279,150 @@
                                                         <b-row>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
-                                                                    <b-form-radio name="some-radios" value="A">
+                                                                    <b-form-checkbox @change="updateFields"
+                                                                        v-model="fields[5].filterColumn"
+                                                                        name="cursor-pointer some-checkboxs">
                                                                         Market Cap
-                                                                    </b-form-radio>
+                                                                    </b-form-checkbox>
                                                                 </div>
 
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
-                                                                    <b-form-radio name="some-radios1" value="A1">
+                                                                    <b-form-checkbox @change="updateFields"
+                                                                        name="cursor-pointer some-checkboxs1"
+                                                                        v-model="fields[2].filterColumn">
                                                                         Coin Price
-                                                                    </b-form-radio>
+                                                                    </b-form-checkbox>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
 
-                                                                    <b-form-radio name="some-radios2" value="A2">
+                                                                    <b-form-checkbox @change="updateFields"
+                                                                        v-model="fields[0].filterColumn"
+                                                                        name="cursor-pointer some-checkboxs2">
                                                                         Rank
-                                                                    </b-form-radio>
+                                                                    </b-form-checkbox>
 
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios3" value="A3"
-                                                                            checked>
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[3].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs3">
+
                                                                             Daily Price Change
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios4" value="A4"
-                                                                            checked>
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[17].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs4">
+
                                                                             Circulating Supply
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
-                                                            <b-col md="6" xl="6">
+                                                            <!-- <b-col md="6" xl="6"> NotAvail
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios5" value="A5">
+                                                                        <b-form-checkbox @change="updateFields"  v-model="fields[2].filterColumn" name="cursor-pointer some-checkboxs5" >
                                                                             Circulating Supply %
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
-                                                            </b-col>
+                                                            </b-col> -->
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios6" value="A6">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[16].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs6">
                                                                             Total Supply
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios7" value="A7">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[15].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs7">
                                                                             ROI %
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios8" value="A8">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[13].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs8">
                                                                             ROI in X's
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios9" value="A9">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[14].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs9">
                                                                             Category
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
-                                                            <b-col md="6" xl="6">
+                                                            <!-- <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios10" value="A10"
-                                                                            checked>
+                                                                        <b-form-checkbox @change="updateFields"  v-model="fields[2].filterColumn" name="cursor-pointer some-checkboxs10" >
+                                                                            
                                                                             Network
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
-                                                            </b-col>
+                                                            </b-col> -->
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios11" value="A11"
-                                                                            checked>
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[18].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs11">
+
                                                                             Public Price
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
-                                                            <b-col md="6" xl="6">
+                                                            <!-- <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios12" value="A12">
+                                                                        <b-form-checkbox @change="updateFields"  v-model="fields[2].filterColumn" name="cursor-pointer some-checkboxs12" >
                                                                             Days in Market
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
-                                                            </b-col>
+                                                            </b-col> -->
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios13" value="A13">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[6].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs13">
                                                                             Description
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
@@ -423,27 +442,33 @@
                                                         <b-row>
                                                             <b-col md="12" xl="12">
                                                                 <div class="margin20">
-                                                                    <b-form-radio name="some-radiosaa" value="Aaa">
+                                                                    <b-form-checkbox @change="updateFields"
+                                                                        v-model="fields[35].filterColumn"
+                                                                        name="cursor-pointer some-checkboxsaa">
                                                                         Social Engagement Change %
-                                                                    </b-form-radio>
+                                                                    </b-form-checkbox>
                                                                 </div>
 
                                                             </b-col>
                                                             <b-col md="12" xl="12">
                                                                 <div class="margin20">
-                                                                    <b-form-radio name="some-radios1a" value="A1a"
-                                                                        checked>
+                                                                    <b-form-checkbox @change="updateFields"
+                                                                        v-model="fields[34].filterColumn"
+                                                                        name="cursor-pointer some-checkboxs1a">
+
                                                                         Social Mentions Change %
-                                                                    </b-form-radio>
+                                                                    </b-form-checkbox>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="12" xl="12">
                                                                 <div class="margin20">
 
-                                                                    <b-form-radio name="some-radios2b" value="A2b"
-                                                                        checked>
+                                                                    <b-form-checkbox @change="updateFields"
+                                                                        v-model="fields[36].filterColumn"
+                                                                        name="cursor-pointer some-checkboxs2b">
+
                                                                         Average Sentiment (1-5)
-                                                                    </b-form-radio>
+                                                                    </b-form-checkbox>
 
                                                                 </div>
                                                             </b-col>
@@ -464,101 +489,123 @@
                                                         <b-row>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
-                                                                    <b-form-radio name="some-radiosc" value="Ac">
+                                                                    <b-form-checkbox @change="updateFields"
+                                                                        v-model="fields[19].filterColumn"
+                                                                        name="cursor-pointer some-checkboxsc">
                                                                         Total Locked
-                                                                    </b-form-radio>
+                                                                    </b-form-checkbox>
                                                                 </div>
 
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
-                                                                    <b-form-radio name="some-radios1c" value="A1c">
+                                                                    <b-form-checkbox @change="updateFields"
+                                                                        v-model="fields[21].filterColumn"
+                                                                        name="cursor-pointer some-checkboxs1c">
                                                                         Unlock Status
-                                                                    </b-form-radio>
+                                                                    </b-form-checkbox>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
 
-                                                                    <b-form-radio name="some-radios2c" value="A2c">
+                                                                    <b-form-checkbox @change="updateFields"
+                                                                        v-model="fields[24].filterColumn"
+                                                                        name="cursor-pointer some-checkboxs2c">
                                                                         Next Unlock Size
-                                                                    </b-form-radio>
+                                                                    </b-form-checkbox>
 
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios3c" value="A3c"
-                                                                            checked>
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[23].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs3c">
+
                                                                             Next Unlock %
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios4c" value="A4c"
-                                                                            checked>
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[32].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs4c">
+
                                                                             6 Months Unlock Size
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios5c" value="A5c">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[29].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs5c">
                                                                             3 Months Unlock Size
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios6c" value="A6c">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[28].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs6c">
                                                                             3 Months Unlock %
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios7c" value="A7c">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[31].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs7c">
                                                                             6 Months Unlock %
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="12" xl="12">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios8c" value="A8c"
-                                                                            checked>
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[22].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs8c">
+
                                                                             Next Unlock # of Tokens
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="12" xl="12">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios9" value="A9">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[30].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs9">
                                                                             6 Months Unlock # of Tokens
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="12" xl="12">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios10" value="A10"
-                                                                            checked>
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[27].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs10">
+
                                                                             3 Months Unlock # of Tokens
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
@@ -576,35 +623,43 @@
                                                         <b-row>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
-                                                                    <b-form-radio name="some-radiosd" value="Ad">
+                                                                    <b-form-checkbox @change="updateFields"
+                                                                        v-model="mi_fear_greed"
+                                                                        name="cursor-pointer some-checkboxsd">
                                                                         Fear & Greed
-                                                                    </b-form-radio>
+                                                                    </b-form-checkbox>
                                                                 </div>
 
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
-                                                                    <b-form-radio name="some-radios1d" value="A1d">
+                                                                    <b-form-checkbox @change="updateFields"
+                                                                        v-model="mi_fear_nft"
+                                                                        name="cursor-pointer some-checkboxs1d">
                                                                         NFT Barometer
-                                                                    </b-form-radio>
+                                                                    </b-form-checkbox>
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
 
-                                                                    <b-form-radio name="some-radios2d" value="A2d">
+                                                                    <b-form-checkbox @change="updateFields"
+                                                                        v-model="mi_fear_btc_in_out"
+                                                                        name="cursor-pointer some-checkboxs2d">
                                                                         Btc Inflow/Outflow
-                                                                    </b-form-radio>
+                                                                    </b-form-checkbox>
 
                                                                 </div>
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
-                                                                        <b-form-radio name="some-radios3d" value="A3d"
-                                                                            checked>
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="mi_fear_btc_alt"
+                                                                            name="cursor-pointer some-checkboxs3d">
+
                                                                             Btc/Alt Season
-                                                                        </b-form-radio>
+                                                                        </b-form-checkbox>
                                                                     </div>
                                                                 </div>
                                                             </b-col>
@@ -629,12 +684,7 @@
 
             </div>
             <div id="ctable" style="position: relative;">
-                <div class="opacityGradient" style="position: absolute;
-                        right: 4px;
-                        top: 0px;
-                        height: 100%;
-                        width: 61px;
-                        z-index: 3;
+                <div class="opacityGradient" style="position: absolute;right: 4px; top: 0px;height: 100%;width: 61px;z-index: 3;
                         background: linear-gradient(90deg, rgba(248,248,248, 0) 0%, rgba(248,248,248, 1) 100%);">
 
                 </div>
@@ -682,6 +732,11 @@
                                     <feather-icon icon="StarIcon" size="22" />
                                 </div>
                                 <div style="padding-top:3px">{{ toInterNationalNumber(data.value?data.value:0) }}</div>
+                            </div>
+                        </template>
+                        <template #cell(coin_description)="data">
+                            <div class="d-flex text-center" v-if="data.value" v-html="data.value.substring(0,20)">
+
                             </div>
                         </template>
 
@@ -739,7 +794,7 @@
                                 {{data.value}}
                             </div>
                             <div v-else-if="data.value" style="text-align: center;" class="">
-                                
+
                                 {{twenty4HConversation(data.value)}} <span v-if="data.value">$</span>
                             </div>
                         </template>
@@ -748,7 +803,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                            <div v-else-if="data.value" style="text-align: center;"
+                                class="d-flex justify-content-start">
                                 {{twenty4HConversation(data.value)}} <span v-if="data.value">X</span>
                             </div>
                         </template>
@@ -757,7 +813,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                            <div v-else-if="data.value" style="text-align: center;"
+                                class="d-flex justify-content-start">
                                 {{twenty4HConversation(data.value)}}
                             </div>
                         </template>
@@ -778,8 +835,21 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                            <div v-else-if="data.value" style="text-align: center;"
+                                class="d-flex justify-content-start">
                                 {{twenty4HConversation(data.value)}}
+                            </div>
+
+                        </template>
+                        <template #cell(circulating_supply)="data">
+                            <div v-if="data.value" style="text-align: center;" class="">
+                                {{twenty4HConversation(data.value)}}
+                            </div>
+
+                        </template>
+                        <template #cell(coin_category)="data">
+                            <div v-if="data.value" style="text-align: center;" class="">
+                                <span >{{data.value}}</span>
                             </div>
 
                         </template>
@@ -788,7 +858,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div  v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                            <div v-else-if="data.value" style="text-align: center;"
+                                class="d-flex justify-content-start">
                                 {{twenty4HConversation(data.value)}} <span v-if="data.value"> %</span>
                             </div>
                         </template>
@@ -827,7 +898,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div  v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                            <div v-else-if="data.value" style="text-align: center;"
+                                class="d-flex justify-content-start">
                                 {{twenty4HConversation(data.value)}}
                             </div>
                         </template>
@@ -836,7 +908,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                            <div v-else-if="data.value" style="text-align: center;"
+                                class="d-flex justify-content-start">
                                 <span v-if="data.value">%</span>{{twenty4HConversation(data.value)}}
                             </div>
                         </template>
@@ -852,7 +925,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                            <div v-else-if="data.value" style="text-align: center;"
+                                class="d-flex justify-content-start">
                                 <span v-if="data.value">$</span>{{twenty4HConversation(data.value)}}
                             </div>
                         </template>
@@ -861,7 +935,8 @@
                                 class="d-flex justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else-if="data.value" style="text-align: center;" class="d-flex justify-content-start">
+                            <div v-else-if="data.value" style="text-align: center;"
+                                class="d-flex justify-content-start">
                                 <span v-if="data.value">$</span>{{twenty4HConversation(data.value)}}
                             </div>
                         </template>
@@ -873,22 +948,33 @@
                         </template>
 
                         <template #cell(current_price)="data">
-                            <div v-if="data.value"
+                            <div v-if="data.value" class="text-center m-auto"
                                 :class="{'greenFlash':data.item.flash == 1,'redFlash':data.item.flash ==2}"
                                 style="width: 100px;">
                                 ${{priceConversation(data.value)}}</div>
                         </template>
                         <template #cell(market_cap)="data">
-                            <div v-if="data.value" style="">${{twenty4HConversation(data.value)}}</div>
+                            <div v-if="data.value" class="text-center" style="">${{twenty4HConversation(data.value)}}</div>
                         </template>
                         <template #cell(high_24h)="data">
-                            <div v-if="data.value && data.value !=''" style="">${{twenty4HConversation(data.value)}}</div>
+                            <div v-if="data.value && data.value !=''" class="text-center" style="">${{twenty4HConversation(data.value)}}
+                            </div>
                         </template>
                         <template #cell(low_24h)="data">
-                            <div v-if="data.value &&  data.value !=''" style="">${{twenty4HConversation(data.value)}}</div>
+                            <div v-if="data.value &&  data.value !=''" class="text-center m-auto" style="">${{twenty4HConversation(data.value)}}
+                            </div>
                         </template>
 
                         <template #cell(price_change_percentage_24h)="data">
+                            <div v-if="data.value">
+                                <span v-if="data.value>= 0" class="text-success-green"
+                                    style="">{{ twenty4HConversation(data.value) }}
+                                    <span v-if="data.value"> %</span></span>
+                                <span v-else class="text-danger" style="">{{ twenty4HConversation(data.value) }}
+                                    %</span>
+                            </div>
+                        </template>
+                        <template #cell(price_change_percentage_7d_in_currency)="data">
                             <div v-if="data.value">
                                 <span v-if="data.value>= 0" class="text-success-green"
                                     style="">{{ twenty4HConversation(data.value) }}
@@ -1020,7 +1106,7 @@
                             </template>
                             <b-dropdown-form href="#" class="preset-form dropdown-mine  " name="dropdownform2"
                                 style="z-index:999;">
-                                <div class=""  >
+                                <div class="">
                                     <div class="d-flex justify-content-between">
                                         <div class="text-secondary cursor-pointer px-2 text-capitalize" style="white-space: nowrap;
                                             overflow: hidden;
@@ -1787,7 +1873,7 @@
                                     <!-- <b-form-select v-model="selectedContract">
                                         <b-form-select-option :value="null" selected>Select</b-form-select-option>
                                         <b-form-select-option v-for="(address,index) in activeData.contract_address"
-                                            :key="index" :value="address.contract_address">
+                                            :key="index" :>
                                             {{ address.platform }}
                                         </b-form-select-option>
                                     </b-form-select> -->
@@ -2078,7 +2164,8 @@
                                 <div class="text-center mt-1 mb-1 justify-content-center d-flex flex-wrap socialData">
 
 
-                                    <div class="radius_gradient cursor-pointer"  v-b-tooltip.hover.bottom="'Social Score'" style="width:110px;"
+                                    <div class="radius_gradient cursor-pointer"
+                                        v-b-tooltip.hover.bottom="'Social Score'" style="width:110px;"
                                         v-if="activeData.average_sentiment">
                                         <b-card title="" class="mx-auto  innerCard text-center str_grey_gradient"
                                             style="max-width:120px;">
@@ -2091,7 +2178,8 @@
 
                                         </b-card>
                                     </div>
-                                    <div class="radius_gradient cursor-pointer" style="width:110px;" v-b-tooltip.hover.bottom="'Social Mentions'"
+                                    <div class="radius_gradient cursor-pointer" style="width:110px;"
+                                        v-b-tooltip.hover.bottom="'Social Mentions'"
                                         v-if="activeData.social_mentions_change">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -2109,7 +2197,8 @@
                                         </b-card>
                                     </div>
 
-                                    <div class="radius_gradient cursor-pointer" style="width:110px;" v-b-tooltip.hover.bottom="'Average Sentiment'"
+                                    <div class="radius_gradient cursor-pointer" style="width:110px;"
+                                        v-b-tooltip.hover.bottom="'Average Sentiment'"
                                         v-if="activeData.average_sentiment">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -2127,7 +2216,8 @@
                                         </b-card>
                                     </div>
 
-                                    <div class="radius_gradient cursor-pointer" style="width:110px;"  v-b-tooltip.hover.bottom="'Social Engagement'"
+                                    <div class="radius_gradient cursor-pointer" style="width:110px;"
+                                        v-b-tooltip.hover.bottom="'Social Engagement'"
                                         v-if="activeData.social_engagement">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -2147,7 +2237,8 @@
 
                                         </b-card>
                                     </div>
-                                    <div class="radius_gradient cursor-pointer" style="width:110px;"   v-b-tooltip.hover.bottom="'Bearish Sentiment'">
+                                    <div class="radius_gradient cursor-pointer" style="width:110px;"
+                                        v-b-tooltip.hover.bottom="'Bearish Sentiment'">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
                                             <div class="justify-content-center text-nowrap socialText2 "
@@ -2162,7 +2253,8 @@
                                         </b-card>
                                     </div>
 
-                                    <div class="radius_gradient cursor-pointer" style="width:110px;"  v-b-tooltip.hover.bottom="'Average Sentiment change  '"
+                                    <div class="radius_gradient cursor-pointer" style="width:110px;"
+                                        v-b-tooltip.hover.bottom="'Average Sentiment change  '"
                                         v-if="activeData.average_sentiment_change">
                                         <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                             style="max-width:200px;">
@@ -3024,8 +3116,15 @@
                 presetFilters: [],
                 selectedPreset: null,
                 selectedPresetData: null,
-
-
+                mi_fear_greed: true,
+                mi_fear_nft: true,
+                mi_fear_btc_in_out: true,
+                mi_fear_btc_alt: true,
+                column_form: {
+                    table_fields: [],
+                    market_indicators: [],
+                },
+                loadedFields: {},
                 //slider value
 
                 // filterKey.min_market_cap,
@@ -3136,8 +3235,8 @@
         },
         methods: {
             check(str) {
-                console.log("here!");
-                console.log(str);
+                // console.log("here!");
+                // console.log(str);
                 if (str.length > 8) return true;
                 else false;
             },
@@ -3282,47 +3381,46 @@
                         maximumFractionDigits: 15,
                     }).format(val);
             },
-            priceConversation(val){
-               
-                if(1 >parseInt(val)){
+            priceConversation(val) {
+
+                if (1 > parseInt(val)) {
                     return parseFloat(val).toFixed(6);
-                }else{
-                   val = parseFloat(val).toFixed(2);
+                } else {
+                    val = parseFloat(val).toFixed(2);
                     return new Intl.NumberFormat('en-US', {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 15,
                     }).format(val);
                 }
 
-            }, twenty4HConversation(value){
+            },
+            twenty4HConversation(value) {
                 let checkval = 0;
-              if(value != null)
-              {
-                if(value >= 0)
-                {
-                    for (let index = 1; index < 10; index++) {
-                    if(0 >= checkval){
-                        checkval = parseFloat(value).toFixed(index);
-                    } else{
-                        break;
+                if (value != null) {
+                    if (value >= 0) {
+                        for (let index = 1; index < 10; index++) {
+                            if (0 >= checkval) {
+                                checkval = parseFloat(value).toFixed(index);
+                            } else {
+                                break;
+                            }
+                        }
+                    } else {
+                        for (let index = 1; index < 10; index++) {
+                            if (0 <= checkval) {
+                                checkval = parseFloat(value).toFixed(index);
+                            } else {
+                                break;
+                            }
+                        }
                     }
-                }
-                }else {
-                    for (let index = 1; index < 10; index++) {
-                    if(0 <=  checkval){
-                        checkval = parseFloat(value).toFixed(index);
-                    } else{
-                        break;
-                    }
-                }
-                }
-               
-                return new Intl.NumberFormat('en-US', {
+
+                    return new Intl.NumberFormat('en-US', {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 15,
                     }).format(checkval);
-              }
-                
+                }
+
             },
             checkUserPlan(val) {
                 if (this.userData.currentPlan == 'free' && val < 1 || this.userData.currentPlan == 'free' && val >=
@@ -4127,18 +4225,97 @@
             selectPreset(preset) {
                 this.selectedPresetData = preset;
                 this.selectedPreset = preset.id;
+            },
+            updateFields() {
+                this.column_form.table_fields = [];
+                this.column_form.market_indicators = [];
+                this.fields.forEach(element => {
+                    if (element.canHide == true) {
+                        if (element.filterColumn == true) {
+                            this.column_form.table_fields.push(element.key)
+                        }
+                    }
+
+
+
+                });
+                if (this.mi_fear_greed == true) {
+                    this.column_form.market_indicators.push('mi_fear_greed')
+                }
+                if (this.mi_fear_nft == true) {
+                    this.column_form.market_indicators.push('mi_fear_nft')
+                }
+                if (this.mi_fear_btc_in_out == true) {
+                    this.column_form.market_indicators.push('mi_fear_btc_in_out')
+                }
+                if (this.mi_fear_btc_alt == true) {
+                    this.column_form.market_indicators.push('mi_fear_btc_alt')
+                }
+
+                let log = JSON.stringify(this.column_form);
+                axios.post('api/update-visible-fields', {
+                    fields: JSON.stringify(this.column_form)
+                }).then(res => {
+                    if (res.data.status == true) {
+                        this.loadedFields = res.data.fields
+                    }
+                })
+            },
+            loadFileds() {
+                axios.post('api/load-visible-fileds').then(res => {
+                    if (res.data.status == true) {
+                        this.loadedFields = res.data.fields;
+                        this.fields.forEach(element => {
+                            if (this.loadedFields.table_fields.includes(element.key)) {
+                                element.filterColumn = true;
+                            } else {
+                                if (element.canHide) {
+                                    element.filterColumn = false;
+                                }
+                            }
+                        });
+                        //         mi_fear_greed: true,
+                        // mi_fear_nft: true,
+                        // mi_fear_btc_in_out: true,
+                        // mi_fear_btc_alt: true,
+                        if (this.loadedFields.market_indicators.includes('mi_fear_greed')) {
+                            this.mi_fear_greed = true;
+                        } else {
+                            this.mi_fear_greed = false;
+                        }
+                         if (this.loadedFields.market_indicators.includes('mi_fear_nft')) {
+                            this.mi_fear_nft = true;
+                        } else {
+                            this.mi_fear_nft = false;
+                        }
+                         if (this.loadedFields.market_indicators.includes('mi_fear_btc_in_out')) {
+                            this.mi_fear_btc_in_out = true;
+                        } else {
+                            this.mi_fear_btc_in_out = false;
+                        }
+                         if (this.loadedFields.market_indicators.includes('mi_fear_btc_alt')) {
+                            this.mi_fear_btc_alt = true;
+                        } else {
+                            this.mi_fear_btc_alt = false;
+                        }
+
+                    }
+                })
             }
+
 
         },
         computed: {
             visibleFields() {
                 if (this.params.api_mode == 1) {
                     return this.fields.filter(field => {
-                        return field.visible == 1 || field.visible == 3
+                        return field.visible == 1 && field.filterColumn == true || field.visible == 3 && field
+                            .filterColumn == true;
                     })
                 } else {
                     return this.fields.filter(field => {
-                        return field.visible == 3 || field.visible == 2;
+                        return field.visible == 3 && field.filterColumn == true || field.visible == 2 && field
+                            .filterColumn == true;
                     })
                 }
             },
@@ -4267,6 +4444,7 @@
 
         },
         mounted() {
+            this.loadFileds();
             this.loadCoins();
             this.loadFag();
             this.loadPresetFilters();
@@ -4355,6 +4533,9 @@
         overflow-y: auto !important;
         max-height: 56vh;
 
+    }
+    #dashboard .b-table-1 tr{
+        height: 60px;
     }
 
     #dashboard .b-table-1:hover {
