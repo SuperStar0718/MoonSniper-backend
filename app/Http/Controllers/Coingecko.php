@@ -203,7 +203,7 @@ class Coingecko extends Controller
     public function updateVisibleFields(Request $request)
     {
          
-        $Columns = UserColumn::where('user_id','=',Auth::user()->id)->first();
+        $Columns = UserColumn::where('user_id','=',Auth::user()->id)->where('mode','=',$request->mode)->first();
         if($Columns)
         {
             $Columns->columns = $request->fields;
@@ -211,6 +211,7 @@ class Coingecko extends Controller
         }else{
             $Columns = new UserColumn();
             $Columns->columns = $request->fields;
+            $Columns->mode = $request->mode;
             $Columns->user_id = Auth::user()->id;
             $Columns->save();
         }
@@ -219,13 +220,13 @@ class Coingecko extends Controller
         $columnsObject = json_decode($Columns->columns);
         return response()->json(['status'=>true,'fields'=>$columnsObject]);
     }
-    public function loadVisibleFileds()
+    public function loadVisibleFileds(Request $request)
     {
-       $Columns = UserColumn::where('user_id','=',Auth::user()->id)->first();
+       $Columns = UserColumn::where('user_id','=',Auth::user()->id)->where('mode','=',$request->mode)->first();
        if($Columns)
        {
         $columnsObject = json_decode($Columns->columns);
-        return response()->json(['status'=>true,'fields'=>$columnsObject]);
+        return response()->json(['status'=>true,'fields'=>$columnsObject,'mode'=>$Columns->mode]);
        }else{
         return response()->json(['status'=>false,'fields'=>null]);
        }

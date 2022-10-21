@@ -271,9 +271,9 @@
                                             class="text-center darkWhiteText">
                                             Customise your Dashboard
                                         </div>
-                                        <hr style="margin:0px !important;">
+                                        <hr style="margin:0px !important;" v-if="params.api_mode == 1">
                                         <template>
-                                            <div class="accordion" role="tablist">
+                                            <div class="accordion" role="tablist" v-if="params.api_mode == 1">
                                                 <app-collapse accordion>
                                                     <app-collapse-item :isVisible="true" title="Market Filters">
                                                         <b-row>
@@ -315,6 +315,30 @@
                                                                             name="cursor-pointer some-checkboxs3">
 
                                                                             Daily Price Change
+                                                                        </b-form-checkbox>
+                                                                    </div>
+                                                                </div>
+                                                            </b-col>
+
+                                                            <b-col md="6" xl="6">
+                                                                <div class="margin20">
+                                                                    <div class="">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[4].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs3">
+
+                                                                            7D %
+                                                                        </b-form-checkbox>
+                                                                    </div>
+                                                                </div>
+                                                            </b-col>
+                                                            <b-col md="6" xl="6">
+                                                                <div class="margin20">
+                                                                    <div class="">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[8].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs3">
+                                                                            VOL(24h)
                                                                         </b-form-checkbox>
                                                                     </div>
                                                                 </div>
@@ -435,8 +459,8 @@
                                                 </app-collapse>
 
                                             </div>
-                                            <hr style="margin:0px !important;">
-                                            <div class="accordion" role="tablist">
+                                            <hr style="margin:0px !important;" v-if="params.api_mode == 1">
+                                            <div class="accordion" role="tablist" v-if="params.api_mode == 1">
                                                 <app-collapse accordion>
                                                     <app-collapse-item :isVisible="true" title="SociaL Filters">
                                                         <b-row>
@@ -490,7 +514,7 @@
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <b-form-checkbox @change="updateFields"
-                                                                        v-model="fields[19].filterColumn"
+                                                                        v-model="fields[20].filterColumn"
                                                                         name="cursor-pointer some-checkboxsc">
                                                                         Total Locked
                                                                     </b-form-checkbox>
@@ -500,7 +524,7 @@
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <b-form-checkbox @change="updateFields"
-                                                                        v-model="fields[21].filterColumn"
+                                                                        v-model="fields[22].filterColumn"
                                                                         name="cursor-pointer some-checkboxs1c">
                                                                         Unlock Status
                                                                     </b-form-checkbox>
@@ -510,7 +534,7 @@
                                                                 <div class="margin20">
 
                                                                     <b-form-checkbox @change="updateFields"
-                                                                        v-model="fields[24].filterColumn"
+                                                                        v-model="fields[25].filterColumn"
                                                                         name="cursor-pointer some-checkboxs2c">
                                                                         Next Unlock Size
                                                                     </b-form-checkbox>
@@ -521,7 +545,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[23].filterColumn"
+                                                                            v-model="fields[24].filterColumn"
                                                                             name="cursor-pointer some-checkboxs3c">
 
                                                                             Next Unlock %
@@ -533,7 +557,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[32].filterColumn"
+                                                                            v-model="fields[33].filterColumn"
                                                                             name="cursor-pointer some-checkboxs4c">
 
                                                                             6 Months Unlock Size
@@ -545,7 +569,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[29].filterColumn"
+                                                                            v-model="fields[30].filterColumn"
                                                                             name="cursor-pointer some-checkboxs5c">
                                                                             3 Months Unlock Size
                                                                         </b-form-checkbox>
@@ -556,7 +580,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[28].filterColumn"
+                                                                            v-model="fields[29].filterColumn"
                                                                             name="cursor-pointer some-checkboxs6c">
                                                                             3 Months Unlock %
                                                                         </b-form-checkbox>
@@ -567,7 +591,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[31].filterColumn"
+                                                                            v-model="fields[32].filterColumn"
                                                                             name="cursor-pointer some-checkboxs7c">
                                                                             6 Months Unlock %
                                                                         </b-form-checkbox>
@@ -578,7 +602,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[22].filterColumn"
+                                                                            v-model="fields[23].filterColumn"
                                                                             name="cursor-pointer some-checkboxs8c">
 
                                                                             Next Unlock # of Tokens
@@ -590,7 +614,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[30].filterColumn"
+                                                                            v-model="fields[31].filterColumn"
                                                                             name="cursor-pointer some-checkboxs9">
                                                                             6 Months Unlock # of Tokens
                                                                         </b-form-checkbox>
@@ -601,7 +625,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[27].filterColumn"
+                                                                            v-model="fields[28].filterColumn"
                                                                             name="cursor-pointer some-checkboxs10">
 
                                                                             3 Months Unlock # of Tokens
@@ -616,8 +640,8 @@
                                                 </app-collapse>
 
                                             </div>
-                                            <hr style="margin:0px !important;">
-                                            <div class="accordion" role="tablist">
+                                            <hr style="margin:0px !important;" v-if="params.api_mode == 1">
+                                            <div class="accordion" role="tablist" v-if="params.api_mode == 1">
                                                 <app-collapse accordion>
                                                     <app-collapse-item :isVisible="true" title="Market Indicators">
                                                         <b-row>
@@ -774,6 +798,7 @@
                             </div>
                         </template>
 
+
                         <!-- buy button -->
                         <!-- <template #cell()="scope">
                                 <div style="text-align: center;" class="d-flex justify-content-start">
@@ -800,7 +825,7 @@
                         </template>
                         <template #cell(roi_seed)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
-                                class="d-flex justify-content-start blurry-text">
+                                class="d-flex2 justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
@@ -810,33 +835,33 @@
                         </template>
                         <template #cell(total_locked)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
-                                class="d-flex justify-content-start blurry-text">
+                                class="d-flex2 justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
-                                class="d-flex justify-content-start">
+                                class="d-flex2 justify-content-start">
                                 {{twenty4HConversation(data.value)}}
                             </div>
                         </template>
                         <template #cell(next_unlock_date_text)="data">
-                            <div style="text-align: center;" class="d-flex justify-content-start"
+                            <div style="text-align: center;" class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
                                 {{ data.value }}
                             </div>
                         </template>
                         <template #cell(next_unlock_status)="data">
-                            <div style="text-align: center;" class="d-flex justify-content-start"
+                            <div style="text-align: center;" class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
                                 {{ data.value }}
                             </div>
                         </template>
                         <template #cell(next_unlock_number_of_tokens)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
-                                class="d-flex justify-content-start blurry-text">
+                                class="d-flex2 justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
-                                class="d-flex justify-content-start">
+                                class="d-flex2 justify-content-start">
                                 {{twenty4HConversation(data.value)}}
                             </div>
 
@@ -849,72 +874,72 @@
                         </template>
                         <template #cell(coin_category)="data">
                             <div v-if="data.value" style="text-align: center;" class="">
-                                <span >{{data.value}}</span>
+                                <span>{{data.value}}</span>
                             </div>
 
                         </template>
                         <template #cell(next_unlock_percent_of_tokens)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
-                                class="d-flex justify-content-start blurry-text">
+                                class="d-flex2 justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
-                                class="d-flex justify-content-start">
+                                class="d-flex2 justify-content-start">
                                 {{twenty4HConversation(data.value)}} <span v-if="data.value"> %</span>
                             </div>
                         </template>
                         <template #cell(next_unlock_size)="data">
-                            <div style="text-align: center;" class="d-flex justify-content-start"
+                            <div style="text-align: center;" class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
                                 {{ data.value }}
                             </div>
                         </template>
                         <template #cell(roi_times)="data">
-                            <div style="text-align: center;" class="d-flex justify-content-start">
+                            <div style="text-align: center;" class="">
                                 {{ toInterNationalNumber(data.value) }} <span v-if="data.value">X</span>
                             </div>
                         </template>
                         <template #cell(first_vc_unlock)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
-                                class="d-flex justify-content-start blurry-text">
+                                class="d-flex2 justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else style="text-align: center;" class="d-flex justify-content-start">
+                            <div v-else style="text-align: center;" class="d-flex2 justify-content-start">
                                 {{dateFormat2(data.value)}}
                             </div>
                         </template>
 
                         <template #cell(end_vc_unlock)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
-                                class="d-flex justify-content-start blurry-text">
+                                class="d-flex2 justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
-                            <div v-else style="text-align: center;" class="d-flex justify-content-start">
+                            <div v-else style="text-align: center;" class="d-flex2 justify-content-start">
                                 {{dateFormat2(data.value)}}
                             </div>
                         </template>
                         <template #cell(three_months_unlock_number_of_tokens)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
-                                class="d-flex justify-content-start blurry-text">
+                                class="d-flex2 justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
-                                class="d-flex justify-content-start">
+                                class="d-flex2 justify-content-start">
                                 {{twenty4HConversation(data.value)}}
                             </div>
                         </template>
                         <template #cell(three_months_unlock_percent_of_tokens)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
-                                class="d-flex justify-content-start blurry-text">
+                                class="d-flex2 justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
-                                class="d-flex justify-content-start">
-                                <span v-if="data.value">%</span>{{twenty4HConversation(data.value)}}
+                                class="d-flex2 justify-content-start">
+                                {{twenty4HConversation(data.value)}}<span v-if="data.value">%</span>
                             </div>
                         </template>
                         <template #cell(three_months_unlock_size)="data">
-                            <div style="text-align: center;" class="d-flex justify-content-start"
+                            <div style="text-align: center;" class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
                                 {{ data.value }}
                             </div>
@@ -922,26 +947,26 @@
 
                         <template #cell(six_months_unlock_number_of_tokens)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
-                                class="d-flex justify-content-start blurry-text">
+                                class="d-flex2 justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
-                                class="d-flex justify-content-start">
+                                class="d-flex2 justify-content-start">
                                 <span v-if="data.value">$</span>{{twenty4HConversation(data.value)}}
                             </div>
                         </template>
                         <template #cell(six_months_unlock_percent_of_tokens)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
-                                class="d-flex justify-content-start blurry-text">
+                                class="d-flex2 justify-content-start blurry-text">
                                 {{data.value}}
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
-                                class="d-flex justify-content-start">
+                                class="d-flex2 justify-content-start">
                                 <span v-if="data.value">$</span>{{twenty4HConversation(data.value)}}
                             </div>
                         </template>
                         <template #cell(six_months_unlock_size)="data">
-                            <div style="text-align: center;" class="d-flex justify-content-start"
+                            <div style="text-align: center;" class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
                                 {{ data.value }}
                             </div>
@@ -954,14 +979,17 @@
                                 ${{priceConversation(data.value)}}</div>
                         </template>
                         <template #cell(market_cap)="data">
-                            <div v-if="data.value" class="text-center" style="">${{twenty4HConversation(data.value)}}</div>
+                            <div v-if="data.value" class="text-center" style="">${{twenty4HConversation(data.value)}}
+                            </div>
                         </template>
                         <template #cell(high_24h)="data">
-                            <div v-if="data.value && data.value !=''" class="text-center" style="">${{twenty4HConversation(data.value)}}
+                            <div v-if="data.value && data.value !=''" class="text-center" style="">
+                                ${{twenty4HConversation(data.value)}}
                             </div>
                         </template>
                         <template #cell(low_24h)="data">
-                            <div v-if="data.value &&  data.value !=''" class="text-center m-auto" style="">${{twenty4HConversation(data.value)}}
+                            <div v-if="data.value &&  data.value !=''" class="text-center m-auto" style="">
+                                ${{twenty4HConversation(data.value)}}
                             </div>
                         </template>
 
@@ -4061,11 +4089,11 @@
                 if (this.params.api_mode == 2) {
                     this.params.api_mode = 1;
                     this.locked = false;
-
                 } else {
                     this.locked = true;
                     this.params.api_mode = 2;
                 }
+                this.loadFileds();
                 this.loadCoins();
             },
             async createPresetFilter() {
@@ -4227,18 +4255,32 @@
                 this.selectedPreset = preset.id;
             },
             updateFields() {
+                let mode = 'all';
+                if (this.params.api_mode != 1) {
+                    mode = 'unlock';
+                }
+
                 this.column_form.table_fields = [];
                 this.column_form.market_indicators = [];
-                this.fields.forEach(element => {
-                    if (element.canHide == true) {
-                        if (element.filterColumn == true) {
-                            this.column_form.table_fields.push(element.key)
+                if (this.params.api_mode == 1) {
+                    this.fields.forEach(element => {
+                        if (element.canHide == true) {
+                            if (element.filterColumn == true) {
+                                this.column_form.table_fields.push(element.key)
+                            }
                         }
-                    }
 
+                    });
+                } else {
+                    this.fields.forEach(element => {
+                        if (element.visible == 3 || element.canHide == true && element.visible == 2) {
+                            if (element.filterColumn == true) {
+                                this.column_form.table_fields.push(element.key)
+                            }
+                        }
 
-
-                });
+                    });
+                }
                 if (this.mi_fear_greed == true) {
                     this.column_form.market_indicators.push('mi_fear_greed')
                 }
@@ -4254,17 +4296,55 @@
 
                 let log = JSON.stringify(this.column_form);
                 axios.post('api/update-visible-fields', {
-                    fields: JSON.stringify(this.column_form)
+                    fields: JSON.stringify(this.column_form),
+                    mode: mode
                 }).then(res => {
                     if (res.data.status == true) {
                         this.loadedFields = res.data.fields
                     }
                 })
+
+
             },
             loadFileds() {
-                axios.post('api/load-visible-fileds').then(res => {
+                let mode = 'all';
+                if (this.params.api_mode != 1) {
+                    mode = 'unlock';
+                }
+                axios.post('api/load-visible-fileds', {
+                    mode: mode
+                }).then(res => {
                     if (res.data.status == true) {
                         this.loadedFields = res.data.fields;
+
+                        if (this.params.api_mode != 1) {
+                            this.fields[0].filterColumn = true;
+                            this.fields[20].filterColumn = false;
+                            this.fields[22].filterColumn = false;
+                            this.fields[23].filterColumn = false;
+                            this.fields[24].filterColumn = false;
+                            this.fields[25].filterColumn = false;
+                            this.fields[28].filterColumn = false;
+                            this.fields[29].filterColumn = false;
+                            this.fields[30].filterColumn = false;
+                            this.fields[31].filterColumn = false;
+                            this.fields[32].filterColumn = false;
+                            this.fields[33].filterColumn = false;
+                        } else {
+                            this.fields[0].filterColumn = false;
+                            this.fields[20].filterColumn = true;
+                            this.fields[22].filterColumn = true;
+                            this.fields[23].filterColumn = true;
+                            this.fields[24].filterColumn = true;
+                            this.fields[25].filterColumn = true;
+                            this.fields[28].filterColumn = true;
+                            this.fields[29].filterColumn = true;
+                            this.fields[30].filterColumn = true;
+                            this.fields[31].filterColumn = true;
+                            this.fields[32].filterColumn = true;
+                            this.fields[33].filterColumn = true;
+                        }
+
                         this.fields.forEach(element => {
                             if (this.loadedFields.table_fields.includes(element.key)) {
                                 element.filterColumn = true;
@@ -4274,31 +4354,60 @@
                                 }
                             }
                         });
-                        //         mi_fear_greed: true,
-                        // mi_fear_nft: true,
-                        // mi_fear_btc_in_out: true,
-                        // mi_fear_btc_alt: true,
+
+
                         if (this.loadedFields.market_indicators.includes('mi_fear_greed')) {
                             this.mi_fear_greed = true;
                         } else {
                             this.mi_fear_greed = false;
                         }
-                         if (this.loadedFields.market_indicators.includes('mi_fear_nft')) {
+                        if (this.loadedFields.market_indicators.includes('mi_fear_nft')) {
                             this.mi_fear_nft = true;
                         } else {
                             this.mi_fear_nft = false;
                         }
-                         if (this.loadedFields.market_indicators.includes('mi_fear_btc_in_out')) {
+                        if (this.loadedFields.market_indicators.includes('mi_fear_btc_in_out')) {
                             this.mi_fear_btc_in_out = true;
                         } else {
                             this.mi_fear_btc_in_out = false;
                         }
-                         if (this.loadedFields.market_indicators.includes('mi_fear_btc_alt')) {
+                        if (this.loadedFields.market_indicators.includes('mi_fear_btc_alt')) {
                             this.mi_fear_btc_alt = true;
                         } else {
                             this.mi_fear_btc_alt = false;
                         }
 
+                    } else {
+
+                        if (this.params.api_mode == 1) {
+                            this.fields[0].filterColumn = true;
+                            this.fields[1].filterColumn = true;
+                            this.fields[20].filterColumn = false;
+                            this.fields[22].filterColumn = false;
+                            this.fields[23].filterColumn = false;
+                            this.fields[24].filterColumn = false;
+                            this.fields[25].filterColumn = false;
+                            this.fields[28].filterColumn = false;
+                            this.fields[29].filterColumn = false;
+                            this.fields[30].filterColumn = false;
+                            this.fields[31].filterColumn = false;
+                            this.fields[32].filterColumn = false;
+                            this.fields[33].filterColumn = false;
+                        } else {
+                            this.fields[0].filterColumn = true;
+                            this.fields[1].filterColumn = true;
+                            this.fields[20].filterColumn = true;
+                            this.fields[22].filterColumn = true;
+                            this.fields[23].filterColumn = true;
+                            this.fields[24].filterColumn = true;
+                            this.fields[25].filterColumn = true;
+                            this.fields[28].filterColumn = true;
+                            this.fields[29].filterColumn = true;
+                            this.fields[30].filterColumn = true;
+                            this.fields[31].filterColumn = true;
+                            this.fields[32].filterColumn = true;
+                            this.fields[33].filterColumn = true;
+                        }
                     }
                 })
             }
@@ -4309,12 +4418,12 @@
             visibleFields() {
                 if (this.params.api_mode == 1) {
                     return this.fields.filter(field => {
-                        return field.visible == 1 && field.filterColumn == true || field.visible == 3 && field
-                            .filterColumn == true;
+                        return field.visible == 1 && field.filterColumn == true || field.visible == 2 && field
+                            .filterColumn == true || field.visible == 3 && field.filterColumn == true;
                     })
                 } else {
                     return this.fields.filter(field => {
-                        return field.visible == 3 && field.filterColumn == true || field.visible == 2 && field
+                        return field.visible == 2 && field.filterColumn == true || field.visible == 3 && field
                             .filterColumn == true;
                     })
                 }
@@ -4534,7 +4643,8 @@
         max-height: 56vh;
 
     }
-    #dashboard .b-table-1 tr{
+
+    #dashboard .b-table-1 tr {
         height: 60px;
     }
 

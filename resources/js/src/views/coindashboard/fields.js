@@ -77,7 +77,7 @@ const data = [
         index: 8,
         label: 'VOL(24h)',
         stickyColumn: false,
-        filterColumn:true,
+        filterColumn:true, canHide:true,
         visible: 1
     },
     {
@@ -119,7 +119,7 @@ const data = [
         label: `ROI in X's`,
         stickyColumn: false,
         filterColumn:false,canHide:true,
-        visible: true,
+        visible: 1,
     },
     {
         key: 'coin_category',
@@ -127,7 +127,7 @@ const data = [
         label: `Category`,
         stickyColumn: false, canHide:true,
         filterColumn:false,
-        visible: true,
+        visible: 1,
     },
 
     
@@ -163,7 +163,7 @@ const data = [
         label: 'Seed Price',
         stickyColumn: false,
         filterColumn:false, canHide:true,
-        visible: 2
+        visible: 1
     },
    
     {
@@ -172,7 +172,7 @@ const data = [
         label: 'ROI Seed',
         stickyColumn: false,
         filterColumn:false,
-        visible: 2
+        visible: 1
     },
     {
         key: 'total_locked',
@@ -188,7 +188,7 @@ const data = [
         label: 'Next Unlock Date',
         stickyColumn: false,
         filterColumn:false,
-        visible: 3,
+        visible: 1,
     },
     {
         key: 'next_unlock_status',
@@ -196,7 +196,7 @@ const data = [
         label: 'Next Unlock Status',
         stickyColumn: false,
         filterColumn:false, canHide:true,
-        visible: 3,
+        visible: 2
     },
 
     {
@@ -226,14 +226,14 @@ const data = [
         label: 'First VC Unlock',
         stickyColumn: false,
         filterColumn:false,
-        visible: 2
+        visible: 1
     },{
         key: 'end_vc_unlock',
         index: 27,
         label: 'End VC Unlock',
         stickyColumn: false,
         filterColumn:false,
-        visible: 2
+        visible: 1
     },{
         key: 'three_months_unlock_number_of_tokens',
         index: 28,
@@ -284,7 +284,7 @@ const data = [
         label: 'Social Mentions Change',
         stickyColumn: false,
         filterColumn:false, canHide:true,
-        visible: 3,
+        visible: 1,
     },
     {
         key: 'social_engagement_change',
@@ -292,7 +292,7 @@ const data = [
         label: 'Social Engagement Change',
         stickyColumn: false,
         filterColumn:false, canHide:true,
-        visible: 3,
+        visible: 1,
     },
     {
         key: 'average_sentiment',
@@ -300,7 +300,7 @@ const data = [
         label: 'Average Sentiment',
         stickyColumn: false, canHide:true,
         filterColumn:false,
-        visible: 3,
+        visible: 1,
     },
     {
         key: 'average_sentiment_change',
@@ -308,7 +308,7 @@ const data = [
         label: 'Average Sentiment Change',
         stickyColumn: false,
         filterColumn:false,
-        visible: 3,
+        visible: 1,
     }
 ]
 export default data;
