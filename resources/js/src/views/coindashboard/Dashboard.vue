@@ -800,7 +800,7 @@
 
                                     </div>
 
-                                <div class="btn-primary my-auto" style="display:inline-block;  float: right; padding: 3px 12px 3px 12px;
+                                <div class="btn-primary my-auto" style="display:inline-block;  float: right; padding: 2px 12px 2px 12px;
                                         font-family: 'Poppins'; height: 21px; margin-right: auto;
                                         font-style: normal; border-radius: 16px !important; 
                                         font-weight: 400;
