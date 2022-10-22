@@ -309,6 +309,17 @@
                                                             </b-col>
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
+
+                                                                    <b-form-checkbox @change="updateFields"
+                                                                        v-model="fields[1].filterColumn"
+                                                                        name="cursor-pointer some-checkboxs2">
+                                                                        Name
+                                                                    </b-form-checkbox>
+
+                                                                </div>
+                                                            </b-col>
+                                                            <b-col md="6" xl="6">
+                                                                <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
                                                                             v-model="fields[3].filterColumn"
@@ -751,13 +762,16 @@
 
                         </template>
                         <template #cell(market_cap_rank)="data">
-                            <div class="d-flex">
+                           <div class="d-flex justify-center" style="justify-content: center !important;"> 
+                            <div class="d-flex c">
                                 <div class="mx-1">
                                     <feather-icon icon="StarIcon" size="22" />
                                 </div>
                                 <div style="padding-top:3px">{{ toInterNationalNumber(data.value?data.value:0) }}</div>
                             </div>
+                           </div>
                         </template>
+                        
                         <template #cell(coin_description)="data">
                             <div class="d-flex text-center" v-if="data.value" v-html="data.value.substring(0,20)">
 
@@ -765,18 +779,19 @@
                         </template>
 
                         <template #cell(name)="data">
-                            <div style="text-align: center;" class="d-flex justify-content-between">
-                                <div style="display:flex; margin-right: 10px;">
-                                    <div style="margin: auto;">
+                             <div class="d-flex justify-content-center">
+                                <div style="text-align: center;" class="d-flex justify-content-center">
+                                
+                                    <div style="" class="my-auto">
                                         <b-avatar class="text-center mx-1" :src="data.item.image" />
                                     </div>
-
                                     <div class="">
 
                                         <div class="text-nowrap text-truncate"
                                             style="float: left; max-width: 100px; font-weight: 600;">
                                             <b>{{ data.value }}</b>
                                         </div>
+                                        <br/>
                                         <div class="text-nowrap text-truncate text-left"
                                             style="float: left; max-width: 100px; width: 100px;  opacity: 0.8;">
                                             {{ data.item.symbol }}
@@ -784,18 +799,17 @@
 
 
                                     </div>
-                                </div>
 
-                                <div class="btn-primary" style="display:inline-block;  float: right; padding: 3px 12px 3px 12px;
-                                        font-family: 'Poppins'; height: 26px; margin: auto;
-                                        font-style: normal; border-radius: 16px !important;
+                                <div class="btn-primary my-auto" style="display:inline-block;  float: right; padding: 3px 12px 3px 12px;
+                                        font-family: 'Poppins'; height: 21px; margin-right: auto;
+                                        font-style: normal; border-radius: 16px !important; 
                                         font-weight: 400;
-                                        font-size: 12px;">
+                                        font-size: 11px;">
                                     Buy
 
                                 </div>
 
-                            </div>
+                            </div> </div>
                         </template>
 
 
@@ -1119,7 +1133,7 @@
 
                     <b-col>
                         <b-dropdown size="lg" variant="flat-secondary" style="padding:0px !important;"
-                            id="dropdown-left1" no-caret class="cunningDrop preset-dropdown">
+                            id="dropdown-left1" no-caret class="cunningDrop cunningDrop2 preset-dropdown">
                             <template #button-content>
                                 <div class="d-flex justify-content-between preset-button-style">
                                     <div v-if="selectedPreset" class="" style="font-size:1rem; padding-left: 28px;">
@@ -1200,14 +1214,14 @@
                                     <div class="mb-2">
                                         <b-form-group label="Market Cap">
                                             <div class="d-flex">
-                                                <cleave id="min_market_cap" v-model="ldot" class="form-control"
+                                                <cleave id="min_market_cap" v-model="filterKey.min_market_cap" class="form-control"
                                                     :raw="false" :options="NumberFormaVal" placeholder="min" />
 
                                                 <span>
                                                     <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                                         style="margin:10px 6px 0 0px" />
                                                 </span>
-                                                <cleave id="max_market_cap" v-model="rdot" class="form-control"
+                                                <cleave id="max_market_cap" v-model="filterKey.max_market_cap" class="form-control"
                                                     :raw="false" :options="NumberFormaVal" placeholder="max" />
                                             </div>
                                         </b-form-group>
@@ -1250,13 +1264,13 @@
                                     <div class="">
                                         <b-form-group label="ROI %">
                                             <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="ldot1"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_roi_percentage"
                                                     v-numeric-only placeholder="min" />
                                                 <span>
                                                     <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                                         style="margin:10px 6px 0 0px" />
                                                 </span>
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="rdot1"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_roi_percentage"
                                                     v-numeric-only placeholder="max" />
                                             </div>
 
@@ -1269,13 +1283,13 @@
                                             label-for="price_change_percentage_24h">
                                             <div class="d-flex">
                                                 <cleave :options="NumberFormaVal" class="form-control"
-                                                    name="price_change_percentage_24h" v-numeric-only v-model="ldot2"
+                                                    name="price_change_percentage_24h" v-numeric-only v-model="filterKey.min_price_change_percentage_24h"
                                                     placeholder="min" />
                                                 <span>
                                                     <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                                         style="margin:10px 6px 0 0px" />
                                                 </span>
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="rdot2"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_price_change_percentage_24h"
                                                     v-numeric-only placeholder="max" />
                                             </div>
                                         </b-form-group>
@@ -1284,13 +1298,13 @@
                                     <div class="">
                                         <b-form-group label="Total Supply (%)">
                                             <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="ldot3"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_total_supply_percent"
                                                     v-numeric-only placeholder="min" />
                                                 <span>
                                                     <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                                         style="margin:10px 6px 0 0px" />
                                                 </span>
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="rdot3"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_total_supply_percent"
                                                     v-numeric-only placeholder="max" />
                                             </div>
                                         </b-form-group>
@@ -1448,13 +1462,13 @@
                                     <div class="">
                                         <b-form-group label="Sentiment Change %">
                                             <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="ldot4"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_average_sentiment_change"
                                                     v-numeric-only placeholder="min" />
                                                 <span>
                                                     <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                                         style="margin:10px 6px 0 0px" />
                                                 </span>
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="rdot4"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_average_sentiment_change"
                                                     v-numeric-only placeholder="max" />
                                             </div>
                                         </b-form-group>
@@ -1468,13 +1482,13 @@
                                     <div class="">
                                         <b-form-group label="Social Mentions Change %">
                                             <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="ldot5"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_social_mentions_change"
                                                     v-numeric-only placeholder="min" />
                                                 <span>
                                                     <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                                         style="margin:10px 6px 0 0px" />
                                                 </span>
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="rdot5"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_social_mentions_change"
                                                     v-numeric-only placeholder="max" />
                                             </div>
                                         </b-form-group>
@@ -1487,13 +1501,13 @@
                                     <div class="">
                                         <b-form-group label="Social Engagement Change %">
                                             <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="ldot6"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_social_engagement_change"
                                                     v-numeric-only placeholder="min" />
                                                 <span>
                                                     <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                                         style="margin:10px 6px 0 0px" />
                                                 </span>
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="rdot6"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_social_engagement_change"
                                                     v-numeric-only placeholder="max" />
                                             </div>
                                         </b-form-group>
@@ -1506,13 +1520,13 @@
                                     <div class="">
                                         <b-form-group label="Average Sentiment (1-5)">
                                             <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="ldot7"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_average_sentiment"
                                                     v-numeric-only placeholder="min" />
                                                 <span>
                                                     <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                                         style="margin:10px 6px 0 0px" />
                                                 </span>
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="rdot7"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_average_sentiment"
                                                     v-numeric-only placeholder="max" />
                                             </div>
                                         </b-form-group>
@@ -1571,13 +1585,13 @@
                                     <div class="">
                                         <b-form-group label="3 Months Unlock %">
                                             <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="ldot8"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_three_months_unlock_percent_of_tokens"
                                                     v-numeric-only placeholder="min" />
                                                 <span>
                                                     <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                                         style="margin:10px 6px 0 0px" />
                                                 </span>
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="rdot8"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_three_months_unlock_percent_of_tokens"
                                                     v-numeric-only placeholder="max" />
                                             </div>
                                         </b-form-group>
@@ -1621,13 +1635,13 @@
                                     <div class="">
                                         <b-form-group label="Next Unlock %">
                                             <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="ldot9"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_next_unlock_percent_of_tokens"
                                                     v-numeric-only placeholder="min" />
                                                 <span>
                                                     <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                                         style="margin:10px 6px 0 0px" />
                                                 </span>
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="rdot9"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_next_unlock_percent_of_tokens"
                                                     v-numeric-only placeholder="max" />
                                             </div>
                                         </b-form-group>
@@ -1661,13 +1675,13 @@
                                     <div class="">
                                         <b-form-group label="6 Months Unlock %">
                                             <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="ldot10"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.min_six_months_unlock_percent_of_tokens"
                                                     v-numeric-only placeholder="min" />
                                                 <span>
                                                     <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                                         style="margin:10px 6px 0 0px" />
                                                 </span>
-                                                <cleave :options="NumberFormaVal" class="form-control" v-model="rdot10"
+                                                <cleave :options="NumberFormaVal" class="form-control" v-model="filterKey.max_six_months_unlock_percent_of_tokens"
                                                     v-numeric-only placeholder="max" />
                                             </div>
                                         </b-form-group>
@@ -1712,7 +1726,7 @@
                                 <div class="d-flex m-auto">
                                     <b-avatar class="bg-light mr-1" v-if="activeData.image" :src="activeData.image">
                                     </b-avatar>
-                                    <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins';   font-size: 20px;  font-style: normal;  font-weight: 400;
+                                    <span class="marginx1 m-auto a darkWhiteText" style="font-family: 'Poppins';   font-size: 20px;  font-style: normal;  font-weight: 400;
                                             width: 105px;
                                             text-overflow: ellipsis;
                                             white-space: nowrap;
@@ -1722,11 +1736,11 @@
 
 
                                     </span>
-                                    <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins';
+                                    <span class="marginx1 m-auto b darkWhiteText mr-3" :class="{'w-[105px]':activeData.name && activeData.name.length > 8}" style="font-family: 'Poppins';
                                             font-size: 20px; 
                                             font-style: normal;
                                             font-weight: 400;
-                                            width: 105px;
+                                            
                                             text-overflow: ellipsis;
                                             white-space: nowrap;
                                             overflow: hidden;" v-else>
@@ -1735,17 +1749,17 @@
 
                                     </span>
 
-                                    <span class="marginx1 m-auto darkWhiteText" style="font-family: 'Poppins';
+                                    <span class="marginx1 m-auto darkWhiteText mx-2" style="font-family: 'Poppins';
                                             font-size: 14px; position: relative;
                                             font-style: normal; opacity: 0.7;
                                             font-weight: 300; margin-right: 40px !important;">
-                                        <div style="position: absolute; top:-29px;">
+                                        <div style="position: absolute; top:-29px; left:4px">
                                             &nbsp; {{activeData.symbol}}
                                         </div>
                                     </span>
 
                                 </div>
-                                <div class="d-flex m-auto">
+                                <div class="d-flex ml-[10px] mb-auto mr-auto mt-auto" style="margin-left:10px" :class="{'ml-[30px]':activeData.name && activeData.name.length > 8}">
                                     <div class="d-flex">
                                         <span class=""
                                             :class="{'greenFlash':activeData.flash == 1,'redFlash':activeData.flash ==2}"
@@ -4439,92 +4453,92 @@
             },
             value1: {
                 get() {
-                    return [this.ldot1, this.rdot1]
+                    return [this.filterKey.min_roi_percentage, this.filterKey.max_roi_percentage]
                 },
                 set([ldot1, rdot1]) {
-                    this.ldot1 = ldot1
-                    this.rdot1 = rdot1
+                    this.filterKey.min_roi_percentage = ldot1
+                    this.filterKey.max_roi_percentage = rdot1
                 },
             },
             value2: {
                 get() {
-                    return [this.ldot2, this.rdot2]
+                    return [this.filterKey.min_price_change_percentage_24h, this.filterKey.max_price_change_percentage_24h]
                 },
                 set([ldot2, rdot2]) {
-                    this.ldot2 = ldot2
-                    this.rdot2 = rdot2
+                    this.filterKey.min_price_change_percentage_24h = ldot2
+                    this.filterKey.max_price_change_percentage_24h = rdot2
                 },
             },
             value3: {
                 get() {
-                    return [this.ldot3, this.rdot3]
+                    return [this.filterKey.min_total_supply_percent, this.filterKey.max_total_supply_percent]
                 },
                 set([ldot3, rdot3]) {
-                    this.ldot3 = ldot3
-                    this.rdot3 = rdot3
+                    this.filterKey.min_total_supply_percent= ldot3
+                    this.filterKey.max_total_supply_percent = rdot3
                 },
             },
             value4: {
                 get() {
-                    return [this.ldot4, this.rdot4]
+                    return [this.filterKey.min_average_sentiment_change, this.filterKey.max_average_sentiment_change]
                 },
                 set([ldot4, rdot4]) {
-                    this.ldot4 = ldot4
-                    this.rdot4 = rdot4
+                    this.filterKey.min_average_sentiment_change = ldot4
+                    this.filterKey.max_average_sentiment_change = rdot4
                 },
             },
             value5: {
                 get() {
-                    return [this.ldot5, this.rdot5]
+                    return [this.filterKey.min_social_mentions_change, this.filterKey.max_social_mentions_change]
                 },
                 set([ldot5, rdot5]) {
-                    this.ldot5 = ldot5
-                    this.rdot5 = rdot5
+                    this.filterKey.min_social_mentions_change = ldot5
+                    this.filterKey.max_social_mentions_change = rdot5
                 },
             },
             value6: {
                 get() {
-                    return [this.ldot6, this.rdot6]
+                    return [this.filterKey.min_social_engagement_change, this.filterKey.max_social_engagement_change]
                 },
                 set([ldot6, rdot6]) {
-                    this.ldot6 = ldot6
-                    this.rdot6 = rdot6
+                    this.filterKey.min_social_engagement_change = ldot6
+                    this.filterKey.max_social_engagement_change = rdot6
                 },
             },
             value7: {
                 get() {
-                    return [this.ldot7, this.rdot7]
+                    return [this.filterKey.min_average_sentiment, this.filterKey.min_average_sentiment]
                 },
                 set([ldot7, rdot7]) {
-                    this.ldot7 = ldot7
-                    this.rdot7 = rdot7
+                    this.filterKey.min_average_sentiment = ldot7
+                    this.filterKey.min_average_sentiment = rdot7
                 },
             },
             value8: {
                 get() {
-                    return [this.ldot8, this.rdot8]
+                    return [this.filterKey.min_three_months_unlock_percent_of_tokens, this.filterKey.max_three_months_unlock_percent_of_tokens]
                 },
                 set([ldot8, rdot8]) {
-                    this.ldot8 = ldot8
-                    this.rdot8 = rdot8
+                    this.filterKey.min_three_months_unlock_percent_of_tokens = ldot8
+                    this.filterKey.max_three_months_unlock_percent_of_tokens = rdot8
                 },
             },
             value9: {
                 get() {
-                    return [this.ldot9, this.rdot9]
+                    return [this.filterKey.min_next_unlock_percent_of_tokens, this.filterKey.max_next_unlock_percent_of_tokens]
                 },
                 set([ldot9, rdot9]) {
-                    this.ldot9 = ldot9
-                    this.rdot9 = rdot9
+                    this.filterKey.min_next_unlock_percent_of_tokens = ldot9
+                    this.filterKey.max_next_unlock_percent_of_tokens = rdot9
                 },
             },
             value10: {
                 get() {
-                    return [this.ldot10, this.rdot10]
+                    return [this.filterKey.min_six_months_unlock_percent_of_tokens, this.filterKey.max_six_months_unlock_percent_of_tokens]
                 },
                 set([ldot10, rdot10]) {
-                    this.ldot10 = ldot10
-                    this.rdot10 = rdot10
+                    this.filterKey.min_six_months_unlock_percent_of_tokens = ldot10
+                    this.filterKey.max_six_months_unlock_percent_of_tokens = rdot10
                 },
 
             },
@@ -5103,7 +5117,28 @@
         font-size: 15px;
         height: 30px;
     }
+    .cunningDrop2{
+        border-radius:20px !important;
+    }
+    .cunningDrop2 button{
+        border-radius:21px;
+        background: linear-gradient(142deg, rgba(43, 255, 77, 0.3) 3.11%, rgba(0, 0, 0, 0) 20.06%), rgba(255, 255, 255, 0.07);
+    box-shadow: inset 1px 1px 1px 0px rgb(52 215 80);
+    border-radius: 20px;
+    }
+    .cunningDrop2 button .preset-button-style
+    {
+        background-color: transparent !important;
+    }
 
+    .cunningDrop2 .preset-form form
+    {
+
+        border-radius:21px;
+        background: linear-gradient(142deg, rgba(43, 255, 77, 0.3) 3.11%, rgba(0, 0, 0, 0) 20.06%), rgba(255, 255, 255, 0.07) !important;
+    box-shadow: inset 1px 1px 1px 0px rgb(52 215 80);
+    border-radius: 20px;
+    }
     /* modal-preset-create___BV_modal_content_ */
 
     /* .oneToFive .vue-slider-dot{

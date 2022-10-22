@@ -16,7 +16,7 @@ const data = [
         },
         tdStyle: {
         },
-        thClass: 'nameWidth',
+        thClass: '',
         label: 'Token',
         stickyColumn: false,
         filterColumn:true,
