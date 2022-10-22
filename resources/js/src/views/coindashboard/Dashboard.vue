@@ -307,7 +307,7 @@
 
                                                                 </div>
                                                             </b-col>
-                                                            <b-col md="6" xl="6">
+                                                            <!-- <b-col md="6" xl="6">
                                                                 <div class="margin20">
 
                                                                     <b-form-checkbox @change="updateFields"
@@ -317,7 +317,7 @@
                                                                     </b-form-checkbox>
 
                                                                 </div>
-                                                            </b-col>
+                                                            </b-col> -->
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <div class="">
