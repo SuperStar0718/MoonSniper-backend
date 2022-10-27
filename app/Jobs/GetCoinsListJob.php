@@ -35,7 +35,7 @@ class GetCoinsListJob implements ShouldQueue
     public function handle()
     {
 
-        $client = new CoinGeckoClient();
+        $client = new CoinGeckoClient(false);
         $coinsList = $client->coins()->getList();
         $coinsList = collect($coinsList);
 
