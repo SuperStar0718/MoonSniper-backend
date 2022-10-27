@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'domain' => env('HORIZON_DOMAIN'),
+    'domain' => env('HORIZON_DOMAIN', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -165,23 +165,30 @@ return [
     */
 
     'defaults' => [
-        'supervisor-1' => [
+        'moon-sniper-worker' => [
             'connection' => 'redis',
-            'queue' => ['default'],
+            'queue' => ['default', 'moon-sniper-worker', 'cryptolist'],
             'balance' => 'auto',
-            'maxProcesses' => 1,
-            'maxTime' => 0,
-            'maxJobs' => 0,
+            'maxProcesses' => 10,
             'memory' => 128,
             'tries' => 1,
-            'timeout' => 60,
+            'nice' => 0,
+        ]
+        ,'moon-sniper-worker-long' => [
+            'connection' => 'redis_long',
+            'queue' => ['moon-sniper-worker-long'],
+            'balance' => 'auto',
+            'maxProcesses' => 3,
+            'memory' => 128,
+            'tries' => 2,
+            'timeout' => 900,
             'nice' => 0,
         ],
     ],
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
+            'moon-sniper-worker' => [
                 'maxProcesses' => 10,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
@@ -189,7 +196,7 @@ return [
         ],
 
         'local' => [
-            'supervisor-1' => [
+            'moon-sniper-worker' => [
                 'maxProcesses' => 3,
             ],
         ],
