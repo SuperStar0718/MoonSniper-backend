@@ -34,7 +34,7 @@ return new class extends Migration
             $table->text('coin_description')->nullable();
             $table->text('contract_address')->nullable();
             $table->string('tagline')->nullable();
-            $table->boolean('trading_history_flag');
+            $table->boolean('trading_history_flag')->default(0);
             $table->timestamps();
         });
     }

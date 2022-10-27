@@ -41,9 +41,11 @@ class GetCoinsData extends Command
     public function handle()
     {
         Log::info("GetCoinsDataNow");
+        $i=0;
         for($pageno = 1; $pageno < (CoinsList::count()/250)+1; $pageno ++)
         {
-            $job = (new GetCoinsDataJob($pageno))->onQueue('moon-sniper-worker');
+            $job = (new GetCoinsDataJob($pageno))->onQueue('moon-sniper-worker')->delay(now()->addseconds($i));
+            $i=$i+5;
             dispatch($job);
         }
 
