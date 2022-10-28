@@ -187,8 +187,8 @@ const data = [
         index: 21,
         label: 'Next Unlock Date',
         stickyColumn: false,
-        filterColumn:false,
-        visible: 1,
+        filterColumn:false,canHide:true,
+        visible: 3,
     },
     {
         key: 'next_unlock_status',
