@@ -225,15 +225,15 @@ const data = [
         index: 26,
         label: 'First VC Unlock',
         stickyColumn: false,
-        filterColumn:false,
-        visible: 1
+        filterColumn:false,canHide:true,
+        visible: 2
     },{
         key: 'end_vc_unlock',
         index: 27,
         label: 'End VC Unlock',
         stickyColumn: false,
-        filterColumn:false,
-        visible: 1
+        filterColumn:false,canHide:true,
+        visible: 2
     },{
         key: 'three_months_unlock_number_of_tokens',
         index: 28,

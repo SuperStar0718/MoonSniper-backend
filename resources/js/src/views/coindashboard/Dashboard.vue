@@ -636,6 +636,27 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[26].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs9">
+                                                                            First VC Unlock
+                                                                        </b-form-checkbox>
+                                                                    </div>
+                                                                </div>
+                                                            </b-col> <b-col md="12" xl="12">
+                                                                <div class="margin20">
+                                                                    <div class="">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[27].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs9">
+                                                                            End VC Unlock
+                                                                        </b-form-checkbox>
+                                                                    </div>
+                                                                </div>
+                                                            </b-col>
+                                                            <b-col md="12" xl="12">
+                                                                <div class="margin20">
+                                                                    <div class="">
+                                                                        <b-form-checkbox @change="updateFields"
                                                                             v-model="fields[31].filterColumn"
                                                                             name="cursor-pointer some-checkboxs9">
                                                                             6 Months Unlock # of Tokens
