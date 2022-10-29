@@ -59,12 +59,12 @@ class CoinUnlockDataScrapJob implements ShouldQueue
                      
                         if($tokenPer >=0 && $tokenPer <=8)
                         {
-                             $coinData->next_unlock_size =  'SMALL';
+                             $coinData->next_unlock_size =  'SMALL2';
                         }else if($tokenPer >8 && $tokenPer <=14)
                         {
-                              $coinData->next_unlock_size =  'MEDIUM';
+                              $coinData->next_unlock_size =  'MEDIUM2';
                         }else if($tokenPer >14){
-                             $coinData->next_unlock_size =  'BIG';
+                             $coinData->next_unlock_size =  'BIG2';
                         }
                     }
                     $coinData->save();
