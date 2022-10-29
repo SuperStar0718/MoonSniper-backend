@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UnlockingController;
+use App\Http\Controllers\ApplicationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,4 +21,5 @@ Route::get('/auth/google/redirect',[AuthController::class,'googleRedirect'])->na
 Route::get('/auth/facebook/redirect',[AuthController::class,'facebookRedirect'])->name('/auth/facebook/redirect');
 Route::get('/auth/logincompleted',[AuthController::class,'facebookRedirect'])->name('/auth/logincompleted');
 Route::get('/createroles',[AuthController::class,'CreateRoles'])->name('/createroles');
+Route::get('/loadfile',[UnlockingController::class,'dataFromUrl'])->name('/loadfile');
 Route::get('/{any}', [ApplicationController::class, 'index'])->where('any', '.*');
