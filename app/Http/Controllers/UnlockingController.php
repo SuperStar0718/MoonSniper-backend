@@ -333,7 +333,8 @@ class UnlockingController extends Controller
         $array = [];
         foreach ($data1->props->pageProps->info->data as $key => $value) {
             $coin = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)
-              ->first();
+                ->first();
+
             if ($coin) {
 
                 $coinData = CoinsData::where('coin_id', $coin->coin_id)->first();
@@ -348,24 +349,23 @@ class UnlockingController extends Controller
                         $coinData->next_unlock_number_of_tokens = $value->nextEventData->amount;
 
                         $tokenPer = $value->nextEventData->amount / $value->token->maxSupply * 100;
-                        $coinData->next_unlock_percent_of_tokens =  $tokenPer;
-                     
-                        if($tokenPer >=0 && $tokenPer <=8)
-                        {
-                             $coinData->next_unlock_size =  'SMALL';
-                        }else if($tokenPer >8 && $tokenPer <=14)
-                        {
-                              $coinData->next_unlock_size =  'MEDIUM';
-                        }else if($tokenPer >14){
-                             $coinData->next_unlock_size =  'BIG';
+                        $coinData->next_unlock_percent_of_tokens = $tokenPer;
+
+                        if ($tokenPer >= 0 && $tokenPer <= 8) {
+                            $coinData->next_unlock_size = 'SMALL';
+                        } else if ($tokenPer > 8 && $tokenPer <= 14) {
+                            $coinData->next_unlock_size = 'MEDIUM';
+                        } else if ($tokenPer > 14) {
+                            $coinData->next_unlock_size = 'BIG';
                         }
                     }
                     $coinData->save();
                 }
-               return $fgi =  json_decode($this->getChartDetails("https://token.unlocks.app/api/chart/acala"),true);
+                // $array[] = $coin->coin_id;
+            //    return $array[] =  json_decode($this->getChartDetails("https://token.unlocks.app/api/chart/acala"));
+                // echo '<pre>';
             }
 
-          
         }
         foreach ($data1->props->pageProps->info->data as $key => $value) {
             $array[] = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)->select('coin_data.*')
@@ -384,14 +384,56 @@ class UnlockingController extends Controller
         }
         return '';
     }
-    public function getChartDetails($url){
+    public function getChartDetails($url)
+    {
+
+    //     $curl = curl_init();
+    //     curl_setopt($curl, CURLOPT_URL, $url);
+    //     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    //     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    //     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    //     curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+    //         'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    //         'accept-language: en-US,en;q=0.9',
+    //         'cache-control: max-age=0',
+    //         // 'if-none-match: W/"g9yn8ynf9j7za4"',
+    //         'sec-ch-ua: "Google Chrome";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
+    //         'sec-ch-ua-mobile: ?0',
+    //         'sec-fetch-dest: document',
+    //         'sec-fetch-mode: navigate',
+    //         'sec-fetch-site: none',
+    //         'sec-fetch-user: ?1',
+    //         'upgrade-insecure-requests: 1',
+    //         'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
+    //     ));
+
+    //    return $str = curl_exec($curl);
+
+       
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_URL, $url);
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0');
+
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        $str = curl_exec($curl);
+
+        return $str;
+
         //Get Twitter account
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        $result = curl_exec($ch);
-        curl_close($ch);
-        return $result;
+        // $ch = curl_init();
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch, CURLOPT_URL, $url);
+        // $result = curl_exec($ch);
+        // curl_close($ch);
+        // return json_decode($result);
+
     }
 
 }
