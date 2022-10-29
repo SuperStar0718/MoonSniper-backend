@@ -29,7 +29,7 @@ class CoinDataScrapeCommand extends Command
      */
     public function handle()
     {
-        CoinUnlockDataScrapJob::dispatch();
+        CoinUnlockDataScrapJob::dispatch()->onQueue('moon-sniper-worker');
         return Command::SUCCESS;
     }
 }
