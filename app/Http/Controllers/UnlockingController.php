@@ -362,18 +362,16 @@ class UnlockingController extends Controller
                     }
                     $coinData->save();
                 }
+               return $fgi =  json_decode($this->getChartDetails("https://token.unlocks.app/api/chart/acala"),true);
             }
 
-            // $coinData->next_unlock_number_of_tokens =$value->nextEventData->amount;
-
-            // ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')->first();
+          
         }
         foreach ($data1->props->pageProps->info->data as $key => $value) {
             $array[] = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)->select('coin_data.*')
                 ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')->first();
 
         }
-        // return $data1->props->pageProps->info->data;
         return $array;
 
     }
@@ -385,6 +383,15 @@ class UnlockingController extends Controller
             return $r[0];
         }
         return '';
+    }
+    public function getChartDetails($url){
+        //Get Twitter account
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return $result;
     }
 
 }

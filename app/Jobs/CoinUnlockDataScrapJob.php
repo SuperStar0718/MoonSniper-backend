@@ -70,11 +70,13 @@ class CoinUnlockDataScrapJob implements ShouldQueue
                     $coinData->save();
                 }
             }
-
             // $coinData->next_unlock_number_of_tokens =$value->nextEventData->amount;
 
             // ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')->first();
         }
+
+
+
         foreach ($data1->props->pageProps->info->data as $key => $value) {
             $array[] = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)->select('coin_data.*')
                 ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')->first();
