@@ -642,7 +642,8 @@
                                                                         </b-form-checkbox>
                                                                     </div>
                                                                 </div>
-                                                            </b-col> <b-col md="12" xl="12">
+                                                            </b-col>
+                                                            <b-col md="12" xl="12">
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
@@ -891,10 +892,14 @@
                                 {{twenty4HConversation(data.value)}}
                             </div>
                         </template>
-                        <template #cell(next_unlock_date_text)="data">
-                            <div style="text-align: center;" class="d-flex2 justify-content-start"
+                        <template #cell(next_unlock_date)="data">
+                            <div v-if="data.value" style="text-align: center;" class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
-                                {{ data.value }}
+                                {{dateFormat2(data.value)}}
+                            </div>
+                            <div v-else style="text-align: center;" class="d-flex2 justify-content-start"
+                                :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
+                                {{data.item.next_unlock_date_text}}
                             </div>
                         </template>
                         <template #cell(next_unlock_status)="data">
@@ -1167,7 +1172,8 @@
 
                     <b-col>
                         <b-dropdown size="lg" variant="flat-secondary" style="padding:0px !important;"
-                            id="dropdown-left1" ref="dropdownpreset" no-caret class="cunningDrop cunningDrop2 preset-dropdown">
+                            id="dropdown-left1" ref="dropdownpreset" no-caret
+                            class="cunningDrop cunningDrop2 preset-dropdown">
                             <template #button-content>
                                 <div class="d-flex justify-content-between preset-button-style">
                                     <div v-if="selectedPreset" class="" style="font-size:1rem; padding-left: 28px;">
@@ -1184,8 +1190,9 @@
                                 style="z-index:999;">
                                 <div class="">
                                     <div class="d-flex justify-content-between">
-                                        <div class="text-secondary cursor-pointer px-2 text-capitalize" style="white-space: nowrap;overflow: hidden; text-overflow: ellipsis; " 
-                                        @click="clearPreset()">
+                                        <div class="text-secondary cursor-pointer px-2 text-capitalize"
+                                            style="white-space: nowrap;overflow: hidden; text-overflow: ellipsis; "
+                                            @click="clearPreset()">
                                             Preset Filter
                                         </div>
                                         <feather-icon icon="ChevronUpIcon" class="cursor-pointer darkWhiteText"
@@ -1195,7 +1202,8 @@
                                 <div class="" v-for="(preset,index) in presetFiltersapp1" :key="index"
                                     style="display:flex; padding: 4px;">
                                     <div @click="selectPreset(preset)"
-                                        class="darkWhiteText cursor-pointer px-2 text-capitalize" style="white-space: nowrap;overflow: hidden; text-overflow: ellipsis;">
+                                        class="darkWhiteText cursor-pointer px-2 text-capitalize"
+                                        style="white-space: nowrap;overflow: hidden; text-overflow: ellipsis;">
                                         {{preset.preset_name}}
                                     </div>
                                 </div>
@@ -1584,7 +1592,7 @@
 
                             </b-row>
                         </app-collapse-item>
-                        <app-collapse-item title="Unlocking" :isVisible="unlocking_mode" >
+                        <app-collapse-item title="Unlocking" :isVisible="unlocking_mode">
                             <b-row>
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
                                     <div class="mb-2">
@@ -1997,8 +2005,7 @@
                         || activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0
                          || activeData.total_volume
                          ||activeData.market_cap
-                         ||activeData.total_supply_percent" :isVisible="true"  title="Market Data"
-                        class="open w-100">
+                         ||activeData.total_supply_percent" :isVisible="true" title="Market Data" class="open w-100">
                         <b-card no-body>
                             <b-card-body style="margin-left: 10px; margin-top: 19px;">
                                 <b-row>
@@ -3222,8 +3229,8 @@
                     market_indicators: [],
                 },
                 loadedFields: {},
-                all_coins_mode:true,
-                unlocking_mode:false,
+                all_coins_mode: true,
+                unlocking_mode: false,
                 //slider value
 
                 // filterKey.min_market_cap,
@@ -3334,8 +3341,8 @@
         },
         methods: {
             closeDropDown() {
-             
-                  this.$refs.dropdownpreset.hide(true)
+
+                this.$refs.dropdownpreset.hide(true)
             },
             check(str) {
                 // console.log("here!");
@@ -4164,13 +4171,13 @@
                 if (this.params.api_mode == 2) {
                     this.params.api_mode = 1;
                     this.locked = false;
-                    this.all_coins_mode=true;
-                this.unlocking_mode=false;
+                    this.all_coins_mode = true;
+                    this.unlocking_mode = false;
                 } else {
                     this.locked = true;
                     this.params.api_mode = 2;
-                    this.all_coins_mode=false;
-                     this.unlocking_mode=true;
+                    this.all_coins_mode = false;
+                    this.unlocking_mode = true;
                 }
                 this.loadFileds();
                 this.loadCoins();
@@ -4335,10 +4342,9 @@
                 this.closeDropDown();
 
             },
-            clearPreset()
-            {
-            this.selectedPreset = null
-            this.closeDropDown();
+            clearPreset() {
+                this.selectedPreset = null
+                this.closeDropDown();
             },
             updateFields() {
                 let mode = 'all';
@@ -4555,7 +4561,8 @@
             value4: {
                 get() {
                     return [this.filterKey.min_average_sentiment_change, this.filterKey
-                        .max_average_sentiment_change]
+                        .max_average_sentiment_change
+                    ]
                 },
                 set([ldot4, rdot4]) {
                     this.filterKey.min_average_sentiment_change = ldot4
@@ -4574,7 +4581,8 @@
             value6: {
                 get() {
                     return [this.filterKey.min_social_engagement_change, this.filterKey
-                        .max_social_engagement_change]
+                        .max_social_engagement_change
+                    ]
                 },
                 set([ldot6, rdot6]) {
                     this.filterKey.min_social_engagement_change = ldot6
