@@ -2061,7 +2061,7 @@
                                                 :styles="spLineStyles" />
                                         </sparkline> -->
                                     </b-col>
-                                    <b-col style="
+                                    <b-col md="2" sm="4"  style=" 
                                         padding-left: 0px !important;
                                         justify-content: space-between;
                                         flex-direction: column;">
@@ -2675,7 +2675,14 @@
                                                 :series="supplyChart.series" />
                                         </div>
                                     </b-col>
-
+                                    <b-col v-if="   vestingDataChart.xaxis.categories.length>0">
+                                        <span class="mr-1">Vesting Chart: </span>
+                                      
+    
+                                        <vue-apex-charts class="full" width="100%" :dataLabels="true" type="area" 
+                                        height="290" :options="vestingDataChart" :series="vestingDataSerice">
+                                    </vue-apex-charts>
+                                    </b-col>
 
                                 </b-row>
 
@@ -3097,6 +3104,135 @@
                         x: {
                             format: "dd.MM.yyyy HH:mm"
                         }
+
+                    },
+
+                },
+                vestingDataSerice: [{
+                    name: '7 Days History',
+                    data: []
+                }],
+                vestingDataChart: {
+
+                    chart: {
+                        toolbar: {
+                            show: false,
+                        },
+                        id: '7days-history',
+                        height: 290,
+                        foreColor: 'black',
+                        stacked: true,
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    colors: ['#50DC5F','#9351db','#51b8db','#0e181c','#718187','#e5a0bd','#8ca837','#bcf21a','#d35a2a','#f4e111'],
+                    fill: {
+                        // shade: 'dark',
+                        // type: 'gradient',
+                        gradient: {
+                            // shadeIntensity: 1,
+                            // opacityFrom: 0.7,
+                            // gradientToColors: ['#50DC5F 30%'],
+                            // stops: [0, 90, 100]
+                        }
+                    },
+                    xaxis: {
+                        axisBorder: {
+                            show: true,
+                            color: '#78909C',
+                            offsetX: 0,
+                            offsetY: 0
+                        },
+                        labels: {
+                            show: true,
+                            style: {
+                                colors: '#78909C',
+                            },
+                            x: {
+                                format: "dd.MM.yyyy HH:mm"
+                            }
+                        },
+                        categories: [],
+                        type: 'datetime',
+                    },
+
+                    grid: {
+                        show: true,
+                        borderColor: '#424244',
+                        strokeDashArray: 0,
+                        position: 'back',
+                        xaxis: {
+                            lines: {
+                                show: false
+                            }
+                        },
+                        yaxis: {
+                            lines: {
+                                show: true
+                            }
+                        },
+                        row: {
+                            colors: undefined,
+                            opacity: 0.5
+                        },
+                        column: {
+                            colors: undefined,
+                            opacity: 0.5
+                        },
+
+                    },
+                    yaxis: {
+                        axisBorder: {
+                            show: true,
+                            color: '#78909C',
+                            offsetX: 0,
+                            offsetY: 0
+                        },
+                        type: "value",
+                        labels: {
+                            show: true,
+                            style: {
+                                colors: '#78909C',
+                            },
+                            formatter: function (value) {
+                                return value.toFixed(0);
+                            }
+                        },
+                    },
+                    stroke: {
+                        show: true,
+                        curve: 'smooth',
+                        lineCap: 'butt',
+                        width: 2,
+                        dashArray: 0,
+                        labels: {
+                            show: true,
+                            hideOverlappingLabels: true,
+                        }
+                    },
+                    tooltip: {
+                        // style: {
+                        //     colors: '#78909C',
+
+                        // },
+                        // shared: false,
+                        // y: {
+                        //     formatter: function (value) {
+                        //         return new Intl.NumberFormat('en-US', {
+                        //             minimumFractionDigits: 0,
+                        //             maximumFractionDigits: 15,
+                        //         }).format(value);
+                        //     }
+                        // },
+                        // x: {
+                        //     format: "dd.MM.yyyy HH:mm"
+                        // }
+                        x: {
+                        show: true,
+                        format: 'dd MMM yyyy',
+                        formatter: undefined,
+                    },
 
                     },
 
@@ -3899,7 +4035,9 @@
                 this.selectedContract = null;
                 this.supplyChart.series = [];
                 this.TradeHistoryOptions.xaxis.categories = [];
+                this.vestingDataChart.xaxis.categories =[];
                 this.seven_DaysChartseries[0].data = [];
+                this.vestingDataSerice = [];
                 let sparklines = item.sparkline_in_7d.split("|").map(Number);
                 sparklines = sparklines.slice(0, -1);
 
@@ -3962,6 +4100,37 @@
 
 
                     })
+                //vesting Chart 
+                if (item.vesting_chart) {
+                    let vestingData = JSON.parse(item.vesting_chart);
+                    let keys = Object.keys(vestingData[0])
+                    var filteredArray = keys.filter(function (e) {
+                        return e !== 'name'
+                    })
+                    //   filteredArray.forEach((element,index) => {
+                    //     this.vestingDataSerice[index] = {};
+                    //     this.vestingDataSerice[index].name = element;
+                    //     this.vestingDataSerice[index].data = [];
+                    //   });
+                    //   vestingData.forEach((element,index) => {
+                    //     console.log(element);
+                    //  });
+                    let dataval = [];
+                    filteredArray.forEach((element, index) => {
+                        this.vestingDataSerice[index] = {};
+                        this.vestingDataSerice[index].name = element;
+                        let oData = vestingData.map(item => item[element]);
+                        this.vestingDataSerice[index].data = oData;
+                    });
+                 
+                    vestingData.forEach(element => {
+                        const date = new Date(element.name);
+                        const timestamp = date.getTime();
+                        this.vestingDataChart.xaxis.categories.push(timestamp);
+                    });
+                    //   console.log(this.vestingDataSerice);
+                }
+
 
                 this.$bvModal.show('modal-details');
             },
