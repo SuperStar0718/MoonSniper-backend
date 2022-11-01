@@ -325,54 +325,34 @@ class UnlockingController extends Controller
     }
     public function dataFromUrl($coin)
     {
-        // return $coin;
-        return $array= json_decode($this->getChartDetails("https://token.unlocks.app/api/chart/".$coin.""));
-        // $jsonData = file_get_contents('https://token.unlocks.app/');
-        // $data = $this->getBetween($jsonData, 'type="application/json">', '</script>');
-        // $data1 = json_decode($data);
-        // $data1->props->pageProps->info->data;
-        // $array = [];
-        // foreach ($data1->props->pageProps->info->data as $key => $value) {
-        //     $coin = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)
-        //         ->first();
+        // return $array= json_decode($this->getChartDetails("https://token.unlocks.app/api/chart/".$coin.""));
+        $jsonData = file_get_contents('https://token.unlocks.app/');
+        $data = $this->getBetween($jsonData, 'type="application/json">', '</script>');
+        $data1 = json_decode($data);
+        $data1->props->pageProps->info->data;
+        $array = [];
+        foreach ($data1->props->pageProps->info->data as $key => $value) {
+            $coin = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)
+                ->first();
 
-        //     if ($coin) {
+            if ($coin ) {
+                $coinData = CoinsData::where('coin_id', $coin->coin_id)->first();
+                if($coinData &&  $coinData->vesting_status == 0)
+                {
+                $result =  json_decode($this->getChartDetails("https://token.unlocks.app/api/chart/".$coin->coin_id.""));
+                if($result && isset($result->data))
+                {
+                        $array[]= $coinData->vesting_chart = $result->data->data;
+                        $coinData->vesting_status = 1;
+                        $coinData->save();
+                    }
+                //   return $result->data->data;
+               }
+            }
 
-        //         $coinData = CoinsData::where('coin_id', $coin->coin_id)->first();
-
-        //         if ($coinData) {
-        //             $coinData->current_price = $value->token->price;
-        //             $coinData->fully_diluted_valuation = $value->token->fullyDiluted;
-        //             $coinData->market_cap = $value->token->marketCap;
-        //             $coinData->max_supply = $value->token->maxSupply;
-        //             if ($value->nextEventData != null) {
-        //                 $coinData->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
-        //                 $coinData->next_unlock_number_of_tokens = $value->nextEventData->amount;
-
-        //                 $tokenPer = $value->nextEventData->amount / $value->token->maxSupply * 100;
-        //                 $coinData->next_unlock_percent_of_tokens = $tokenPer;
-
-        //                 if ($tokenPer >= 0 && $tokenPer <= 8) {
-        //                     $coinData->next_unlock_size = 'SMALL';
-        //                 } else if ($tokenPer > 8 && $tokenPer <= 14) {
-        //                     $coinData->next_unlock_size = 'MEDIUM';
-        //                 } else if ($tokenPer > 14) {
-        //                     $coinData->next_unlock_size = 'BIG';
-        //                 }
-        //             }
-        //             $coinData->save();
-        //         }
-        //         // $array[] = $coin->coin_id;
-        //         // $array[$coin->coin_id] =  json_decode($this->getChartDetails("https://token.unlocks.app/api/chart/".$coin->coin_id.""));
-        //     }
-
-        // }
-        // // foreach ($data1->props->pageProps->info->data as $key => $value) {
-        // //     $array[] = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)->select('coin_data.*')
-        // //         ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')->first();
-
-        // // }
-        // return $array;
+        }
+       
+        return $array;
 
     }
 
@@ -388,45 +368,39 @@ class UnlockingController extends Controller
     public function getChartDetails($url)
     {
 
-    //     $curl = curl_init();
-    //     curl_setopt($curl, CURLOPT_URL, $url);
-    //     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    //     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-    //     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-    //     curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-    //         'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    //         'accept-language: en-US,en;q=0.9',
-    //         'cache-control: max-age=0',
-    //         // 'if-none-match: W/"g9yn8ynf9j7za4"',
-    //         'sec-ch-ua: "Google Chrome";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
-    //         'sec-ch-ua-mobile: ?0',
-    //         'sec-fetch-dest: document',
-    //         'sec-fetch-mode: navigate',
-    //         'sec-fetch-site: none',
-    //         'sec-fetch-user: ?1',
-    //         'upgrade-insecure-requests: 1',
-    //         'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
-    //     ));
-
-    //    return $str = curl_exec($curl);
-
-       
+        
         $curl = curl_init();
-
         curl_setopt($curl, CURLOPT_URL, $url);
-
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0');
-
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'accept-language: en-US,en;q=0.9,gu;q=0.8,zh-CN;q=0.7,zh;q=0.6,te;q=0.5',
+            'cache-control: max-age=0',
+            'cookie: _ga=GA1.1.198816369.1666948558; _hjSessionUser_3057115=eyJpZCI6IjRhMzNkYWVkLWFmZmMtNTdkZi04Mjg0LTcwZDAyNjM0ODlhMiIsImNyZWF0ZWQiOjE2NjY5NDg1NTgxMDgsImV4aXN0aW5nIjp0cnVlfQ==; _hjSession_3057115=eyJpZCI6ImVmNjc3ZGNjLWE0ZjEtNGQ1YS04MzgxLWMxNTNlN2NjZGVhNyIsImNyZWF0ZWQiOjE2NjcyODIwNzg5MDUsImluU2FtcGxlIjpmYWxzZX0=; _hjAbsoluteSessionInProgress=0; _hjIncludedInSessionSample=0; csrfSecret=5r6LUd9a-iXsrpe0HimUmksLRS0wdjNsNnaw.iWfA9P87zb8HbR%252Fo0NGHOKsPXqLD7BAgtl7RScYy4LE; amp_46195f=ovvAh7Wzz3MabEYXZm9fAN...1ggos792c.1ggouroei.1f.0.1f; _ga_75CFN3DMPM=GS1.1.1667282078.10.1.1667284985.52.0.0; uNchBAnD=oAuW6l4u-6mWSRVkJLou4zG7Z35xzV_OOG-0.vCOnwC%2BO0fGkxw3ILHbKmlW5FF8hhYMnwv%2FlKSqufjM',
+            'if-none-match: W/"3bgljgn2u32ujh"',
+            'sec-ch-ua: "Chromium";v="106", "Google Chrome";v="106", "Not;A=Brand";v="99"',
+            'sec-ch-ua-mobile: ?0',
+            // 'sec-ch-ua-platform: "Windows"',
+            'sec-fetch-dest: document',
+            'sec-fetch-mode: navigate',
+            'sec-fetch-site: none',
+            'sec-fetch-user: ?1',
+            'upgrade-insecure-requests: 1',
+            'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36',
+        ));
+        return $str = curl_exec($curl);
 
-        $str = curl_exec($curl);
-
-        return $str;
-
+        // $curl = curl_init();
+        // curl_setopt($curl, CURLOPT_URL, $url);
+        // curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        // curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0');
+        // curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        // curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        // $str = curl_exec($curl);
+        // return $str;
         //Get Twitter account
         // $ch = curl_init();
         // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -434,6 +408,7 @@ class UnlockingController extends Controller
         // $result = curl_exec($ch);
         // curl_close($ch);
         // return json_decode($result);
+
 
     }
 

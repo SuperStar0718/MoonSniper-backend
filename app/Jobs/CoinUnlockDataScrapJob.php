@@ -56,6 +56,7 @@ class CoinUnlockDataScrapJob implements ShouldQueue
 
                         $tokenPer = $value->nextEventData->amount / $value->token->maxSupply * 100;
                         $coinData->next_unlock_percent_of_tokens =  $tokenPer;
+                        $coinData->vesting_status =  0;
                      
                         if($tokenPer >=0 && $tokenPer <=8)
                         {
