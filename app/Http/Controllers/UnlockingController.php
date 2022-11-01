@@ -323,10 +323,10 @@ class UnlockingController extends Controller
             $this->strposX($haystack, $needle, $number - 1) + strlen($needle) : 0
         );
     }
-    public function dataFromUrl()
+    public function dataFromUrl($coin)
     {
-
-        return $array= json_decode($this->getChartDetails("https://token.unlocks.app/api/chart/acala"));
+        // return $coin;
+        return $array= json_decode($this->getChartDetails("https://token.unlocks.app/api/chart/".$coin.""));
         // $jsonData = file_get_contents('https://token.unlocks.app/');
         // $data = $this->getBetween($jsonData, 'type="application/json">', '</script>');
         // $data1 = json_decode($data);
