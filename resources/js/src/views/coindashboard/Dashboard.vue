@@ -900,7 +900,7 @@
                             </div>
                             <div v-else style="text-align: center;" class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
-                                {{dateFormat2(data.item.next_unlock_date_text)}}
+                                {{dateFormat3(data.item.next_unlock_date)}}
                             </div>
                         </template>
                         <template #cell(next_unlock_status)="data">
@@ -3603,6 +3603,21 @@
                 if (!isNaN(d)) {
                     return d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
                 }
+            },
+            dateFormat3(val) {
+                if (val != null)
+               {
+                let d = new Date(val)
+                if (!isNaN(d)) {
+                    return [d.getMonth()+1,
+                        d.getDate(),
+                        d.getFullYear()].join('.')+' '+
+                        [d.getHours()==0?'00':d.getHours(),
+                        d.getMinutes()==0?'00':d.getMinutes(),
+                        d.getSeconds()==0?'00':d.getSeconds()].join(':');
+                }
+               }
+
             },
             xfromlunch(val, val2) {
                 if (val2 == 'roi_times') {
