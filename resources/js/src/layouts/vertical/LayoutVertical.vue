@@ -17,7 +17,9 @@ import AppCustomizer from '@core/layouts/components/app-customizer/AppCustomizer
 import { $themeConfig } from '@themeConfig'
 import navMenuItems from '@/navigation/vertical'
 import axios from '@axios';
+import store from '@/store/index'
 export default {
+  
   components: {
     AppCustomizer,
     LayoutVertical,
@@ -40,10 +42,14 @@ export default {
       })
     }
   },
-  mounted()
-  {
-      this.loadPermissions()
-  }
+    mounted()
+    {
+      if(window.innerWidth <1199)
+      {
+        store.commit('verticalMenu/UPDATE_VERTICAL_MENU_COLLAPSED', true)
+      }
+        this.loadPermissions()
+    }
 }
 </script>
 <style>

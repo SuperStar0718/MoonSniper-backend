@@ -892,14 +892,15 @@
                                 {{twenty4HConversation(data.value)}}
                             </div>
                         </template>
-                        <template #cell(next_unlock_date)="data">
+                        <template #cell(next_unlock_date_text)="data">
                             <div v-if="data.value" style="text-align: center;" class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
-                                {{dateFormat2(data.value)}}
+                                {{data.value}}
+
                             </div>
                             <div v-else style="text-align: center;" class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
-                                {{data.item.next_unlock_date_text}}
+                                {{dateFormat2(data.item.next_unlock_date_text)}}
                             </div>
                         </template>
                         <template #cell(next_unlock_status)="data">
@@ -1777,8 +1778,7 @@
                 <div slot="modal-title">
                     <div class="w-full justify-content-between d-flex" style="margin-top: 10px; margin-left: 10px;">
                         <div class="d-inline">
-                            <div class="rank_slot darkWhiteText" style="margin-bottom: 8px;font-family: 'Poppins';
-                                opacity: 0.6 !important;
+                            <div class="rank_slot darkWhiteText" style="margin-bottom: 8px;font-family: 'Poppins'; opacity: 0.6 !important;
                                 font-style: normal;
                                 font-weight: 300;
                                 font-size: 12px;

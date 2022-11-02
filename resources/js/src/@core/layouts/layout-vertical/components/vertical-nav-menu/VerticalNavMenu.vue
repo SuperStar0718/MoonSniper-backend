@@ -40,8 +40,8 @@
           </li> -->
 
           <!-- Toggler Button -->
-          <li class="nav-item mr-auto">
-            <b-link class="nav-link modern-nav-toggle">
+          <li class="nav-item mr-auto lg-d-none-max">
+            <b-link class="nav-link modern-nav-toggle  ">
               <feather-icon
               icon="XIcon"
               size="25"
@@ -51,7 +51,7 @@
               <feather-icon
               :icon="collapseTogglerIconFeather"
               size="25"
-              class="d-noned-xl-block collapse-toggle-icon toggle-icon"
+              class="d-noned-xl-block collapse-toggle-icon toggle-icon lg-d-none-max"
                 @click="toggleCollapsed"
               />
             </b-link>
@@ -59,7 +59,7 @@
 
           <!--Dark Toggle button-->
           <li class="nav-item nav-toggle m-auto rounded-pill" style="margin-right:0 !important; padding-right: 1rem !important; padding-left: 1rem; border: 3px black solid;">
-            <dark-Toggler class="d-none d-lg-block" />
+            <dark-Toggler class="d- d-lg-block" />
           </li>
         </ul>
       </slot>
@@ -231,5 +231,9 @@ export default {
   padding:1px;
   color:black;
 }
-
+@media (max-width: 1199px) {
+.lg-d-none-max{
+   display: none;
+  }
+}
 </style>

@@ -183,7 +183,7 @@ const data = [
         visible: 2
     },
     {
-        key: 'next_unlock_date',
+        key: 'next_unlock_date_text',
         index: 21,
         label: 'Next Unlock Date',
         stickyColumn: false,
