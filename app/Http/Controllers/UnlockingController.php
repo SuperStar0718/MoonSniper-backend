@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use DateTime;
+use Carbon\Carbon;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
 use App\Models\UnlockingPdf;
-use Carbon\Carbon;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Notifications\NotifyTokenUnlockNotification;
+use Illuminate\Support\Facades\Auth;
 
 class UnlockingController extends Controller
 {
@@ -325,6 +327,7 @@ class UnlockingController extends Controller
     }
     public function dataFromUrl($coin)
     {
+        
         // return $array= json_decode($this->getChartDetails("https://token.unlocks.app/api/chart/".$coin.""));
         $jsonData = file_get_contents('https://token.unlocks.app/');
         $data = $this->getBetween($jsonData, 'type="application/json">', '</script>');
@@ -410,6 +413,46 @@ class UnlockingController extends Controller
         // return json_decode($result);
 
 
+    }
+    public function notifyTokenUnlock(Request $request)
+    {
+        $user = Auth::user();
+        
+        $checkNotification =  $user->notifications()
+        ->whereJsonContains('data', ['symbol' => $request->symbol])
+        ->first();
+        if(!$checkNotification)
+        {
+            $token =  DB::table('coins')
+            ->select('coins.coin_id','coins.name','coins.symbol','coin_data.image','coin_data.current_price','coin_data.market_cap_rank','coin_data.next_unlock_date','coin_data.next_unlock_date','coin_data.next_unlock_date_text','coin_data.next_unlock_number_of_tokens')
+           ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
+           ->where('coins.symbol',$request->symbol)
+           ->first();
+            $user->notify((new NotifyTokenUnlockNotification($token)));
+            return response()->json(['status'=>true,'notification'=>'sent']);
+
+        }else{
+            $checkNotification->delete();
+         return response()->json(['status'=>true,'notification'=>'removed']);
+
+        }
+       
+    }
+    public function checkCoinNotified(Request $request)
+    {
+        $user = Auth::user();
+        $checkNotification =  $user->notifications()
+        ->whereJsonContains('data', ['symbol' => $request->symbol])
+        ->first();
+        if($checkNotification)
+        {
+            return response()->json(['status'=>true,'notification'=>'sent']);
+
+        }else{
+          
+         return response()->json(['status'=>true,'notification'=>'notsent']);
+
+        }
     }
 
 }

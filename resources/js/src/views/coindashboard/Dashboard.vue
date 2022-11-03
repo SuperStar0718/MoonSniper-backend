@@ -896,11 +896,33 @@
                             <div v-if="data.value" style="text-align: center;" class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
                                 {{data.value}}
-
+                                <div v-if="data.item.next_unlock_date">
+                                    <vac :end-time="getTimeStamp(data.item.next_unlock_date)">
+                                        <template
+                                          v-slot:process="{ timeObj }">
+                                          <span>{{ `${timeObj.d}d - ${timeObj.h} : ${timeObj.m} : ${timeObj.s}` }}</span>
+                                        </template>
+                                        <template
+                                          v-slot:finish>
+                                            <span></span>
+                                        </template>
+                                      </vac>
+                                </div>
                             </div>
-                            <div v-else style="text-align: center;" class="d-flex2 justify-content-start"
+                            <div v-else-if="data.item.next_unlock_date" style="text-align: center;" class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
                                 {{dateFormat3(data.item.next_unlock_date)}}
+                                <br/>
+                                <vac :end-time="getTimeStamp(data.item.next_unlock_date)">
+                                    <template
+                                      v-slot:process="{ timeObj }">
+                                      <span>{{ `${timeObj.d}d - ${timeObj.h} : ${timeObj.m} : ${timeObj.s}` }}</span>
+                                    </template>
+                                    <template
+                                      v-slot:finish>
+                                        <span></span>
+                                    </template>
+                                  </vac>
                             </div>
                         </template>
                         <template #cell(next_unlock_status)="data">
@@ -2009,6 +2031,7 @@
                         <b-card no-body>
                             <b-card-body style="margin-left: 10px; margin-top: 19px;">
                                 <b-row>
+
                                     <b-col md="10" sm="8" class="text-center sparlineChat mb-1"
                                         style="margin-left: -40px;"
                                         v-if="activeData.sparkline_in_7d&& activeData.sparkline_in_7d.length>0">
@@ -2061,7 +2084,7 @@
                                                 :styles="spLineStyles" />
                                         </sparkline> -->
                                     </b-col>
-                                    <b-col md="2" sm="4"  style=" 
+                                    <b-col md="2" sm="4" style=" 
                                         padding-left: 0px !important;
                                         justify-content: space-between;
                                         flex-direction: column;">
@@ -2396,12 +2419,13 @@
                         ||activeData.six_months_unlock_percent_of_tokens
                         ||activeData.six_months_unlock_size
                         ||activeData.total_supply_percent ">
-                        <div class="container d-flex" style="padding:0px;">
+                        <div class="container d-flex" style="padding:0px;" v-if="activeData.next_unlock_date">
                             <div class="d-inline"
                                 style="width:20%; font-family: 'Poppins-Light'; margin-right: 24px;  font-style: normal;  font-weight: 400; font-size: 12px;">
                                 <span style="opacity: 0.5;">Next Unlock Date</span><br>
-                                <span>05 Sep 22</span><br>
-                                <span style="opacity: 0.5;">15:00</span>
+                                <span>{{ getDateAndTime(activeData.next_unlock_date,'date') }}</span><br>
+                                <span
+                                    style="opacity: 0.5;">{{ getDateAndTime(activeData.next_unlock_date,'time') }}</span>
                             </div>
                             <div class="d-inline-flex justify-content-between" style="">
                                 <div class="d-iline" style="max-width:65px">
@@ -2409,64 +2433,124 @@
                                         <div class="str_green_gradient text-center m-auto vertical-items-center"
                                             style="width:64px; height:64px; border-radius: 10px; background: black !important;">
                                             <span
-                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 26px; color: #2BFF4D">2%</span><br>
+                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 26px; color: #2BFF4D" v-if="activeData.next_unlock_percent_of_tokens">{{ roundData2(activeData.next_unlock_percent_of_tokens,1) }}%</span><br>
                                             <span
-                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 14px; color: #2BFF4D">0.2mil</span>
+                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 14px; color: #2BFF4D">{{ roundData2(activeData.next_unlock_percent_of_tokens/1000000,2)  }}mil</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="d-iline text-center" style="margin-left: 12px;">
-                                    <div style="max-width:50px">
-                                        <div class="radius_gradient" style="border-radius:10px">
-                                            <div class="str_green_gradient text-center"
-                                                style="width:49px; height:49px; border-radius: 10px;">
-                                                <span
-                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">1</span><br>
+                                <vac :end-time="getTimeStamp(activeData.next_unlock_date)">
+                                    <template v-slot:process="{ timeObj }">
+                                        <div class="d-flex">
+                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                <div style="max-width:50px">
+                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                        <div class="str_green_gradient text-center"
+                                                            style="width:49px; height:49px; border-radius: 10px;">
+                                                            <span
+                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">{{ timeObj.d }}</span><br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>D</div>
+                                            </div>
+                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                <div style="max-width:50px">
+                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                        <div class="str_green_gradient text-center"
+                                                            style="width:49px ; height:49px ; border-radius: 10px;">
+                                                            <span
+                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">{{ timeObj.h }}</span><br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>H</div>
+                                            </div>
+                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                <div style="max-width:50px">
+                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                        <div class="str_green_gradient text-center"
+                                                            style="width:49px ; height:49px ; border-radius: 10px;">
+                                                            <span
+                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">{{ timeObj.m }}</span><br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>M</div>
+                                            </div>
+                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                <div style="max-width:50px">
+                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                        <div class="str_green_gradient text-center"
+                                                            style="width:49px ; height:49px ; border-radius: 10px;">
+                                                            <span
+                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">{{ timeObj.s }}</span><br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>S</div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>D</div>
-                                </div>
-                                <div class="d-iline text-center" style="margin-left: 12px;">
-                                    <div style="max-width:50px">
-                                        <div class="radius_gradient" style="border-radius:10px">
-                                            <div class="str_green_gradient text-center"
-                                                style="width:49px ; height:49px ; border-radius: 10px;">
-                                                <span
-                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">22</span><br>
+                                    </template>
+                                    <template v-slot:finish>
+                                        <div class="d-flex">
+                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                <div style="max-width:50px">
+                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                        <div class="str_green_gradient text-center"
+                                                            style="width:49px; height:49px; border-radius: 10px;">
+                                                            <span
+                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">0</span><br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>D</div>
+                                            </div>
+                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                <div style="max-width:50px">
+                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                        <div class="str_green_gradient text-center"
+                                                            style="width:49px ; height:49px ; border-radius: 10px;">
+                                                            <span
+                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">00</span><br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>H</div>
+                                            </div>
+                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                <div style="max-width:50px">
+                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                        <div class="str_green_gradient text-center"
+                                                            style="width:49px ; height:49px ; border-radius: 10px;">
+                                                            <span
+                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">00</span><br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>M</div>
+                                            </div>
+                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                <div style="max-width:50px">
+                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                        <div class="str_green_gradient text-center"
+                                                            style="width:49px ; height:49px ; border-radius: 10px;">
+                                                            <span
+                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">00</span><br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>S</div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>H</div>
-                                </div>
-                                <div class="d-iline text-center" style="margin-left: 12px;">
-                                    <div style="max-width:50px">
-                                        <div class="radius_gradient" style="border-radius:10px">
-                                            <div class="str_green_gradient text-center"
-                                                style="width:49px ; height:49px ; border-radius: 10px;">
-                                                <span
-                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">44</span><br>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>M</div>
-                                </div>
-                                <div class="d-iline text-center" style="margin-left: 12px;">
-                                    <div style="max-width:50px">
-                                        <div class="radius_gradient" style="border-radius:10px">
-                                            <div class="str_green_gradient text-center"
-                                                style="width:49px ; height:49px ; border-radius: 10px;">
-                                                <span
-                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">21</span><br>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>S</div>
-                                </div>
+                                    </template>
+                                </vac>
                             </div>
                             <div class="d-inline ml-2 mt-1" style="border-radius: 10px; margin-left: 45px;">
-                                <button class="rounded-pill px-2" style="padding:6px">
+                                <button  v-if="notified != true" class="rounded-pill px-2" style="padding:6px" @click="notifyMe(activeData.symbol)">
                                     <feather-icon size="15" icon="BellIcon" /> Notify Me</button>
+                                <button  v-else class="rounded-pill px-2" style="padding:6px" @click="notifyMe(activeData.symbol)">
+                                        <feather-icon size="15" icon="BellIcon" /> Remove Notification</button>
                             </div>
                         </div>
                         <b-card no-body class="mb-1">
@@ -2677,11 +2761,11 @@
                                     </b-col>
                                     <b-col v-if="   vestingDataChart.xaxis.categories.length>0">
                                         <span class="mr-1">Vesting Chart: </span>
-                                      
-    
-                                        <vue-apex-charts class="full" width="100%" :dataLabels="true" type="area" 
-                                        height="290" :options="vestingDataChart" :series="vestingDataSerice">
-                                    </vue-apex-charts>
+
+
+                                        <vue-apex-charts class="full" width="100%" :dataLabels="true" type="area"
+                                            height="290" :options="vestingDataChart" :series="vestingDataSerice">
+                                        </vue-apex-charts>
                                     </b-col>
 
                                 </b-row>
@@ -2801,7 +2885,6 @@
     import 'cleave.js/dist/addons/cleave-phone.us'
     import 'bootstrap-icons/font/bootstrap-icons';
     import 'bootstrap-icons/font/bootstrap-icons.css';
-
     export default {
         components: {
             BTable,
@@ -3126,7 +3209,9 @@
                     dataLabels: {
                         enabled: false
                     },
-                    colors: ['#50DC5F','#9351db','#51b8db','#0e181c','#718187','#e5a0bd','#8ca837','#bcf21a','#d35a2a','#f4e111'],
+                    colors: ['#50DC5F', '#9351db', '#51b8db', '#0e181c', '#718187', '#e5a0bd', '#8ca837', '#bcf21a',
+                        '#d35a2a', '#f4e111'
+                    ],
                     fill: {
                         // shade: 'dark',
                         // type: 'gradient',
@@ -3229,10 +3314,10 @@
                         //     format: "dd.MM.yyyy HH:mm"
                         // }
                         x: {
-                        show: true,
-                        format: 'dd MMM yyyy',
-                        formatter: undefined,
-                    },
+                            show: true,
+                            format: 'dd MMM yyyy',
+                            formatter: undefined,
+                        },
 
                     },
 
@@ -3349,7 +3434,10 @@
                         text: 'LARGE'
                     },
                 ],
-                activeData: {},
+                activeData: {
+                    notified:false,
+                },
+                notified :false,
                 fagLoad: false,
                 userData: null,
                 presetName: null,
@@ -3605,19 +3693,66 @@
                 }
             },
             dateFormat3(val) {
-                if (val != null)
-               {
-                let d = new Date(val)
-                if (!isNaN(d)) {
-                    return [d.getMonth()+1,
-                        d.getDate(),
-                        d.getFullYear()].join('.')+' '+
-                        [d.getHours()==0?'00':d.getHours(),
-                        d.getMinutes()==0?'00':d.getMinutes(),
-                        d.getSeconds()==0?'00':d.getSeconds()].join(':');
+                if (val != null) {
+                    let d = new Date(val)
+                    if (!isNaN(d)) {
+                        return [d.getMonth() + 1,
+                            d.getDate(),
+                            d.getFullYear()
+                        ].join('.') + ' ' + [d.getHours() == 0 ? '00' : d.getHours(),
+                            d.getMinutes() == 0 ? '00' : d.getMinutes(),
+                            d.getSeconds() == 0 ? '00' : d.getSeconds()
+                        ].join(':');
+                    }
                 }
-               }
 
+            },
+            getTimeStamp(data) {
+                let d = new Date(data);
+                if (data != null && !isNaN(d)) {
+                    return d.getTime();
+                } else {
+                    return new Date().getTime();;
+                }
+            },
+            notifyMe(symbol)
+            {
+                axios.post('api/notify-unlock-token', {symbol:symbol}).then(res => {
+
+                    if (res.data.status == true) {
+                        if(res.data.notification == 'sent')
+                        {
+                            this.notified = true;
+                        }else{
+                            this.notified = false;
+                        }
+                    }
+
+                })
+
+
+            },
+            getDateAndTime(date, type) {
+
+                if (date != null) {
+                    let d = new Date(date)
+                    const monthNames = ["Jan", "Feb", "March", "April", "May", "June",
+                        "July", "Aug", "Sep", "Oct", "Nov", "Dec"
+                    ];
+                    if (!isNaN(d)) {
+                        if (type == 'date') {
+                            return [
+                                d.getDate(),monthNames[d.getMonth()],
+                                d.getFullYear()
+                            ].join(' ');
+                        }else if(type =='time'){
+                              return [d.getHours() == 0 ? '00' : d.getHours(),
+                                d.getMinutes() == 0 ? '00' : d.getMinutes(),
+                                d.getSeconds() == 0 ? '00' : d.getSeconds(),
+                            ].join(':');
+                        }
+                    }
+                }
             },
             xfromlunch(val, val2) {
                 if (val2 == 'roi_times') {
@@ -4047,10 +4182,11 @@
                 }
             },
             async detailsModel(item) {
+                this.notified = false;
                 this.selectedContract = null;
                 this.supplyChart.series = [];
                 this.TradeHistoryOptions.xaxis.categories = [];
-                this.vestingDataChart.xaxis.categories =[];
+                this.vestingDataChart.xaxis.categories = [];
                 this.seven_DaysChartseries[0].data = [];
                 this.vestingDataSerice = [];
                 let sparklines = item.sparkline_in_7d.split("|").map(Number);
@@ -4069,7 +4205,20 @@
                 if (typeof item.contract_address == 'string') {
                     item.contract_address = JSON.parse(item.contract_address);
                 }
+               
                 this.activeData = item;
+                await axios.post('api/check-coin-notified', {
+                        symbol: item.symbol,
+                       })
+                    .then(res => {
+                        if(res.data.notification == 'sent')
+                        {
+                            this.notified = true;
+                        }else{
+                            this.notified = false;
+                        }
+                    })
+                
                 await axios.post('api/get_trading_volume_history', {
                         coin_id: item.coin_id,
                         symbol: item.symbol
@@ -4137,7 +4286,7 @@
                         let oData = vestingData.map(item => item[element]);
                         this.vestingDataSerice[index].data = oData;
                     });
-                 
+
                     vestingData.forEach(element => {
                         const date = new Date(element.name);
                         const timestamp = date.getTime();

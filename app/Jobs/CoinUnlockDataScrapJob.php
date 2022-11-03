@@ -54,19 +54,24 @@ class CoinUnlockDataScrapJob implements ShouldQueue
                         $coinData->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
                         $coinData->next_unlock_number_of_tokens = $value->nextEventData->amount;
 
-                        $tokenPer = $value->nextEventData->amount / $value->token->maxSupply * 100;
-                        $coinData->next_unlock_percent_of_tokens =  $tokenPer;
+                        if($value->token->maxSupply!=0)
+                        {
+                                $tokenPer = $value->nextEventData->amount / $value->token->maxSupply * 100;
+                                if($tokenPer >=0 && $tokenPer <=8)
+                                {
+                                    $coinData->next_unlock_size =  'SMALL';
+                                }else if($tokenPer >8 && $tokenPer <=14)
+                                {
+                                    $coinData->next_unlock_size =  'MEDIUM';
+                                }else if($tokenPer >14){
+                                    $coinData->next_unlock_size =  'BIG';
+                                }
+                                $coinData->next_unlock_percent_of_tokens =  $tokenPer;
+
+                        }
                         $coinData->vesting_status =  0;
                      
-                        if($tokenPer >=0 && $tokenPer <=8)
-                        {
-                             $coinData->next_unlock_size =  'SMALL';
-                        }else if($tokenPer >8 && $tokenPer <=14)
-                        {
-                              $coinData->next_unlock_size =  'MEDIUM';
-                        }else if($tokenPer >14){
-                             $coinData->next_unlock_size =  'BIG';
-                        }
+                        
                     }
                     $coinData->save();
                 }
