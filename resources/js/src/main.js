@@ -23,7 +23,6 @@ import '@/libs/tour'
 import VueSocialauth from 'vue-social-auth'
 import vueNumeralFilterInstaller from 'vue-numeral-filter';
 import Sparkline from 'vue-sparklines'
-import vueAwesomeCountdown from 'vue-awesome-countdown'
 
 // Axios Mock Adapter
 // import '@/@fake-db/db'
@@ -36,7 +35,6 @@ Vue.use(Sparkline)
 // Composition API
 Vue.use(VueCompositionAPI)
 Vue.use(VueInputRestrictionDirectives);
-Vue.use(vueAwesomeCountdown, 'vac')
 
 Vue.use(VueSocialauth,{
 

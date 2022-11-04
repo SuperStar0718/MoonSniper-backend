@@ -272,11 +272,11 @@
     &.vertical-menu-modern {
       // not using this class in below < 992
       .main-menu {
-        width: 80px;
+        width: 0;
       }
       .navbar {
         .navbar-header {
-          width: 80px;
+          width: 0;
         }
       }
       .content,
@@ -289,7 +289,7 @@
           margin-left: 0;
         }
         .main-menu {
-          width: 80px;
+          width: 0;
         }
       }
     }
@@ -302,11 +302,11 @@
     &.vertical-menu-modern {
       // not using this class <992
       .main-menu {
-        width: 80px;
+        width: 0;
       }
       .navbar {
         .navbar-header {
-          width: 80px;
+          width: 0;
         }
       }
       .content,

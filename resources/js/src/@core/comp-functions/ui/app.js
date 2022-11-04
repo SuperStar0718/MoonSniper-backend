@@ -8,7 +8,6 @@ export const useResponsiveAppLeftSidebarVisibility = () => {
   watch(currentBreakPoint, (val, oldVal) => {
     // Reset chats & contacts left sidebar
     if (oldVal === 'md' && val === 'lg') mqShallShowLeftSidebar.value = false
-    
   })
 
   return {

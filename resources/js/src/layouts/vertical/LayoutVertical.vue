@@ -17,9 +17,7 @@ import AppCustomizer from '@core/layouts/components/app-customizer/AppCustomizer
 import { $themeConfig } from '@themeConfig'
 import navMenuItems from '@/navigation/vertical'
 import axios from '@axios';
-import store from '@/store/index'
 export default {
-  
   components: {
     AppCustomizer,
     LayoutVertical,
@@ -34,6 +32,7 @@ export default {
     loadPermissions()
     {
       axios.post('/api/abilities').then(res=>{
+        console.log(res,'res')
       let userData =  localStorage.getItem('userData')
        let jsonUserData  =  JSON.parse(userData);
        jsonUserData.ability = res.data
@@ -42,14 +41,10 @@ export default {
       })
     }
   },
-    mounted()
-    {
-      if(window.innerWidth <1199)
-      {
-        store.commit('verticalMenu/UPDATE_VERTICAL_MENU_COLLAPSED', true)
-      }
-        this.loadPermissions()
-    }
+  mounted()
+  {
+      this.loadPermissions()
+  }
 }
 </script>
 <style>
