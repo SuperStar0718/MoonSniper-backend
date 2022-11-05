@@ -38,7 +38,7 @@ return new class extends Migration
             $table->double('atl')->nullable();
             $table->text('atl_change_percentage')->nullable();
             $table->dateTime('atl_date')->nullable();
-            $table->bigInteger('roi_times')->nullable();
+            $table->float('roi_times',8,2)->nullable();
             $table->text('roi_currency')->nullable();
             $table->double('roi_percentage')->nullable();
             $table->double('price_change_percentage_14d_in_currency')->nullable();

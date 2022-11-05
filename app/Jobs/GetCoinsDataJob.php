@@ -78,10 +78,10 @@ class GetCoinsDataJob implements ShouldQueue
                     }
 
                     $roi_times = "";
-                    $roi_currency = "";
+                    $roi_currency = "usd";
                     $roi_percentage = "";
 
-                    if ($item["roi"] != null) {
+                    /*if ($item["roi"] != null) {
                         $roi_times = $item["roi"]["times"];
                         $roi_currency = $item["roi"]["currency"];
                         $roi_percentage = $item["roi"]["percentage"];
@@ -89,7 +89,7 @@ class GetCoinsDataJob implements ShouldQueue
                         $roi_times = "";
                         $roi_currency = "";
                         $roi_percentage = "";
-                    }
+                    }*/
 
 
                     $total_supply_percent = null;
