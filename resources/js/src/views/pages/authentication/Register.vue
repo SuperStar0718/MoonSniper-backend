@@ -7,7 +7,7 @@
                 <!-- <vuexy-logo /> -->
                 <img src="/images/moon/icon/fullcolor.png" alt="" style="width:80px">
                 <h2 class="brand-text text-primary ml-1 my-auto">
-                    <img src="/images/moon/text/fullcolor.png" alt="" style="height:30px">
+                    <img src="/images/moon/text/fullcolor.png" alt="" class="Logo-image" style="height:30px">
                 </h2>
             </b-link>
             <!-- /Brand logo-->
@@ -321,7 +321,13 @@
 
 
 </script>
-
+<style scoped>
+@media only screen and (max-width: 600px) {
+  .Logo-image {
+    height:17px !important;
+  }
+}
+</style>
 <style lang="scss">
     @import '~@resources/scss/vue/pages/page-auth.scss';
 
