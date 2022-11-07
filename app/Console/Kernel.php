@@ -23,8 +23,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('moon:global')->twiceDaily();
         $schedule->command('moon:trading_volume_history')->daily();
         $schedule->command('moon:lunarcrush')->twiceDaily(1,13);
-        $schedule->command('coin:scrape_unlock_data')->daily();
-        $schedule->command('coin:scrape_vestintg_data')->everyThirtyMinutes();
     }
 
     /**

@@ -36,19 +36,19 @@ class CoinGeckoClient
 
     public function __construct($proxy, ?Client $client = null)
     {
-       /* if ($proxy) {
+        if ($proxy) {
             //proxy call
             $this->httpClient = $client ?: new Client(['base_uri' => self::BASE_URI,
                 'timeout' => 240.0,
                 'cookie' => true,
                 'proxy' => env('PROXY', '164.92.202.73')]);
         }
-    else{*/
+    else{
         //regular call
                 $this->httpClient = $client ?: new Client(['base_uri' => self::BASE_URI,
                 'timeout' => 240.0,
                 'cookie' => true]);
-
+        }
     }
 
     public function getHttpClient(): Client

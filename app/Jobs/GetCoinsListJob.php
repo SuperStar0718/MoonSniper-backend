@@ -35,7 +35,7 @@ class GetCoinsListJob implements ShouldQueue
     public function handle()
     {
 
-        $client = new CoinGeckoClient(false);
+        $client = new CoinGeckoClient();
         $coinsList = $client->coins()->getList();
         $coinsList = collect($coinsList);
 
@@ -51,26 +51,30 @@ class GetCoinsListJob implements ShouldQueue
                     'name' => $item['name'],
                     'coin_platform' => implode("|", array_keys($item['platforms']))
                 );
-                $newCoinsIds[] = $item['id'];
+                $newCoinsIds[] = strtoupper($item['symbol']);
             }
         }
 
 
         // first get ids from table
-        $exist_ids = CoinsList::all('coin_id')->pluck('coin_id')->toArray();
+        $exist_ids = CoinsList::all('symbol')->pluck('symbol')->toArray();
 
         // get updatable ids//$updatable_ids = array_values(array_intersect($exist_ids, $newCoinsIds));
 
         // get insertable ids
         $insertable_ids = array_filter(array_values(array_diff($newCoinsIds, $exist_ids)));
-
-        $purge_ids = array_filter(array_values(array_diff($exist_ids, $newCoinsIds)));
-
         // prepare data for insert
         $data = collect();
 
+        //check for symbol duplications, if we do, lets get rid of the lower rank:
+        $duplicates = array();
+        foreach(array_count_values($insertable_ids) as $val => $c)
+            if($c > 1) $duplicates[] = $val;
+
+        $skip=[];
         //Push new coins (if any):
         foreach ($insertable_ids as $key => $coinId) {
+            if(!in_array(strtoupper($coinsList[$key]['symbol']),$skip)) {
                 $data->push([
                     'coin_id' => $coinsList[$key]['id'],
                     'symbol' => strtoupper($coinsList[$key]['symbol']),
@@ -79,21 +83,20 @@ class GetCoinsListJob implements ShouldQueue
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);
+            }
+
+            if(in_array(strtoupper($coinsList[$key]['symbol']),$duplicates)){
+                $skip[] = strtoupper($coinsList[$key]['symbol']);
+            }
         }
 
         //first add all needed new items to db:
         $this->tryPushingToDB($data->toArray());
 
-        //Then, lets get rid the old dead tokens:
-        foreach ($purge_ids as $to_delete){
-            CoinsList::where('coin_id', $to_delete)->delete();
-        }
-
-        //if needed to update?
-        /*CoinsList::massUpdate(
+        CoinsList::massUpdate(
             values : $newCoinsArray,
-            uniqueBy : 'coin_id'
-        );*/
+            uniqueBy : 'symbol'
+        );
 
     }
 
