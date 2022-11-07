@@ -2428,12 +2428,12 @@
                         ||activeData.six_months_unlock_percent_of_tokens
                         ||activeData.six_months_unlock_size
                         ||activeData.total_supply_percent ">
-                            <div class="container d-flex" style="padding:0px;" >
+                            <div class="container d-flex" style="padding:0px;">
                                 <div class="d-inline" v-if="activeData.next_unlock_date_text"
-                                style="width:20%; font-family: 'Poppins-Light'; margin-right: 24px;  font-style: normal;  font-weight: 400; font-size: 12px;">
-                                <span style="opacity: 0.5;">Next Unlock Date</span><br>
-                                <span>{{ activeData.next_unlock_date_text}}</span><br>
-                                 </div>
+                                    style="width:20%; font-family: 'Poppins-Light'; margin-right: 24px;  font-style: normal;  font-weight: 400; font-size: 12px;">
+                                    <span style="opacity: 0.5;">Next Unlock Date</span><br>
+                                    <span>{{ activeData.next_unlock_date_text}}</span><br>
+                                </div>
                                 <div class="d-inline" v-else-if="activeData.next_unlock_date"
                                     style="width:20%; font-family: 'Poppins-Light'; margin-right: 24px;  font-style: normal;  font-weight: 400; font-size: 12px;">
                                     <span style="opacity: 0.5;">Next Unlock Date</span><br>
@@ -2441,7 +2441,8 @@
                                     <span
                                         style="opacity: 0.5;">{{ getDateAndTime(activeData.next_unlock_date,'time') }}</span>
                                 </div>
-                                <div v-if="!activeData.next_unlock_date_text && activeData.next_unlock_date" class="d-inline-flex justify-content-between" style="">
+                                <div v-if="!activeData.next_unlock_date_text && activeData.next_unlock_date"
+                                    class="d-inline-flex justify-content-between" style="">
                                     <div class="d-iline" style="max-width:65px">
                                         <div class="radius_gradient" style="border-radius:10px">
                                             <div class="str_green_gradient text-center m-auto vertical-items-center"
@@ -2561,13 +2562,73 @@
                                         </template>
                                     </vac>
                                 </div>
-                                <div v-if="activeData.next_unlock_date_text || activeData.next_unlock_date" class="d-inline ml-2 mt-1" style="border-radius: 10px; margin-left: 45px;">
-                                    <button v-if="notified != true" class="rounded-pill px-2" style="padding:6px"
-                                        @click="notifyMe(activeData.symbol)">
-                                        <feather-icon size="15" icon="BellIcon" /> Notify Me</button>
-                                    <button v-else class="rounded-pill px-2" style="padding:6px"
-                                        @click="notifyMe(activeData.symbol)">
-                                        <feather-icon size="15" icon="BellIcon" /> Remove Notification</button>
+                                <div v-if="activeData.next_unlock_date_text || activeData.next_unlock_date"
+                                    class="d-inline ml-2 mt-1" style="border-radius: 10px; margin-left: 45px;">
+
+
+                                    <b-dropdown
+                                        v-if="validateDateRange(activeData.next_unlock_date_text , activeData.next_unlock_date)"
+                                        size="lg" variant="flat-secondary" style="padding:0px !important;"
+                                        id="notify-dropdown" no-caret class="cunningDrop-notify">
+                                        <template #button-content class="p-0">
+                                            <button v-if="notified != true" class="rounded-pill px-2 "
+                                                style=" padding: 8px; font-size: 14px;">
+                                                <feather-icon size="15" icon="BellIcon" /> Notify Me</button>
+                                            <button v-else @click="notifyMe(activeData.symbol,'none')"
+                                                class="rounded-pill px-2 " style=" padding: 8px; font-size: 14px;">
+                                                <feather-icon size="15" icon="BellIcon" /> Remove Notification</button>
+
+                                        </template>
+                                        <b-dropdown-form href="#" v-if="notified != true"
+                                            class="cunningDrop-notify-form dropdown-mine darkBackgroundBlack "
+                                            name="dropdownform2" style="z-index:999;">
+                                            <b-dropdown-item href="#"
+                                                v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'1-month-before',)"
+                                                @click="notifyMe(activeData.symbol,'1-month-before')">1 Month before
+                                            </b-dropdown-item>
+                                            <b-dropdown-item href="#"
+                                                v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'2-weeks-before')"
+                                                @click="notifyMe(activeData.symbol,'2-weeks-before')">2 weeks before
+                                            </b-dropdown-item>
+                                            <b-dropdown-item href="#"
+                                                v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'1-week-before')"
+                                                @click="notifyMe(activeData.symbol,'1-week-before')">1 week before
+                                            </b-dropdown-item>
+                                            <b-dropdown-item href="#"
+                                                v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'2-days-before')"
+                                                @click="notifyMe(activeData.symbol,'2-days-before')">2 days before
+                                            </b-dropdown-item>
+                                            <b-dropdown-item href="#"
+                                                v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'12-hours-before')"
+                                                @click="notifyMe(activeData.symbol,'12-hours-before')">12 hours before
+                                            </b-dropdown-item>
+                                            <b-dropdown-item href="#"
+                                                v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'10-min-before')"
+                                                @click="notifyMe(activeData.symbol,'10-min-before')">10
+                                                minutes before
+                                            </b-dropdown-item>
+                                            <b-dropdown-item href="#" @click="notifyMe(activeData.symbol,'on-time')">
+                                                On-time</b-dropdown-item>
+                                        </b-dropdown-form>
+
+                                    </b-dropdown>
+                                    <b-dropdown v-else size="lg" variant="flat-secondary"
+                                        style="padding:0px !important;" id="notify-dropdown" no-caret
+                                        class="cunningDrop-notify">
+                                        <template #button-content class="p-0">
+                                            <button v-if="notified != true" class="rounded-pill px-2 "
+                                                style=" padding: 8px; font-size: 14px; background-color: gray;">
+                                                <feather-icon size="15" icon="BellIcon" /> Notify Me</button>
+                                        </template>
+
+                                    </b-dropdown>
+
+                                    <!-- <button v-if="notified != true" class="rounded-pill px-2" style="padding:6px"
+                                    @click="notifyMe(activeData.symbol)">
+                                    <feather-icon size="15" icon="BellIcon" /> Notify Me</button>
+                                <button v-else class="rounded-pill px-2" style="padding:6px"
+                                    @click="notifyMe(activeData.symbol)">
+                                    <feather-icon size="15" icon="BellIcon" /> Remove Notification</button> -->
                                 </div>
                             </div>
                             <b-card no-body class="mb-1">
@@ -3233,7 +3294,7 @@
                     colors: ['#50DC5F', '#9351db', '#51b8db', '#0e181c', '#718187', '#e5a0bd', '#8ca837', '#bcf21a',
                         '#d35a2a', '#f4e111'
                     ],
-                    
+
                     fill: {
                         // shade: 'dark',
                         // type: 'gradient',
@@ -3737,9 +3798,10 @@
                     return new Date().getTime();;
                 }
             },
-            notifyMe(symbol) {
+            notifyMe(symbol, type) {
                 axios.post('api/notify-unlock-token', {
-                    symbol: symbol
+                    symbol: symbol,
+                    type: type
                 }).then(res => {
 
                     if (res.data.status == true) {
@@ -3752,6 +3814,93 @@
 
                 })
 
+
+            },
+            checkdateinertval(date, date_text, type) {
+                let realDate;
+                var d1 = new Date();
+
+                if (date) {
+                    realDate = date;
+                } else if (date_text) {
+                    let textMonth = date_text.slice(date_text.lastIndexOf(' ') + 1);
+                    let reaStrDate = textMonth + " 1, " + d1.getFullYear() + " 00:00:00";
+                    realDate = new Date(reaStrDate);
+                }
+                var d2 = new Date(realDate);
+                var Difference_In_Time = d2.getTime() - d1.getTime();
+                var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+                var diff = (Difference_In_Time) / 1000;
+                diff /= 60;
+                let Difference_In_Time_In_Minutes = Math.abs(Math.round(diff));
+                if (type == '1-month-before') {
+
+                    if (Difference_In_Days >= 30) {
+                        return true;
+                    } else {
+                        return false
+                    }
+                }
+                if (type == '2-weeks-before') {
+
+                    if (Difference_In_Days >= 14) {
+                        return true;
+                    } else {
+                        return false
+                    }
+                } else if (type == '1-week-before') {
+                    if (Difference_In_Days >= 7) {
+                        return true;
+                    } else {
+                        return false
+                    }
+                } else if (type == '2-days-before') {
+
+                    if (Difference_In_Days >= 2) {
+                        return true;
+                    } else {
+                        return false
+                    }
+                } else if (type == '12-hours-before') {
+
+                    if (Difference_In_Time_In_Minutes >= 720) {
+                        return true;
+                    } else {
+                        return false
+                    }
+                } else if (type == '10-min-before') {
+
+                    if (Difference_In_Time_In_Minutes >= 10) {
+                        return true;
+                    } else {
+                        return false
+                    }
+                } else if (type == 'on-time') {
+                    return true
+                } else {
+                    return false
+                }
+
+            },
+            validateDateRange(date_text, date) {
+                let realDate;
+                var d1 = new Date();
+                if (date != null) {
+                    realDate = date;
+                } else if (date_text != null) {
+                    let textMonth = date_text.slice(date_text.lastIndexOf(' ') + 1);
+                    let reaStrDate = textMonth + " 1, " + d1.getFullYear() + " 00:00:00";
+                    realDate = new Date(reaStrDate);
+
+                } else {
+                    return false
+                }
+                var d2 = new Date(realDate);
+                if (d2.getTime() > d1.getTime()) {
+                    return true;
+                } else {
+                    return false;
+                }
 
             },
             getDateAndTime(date, type) {
@@ -3776,6 +3925,7 @@
                     }
                 }
             },
+
             xfromlunch(val, val2) {
                 if (val2 == 'roi_times') {
 
@@ -5597,14 +5747,33 @@
         top: 0;
         right: 12px;
     }
-    .details-modal-container{
-        max-height:94vh;
-        overflow-y:auto;
+
+    .details-modal-container {
+        max-height: 94vh;
+        overflow-y: auto;
         padding: 0.8rem 1.4rem;
-        
+
     }
-    #modal-details___BV_modal_body_{
-        padding:0;
+
+    #modal-details___BV_modal_body_ {
+        padding: 0;
+    }
+    .details-modal-container {
+        max-height: 94vh;
+        overflow-y: auto;
+        padding: 0.8rem 1.4rem;
+
+    }
+
+    #modal-details___BV_modal_body_ {
+        padding: 0;
+    }
+
+    .cunningDrop-notify-form {
+        border-radius: 19px !important;
+        z-index: 999 !important;
+        background: linear-gradient(156deg, rgba(43, 255, 77, 0.3) 3.11%, rgba(0, 0, 0, 0) 20.06%), rgba(255, 255, 255, 0.07) !important;
+        box-shadow: inset 1px 1px 2px 0px rgb(52 215 80) !important;
     }
 
     /* modal-preset-create___BV_modal_content_ */
@@ -5617,7 +5786,12 @@
         left: 0%;
         transition: left 0.5s ease 0s;
     } */
-   
+    #notify-dropdown__BV_toggle_{
+        padding:0 !important;
+    }
+    .cunningDrop-notify:hover {
+        background: transparent;
+    }
     .dark-layout .apexcharts-legend-text {
         color: white !important;
     }

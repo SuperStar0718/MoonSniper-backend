@@ -428,8 +428,14 @@ class UnlockingController extends Controller
            ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
            ->where('coins.symbol',$request->symbol)
            ->first();
+           if($token)
+           {
+            $token->notifytype = $request->type;
             $user->notify((new NotifyTokenUnlockNotification($token)));
             return response()->json(['status'=>true,'notification'=>'sent']);
+           }
+           return response()->json(['status'=>false]);
+
 
         }else{
             $checkNotification->delete();

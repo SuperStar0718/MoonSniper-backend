@@ -62,6 +62,7 @@ class NotifyTokenUnlockNotification extends Notification
             'next_unlock_number_of_tokens' => $this->token->next_unlock_number_of_tokens,
             'symbol' => $this->token->symbol,
             'image' => $this->token->image,
+            'type' => $this->token->notifytype,
             'current_price' => $this->token->current_price,
         ];
     }
