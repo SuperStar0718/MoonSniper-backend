@@ -196,6 +196,8 @@ return [
     |
     */
 
-    'same_site' => 'lax',
+    //'same_site' => 'lax',
+    //TODO: ERAN LEVI: Following Bens request:
+    'same_site' => 'none',
 
 ];

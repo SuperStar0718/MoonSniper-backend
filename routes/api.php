@@ -74,7 +74,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
       Route::post('/update-role-permissions', [RolesAndPermissionsController::class, 'updateRolePermissions'])->name('/update-role-permissions');
       Route::post('/update-role-permissions-for-clients', [RolesAndPermissionsController::class, 'updateRolePermissionsForClient'])->name('/update-role-permissions-for-clients');
       Route::post('/abilities', [RolesAndPermissionsController::class, 'loadAbilities'])->name('/abilities');
-  
+    //Notify Unlcoking Table
+    Route::post('/check-coin-notified', [UnlockingController::class, 'checkCoinNotified'])->name('/check-coin-notified');
+    Route::post('/notify-unlock-token', [UnlockingController::class, 'notifyTokenUnlock'])->name('/notify-unlock-token');
+
+    
+
 
 });
 
