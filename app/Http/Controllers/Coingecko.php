@@ -63,7 +63,7 @@ class Coingecko extends Controller
                     ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
                     ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id') 
                     ->where($input_array["filters"])
-                    ->where('coin_data.market_cap','>',0)
+                    // ->where('coin_data.market_cap','>',0)
                     ->whereNotNull('coin_data.coin_id')
                     ->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%".$input_array["filters2"]."%")
                     ->orderBy(DB::raw("ISNULL(".$input_array["sort"][0]."), ".$input_array["sort"][0]), $input_array["sort"][1])
@@ -76,7 +76,7 @@ class Coingecko extends Controller
                      
                     ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id') 
                     ->where($input_array["filters"])
-                    ->where('coin_data.market_cap','>',0)
+                    // ->where('coin_data.market_cap','>',0)
                     ->whereNotNull('coin_data.coin_id')
                     ->orderBy(DB::raw("ISNULL(".$input_array["sort"][0]."), ".$input_array["sort"][0]), $input_array["sort"][1])
                     ->paginate($input_array["perpage"] ? $input_array["perpage"] : 6);
@@ -93,7 +93,7 @@ class Coingecko extends Controller
                          
                     ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id') 
                         ->where($input_array["filters"])
-                        ->where('coin_data.market_cap','>',0)
+                        // ->where('coin_data.market_cap','>',0)
                         ->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%".$input_array["filters2"]."%")
                         ->paginate(100);
                 }
@@ -105,7 +105,7 @@ class Coingecko extends Controller
                          
                     ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id') 
                         ->where($input_array["filters"])
-                        ->where('coin_data.market_cap','>',0)
+                        // ->where('coin_data.market_cap','>',0)
                         ->paginate(100);
                 }
 
@@ -122,7 +122,7 @@ class Coingecko extends Controller
                      
                     ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id') 
                     ->where($input_array["filters"])
-                    ->where('coin_data.market_cap','>',0)
+                    // ->where('coin_data.market_cap','>',0)
                     ->whereNotNull('coin_data.coin_id')
                     ->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%".$input_array["filters2"]."%")
                     ->whereRaw("(coin_data.`next_unlock_date` IS NOT NULL OR coin_data.`next_unlock_date_text` IS NOT NULL OR coin_data.`total_locked_percent` IS NOT NULL OR coin_data.`next_unlock_percent` IS NOT NULL OR coin_data.`next_unlock_status` IS NOT NULL OR coin_data.`next_unlock_number_of_tokens` IS NOT NULL OR coin_data.`next_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`next_unlock_size` IS NOT NULL OR coin_data.`first_vc_unlock` IS NOT NULL OR coin_data.`end_vc_unlock` IS NOT NULL OR coin_data.`first_vc_unlock_text` IS NOT NULL OR coin_data.`end_vc_unlock_text` IS NOT NULL OR coin_data.`three_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_size` IS NOT NULL OR coin_data.`six_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_size` IS NOT NULL)")
@@ -136,7 +136,7 @@ class Coingecko extends Controller
                      
                     ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id') 
                     ->where($input_array["filters"])
-                    ->where('coin_data.market_cap','>',0)
+                    // ->where('coin_data.market_cap','>',0)
                     ->whereNotNull('coin_data.coin_id')
                     ->whereRaw("(coin_data.`next_unlock_date` IS NOT NULL OR coin_data.`next_unlock_date_text` IS NOT NULL OR coin_data.`total_locked_percent` IS NOT NULL OR coin_data.`next_unlock_percent` IS NOT NULL OR coin_data.`next_unlock_status` IS NOT NULL OR coin_data.`next_unlock_number_of_tokens` IS NOT NULL OR coin_data.`next_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`next_unlock_size` IS NOT NULL OR coin_data.`first_vc_unlock` IS NOT NULL OR coin_data.`end_vc_unlock` IS NOT NULL OR coin_data.`first_vc_unlock_text` IS NOT NULL OR coin_data.`end_vc_unlock_text` IS NOT NULL OR coin_data.`three_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_size` IS NOT NULL OR coin_data.`six_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_size` IS NOT NULL)")
                     ->orderBy(DB::raw("ISNULL(".$input_array["sort"][0]."), ".$input_array["sort"][0]), $input_array["sort"][1])
@@ -154,7 +154,7 @@ class Coingecko extends Controller
                          
                     ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id') 
                         ->where($input_array["filters"])
-                        ->where('coin_data.market_cap','>',0)
+                        // ->where('coin_data.market_cap','>',0)
                         ->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%".$input_array["filters2"]."%")
                         ->whereRaw("(coin_data.`next_unlock_date` IS NOT NULL OR coin_data.`next_unlock_date_text` IS NOT NULL OR coin_data.`total_locked_percent` IS NOT NULL OR coin_data.`next_unlock_percent` IS NOT NULL OR coin_data.`next_unlock_status` IS NOT NULL OR coin_data.`next_unlock_number_of_tokens` IS NOT NULL OR coin_data.`next_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`next_unlock_size` IS NOT NULL OR coin_data.`first_vc_unlock` IS NOT NULL OR coin_data.`end_vc_unlock` IS NOT NULL OR coin_data.`first_vc_unlock_text` IS NOT NULL OR coin_data.`end_vc_unlock_text` IS NOT NULL OR coin_data.`three_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_size` IS NOT NULL OR coin_data.`six_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_size` IS NOT NULL)")
                         ->paginate(100);
@@ -167,7 +167,7 @@ class Coingecko extends Controller
                          
                     ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id') 
                         ->where($input_array["filters"])
-                        ->where('coin_data.market_cap','>',0)
+                        // ->where('coin_data.market_cap','>',0)
                         ->whereRaw("(coin_data.`next_unlock_date` IS NOT NULL OR coin_data.`next_unlock_date_text` IS NOT NULL OR coin_data.`total_locked_percent` IS NOT NULL OR coin_data.`next_unlock_percent` IS NOT NULL OR coin_data.`next_unlock_status` IS NOT NULL OR coin_data.`next_unlock_number_of_tokens` IS NOT NULL OR coin_data.`next_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`next_unlock_size` IS NOT NULL OR coin_data.`first_vc_unlock` IS NOT NULL OR coin_data.`end_vc_unlock` IS NOT NULL OR coin_data.`first_vc_unlock_text` IS NOT NULL OR coin_data.`end_vc_unlock_text` IS NOT NULL OR coin_data.`three_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_size` IS NOT NULL OR coin_data.`six_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_size` IS NOT NULL)")
                         ->paginate(100);
                 }

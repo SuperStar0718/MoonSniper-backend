@@ -69,13 +69,15 @@ class AuthController extends Controller
                 }
             }
         }
-        if ($user2->avatar) {
-            $user2->avatar = asset('/storage/user/avatars/' . $user2->avatar);
-        }
+        // if ($user2->avatar) {
+        //     $user2->avatar = asset('/storage/user/avatars/' . $user2->avatar);
+        // }
         $userData = User::find($user->id);
         $userData->ability = $ability;
         $userData->notifications = $user->notifications ? unserialize($user->notifications) : [];
-
+        if ($userData->avatar) {
+            $userData->avatar = asset('/storage/user/avatars/' . $userData->avatar);
+        }
         $userRole =  $userData->getRoleNames();
         if ($userRole->has(0)) {
             $userData->role = $userRole[0];
@@ -258,13 +260,14 @@ class AuthController extends Controller
                         }
                     }
                 }
-                if ($userData->avatar) {
-                    $userData->avatar = asset('/storage/user/avatars/' . $userData->avatar);
-                }
+               
                 $userData = User::find($userData->id);
                 $userData->ability = $ability;
                 $userData->notifications = $userData->notifications ? unserialize($user->notifications) : [];
                 $userRole =  $userData->getRoleNames();
+                if ($userData->avatar) {
+                    $userData->avatar = asset('/storage/user/avatars/' . $userData->avatar);
+                }
                 if ($userRole->has(0)) {
                     $userData->role = $userRole[0];
                 }
