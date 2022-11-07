@@ -15,6 +15,7 @@
   <script>
   import { BRow, BCol } from 'bootstrap-vue'
   import Table from "./table/bs-table/Table.vue"
+  import { kFormatter } from '@core/utils/filter'
   
   export default {
     components: {
