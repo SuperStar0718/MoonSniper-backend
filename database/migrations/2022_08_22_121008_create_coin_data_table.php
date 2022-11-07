@@ -38,7 +38,7 @@ return new class extends Migration
             $table->double('atl')->nullable();
             $table->text('atl_change_percentage')->nullable();
             $table->dateTime('atl_date')->nullable();
-            $table->float('roi_times',8,2)->nullable();
+            $table->bigInteger('roi_times')->nullable();
             $table->text('roi_currency')->nullable();
             $table->double('roi_percentage')->nullable();
             $table->double('price_change_percentage_14d_in_currency')->nullable();
@@ -63,8 +63,6 @@ return new class extends Migration
             $table->double('seed_price')->nullable();
             $table->double('roi_seed')->nullable();
             $table->double('total_locked')->nullable();
-            $table->double('total_locked_percent')->nullable();
-            $table->double('next_unlock_percent')->nullable();
             $table->dateTime('next_unlock_date')->nullable();
             $table->text('next_unlock_date_text')->nullable();
             $table->double('next_unlock_number_of_tokens')->nullable();
@@ -82,14 +80,8 @@ return new class extends Migration
             $table->text('six_months_unlock_size')->nullable();
             $table->integer('social_mentions')->unsigned()->nullable()->default(0);
             $table->integer('social_engagement')->unsigned()->nullable()->default(0);
-            $table->float('average_sentiment')->unsigned()->nullable()->default(0);
+            $table->integer('average_sentiment')->unsigned()->nullable()->default(0);
             $table->json('historical_sentiment');
-            $table->text('next_unlock_status')->nullable();
-            $table->json('historical_social_mentions');
-            $table->json('historical_social_engagement');
-            $table->float('average_sentiment_change')->signed()->nullable()->default(0);
-            $table->float('social_mentions_change')->signed()->nullable()->default(0);
-            $table->float('social_engagement_change')->signed()->nullable()->default(0);
             $table->timestamps();
         });
     }

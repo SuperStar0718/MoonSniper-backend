@@ -38,7 +38,6 @@ class Coingecko extends Controller
 
         $input_json = $request->getContent();
         $input_array = json_decode($input_json, true);
-		
         if(intval($input_array["api_mode"]) == 1 ) 
         {
             if ($input_array["sort"][1] == "asc" || $input_array["sort"][1] == "desc") {
