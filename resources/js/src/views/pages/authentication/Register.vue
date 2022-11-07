@@ -4,10 +4,10 @@
 
             <!-- Brand logo-->
             <b-link class="brand-logo">
-                <vuexy-logo />
-
-                <h2 class="brand-text text-primary ml-1">
-                    MoonSniper
+                <!-- <vuexy-logo /> -->
+                <img src="/images/moon/icon/fullcolor.png" alt="" style="width:80px">
+                <h2 class="brand-text text-primary ml-1 my-auto">
+                    MoonSniper - Shoot for the Moon, you might get there
                 </h2>
             </b-link>
             <!-- /Brand logo-->
