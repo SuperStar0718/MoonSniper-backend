@@ -7,7 +7,7 @@
                 <!-- <vuexy-logo /> -->
                 <img src="/images/moon/icon/fullcolor.png" alt="" style="width:80px">
                 <h2 class="brand-text text-primary ml-1 my-auto">
-                    MoonSniper - Shoot for the Moon, you might get there
+                    <img src="/images/moon/text/fullcolor.png" alt="" style="height:30px">
                 </h2>
             </b-link>
             <!-- /Brand logo-->
