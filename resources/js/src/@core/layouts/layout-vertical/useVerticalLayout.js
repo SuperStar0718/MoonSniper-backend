@@ -18,10 +18,25 @@ export default function useVerticalLayout(navbarType, footerType) {
       classes.push('vertical-menu-modern')
       classes.push(isVerticalMenuCollapsed.value ? 'menu-collapsed' : 'menu-expanded')
     } else {
-      classes.push('vertical-overlay-menu')
-      classes.push(isVerticalMenuActive.value ? 'menu-open' : 'menu-hide')
+      classes.push('vertical-menu-modern')
+      classes.push(isVerticalMenuCollapsed.value ? 'menu-collapsed' : 'menu-expanded')
     }
+    if(window.innerWidth < 1199){
 
+    }else{
+      const currentBreakPoint2 = computed(() => store.getters['app/currentBreakPoint'])
+      watch(currentBreakPoint2, (val, oldVal) => {
+        // Reset chats & contacts left sidebar
+        if (val != 'xl') {
+      store.commit('verticalMenu/UPDATE_VERTICAL_MENU_COLLAPSED', true)
+
+        }else{
+         store.commit('verticalMenu/UPDATE_VERTICAL_MENU_COLLAPSED', false)
+
+        }
+        
+      })
+    }
     // Navbar
     classes.push(`navbar-${navbarType.value}`)
 
@@ -54,7 +69,7 @@ export default function useVerticalLayout(navbarType, footerType) {
   }
 
   const overlayClasses = computed(() => {
-    if (currentBreakpoint.value !== 'xl' && isVerticalMenuActive.value) return 'show'
+    // if (currentBreakpoint.value !== 'xl' && isVerticalMenuActive.value) return 'show'
     return null
   })
 

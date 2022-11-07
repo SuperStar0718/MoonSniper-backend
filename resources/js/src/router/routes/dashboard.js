@@ -25,15 +25,5 @@ export default [
       resource: 'Dashboard',
       action: 'read',
     },
-
   },
-  {
-    path: '/wallet',
-    name: 'wallet',
-    component: () => import('@/views/wallet.vue'),
-    meta: {
-      resource: 'Dashboard',
-      action: 'read',
-    },
-  }
 ]
