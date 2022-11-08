@@ -344,6 +344,7 @@ class UnlockingController extends Controller
             }
             $coinData = CoinsData::where('coin_id', $coin->coin_id)->where('symbol', $value->token->symbol)->first();
                 if ($coinData) {
+                    $array[] = $coinData;
                     $coinData->current_price = $value->token->price;
                     $coinData->fully_diluted_valuation = $value->token->fullyDiluted;
                     $coinData->market_cap = $value->token->marketCap;
