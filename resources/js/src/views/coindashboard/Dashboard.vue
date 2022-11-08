@@ -4950,10 +4950,15 @@
                         if (this.params.api_mode != 1) {
                             this.fields[0].filterColumn = true;
                             this.fields[20].filterColumn = false;
+                            this.fields[21].filterColumn = false;
+                            this.fields[26].filterColumn = false;
+                            this.fields[27].filterColumn = false;
                             this.fields[22].filterColumn = false;
                             this.fields[23].filterColumn = false;
                             this.fields[24].filterColumn = false;
                             this.fields[25].filterColumn = false;
+                            this.fields[26].filterColumn = false;
+                            this.fields[27].filterColumn = false;
                             this.fields[28].filterColumn = false;
                             this.fields[29].filterColumn = false;
                             this.fields[30].filterColumn = false;
@@ -4963,10 +4968,12 @@
                         } else {
                             this.fields[0].filterColumn = false;
                             this.fields[20].filterColumn = true;
+                          
                             this.fields[22].filterColumn = true;
                             this.fields[23].filterColumn = true;
                             this.fields[24].filterColumn = true;
                             this.fields[25].filterColumn = true;
+                          
                             this.fields[28].filterColumn = true;
                             this.fields[29].filterColumn = true;
                             this.fields[30].filterColumn = true;
@@ -5013,6 +5020,9 @@
                             this.fields[0].filterColumn = true;
                             this.fields[1].filterColumn = true;
                             this.fields[20].filterColumn = false;
+                            this.fields[21].filterColumn = false;
+                            this.fields[26].filterColumn = false;
+                            this.fields[27].filterColumn = false;
                             this.fields[22].filterColumn = false;
                             this.fields[23].filterColumn = false;
                             this.fields[24].filterColumn = false;
@@ -5027,6 +5037,9 @@
                             this.fields[0].filterColumn = true;
                             this.fields[1].filterColumn = true;
                             this.fields[20].filterColumn = true;
+                            this.fields[21].filterColumn = true;
+                            this.fields[26].filterColumn = true;
+                            this.fields[27].filterColumn = true;
                             this.fields[22].filterColumn = true;
                             this.fields[23].filterColumn = true;
                             this.fields[24].filterColumn = true;
