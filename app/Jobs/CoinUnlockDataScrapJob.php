@@ -36,15 +36,20 @@ class CoinUnlockDataScrapJob implements ShouldQueue
         $jsonData = file_get_contents('https://token.unlocks.app/');
         $data = $this->getBetween($jsonData, 'type="application/json">', '</script>');
         $data1 = json_decode($data);
-        $data1->props->pageProps->info->data;
         $array = [];
         foreach ($data1->props->pageProps->info->data as $key => $value) {
-            $coin = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)
-              ->first();
-            if ($coin) {
+            $coin = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)->first();
 
-                $coinData = CoinsData::where('coin_id', $coin->coin_id)->first();
-
+            if (!$coin) {
+                $newCoin = new CoinsList();
+                $newCoin->coin_id = $value->token->coingeckoId;
+                $newCoin->symbol = $value->token->symbol;
+                $newCoin->name = $value->token->name;
+                $newCoin->trading_history_flag = 0;
+                $newCoin->save();
+                $coin = $newCoin;
+            }
+            $coinData = CoinsData::where('coin_id', $coin->coin_id)->where('symbol', $value->token->symbol)->first();
                 if ($coinData) {
                     $coinData->current_price = $value->token->price;
                     $coinData->fully_diluted_valuation = $value->token->fullyDiluted;
@@ -54,43 +59,59 @@ class CoinUnlockDataScrapJob implements ShouldQueue
                         $coinData->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
                         $coinData->next_unlock_number_of_tokens = $value->nextEventData->amount;
 
-                        if($value->token->maxSupply!=0)
-                        {
-                                $tokenPer = $value->nextEventData->amount / $value->token->maxSupply * 100;
-                                if($tokenPer >=0 && $tokenPer <=8)
-                                {
-                                    $coinData->next_unlock_size =  'SMALL';
-                                }else if($tokenPer >8 && $tokenPer <=14)
-                                {
-                                    $coinData->next_unlock_size =  'MEDIUM';
-                                }else if($tokenPer >14){
-                                    $coinData->next_unlock_size =  'BIG';
-                                }
-                                $coinData->next_unlock_percent_of_tokens =  $tokenPer;
+                        if ($value->token->maxSupply != 0) {
+                            $tokenPer = $value->nextEventData->amount / $value->token->maxSupply * 100;
+                            if ($tokenPer >= 0 && $tokenPer <= 8) {
+                                $coinData->next_unlock_size = 'SMALL';
+                            } else if ($tokenPer > 8 && $tokenPer <= 14) {
+                                $coinData->next_unlock_size = 'MEDIUM';
+                            } else if ($tokenPer > 14) {
+                                $coinData->next_unlock_size = 'BIG';
+                            }
+                            $coinData->next_unlock_percent_of_tokens = $tokenPer;
 
                         }
-                        $coinData->vesting_status =  0;
-                     
-                        
+                        $coinData->vesting_status = 0;
+
                     }
                     $coinData->save();
+                } else {
+                    $coinData2 = new CoinsData();
+                    $coinData2->coin_id = $value->token->coingeckoId;
+                    $coinData2->image = $value->token->icon;
+                    $coinData2->symbol = $value->token->symbol;
+                    $coinData2->circulating_supply = $value->token->circulatingSupply;
+                    $coinData2->current_price = $value->token->price;
+                    $coinData2->fully_diluted_valuation = $value->token->fullyDiluted;
+                    $coinData2->market_cap = $value->token->marketCap;
+                    $coinData2->max_supply = $value->token->maxSupply;
+                    $coinData2->historical_sentiment = '[]';
+                    $coinData2->historical_social_mentions = '[]';
+                    $coinData2->historical_social_engagement = '[]';
+                    if ($value->nextEventData != null) {
+                        $coinData2->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
+                        $coinData2->next_unlock_number_of_tokens = $value->nextEventData->amount;
+                        $coinData2->total_locked = $value->totalLockedAmount;
+                        $coinData2->total_locked_percent = $value->totalLockedPercent;
+                        if ($value->token->maxSupply != 0) {
+                            $tokenPer = $value->nextEventData->amount / $value->token->maxSupply * 100;
+                            if ($tokenPer >= 0 && $tokenPer <= 8) {
+                                $coinData2->next_unlock_size = 'SMALL';
+                            } else if ($tokenPer > 8 && $tokenPer <= 14) {
+                                $coinData2->next_unlock_size = 'MEDIUM';
+                            } else if ($tokenPer > 14) {
+                                $coinData2->next_unlock_size = 'BIG';
+                            }
+                            $coinData2->next_unlock_percent_of_tokens = $tokenPer;
+
+                        }
+                        $coinData2->vesting_status = 0;
+
+                    }
+                    $coinData2->save();
                 }
-            }
-            // $coinData->next_unlock_number_of_tokens =$value->nextEventData->amount;
-
-            // ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')->first();
-        }
-
-
-
-        foreach ($data1->props->pageProps->info->data as $key => $value) {
-            $array[] = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)->select('coin_data.*')
-                ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')->first();
-
-        }
-        // return $data1->props->pageProps->info->data;
-        return count($data1->props->pageProps->info->data);
-    }
+         }
+}
     public static function getBetween($content, $start, $end)
     {
         $r = explode($start, $content);

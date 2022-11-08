@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use DateTime;
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
 use App\Models\UnlockingPdf;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use App\Notifications\NotifyTokenUnlockNotification;
+use Carbon\Carbon;
+use DateTime;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UnlockingController extends Controller
 {
@@ -325,37 +325,85 @@ class UnlockingController extends Controller
             $this->strposX($haystack, $needle, $number - 1) + strlen($needle) : 0
         );
     }
-    public function dataFromUrl($coin)
+    public function dataFromUrl($c)
     {
-        
-        // return $array= json_decode($this->getChartDetails("https://token.unlocks.app/api/chart/".$coin.""));
         $jsonData = file_get_contents('https://token.unlocks.app/');
         $data = $this->getBetween($jsonData, 'type="application/json">', '</script>');
         $data1 = json_decode($data);
-        $data1->props->pageProps->info->data;
         $array = [];
         foreach ($data1->props->pageProps->info->data as $key => $value) {
-            $coin = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)
-                ->first();
-
-            if ($coin ) {
-                $coinData = CoinsData::where('coin_id', $coin->coin_id)->first();
-                if($coinData &&  $coinData->vesting_status == 0)
-                {
-                $result =  json_decode($this->getChartDetails("https://token.unlocks.app/api/chart/".$coin->coin_id.""));
-                if($result && isset($result->data))
-                {
-                        $array[]= $coinData->vesting_chart = $result->data->data;
-                        $coinData->vesting_status = 1;
-                        $coinData->save();
-                    }
-                //   return $result->data->data;
-               }
+            $coin = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)->first();
+            if (!$coin) {
+                $newCoin = new CoinsList();
+                $newCoin->coin_id = $value->token->coingeckoId;
+                $newCoin->symbol = $value->token->symbol;
+                $newCoin->name = $value->token->name;
+                $newCoin->trading_history_flag = 0;
+                $newCoin->save();
+                $coin = $newCoin;
             }
+            $coinData = CoinsData::where('coin_id', $coin->coin_id)->where('symbol', $value->token->symbol)->first();
+                if ($coinData) {
+                    $coinData->current_price = $value->token->price;
+                    $coinData->fully_diluted_valuation = $value->token->fullyDiluted;
+                    $coinData->market_cap = $value->token->marketCap;
+                    $coinData->max_supply = $value->token->maxSupply;
+                    if ($value->nextEventData != null) {
+                        $coinData->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
+                        $coinData->next_unlock_number_of_tokens = $value->nextEventData->amount;
 
-        }
-       
-        return $array;
+                        if ($value->token->maxSupply != 0) {
+                            $tokenPer = $value->nextEventData->amount / $value->token->maxSupply * 100;
+                            if ($tokenPer >= 0 && $tokenPer <= 8) {
+                                $coinData->next_unlock_size = 'SMALL';
+                            } else if ($tokenPer > 8 && $tokenPer <= 14) {
+                                $coinData->next_unlock_size = 'MEDIUM';
+                            } else if ($tokenPer > 14) {
+                                $coinData->next_unlock_size = 'BIG';
+                            }
+                            $coinData->next_unlock_percent_of_tokens = $tokenPer;
+
+                        }
+                        $coinData->vesting_status = 0;
+
+                    }
+                    $coinData->save();
+                } else {
+                    $coinData2 = new CoinsData();
+                    $coinData2->coin_id = $value->token->coingeckoId;
+                    $coinData2->image = $value->token->icon;
+                    $coinData2->symbol = $value->token->symbol;
+                    $coinData2->circulating_supply = $value->token->circulatingSupply;
+                    $coinData2->current_price = $value->token->price;
+                    $coinData2->fully_diluted_valuation = $value->token->fullyDiluted;
+                    $coinData2->market_cap = $value->token->marketCap;
+                    $coinData2->max_supply = $value->token->maxSupply;
+                    $coinData2->historical_sentiment = '[]';
+                    $coinData2->historical_social_mentions = '[]';
+                    $coinData2->historical_social_engagement = '[]';
+                    if ($value->nextEventData != null) {
+                        $coinData2->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
+                        $coinData2->next_unlock_number_of_tokens = $value->nextEventData->amount;
+                        $coinData2->total_locked = $value->totalLockedAmount;
+                        $coinData2->total_locked_percent = $value->totalLockedPercent;
+                        if ($value->token->maxSupply != 0) {
+                            $tokenPer = $value->nextEventData->amount / $value->token->maxSupply * 100;
+                            if ($tokenPer >= 0 && $tokenPer <= 8) {
+                                $coinData2->next_unlock_size = 'SMALL';
+                            } else if ($tokenPer > 8 && $tokenPer <= 14) {
+                                $coinData2->next_unlock_size = 'MEDIUM';
+                            } else if ($tokenPer > 14) {
+                                $coinData2->next_unlock_size = 'BIG';
+                            }
+                            $coinData2->next_unlock_percent_of_tokens = $tokenPer;
+
+                        }
+                        $coinData2->vesting_status = 0;
+
+                    }
+                    $coinData2->save();
+                }
+             }
 
     }
 
@@ -371,7 +419,6 @@ class UnlockingController extends Controller
     public function getChartDetails($url)
     {
 
-        
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -412,51 +459,46 @@ class UnlockingController extends Controller
         // curl_close($ch);
         // return json_decode($result);
 
-
     }
     public function notifyTokenUnlock(Request $request)
     {
         $user = Auth::user();
-        
-        $checkNotification =  $user->notifications()
-        ->whereJsonContains('data', ['symbol' => $request->symbol])
-        ->first();
-        if(!$checkNotification)
-        {
-            $token =  DB::table('coins')
-            ->select('coins.coin_id','coins.name','coins.symbol','coin_data.image','coin_data.current_price','coin_data.market_cap_rank','coin_data.next_unlock_date','coin_data.next_unlock_date','coin_data.next_unlock_date_text','coin_data.next_unlock_number_of_tokens')
-           ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
-           ->where('coins.symbol',$request->symbol)
-           ->first();
-           if($token)
-           {
-            $token->notifytype = $request->type;
-            $user->notify((new NotifyTokenUnlockNotification($token)));
-            return response()->json(['status'=>true,'notification'=>'sent']);
-           }
-           return response()->json(['status'=>false]);
 
+        $checkNotification = $user->notifications()
+            ->whereJsonContains('data', ['symbol' => $request->symbol])
+            ->first();
+        if (!$checkNotification) {
+            $token = DB::table('coins')
+                ->select('coins.coin_id', 'coins.name', 'coins.symbol', 'coin_data.image', 'coin_data.current_price', 'coin_data.market_cap_rank', 'coin_data.next_unlock_date', 'coin_data.next_unlock_date', 'coin_data.next_unlock_date_text', 'coin_data.next_unlock_number_of_tokens')
+                ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
+                ->where('coins.symbol', $request->symbol)
+                ->first();
+            if ($token) {
+                $token->notifytype = $request->type;
+                $user->notify((new NotifyTokenUnlockNotification($token)));
+                return response()->json(['status' => true, 'notification' => 'sent']);
+            }
+            return response()->json(['status' => false]);
 
-        }else{
+        } else {
             $checkNotification->delete();
-         return response()->json(['status'=>true,'notification'=>'removed']);
+            return response()->json(['status' => true, 'notification' => 'removed']);
 
         }
-       
+
     }
     public function checkCoinNotified(Request $request)
     {
         $user = Auth::user();
-        $checkNotification =  $user->notifications()
-        ->whereJsonContains('data', ['symbol' => $request->symbol])
-        ->first();
-        if($checkNotification)
-        {
-            return response()->json(['status'=>true,'notification'=>'sent','item'=>$checkNotification]);
+        $checkNotification = $user->notifications()
+            ->whereJsonContains('data', ['symbol' => $request->symbol])
+            ->first();
+        if ($checkNotification) {
+            return response()->json(['status' => true, 'notification' => 'sent', 'item' => $checkNotification]);
 
-        }else{
-          
-         return response()->json(['status'=>true,'notification'=>'notsent']);
+        } else {
+
+            return response()->json(['status' => true, 'notification' => 'notsent']);
 
         }
     }
