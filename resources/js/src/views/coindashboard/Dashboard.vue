@@ -221,8 +221,9 @@
                     <b-col cols="12" md="4" xl="2">
                         <div class="d-flex jusctify-content-between float-right">
                             <div v-b-modal.modal-filters>
-                                <b-button style="padding:5px; color:white;" v-ripple.400="'rgba(255, 255, 255,1)'"
-                                    title="Filter" variant="flat-success" class="btn-icon mx-1">
+                                <b-button style="padding:5px; color:white;" :class="{'bg-danger text-danger':filtered}"
+                                    v-ripple.400="'rgba(255, 255, 255,1)'" title="Filter" variant="flat-success"
+                                    class="btn-icon mx-1">
                                     <feather-icon icon="FilterIcon" size="20"
                                         class="text-black cursor-pointer darkWhiteText" style="color:#28c76f; " />
                                 </b-button>
@@ -2565,18 +2566,19 @@
                                 <div v-if="activeData.next_unlock_date_text || activeData.next_unlock_date"
                                     class="d-inline ml-2 mt-1" style="border-radius: 10px; margin-left: 45px;">
 
-
+                                    <button v-if="notified == true" @click="notifyMe(activeData.symbol,'none')"
+                                    class="rounded-pill px-2 " style=" padding: 8px; font-size: 14px;">
+                                    <feather-icon size="15" icon="BellIcon" /> Remove Notification</button>
+                                <div v-if="notified == true" style="font-size:12px">Will be notified: {{ notifyList(notifiedType) }} the unlock</div>
                                     <b-dropdown
                                         v-if="validateDateRange(activeData.next_unlock_date_text , activeData.next_unlock_date)"
                                         size="lg" variant="flat-secondary" style="padding:0px !important;"
                                         id="notify-dropdown" no-caret class="cunningDrop-notify">
-                                        <template #button-content class="p-0">
+                                        <template #button-content class="p-0 text-left">
                                             <button v-if="notified != true" class="rounded-pill px-2 "
                                                 style=" padding: 8px; font-size: 14px;">
                                                 <feather-icon size="15" icon="BellIcon" /> Notify Me</button>
-                                            <button v-else @click="notifyMe(activeData.symbol,'none')"
-                                                class="rounded-pill px-2 " style=" padding: 8px; font-size: 14px;">
-                                                <feather-icon size="15" icon="BellIcon" /> Remove Notification</button>
+                                           
 
                                         </template>
                                         <b-dropdown-form href="#" v-if="notified != true"
@@ -3485,6 +3487,7 @@
                 }],
                 searchKey: null,
                 filterKey: filterFields,
+                filtered: false,
                 platforms: platformData,
                 categories: categoryData,
                 unlockStatusCoins: [{
@@ -3513,8 +3516,8 @@
                         value: 'medium',
                         text: 'MEDIUM'
                     }, {
-                        value: 'large',
-                        text: 'LARGE'
+                        value: 'big',
+                        text: 'BIG'
                     },
                 ],
                 activeData: {
@@ -3628,11 +3631,10 @@
 
                 ldot10: 25,
                 rdot10: 75,
-
-
-
                 dir: 'ltr',
 
+
+                notifiedType:'',
                 //end
 
             }
@@ -3799,6 +3801,7 @@
                 }
             },
             notifyMe(symbol, type) {
+            
                 axios.post('api/notify-unlock-token', {
                     symbol: symbol,
                     type: type
@@ -3810,11 +3813,39 @@
                         } else {
                             this.notified = false;
                         }
+                        this.notifiedType = type;
                     }
 
                 })
 
 
+            },
+            notifyList(item) {
+                switch (item) {
+                    case '1-month-before':
+                        return '1 month before'
+                        break;
+                    case '2-weeks-before':
+                    return '2 weeks before'
+                        break;
+                    case '1-week-before':
+                    return '1 week before'
+                        break;
+                    case '2-days-before':
+                    return '2 days before'
+                        break;
+                    case '12-hours-before':
+                    return '12 hours before'
+                        break;
+                    case '10-min-before':
+                    return '10 minutes before'
+                        break;
+                    case 'on-time':
+                    return 'On time'
+                        break;
+                    default:
+                        break;
+                }
             },
             checkdateinertval(date, date_text, type) {
                 let realDate;
@@ -4017,7 +4048,7 @@
                 this.loadCoins();
             },
             filterCoins(refresh_flag) {
-
+                this.filtered = true;
                 this.isBusy = true;
                 this.params.filters = [];
                 if (this.filterKey.min_market_cap) {
@@ -4281,6 +4312,7 @@
 
             },
             clearFilters(refresh_flag) {
+
                 this.filterKey = {
                     min_market_cap: null,
                     max_market_cap: null,
@@ -4352,6 +4384,7 @@
                     this.isBusy = false;
 
                 }
+                this.filtered = false;
             },
             async detailsModel(item) {
                 this.notified = false;
@@ -4385,6 +4418,7 @@
                     .then(res => {
                         if (res.data.notification == 'sent') {
                             this.notified = true;
+                            this.notifiedType =res.data.item.data.type;
                         } else {
                             this.notified = false;
                         }
@@ -5758,6 +5792,7 @@
     #modal-details___BV_modal_body_ {
         padding: 0;
     }
+
     .details-modal-container {
         max-height: 94vh;
         overflow-y: auto;
@@ -5786,12 +5821,15 @@
         left: 0%;
         transition: left 0.5s ease 0s;
     } */
-    #notify-dropdown__BV_toggle_{
-        padding:0 !important;
+    #notify-dropdown__BV_toggle_ {
+        padding: 0 !important;
+        text-align: start;
     }
+
     .cunningDrop-notify:hover {
         background: transparent;
     }
+
     .dark-layout .apexcharts-legend-text {
         color: white !important;
     }

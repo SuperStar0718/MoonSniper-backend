@@ -187,7 +187,7 @@ const data = [
         index: 21,
         label: 'Next Unlock Date',
         stickyColumn: false,
-        filterColumn:false,canHide:true,
+        filterColumn:true,canHide:true,
         visible: 3,
     },
     {
@@ -225,14 +225,14 @@ const data = [
         index: 26,
         label: 'First VC Unlock',
         stickyColumn: false,
-        filterColumn:false,canHide:true,
+        filterColumn:true,canHide:true,
         visible: 2
     },{
         key: 'end_vc_unlock',
         index: 27,
         label: 'End VC Unlock',
         stickyColumn: false,
-        filterColumn:false,canHide:true,
+        filterColumn:true,canHide:true,
         visible: 2
     },{
         key: 'three_months_unlock_number_of_tokens',

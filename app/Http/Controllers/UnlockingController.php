@@ -452,7 +452,7 @@ class UnlockingController extends Controller
         ->first();
         if($checkNotification)
         {
-            return response()->json(['status'=>true,'notification'=>'sent']);
+            return response()->json(['status'=>true,'notification'=>'sent','item'=>$checkNotification]);
 
         }else{
           
