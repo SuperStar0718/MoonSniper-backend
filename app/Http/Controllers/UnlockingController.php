@@ -405,6 +405,7 @@ class UnlockingController extends Controller
                     $coinData2->save();
                 }
              }
+             return $array;
 
     }
 
