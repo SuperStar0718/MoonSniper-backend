@@ -1,8 +1,8 @@
 <template>
     <div id="dashboard">
-        <b-overlay :show="fagLoad" rounded="sm" class="pt-1" style="margin-top:10px; margin-bottom:30px;">
+        <b-overlay :show="fagLoad" rounded="sm" class="pt-1 DashboardHeader" style="">
             <div class="mx-auto" style="">
-                <b-row class=" mb-1">
+                <b-row class="HeaderTopBar">
                     <b-col md="3" sm="6" xl="3">
                         <div class="d-flex mx-auto justify-content-center">
                             <div class="greyLetter" style="margin-right:8px;">MC:</div>
@@ -65,7 +65,7 @@
                 </b-row>
             </div>
             <!-- graph -->
-            <b-row class="" style="margin-bottom: 25px;">
+            <b-row class="FGCharts" style="">
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_greed">
                     <div class="mx-auto w-75 text-center">
                         <h5 class="w-75 mx-auto margin16_b feerTitle">Fear and Greed</h5>
@@ -206,11 +206,11 @@
         <div class="body-content-overlay" />
         <!-- search bar and table -->
         <div class="cardBack"
-            style="padding:20px; box-shadow: 0px 0px 20px rgba(19, 20, 37, 0.5);backdrop-filter: blur(7.5px); border-radius: 30px;">
-            <div class="searchbar mt-1">
+            style="">
+            <div class="searchbar ">
                 <b-row>
                     <b-col cols="8" md="6" xl="6">
-                        <b-input-group class="input-group-merge mb-1">
+                        <b-input-group class="input-group-merge SearchInputGroup">
                             <b-form-input v-model="params.filters2" placeholder="Search"
                                 class="search-product searchdark" style="border-radius: 20px;" />
 
@@ -757,13 +757,15 @@
                         background: linear-gradient(90deg, rgba(248,248,248, 0) 0%, rgba(248,248,248, 1) 100%);">
 
                 </div>
-                <b-overlay :show="isBusy" rounded="sm">
+                <b-overlay :show="isBusy" rounded="sm" >
 
-                    <b-table :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill " show-empty
+                    <b-table :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill " :show-empty="isBusy" :busy="isBusy"
                         class="b-table-1" @row-clicked="detailsModel($event)"
                         style=" white-space: nowrap; border-spacing: 0 15px !important; " responsive :items="items.data"
                         :fields="visibleFields">
-
+                        <template #table-busy>
+                           
+                          </template>
                         <template #empty="scope">
                             <h4>{{ scope.emptyText }}</h4>
                         </template>
@@ -1792,1083 +1794,1089 @@
                     v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary">Clear filter</b-button>
             </div>
         </b-modal>
-
-        <b-modal id="modal-details" :hide-footer="true" v-if="activeData" centered>
-            <template>
-                <div slot="modal-title">
-
-                </div>
-                <!-- <app-collapse accordion> -->
-                <div class="details-modal-container">
-                    <div class="w-full justify-content-between d-flex" style="margin-top: 10px; margin-left: 10px;">
-                        <div class="d-inline">
-                            <div class="rank_slot darkWhiteText" style="margin-bottom: 8px;font-family: 'Poppins'; opacity: 0.6 !important;
-                                font-style: normal;
-                                font-weight: 300;
-                                font-size: 12px;
-                                ">Rank #{{toInterNationalNumber(activeData.market_cap_rank)}}</div>
-                            <div class="d-flex" style="margin-top:11px;">
-                                <div class="d-flex m-auto">
-                                    <b-avatar class="bg-light mr-1" v-if="activeData.image" :src="activeData.image">
-                                    </b-avatar>
-                                    <span class="marginx1 m-auto a darkWhiteText" style="font-family: 'Poppins';   font-size: 20px;  font-style: normal;  font-weight: 400;
-                                            width: 105px;
-                                            text-overflow: ellipsis;
-                                            white-space: nowrap;
-                                            overflow: hidden;" data-toggle="tooltip" data-placement="top"
-                                        :title="activeData.name" v-if="activeData.name && activeData.name.length > 8 ">
-                                        {{activeData.name}}
-
-
-                                    </span>
-                                    <span class="marginx1 m-auto b darkWhiteText mr-3"
-                                        :class="{'w-[105px]':activeData.name && activeData.name.length > 8}" style="font-family: 'Poppins';
-                                            font-size: 20px; 
-                                            font-style: normal;
-                                            font-weight: 400;
-                                            
-                                            text-overflow: ellipsis;
-                                            white-space: nowrap;
-                                            overflow: hidden;" v-else>
-                                        {{activeData.name}}
-
-
-                                    </span>
-
-                                    <span class="marginx1 m-auto darkWhiteText mx-2" style="font-family: 'Poppins';
-                                            font-size: 14px; position: relative;
-                                            font-style: normal; opacity: 0.7;
-                                            font-weight: 300; margin-right: 40px !important;">
-                                        <div style="position: absolute; top:-29px; left:4px">
-                                            &nbsp; {{activeData.symbol}}
-                                        </div>
-                                    </span>
-
-                                </div>
-                                <div class="d-flex ml-[10px] mb-auto mr-auto mt-auto" style="margin-left:10px"
-                                    :class="{'ml-[30px]':activeData.name && activeData.name.length > 8}">
-                                    <div class="d-flex">
-                                        <span class=""
-                                            :class="{'redFlash1': activeData.price_change_percentage_24h < 0,'greenFlash1': activeData.price_change_percentage_24h >= 0 ,'greenFlash':activeData.flash == 1,'redFlash':activeData.flash ==2}"
-                                            style="font-family: 'Poppins-Light';
-                                            font-style: normal;
-                                            font-weight: 400;
-                                            font-size: 20px;
-                                            "
-                                            v-if="activeData.current_price && activeData.current_price>= 0">${{ roundData(activeData.current_price) }}
-                                        </span>
-                                    </div>
-                                    <div class="d-flex m-auto">
-                                        <span
-                                            v-if="activeData.price_change_percentage_24h && activeData.price_change_percentage_24h>= 0"
-                                            class="btn-success d-flex  marginx1" style="font-family: 'Poppins-Light';
+            <b-modal id="modal-details"  :hide-footer="true"  centered>
+                <template >
+                    <div slot="modal-title">
+    
+                    </div>
+                    <!-- <app-collapse accordion> -->
+                        <b-overlay :show="!detailsModalLoaded" rounded="sm">
+                            <div class="details-modal-container"  v-if="detailsModalLoaded" >
+                                <div class="w-full justify-content-between d-flex" style="margin-top: 10px; margin-left: 10px;">
+                                    <div class="d-inline">
+                                        <div class="rank_slot darkWhiteText" style="margin-bottom: 8px;font-family: 'Poppins'; opacity: 0.6 !important;
                                             font-style: normal;
                                             font-weight: 300;
-                                            font-size: 12px; margin-top: 2px;border-radius:5px; padding:0px 5px">
-                                            <div style="display: inline; margin:auto;">
-                                                <feather-icon size="20" icon="ChevronUpIcon" />
-                                            </div><span>{{ roundData(activeData.price_change_percentage_24h) }}%</span>
-
-                                        </span>
-                                        <span v-else-if="activeData.price_change_percentage_24h"
-                                            style="font-size:12px; font-weight: 300; margin-top: 2px;border-radius:5px; padding:0px 5px"
-                                            class="btn-danger d-flex marginx1">
-                                            <div style="display: inline; margin:auto;">
-                                                <feather-icon size="20" icon="ChevronDownIcon" />
-                                            </div><span>{{ roundData(activeData.price_change_percentage_24h) }}%</span>
-
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-50 d-inline" style="margin-right:20px;">
-                            <div class="bg-theme rounded d-inline" style="float: right;"
-                                v-if="activeData.contract_address && activeData.contract_address.length>0">
-
-                                <div style="margin-top:-2px">
-                                    <div class="my-auto darkWhiteText" style="margin-bottom: 8px !important; margin-right: 4px;padding-left:10px; font-family: 'Poppins-Light';
-                                        font-style: normal;
-                                        font-weight: 300;
-                                        font-size: 12px;
-                                       ">Contact </div>
-
-
-                                    <b-dropdown size="lg" variant="flat-secondary" style="padding:0px !important;"
-                                        id="dropdown-left1" no-caret class="cunningDrop">
-                                        <template #button-content>
-                                            <div class="darkBackgroundBlack"
-                                                v-for="(address,index) in activeData.contract_address.slice(0, 1)"
-                                                :key="index" style="display:block; padding: 2px; border-radius: 20px;">
-                                                <div class="flex">
-
-                                                    <b-img v-if="activeData.image" :src="activeData.image" fluid
-                                                        alt="Responsive image" style="margin-right:5px; height:30px;     position: relative;
-                                                        bottom: 4px;" />
-                                                    <div style="font-family: 'Poppins-Light'; display:inline-block;
-                                                        font-style: normal;    position: relative;
-                                                        top: 4px;
-                                                        font-weight: 500;
-                                                        font-size: 14px;
-                                                        line-height: 14px; width:90px;white-space: nowrap; 
-                                                        text-align: start;
-                                                        overflow: hidden;
-                                                        text-overflow: ellipsis;">
-                                                        <div style="white-space: nowrap; width:90px;  overflow: hidden;
-                                                    text-overflow: ellipsis;" class="darkWhiteText text-capitalize">
-                                                            {{address.platform}}
-                                                        </div>
-                                                        <div style="white-space: nowrap; width:90px;  overflow: hidden;
-                                                    text-overflow: ellipsis;" class="text-secondary ">
-                                                            {{address.contract_address}}
-                                                        </div>
+                                            font-size: 12px;
+                                            ">Rank #{{toInterNationalNumber(activeData.market_cap_rank)}}</div>
+                                        <div class="d-flex" style="margin-top:11px;">
+                                            <div class="d-flex m-auto">
+                                                <b-avatar class="bg-light mr-1" v-if="activeData.image" :src="activeData.image">
+                                                </b-avatar>
+                                                <span class="marginx1 m-auto a darkWhiteText" style="font-family: 'Poppins';   font-size: 20px;  font-style: normal;  font-weight: 400;
+                                                        width: 105px;
+                                                        text-overflow: ellipsis;
+                                                        white-space: nowrap;
+                                                        overflow: hidden;" data-toggle="tooltip" data-placement="top"
+                                                    :title="activeData.name" v-if="activeData.name && activeData.name.length > 8 ">
+                                                    {{activeData.name}}
+    
+    
+                                                </span>
+                                                <span class="marginx1 m-auto b darkWhiteText mr-3"
+                                                    :class="{'w-[105px]':activeData.name && activeData.name.length > 8}" style="font-family: 'Poppins';
+                                                        font-size: 20px; 
+                                                        font-style: normal;
+                                                        font-weight: 400;
+                                                        
+                                                        text-overflow: ellipsis;
+                                                        white-space: nowrap;
+                                                        overflow: hidden;" v-else>
+                                                    {{activeData.name}}
+    
+    
+                                                </span>
+    
+                                                <span class="marginx1 m-auto darkWhiteText mx-2" style="font-family: 'Poppins';
+                                                        font-size: 14px; position: relative;
+                                                        font-style: normal; opacity: 0.7;
+                                                        font-weight: 300; margin-right: 40px !important;">
+                                                    <div style="position: absolute; top:-29px; left:4px">
+                                                        &nbsp; {{activeData.symbol}}
                                                     </div>
-                                                    <div style="display:inline-block; float:right; margin-top:-3px">
-
-                                                        <b-button size="sm" class="ml-1"
-                                                            v-clipboard:copy="address.contract_address"
-                                                            style="margin-right:13px; cursor:pointer; border: none !important;"
-                                                            v-clipboard:success="onCopy" v-clipboard:error="onError"
-                                                            v-ripple.400="'rgba(113, 12, 240, 0.15)'"
-                                                            variant="outline-primary" pill>
-                                                            <i
-                                                                class="fa-regular fa-copy cursor-pointer darkWhiteText fa-lg m-1"></i>
-                                                            <!-- <feather-icon icon="CopyIcon"
-                                                                class="cursor-pointer darkWhiteText" size="20" /> -->
-                                                        </b-button>
-                                                        <img src='/images/static/metamask.png' class="img-fluid"
-                                                            alt="metamask"
-                                                            style="cursor:pointer; width:23px; margin-right:13px;"
-                                                            @click="say('say')">
-                                                        <feather-icon icon="ChevronDownIcon"
-                                                            class="cursor-pointer darkWhiteText" size="20"
-                                                            style="margin-right:13px; margin-bottom: 6px;" />
-
-                                                    </div>
-
-                                                </div>
-
-
+                                                </span>
+    
                                             </div>
-
-                                        </template>
-                                        <b-dropdown-form href="#" class="cunningDrop dropdown-mine darkBackgroundBlack"
-                                            name="dropdownform2" style="z-index:999;">
-                                            <div class="darkBackgroundBlack"
-                                                v-for="(address,index) in activeData.contract_address" :key="index"
-                                                style="display:flex; padding: 4px;">
-                                                <b-img v-if="activeData.image" :src="activeData.image" fluid
-                                                    alt="Responsive image" style="margin-right:5px; height:30px;" />
-                                                <div class="" style="font-family: 'Poppins-Light'; display:inline-block; font-style: normal;
-                                                            font-weight: 500;
-                                                            font-size: 14px;
-                                                            line-height: 14px;
-                                                            ">
-                                                    <div class="darkWhiteText text-capitalize" style="white-space: nowrap; width:90px;
-                                                            overflow: hidden;
-                                                            text-overflow: ellipsis;">
-                                                        {{address.platform}}
-                                                    </div>
-                                                    <div class=" text-secondary" style="white-space: nowrap; width:90px;
-                                                            overflow: hidden;
-                                                            text-overflow: ellipsis;">
-                                                        {{address.contract_address}}
-                                                    </div>
-
+                                            <div class="d-flex ml-[10px] mb-auto mr-auto mt-auto" style="margin-left:10px"
+                                                :class="{'ml-[30px]':activeData.name && activeData.name.length > 8}">
+                                                <div class="d-flex">
+                                                    <span class=""
+                                                        :class="{'redFlash1': activeData.price_change_percentage_24h < 0,'greenFlash1': activeData.price_change_percentage_24h >= 0 ,'greenFlash':activeData.flash == 1,'redFlash':activeData.flash ==2}"
+                                                        style="font-family: 'Poppins-Light';
+                                                        font-style: normal;
+                                                        font-weight: 400;
+                                                        font-size: 20px;
+                                                        "
+                                                        v-if="activeData.current_price && activeData.current_price>= 0">${{ roundData(activeData.current_price) }}
+                                                    </span>
                                                 </div>
-                                                <div style="display:inline-block; float:right;">
-
-
-                                                    <b-button size="sm" class="ml-1"
-                                                        v-clipboard:copy="address.contract_address"
-                                                        style="margin-right:13px; cursor:pointer; border: none !important;"
-                                                        v-clipboard:success="onCopy" v-clipboard:error="onError"
-                                                        v-ripple.400="'rgba(113, 12, 240, 0.15)'"
-                                                        variant="outline-primary" pill>
-                                                        <i
-                                                            class="fa-regular fa-copy cursor-pointer darkWhiteText fa-xl m-1"></i>
-                                                    </b-button>
-                                                    <img src='/images/static/metamask.png' class="img-fluid"
-                                                        alt="metamask" style="cursor:pointer; width:23px;"
-                                                        @click="say('hello')">
-
-                                                </div>
-
-
-                                            </div>
-                                        </b-dropdown-form>
-
-                                    </b-dropdown>
-                                    <!-- <b-form-select v-model="selectedContract">
-                                        <b-form-select-option :value="null" selected>Select</b-form-select-option>
-                                        <b-form-select-option v-for="(address,index) in activeData.contract_address"
-                                            :key="index" :>
-                                            {{ address.platform }}
-                                        </b-form-select-option>
-                                    </b-form-select> -->
-                                </div>
-                                <!-- <div v-if="selectedContract" class="d-flex mt-1 justify-content-end">
-                                    <div class="text-nowrap text-truncate" style="width:200px">{{selectedContract}}
-                                    </div>
-                                    <b-button size="sm" class="ml-1" v-clipboard:copy="selectedContract"
-                                        v-clipboard:success="onCopy" v-clipboard:error="onError"
-                                        v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary" pill>Copy!
-                                    </b-button>
-
-                                </div> -->
-
-
-                            </div>
-                        </div>
-                    </div>
-                    <app-collapse>
-                        <app-collapse-item v-if="activeData.sparkline_in_7d&& activeData.sparkline_in_7d.length>0
-                        || activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0
-                         || activeData.total_volume
-                         ||activeData.market_cap
-                         ||activeData.total_supply_percent" :isVisible="true" title="Market Data" class="open w-100">
-                            <b-card no-body>
-                                <b-card-body style="margin-left: 10px; margin-top: 19px;">
-                                    <b-row>
-
-                                        <b-col md="10" sm="8" class="text-center sparlineChat mb-1"
-                                            style="margin-left: -40px;"
-                                            v-if="activeData.sparkline_in_7d&& activeData.sparkline_in_7d.length>0">
-                                            <!-- <h5> 7 Days</h5> -->
-                                            <div class="position-absolute w-100" style="z-index:99">
-
-                                                <b-tabs content-class="" class="graph_tab graph_tab-1 float-left w-50"
-                                                    style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
-                                                    <b-tab active title="Price">
-                                                        <div></div>
-                                                    </b-tab>
-                                                    <b-tab title="MC">
-                                                        <div></div>
-                                                    </b-tab>
-                                                </b-tabs>
-                                                <div class="d-inline-flex float-right"
-                                                    style="padding-right: 40px !important;">
-                                                    <b-tabs content-class="" class="graph_tab my-auto"
-                                                        style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
-                                                        <b-tab active title="1D">
-                                                            <div></div>
-                                                        </b-tab>
-                                                        <b-tab title="7D">
-                                                            <div></div>
-                                                        </b-tab>
-                                                        <b-tab title="1M">
-                                                            <div></div>
-                                                        </b-tab>
-                                                        <b-tab title="3M">
-                                                            <div></div>
-                                                        </b-tab>
-                                                        <b-tab title="1Y">
-                                                            <div></div>
-                                                        </b-tab>
-                                                        <b-tab title="ALL">
-                                                            <div></div>
-                                                        </b-tab>
-                                                    </b-tabs>
-                                                    <div style="width:20px">
-                                                        <feather-icon size='12' icon='CalendarIcon' />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <vue-apex-charts class="full" width="100%" :dataLabels="true" type="area"
-                                                height="290" :options="seven_DaysChart" :series="seven_DaysChartseries">
-                                            </vue-apex-charts>
-                                            <!-- <sparkline width="300" height="150">
-                                            <sparklineLine :data="activeData.sparkline_in_7d"
-                                                :limit="activeData.sparkline_in_7d?activeData.sparkline_in_7d.length:1000"
-                                                :styles="spLineStyles" />
-                                        </sparkline> -->
-                                        </b-col>
-                                        <b-col md="2" sm="4" style=" 
-                                        padding-left: 0px !important;
-                                        justify-content: space-between;
-                                        flex-direction: column;">
-                                            <div v-if="activeData.total_volume" style="margin-bottom: 24px;">
-                                                <span
-                                                    style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                    Volume</span>
-                                                <div class="" style="font-size:16px; font-weight: 600;">
+                                                <div class="d-flex m-auto">
                                                     <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.total_volume) }}</span>
+                                                        v-if="activeData.price_change_percentage_24h && activeData.price_change_percentage_24h>= 0"
+                                                        class="btn-success d-flex  marginx1" style="font-family: 'Poppins-Light';
+                                                        font-style: normal;
+                                                        font-weight: 300;
+                                                        font-size: 12px; margin-top: 2px;border-radius:5px; padding:0px 5px">
+                                                        <div style="display: inline; margin:auto;">
+                                                            <feather-icon size="20" icon="ChevronUpIcon" />
+                                                        </div><span>{{ roundData(activeData.price_change_percentage_24h) }}%</span>
+    
+                                                    </span>
+                                                    <span v-else-if="activeData.price_change_percentage_24h"
+                                                        style="font-size:12px; font-weight: 300; margin-top: 2px;border-radius:5px; padding:0px 5px"
+                                                        class="btn-danger d-flex marginx1">
+                                                        <div style="display: inline; margin:auto;">
+                                                            <feather-icon size="20" icon="ChevronDownIcon" />
+                                                        </div><span>{{ roundData(activeData.price_change_percentage_24h) }}%</span>
+    
+                                                    </span>
                                                 </div>
-                                            </div>
-                                            <div v-if="activeData.market_cap" style="margin-bottom: 24px;">
-                                                <span
-                                                    style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                    Market Cap</span>
-                                                <div class="" style="font-size:16px; font-weight: 600;">
-                                                    <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.market_cap) }}</span>
-                                                </div>
-                                            </div>
-                                            <div style="margin-bottom: 24px;"
-                                                v-if="activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0">
-                                                <span
-                                                    style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                    X's from launch</span>
-                                                <div class="" style="font-size:16px; font-weight: 600;">
-                                                    <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;"
-                                                        v-if="activeData.roi_times">{{ xfromlunch(activeData.roi_times,'roi_times') }}X</span>
-                                                    <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;"
-                                                        v-else-if="activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0 ">{{ xfromlunch(activeData.current_price,activeData.round_price) }}X</span>
-                                                </div>
-                                            </div>
-                                            <div v-if="activeData.total_supply_percent" style="margin-bottom: 24px;">
-                                                <span
-                                                    style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                    Total Supply:</span>
-                                                <div class="" style="font-size:16px; font-weight: 600;">
-                                                    <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">{{ activeData.total_supply_percent }}
-                                                        %</span> </div>
-                                            </div>
-                                            <div class="float-left">
-                                                <button class="fs-6 "
-                                                    style="border-radius: 10px; font-size: 12px; font-weight: 400; font-family: 'Poppins-Light'; font-style: normal; padding:6px 14px;">Price
-                                                    Prediction</button>
-                                            </div>
-                                        </b-col>
-
-                                    </b-row>
-                                    <b-row>
-                                        <b-col class="p-0">
-                                            <p class="poppins-font chart-desc" v-html="activeData.coin_description">
-
-                                            </p>
-                                        </b-col>
-                                    </b-row>
-
-                                </b-card-body>
-                            </b-card>
-                        </app-collapse-item>
-                        <app-collapse-item title="Social Data" class="w-100">
-                            <b-card no-body class="mb-1">
-                                <b-card-body>
-
-                                    <div class="d-flex flex-wrap justify-content-center">
-                                        <div v-if="activeData.website && activeData.website != '' " cols="1" md="2"
-                                            lg="2" sm="2" class="radius_gradient" style="width:110px">
-                                            <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                style="max-width:200px;">
-                                                <a :href="activeData.website" target="_blank" class="d-block"
-                                                    style="margin-top:20px; margin-bottom:10px;">
-                                                    <b-img rounded :src="'/images/static/website.png'" fluid
-                                                        class="w-50" alt="Responsive image" />
-                                                </a>
-                                                <div class="soicalLable soicalLable-2">
-                                                    Website
-                                                </div>
-                                            </b-card>
-                                        </div>
-                                        <div class="radius_gradient" style="width:110px"
-                                            v-if="activeData.twitter && activeData.twitter != '' ">
-                                            <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                style="max-width:200px;">
-                                                <a :href="activeData.twitter" target="_blank" class="d-block"
-                                                    style="margin-top:20px; margin-bottom:10px;">
-                                                    <b-img rounded :src="'/images/static/twitter.png'" fluid
-                                                        class="w-50" alt="Responsive image" />
-                                                </a>
-                                                <div class="soicalLable soicalLable-2"
-                                                    v-if="activeData.twitter_followers">
-                                                    {{kFormatter(activeData.twitter_followers)}}
-                                                </div>
-                                                <div class="soicalLable soicalLable-2" v-else>
-                                                    Twitter
-                                                </div>
-                                            </b-card>
-                                        </div>
-
-                                        <div class="radius_gradient" style="width:110px"
-                                            v-if="activeData.telegram && activeData.telegram != '' ">
-                                            <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                style="max-width:200px;">
-                                                <a :href="activeData.telegram" target="_blank" class="d-block"
-                                                    style="margin-top:20px; margin-bottom:10px;">
-                                                    <b-img rounded :src="'/images/static/telegram.png'" fluid
-                                                        class="w-50" alt="Responsive image" />
-
-                                                </a>
-                                                <div class="soicalLable soicalLable-2"
-                                                    v-if="activeData.telegram_members">
-                                                    {{kFormatter(activeData.telegram_members)}}
-                                                </div>
-                                                <div class="soicalLable soicalLable-2" v-else>
-                                                    Telegram
-                                                </div>
-                                            </b-card>
-                                        </div>
-                                        <div class="radius_gradient" style="width:110px"
-                                            v-if="activeData.discord && activeData.discord != '' ">
-                                            <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                style="max-width:200px;">
-                                                <a :href="activeData.discord" target="_blank" class="d-block"
-                                                    style="margin-top:20px; margin-bottom:10px;">
-                                                    <b-img rounded :src="'/images/static/discord.png'" fluid
-                                                        class="w-50" alt="Responsive image" />
-                                                </a>
-                                                <div class="soicalLable soicalLable-2"
-                                                    v-if="activeData.medium_followers">
-                                                    {{kFormatter(activeData.medium_followers)}}
-                                                </div>
-                                                <div class="soicalLable soicalLable-2" v-else>Discord
-                                                </div>
-                                            </b-card>
-                                        </div>
-                                        <div class="radius_gradient" style="width:110px"
-                                            v-if="activeData.medium && activeData.medium != '' ">
-                                            <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                style="max-width:200px;">
-                                                <a :href="activeData.medium" target="_blank" class="d-block"
-                                                    style="margin-top:20px; margin-bottom:10px;">
-                                                    <b-img rounded :src="'/images/static/medium.png'" fluid class="w-50"
-                                                        alt="Responsive image" />
-
-                                                </a>
-                                                <div class="soicalLable soicalLable-2"
-                                                    v-if="activeData.medium_followers">
-                                                    {{kFormatter(activeData.medium_followers)}}
-                                                </div>
-                                                <div class="soicalLable soicalLable-2" v-else>Medium
-                                                </div>
-                                            </b-card>
-                                        </div>
-                                        <div class="radius_gradient" style="width:110px"
-                                            v-if="activeData.reddit && activeData.reddit != '' ">
-                                            <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                style="max-width:200px;">
-                                                <a :href="activeData.reddit" target="_blank" class="d-block"
-                                                    style="margin-top:20px; margin-bottom:10px;">
-                                                    <b-img rounded :src="'/images/static/reddit.png'" fluid class="w-50"
-                                                        alt="Responsive image" />
-
-                                                </a>
-                                                <div class="soicalLable soicalLable-2"
-                                                    v-if="activeData.reddit_followers">
-                                                    {{kFormatter(activeData.reddit_followers)}}
-                                                </div>
-                                                <div class="soicalLable soicalLable-2" v-else>Reddit
-                                                </div>
-                                            </b-card>
-                                        </div>
-                                        <div class="radius_gradient" style="width:110px"
-                                            v-if="activeData.whitepaper && activeData.whitepaper != '' ">
-                                            <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                style="max-width:200px;">
-                                                <a :href="activeData.whitepaper" target="_blank" class="d-block"
-                                                    style="margin-top:20px; margin-bottom:10px;">
-                                                    <b-img rounded :src="'/images/static/whitepaper.png'" fluid
-                                                        class="w-50 bg-light" alt="Responsive image" />
-
-                                                </a>
-                                                <div class="soicalLable soicalLable-2"
-                                                    v-if="activeData.whitepaper_followers">
-                                                    {{kFormatter(activeData.whitepaper_followers)}}
-                                                </div>
-                                                <div class="soicalLable soicalLable-2" v-else>Whitepaper
-                                                </div>
-                                            </b-card>
-                                        </div>
-                                        <div class="radius_gradient" style="width:110px"
-                                            v-if="activeData.github && activeData.github != '' ">
-                                            <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                style="max-width:200px;">
-                                                <a :href="activeData.github" target="_blank" class="d-block"
-                                                    style="margin-top:20px; margin-bottom:10px;">
-                                                    <b-img rounded :src="'/images/static/github.png'" fluid class="w-50"
-                                                        alt="Responsive image" />
-                                                </a>
-                                                <div class="soicalLable soicalLable-2"
-                                                    v-if="activeData.github_followers">
-                                                    {{kFormatter(activeData.github_followers)}}
-                                                </div>
-                                                <div class="soicalLable soicalLable-2" v-else>Github
-                                                </div>
-                                            </b-card>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="text-center mt-1 mb-1 justify-content-center d-flex flex-wrap socialData">
-
-
-                                        <div class="radius_gradient cursor-pointer"
-                                            v-b-tooltip.hover.bottom="'Social Score'" style="width:110px;"
-                                            v-if="activeData.average_sentiment">
-                                            <b-card title="" class="mx-auto  innerCard text-center str_grey_gradient"
-                                                style="max-width:120px;">
-
-                                                <div class="justify-content-center text-nowrap socialText2 "
-                                                    style="margin-top: 10px; margin-bottom: 12px;">
-                                                    {{ calculate_social_score(activeData) }}/10</div>
-
-                                                <div class="soicalLable darkWhiteText lableText">Social Score: </div>
-
-                                            </b-card>
-                                        </div>
-                                        <div class="radius_gradient cursor-pointer" style="width:110px;"
-                                            v-b-tooltip.hover.bottom="'Social Mentions'"
-                                            v-if="activeData.social_mentions_change">
-                                            <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                style="max-width:200px;">
-                                                <div class="justify-content-center text-nowrap socialText2 text-success-green "
-                                                    style="margin-top: 10px; margin-bottom: 12px;"
-                                                    v-if="activeData.social_mentions_change>=0">
-                                                    +{{roundData(activeData.social_mentions_change)}} %
-                                                </div>
-                                                <div class="justify-content-center text-nowrap socialText2 text-danger "
-                                                    style="margin-top: 10px; margin-bottom: 12px;" v-else>
-                                                    {{roundData(activeData.social_mentions_change)}} %
-                                                </div>
-                                                <div class="soicalLable darkWhiteText lableText">Social Mentions: </div>
-
-                                            </b-card>
-                                        </div>
-
-                                        <div class="radius_gradient cursor-pointer" style="width:110px;"
-                                            v-b-tooltip.hover.bottom="'Average Sentiment'"
-                                            v-if="activeData.average_sentiment">
-                                            <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                style="max-width:200px;">
-                                                <div class="justify-content-center text-nowrap socialText2 "
-                                                    style="margin-top: 10px; margin-bottom: 12px;"
-                                                    v-if="userData.currentPlan == 'free'">
-                                                    <feather-icon icon="LockIcon" size="30" style="" />
-                                                </div>
-                                                <div v-else class="justify-content-center text-nowrap socialText2 "
-                                                    style="margin-top: 10px; margin-bottom: 12px;">
-                                                    {{roundData(activeData.average_sentiment)}}</div>
-
-                                                <div class="soicalLable darkWhiteText lableText">Average Sentiment:
-                                                </div>
-
-                                            </b-card>
-                                        </div>
-
-                                        <div class="radius_gradient cursor-pointer" style="width:110px;"
-                                            v-b-tooltip.hover.bottom="'Social Engagement'"
-                                            v-if="activeData.social_engagement">
-                                            <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                style="max-width:200px;">
-                                                <div class="justify-content-center text-nowrap socialText2 "
-                                                    style="margin-top: 10px; margin-bottom: 12px;"
-                                                    v-if="userData.currentPlan == 'free'">
-                                                    <feather-icon icon="LockIcon" size="30" style="" />
-                                                </div>
-                                                <div class="justify-content-center text-nowrap socialText2 text-success-green"
-                                                    style="margin-top: 10px; margin-bottom: 12px;"
-                                                    v-else-if="activeData.social_engagement_change>=0">
-                                                    +{{roundData(activeData.social_engagement_change)}} %</div>
-                                                <div class="justify-content-center text-nowrap socialText2  text-danger"
-                                                    style="margin-top: 10px; margin-bottom: 12px;" v-else>
-                                                    {{roundData(activeData.social_engagement_change)}} %</div>
-                                                <div class="soicalLable darkWhiteText lableText">Social Engagement:
-                                                </div>
-
-                                            </b-card>
-                                        </div>
-                                        <div class="radius_gradient cursor-pointer" style="width:110px;"
-                                            v-b-tooltip.hover.bottom="'Bearish Sentiment'">
-                                            <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                style="max-width:200px;">
-                                                <div class="justify-content-center text-nowrap socialText2 "
-                                                    style="margin-top: 10px; margin-bottom: 12px;"
-                                                    v-if="userData.currentPlan == 'free'">
-                                                    <feather-icon icon="LockIcon" size="30" style="" />
-                                                </div>
-                                                <div class="justify-content-center text-nowrap socialText2"
-                                                    style="margin-top: 10px; margin-bottom: 12px;" v-else>2</div>
-                                                <div class="soicalLable darkWhiteText lableText">Bearish Sentiment:
-                                                </div>
-
-                                            </b-card>
-                                        </div>
-
-                                        <div class="radius_gradient cursor-pointer" style="width:110px;"
-                                            v-b-tooltip.hover.bottom="'Average Sentiment change  '"
-                                            v-if="activeData.average_sentiment_change">
-                                            <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                style="max-width:200px;">
-                                                <div class="justify-content-center text-nowrap socialText2 "
-                                                    style="margin-top: 10px; margin-bottom: 12px;"
-                                                    v-if="roundData(activeData.average_sentiment_change)>=0">
-                                                    +{{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
-                                                    %</div>
-                                                <div class="justify-content-center text-nowrap socialText2 text-danger"
-                                                    style="margin-top: 10px; margin-bottom: 12px;" v-else>
-                                                    {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
-                                                    %</div>
-                                                <div class="soicalLable darkWhiteText lableText">Average Sentiment
-                                                    change
-                                                </div>
-
-                                            </b-card>
-                                        </div>
-
-                                    </div>
-                                </b-card-body>
-                            </b-card>
-                        </app-collapse-item>
-                        <app-collapse-item class="w-100" title="Unlocking Data" v-if="activeData.next_unlock_date_text || supplyChart.series.length >0 ||activeData.next_unlock_status || 
-                        activeData.first_vc_unlock
-                        ||activeData.end_vc_unlock
-                        ||activeData.next_unlock_number_of_tokens
-                        ||activeData.next_unlock_size
-                        ||activeData.next_unlock_percent_of_tokens
-                        ||activeData.seed_price
-                        ||activeData.roi_seed
-                        ||activeData.three_months_unlock_number_of_tokens
-                        ||activeData.three_months_unlock_percent_of_tokens
-                        ||activeData.three_months_unlock_size
-                        ||activeData.six_months_unlock_number_of_tokens
-                        ||activeData.six_months_unlock_percent_of_tokens
-                        ||activeData.six_months_unlock_size
-                        ||activeData.total_supply_percent ">
-                            <div class="container d-flex" style="padding:0px;">
-                                <div class="d-inline" v-if="activeData.next_unlock_date_text"
-                                    style="width:20%; font-family: 'Poppins-Light'; margin-right: 24px;  font-style: normal;  font-weight: 400; font-size: 12px;">
-                                    <span style="opacity: 0.5;">Next Unlock Date</span><br>
-                                    <span>{{ activeData.next_unlock_date_text}}</span><br>
-                                </div>
-                                <div class="d-inline" v-else-if="activeData.next_unlock_date"
-                                    style="width:20%; font-family: 'Poppins-Light'; margin-right: 24px;  font-style: normal;  font-weight: 400; font-size: 12px;">
-                                    <span style="opacity: 0.5;">Next Unlock Date</span><br>
-                                    <span>{{ getDateAndTime(activeData.next_unlock_date,'date') }}</span><br>
-                                    <span
-                                        style="opacity: 0.5;">{{ getDateAndTime(activeData.next_unlock_date,'time') }}</span>
-                                </div>
-                                <div v-if="!activeData.next_unlock_date_text && activeData.next_unlock_date"
-                                    class="d-inline-flex justify-content-between" style="">
-                                    <div class="d-iline" style="max-width:65px">
-                                        <div class="radius_gradient" style="border-radius:10px">
-                                            <div class="str_green_gradient text-center m-auto vertical-items-center"
-                                                style="width:64px; height:64px; border-radius: 10px; background: black !important;">
-                                                <span
-                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 26px; color: #2BFF4D"
-                                                    v-if="activeData.next_unlock_percent_of_tokens">{{ roundData2(activeData.next_unlock_percent_of_tokens,1) }}%</span><br>
-                                                <span
-                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 14px; color: #2BFF4D">{{ roundData2(activeData.next_unlock_percent_of_tokens/1000000,2)  }}mil</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <vac :end-time="getTimeStamp(activeData.next_unlock_date)">
-                                        <template v-slot:process="{ timeObj }">
-                                            <div class="d-flex">
-                                                <div class="d-iline text-center" style="margin-left: 12px;">
-                                                    <div style="max-width:50px">
-                                                        <div class="radius_gradient" style="border-radius:10px">
-                                                            <div class="str_green_gradient text-center"
-                                                                style="width:49px; height:49px; border-radius: 10px;">
-                                                                <span
-                                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">{{ timeObj.d }}</span><br>
+                                    <div class="w-50 d-inline" style="margin-right:20px;">
+                                        <div class="bg-theme rounded d-inline" style="float: right;"
+                                            v-if="activeData.contract_address && activeData.contract_address.length>0">
+    
+                                            <div style="margin-top:-2px">
+                                                <div class="my-auto darkWhiteText" style="margin-bottom: 8px !important; margin-right: 4px;padding-left:10px; font-family: 'Poppins-Light';
+                                                    font-style: normal;
+                                                    font-weight: 300;
+                                                    font-size: 12px;
+                                                ">Contact </div>
+    
+    
+                                                <b-dropdown size="lg" variant="flat-secondary" style="padding:0px !important;"
+                                                    id="dropdown-left1" no-caret class="cunningDrop">
+                                                    <template #button-content>
+                                                        <div class="darkBackgroundBlack"
+                                                            v-for="(address,index) in activeData.contract_address.slice(0, 1)"
+                                                            :key="index" style="display:block; padding: 2px; border-radius: 20px;">
+                                                            <div class="flex">
+    
+                                                                <b-img v-if="activeData.image" :src="activeData.image" fluid
+                                                                    alt="Responsive image" style="margin-right:5px; height:30px;     position: relative;
+                                                                    bottom: 4px;" />
+                                                                <div style="font-family: 'Poppins-Light'; display:inline-block;
+                                                                    font-style: normal;    position: relative;
+                                                                    top: 4px;
+                                                                    font-weight: 500;
+                                                                    font-size: 14px;
+                                                                    line-height: 14px; width:90px;white-space: nowrap; 
+                                                                    text-align: start;
+                                                                    overflow: hidden;
+                                                                    text-overflow: ellipsis;">
+                                                                    <div style="white-space: nowrap; width:90px;  overflow: hidden;
+                                                                text-overflow: ellipsis;" class="darkWhiteText text-capitalize">
+                                                                        {{address.platform}}
+                                                                    </div>
+                                                                    <div style="white-space: nowrap; width:90px;  overflow: hidden;
+                                                                text-overflow: ellipsis;" class="text-secondary ">
+                                                                        {{address.contract_address}}
+                                                                    </div>
+                                                                </div>
+                                                                <div style="display:inline-block; float:right; margin-top:-3px">
+    
+                                                                    <b-button size="sm" class="ml-1"
+                                                                        v-clipboard:copy="address.contract_address"
+                                                                        style="margin-right:13px; cursor:pointer; border: none !important;"
+                                                                        v-clipboard:success="onCopy" v-clipboard:error="onError"
+                                                                        v-ripple.400="'rgba(113, 12, 240, 0.15)'"
+                                                                        variant="outline-primary" pill>
+                                                                        <i
+                                                                            class="fa-regular fa-copy cursor-pointer darkWhiteText fa-lg m-1"></i>
+                                                                        <!-- <feather-icon icon="CopyIcon"
+                                                                            class="cursor-pointer darkWhiteText" size="20" /> -->
+                                                                    </b-button>
+                                                                    <img src='/images/static/metamask.png' class="img-fluid"
+                                                                        alt="metamask"
+                                                                        style="cursor:pointer; width:23px; margin-right:13px;"
+                                                                        @click="say('say')">
+                                                                    <feather-icon icon="ChevronDownIcon"
+                                                                        class="cursor-pointer darkWhiteText" size="20"
+                                                                        style="margin-right:13px; margin-bottom: 6px;" />
+    
+                                                                </div>
+    
                                                             </div>
+    
+    
                                                         </div>
-                                                    </div>
-                                                    <div>D</div>
-                                                </div>
-                                                <div class="d-iline text-center" style="margin-left: 12px;">
-                                                    <div style="max-width:50px">
-                                                        <div class="radius_gradient" style="border-radius:10px">
-                                                            <div class="str_green_gradient text-center"
-                                                                style="width:49px ; height:49px ; border-radius: 10px;">
-                                                                <span
-                                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">{{ timeObj.h }}</span><br>
+    
+                                                    </template>
+                                                    <b-dropdown-form href="#" class="cunningDrop dropdown-mine darkBackgroundBlack"
+                                                        name="dropdownform2" style="z-index:999;">
+                                                        <div class="darkBackgroundBlack"
+                                                            v-for="(address,index) in activeData.contract_address" :key="index"
+                                                            style="display:flex; padding: 4px;">
+                                                            <b-img v-if="activeData.image" :src="activeData.image" fluid
+                                                                alt="Responsive image" style="margin-right:5px; height:30px;" />
+                                                            <div class="" style="font-family: 'Poppins-Light'; display:inline-block; font-style: normal;
+                                                                        font-weight: 500;
+                                                                        font-size: 14px;
+                                                                        line-height: 14px;
+                                                                        ">
+                                                                <div class="darkWhiteText text-capitalize" style="white-space: nowrap; width:90px;
+                                                                        overflow: hidden;
+                                                                        text-overflow: ellipsis;">
+                                                                    {{address.platform}}
+                                                                </div>
+                                                                <div class=" text-secondary" style="white-space: nowrap; width:90px;
+                                                                        overflow: hidden;
+                                                                        text-overflow: ellipsis;">
+                                                                    {{address.contract_address}}
+                                                                </div>
+    
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div>H</div>
-                                                </div>
-                                                <div class="d-iline text-center" style="margin-left: 12px;">
-                                                    <div style="max-width:50px">
-                                                        <div class="radius_gradient" style="border-radius:10px">
-                                                            <div class="str_green_gradient text-center"
-                                                                style="width:49px ; height:49px ; border-radius: 10px;">
-                                                                <span
-                                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">{{ timeObj.m }}</span><br>
+                                                            <div style="display:inline-block; float:right;">
+    
+    
+                                                                <b-button size="sm" class="ml-1"
+                                                                    v-clipboard:copy="address.contract_address"
+                                                                    style="margin-right:13px; cursor:pointer; border: none !important;"
+                                                                    v-clipboard:success="onCopy" v-clipboard:error="onError"
+                                                                    v-ripple.400="'rgba(113, 12, 240, 0.15)'"
+                                                                    variant="outline-primary" pill>
+                                                                    <i
+                                                                        class="fa-regular fa-copy cursor-pointer darkWhiteText fa-xl m-1"></i>
+                                                                </b-button>
+                                                                <img src='/images/static/metamask.png' class="img-fluid"
+                                                                    alt="metamask" style="cursor:pointer; width:23px;"
+                                                                    @click="say('hello')">
+    
                                                             </div>
+    
+    
                                                         </div>
-                                                    </div>
-                                                    <div>M</div>
-                                                </div>
-                                                <div class="d-iline text-center" style="margin-left: 12px;">
-                                                    <div style="max-width:50px">
-                                                        <div class="radius_gradient" style="border-radius:10px">
-                                                            <div class="str_green_gradient text-center"
-                                                                style="width:49px ; height:49px ; border-radius: 10px;">
-                                                                <span
-                                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">{{ timeObj.s }}</span><br>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div>S</div>
-                                                </div>
+                                                    </b-dropdown-form>
+    
+                                                </b-dropdown>
+                                                <!-- <b-form-select v-model="selectedContract">
+                                                    <b-form-select-option :value="null" selected>Select</b-form-select-option>
+                                                    <b-form-select-option v-for="(address,index) in activeData.contract_address"
+                                                        :key="index" :>
+                                                        {{ address.platform }}
+                                                    </b-form-select-option>
+                                                </b-form-select> -->
                                             </div>
-                                        </template>
-                                        <template v-slot:finish>
-                                            <div class="d-flex">
-                                                <div class="d-iline text-center" style="margin-left: 12px;">
-                                                    <div style="max-width:50px">
-                                                        <div class="radius_gradient" style="border-radius:10px">
-                                                            <div class="str_green_gradient text-center"
-                                                                style="width:49px; height:49px; border-radius: 10px;">
-                                                                <span
-                                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">0</span><br>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div>D</div>
+                                            <!-- <div v-if="selectedContract" class="d-flex mt-1 justify-content-end">
+                                                <div class="text-nowrap text-truncate" style="width:200px">{{selectedContract}}
                                                 </div>
-                                                <div class="d-iline text-center" style="margin-left: 12px;">
-                                                    <div style="max-width:50px">
-                                                        <div class="radius_gradient" style="border-radius:10px">
-                                                            <div class="str_green_gradient text-center"
-                                                                style="width:49px ; height:49px ; border-radius: 10px;">
-                                                                <span
-                                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">00</span><br>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div>H</div>
-                                                </div>
-                                                <div class="d-iline text-center" style="margin-left: 12px;">
-                                                    <div style="max-width:50px">
-                                                        <div class="radius_gradient" style="border-radius:10px">
-                                                            <div class="str_green_gradient text-center"
-                                                                style="width:49px ; height:49px ; border-radius: 10px;">
-                                                                <span
-                                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">00</span><br>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div>M</div>
-                                                </div>
-                                                <div class="d-iline text-center" style="margin-left: 12px;">
-                                                    <div style="max-width:50px">
-                                                        <div class="radius_gradient" style="border-radius:10px">
-                                                            <div class="str_green_gradient text-center"
-                                                                style="width:49px ; height:49px ; border-radius: 10px;">
-                                                                <span
-                                                                    style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">00</span><br>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div>S</div>
-                                                </div>
-                                            </div>
-                                        </template>
-                                    </vac>
+                                                <b-button size="sm" class="ml-1" v-clipboard:copy="selectedContract"
+                                                    v-clipboard:success="onCopy" v-clipboard:error="onError"
+                                                    v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary" pill>Copy!
+                                                </b-button>
+    
+                                            </div> -->
+    
+    
+                                        </div>
+                                    </div>
                                 </div>
-                                <div v-if="activeData.next_unlock_date_text || activeData.next_unlock_date"
-                                    class="d-inline ml-2 mt-1" style="border-radius: 10px; margin-left: 45px;">
-
-                                    <button v-if="notified == true" @click="notifyMe(activeData.symbol,'none')"
-                                    class="rounded-pill px-2 " style=" padding: 8px; font-size: 14px;">
-                                    <feather-icon size="15" icon="BellIcon" /> Remove Notification</button>
-                                <div v-if="notified == true" style="font-size:12px">Will be notified: {{ notifyList(notifiedType) }} the unlock</div>
-                                    <b-dropdown
-                                        v-if="validateDateRange(activeData.next_unlock_date_text , activeData.next_unlock_date)"
-                                        size="lg" variant="flat-secondary" style="padding:0px !important;"
-                                        id="notify-dropdown" no-caret class="cunningDrop-notify">
-                                        <template #button-content class="p-0 text-left">
-                                            <button v-if="notified != true" class="rounded-pill px-2 "
-                                                style=" padding: 8px; font-size: 14px;">
+                                <app-collapse>
+                                    <app-collapse-item v-if="activeData.sparkline_in_7d&& activeData.sparkline_in_7d.length>0
+                                    || activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0
+                                    || activeData.total_volume
+                                    ||activeData.market_cap
+                                    ||activeData.total_supply_percent" :isVisible="true" title="Market Data" class="open w-100">
+                                        <b-card no-body>
+                                            <b-card-body style="margin-left: 10px; margin-top: 19px;">
+                                                <b-row>
+    
+                                                    <b-col md="10" sm="8" class="text-center sparlineChat mb-1"
+                                                        style="margin-left: -40px;"
+                                                        v-if="activeData.sparkline_in_7d&& activeData.sparkline_in_7d.length>0">
+                                                        <!-- <h5> 7 Days</h5> -->
+                                                        <div class="position-absolute w-100" style="z-index:99">
+    
+                                                            <b-tabs content-class="" class="graph_tab graph_tab-1 float-left w-50"
+                                                                style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
+                                                                <b-tab active title="Price">
+                                                                    <div></div>
+                                                                </b-tab>
+                                                                <b-tab title="MC">
+                                                                    <div></div>
+                                                                </b-tab>
+                                                            </b-tabs>
+                                                            <div class="d-inline-flex float-right"
+                                                                style="padding-right: 40px !important;">
+                                                                <b-tabs content-class="" class="graph_tab my-auto"
+                                                                    style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
+                                                                    <b-tab active title="1D">
+                                                                        <div></div>
+                                                                    </b-tab>
+                                                                    <b-tab title="7D">
+                                                                        <div></div>
+                                                                    </b-tab>
+                                                                    <b-tab title="1M">
+                                                                        <div></div>
+                                                                    </b-tab>
+                                                                    <b-tab title="3M">
+                                                                        <div></div>
+                                                                    </b-tab>
+                                                                    <b-tab title="1Y">
+                                                                        <div></div>
+                                                                    </b-tab>
+                                                                    <b-tab title="ALL">
+                                                                        <div></div>
+                                                                    </b-tab>
+                                                                </b-tabs>
+                                                                <div style="width:20px">
+                                                                    <feather-icon size='12' icon='CalendarIcon' />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <vue-apex-charts class="full" width="100%" :dataLabels="true" type="area"
+                                                            height="290" :options="seven_DaysChart" :series="seven_DaysChartseries">
+                                                        </vue-apex-charts>
+                                                        <!-- <sparkline width="300" height="150">
+                                                        <sparklineLine :data="activeData.sparkline_in_7d"
+                                                            :limit="activeData.sparkline_in_7d?activeData.sparkline_in_7d.length:1000"
+                                                            :styles="spLineStyles" />
+                                                    </sparkline> -->
+                                                    </b-col>
+                                                    <b-col md="2" sm="4" style=" 
+                                                    padding-left: 0px !important;
+                                                    justify-content: space-between;
+                                                    flex-direction: column;">
+                                                        <div v-if="activeData.total_volume" style="margin-bottom: 24px;">
+                                                            <span
+                                                                style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
+                                                                Volume</span>
+                                                            <div class="" style="font-size:16px; font-weight: 600;">
+                                                                <span
+                                                                    style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.total_volume) }}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="activeData.market_cap" style="margin-bottom: 24px;">
+                                                            <span
+                                                                style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
+                                                                Market Cap</span>
+                                                            <div class="" style="font-size:16px; font-weight: 600;">
+                                                                <span
+                                                                    style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.market_cap) }}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div style="margin-bottom: 24px;"
+                                                            v-if="activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0">
+                                                            <span
+                                                                style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
+                                                                X's from launch</span>
+                                                            <div class="" style="font-size:16px; font-weight: 600;">
+                                                                <span
+                                                                    style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;"
+                                                                    v-if="activeData.roi_times">{{ xfromlunch(activeData.roi_times,'roi_times') }}X</span>
+                                                                <span
+                                                                    style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;"
+                                                                    v-else-if="activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0 ">{{ xfromlunch(activeData.current_price,activeData.round_price) }}X</span>
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="activeData.total_supply_percent" style="margin-bottom: 24px;">
+                                                            <span
+                                                                style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
+                                                                Total Supply:</span>
+                                                            <div class="" style="font-size:16px; font-weight: 600;">
+                                                                <span
+                                                                    style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">{{ activeData.total_supply_percent }}
+                                                                    %</span> </div>
+                                                        </div>
+                                                        <div class="float-left">
+                                                            <button class="fs-6 "
+                                                                style="border-radius: 10px; font-size: 12px; font-weight: 400; font-family: 'Poppins-Light'; font-style: normal; padding:6px 14px;">Price
+                                                                Prediction</button>
+                                                        </div>
+                                                    </b-col>
+    
+                                                </b-row>
+                                                <b-row>
+                                                    <b-col class="p-0">
+                                                        <p class="poppins-font chart-desc" v-html="activeData.coin_description">
+    
+                                                        </p>
+                                                    </b-col>
+                                                </b-row>
+    
+                                            </b-card-body>
+                                        </b-card>
+                                    </app-collapse-item>
+                                    <app-collapse-item title="Social Data" class="w-100">
+                                        <b-card no-body class="mb-1">
+                                            <b-card-body>
+    
+                                                <div class="d-flex flex-wrap justify-content-center">
+                                                    <div v-if="activeData.website && activeData.website != '' " cols="1" md="2"
+                                                        lg="2" sm="2" class="radius_gradient" style="width:110px">
+                                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                            style="max-width:200px;">
+                                                            <a :href="activeData.website" target="_blank" class="d-block"
+                                                                style="margin-top:20px; margin-bottom:10px;">
+                                                                <b-img rounded :src="'/images/static/website.png'" fluid
+                                                                    class="w-50" alt="Responsive image" />
+                                                            </a>
+                                                            <div class="soicalLable soicalLable-2">
+                                                                Website
+                                                            </div>
+                                                        </b-card>
+                                                    </div>
+                                                    <div class="radius_gradient" style="width:110px"
+                                                        v-if="activeData.twitter && activeData.twitter != '' ">
+                                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                            style="max-width:200px;">
+                                                            <a :href="activeData.twitter" target="_blank" class="d-block"
+                                                                style="margin-top:20px; margin-bottom:10px;">
+                                                                <b-img rounded :src="'/images/static/twitter.png'" fluid
+                                                                    class="w-50" alt="Responsive image" />
+                                                            </a>
+                                                            <div class="soicalLable soicalLable-2"
+                                                                v-if="activeData.twitter_followers">
+                                                                {{kFormatter(activeData.twitter_followers)}}
+                                                            </div>
+                                                            <div class="soicalLable soicalLable-2" v-else>
+                                                                Twitter
+                                                            </div>
+                                                        </b-card>
+                                                    </div>
+    
+                                                    <div class="radius_gradient" style="width:110px"
+                                                        v-if="activeData.telegram && activeData.telegram != '' ">
+                                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                            style="max-width:200px;">
+                                                            <a :href="activeData.telegram" target="_blank" class="d-block"
+                                                                style="margin-top:20px; margin-bottom:10px;">
+                                                                <b-img rounded :src="'/images/static/telegram.png'" fluid
+                                                                    class="w-50" alt="Responsive image" />
+    
+                                                            </a>
+                                                            <div class="soicalLable soicalLable-2"
+                                                                v-if="activeData.telegram_members">
+                                                                {{kFormatter(activeData.telegram_members)}}
+                                                            </div>
+                                                            <div class="soicalLable soicalLable-2" v-else>
+                                                                Telegram
+                                                            </div>
+                                                        </b-card>
+                                                    </div>
+                                                    <div class="radius_gradient" style="width:110px"
+                                                        v-if="activeData.discord && activeData.discord != '' ">
+                                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                            style="max-width:200px;">
+                                                            <a :href="activeData.discord" target="_blank" class="d-block"
+                                                                style="margin-top:20px; margin-bottom:10px;">
+                                                                <b-img rounded :src="'/images/static/discord.png'" fluid
+                                                                    class="w-50" alt="Responsive image" />
+                                                            </a>
+                                                            <div class="soicalLable soicalLable-2"
+                                                                v-if="activeData.medium_followers">
+                                                                {{kFormatter(activeData.medium_followers)}}
+                                                            </div>
+                                                            <div class="soicalLable soicalLable-2" v-else>Discord
+                                                            </div>
+                                                        </b-card>
+                                                    </div>
+                                                    <div class="radius_gradient" style="width:110px"
+                                                        v-if="activeData.medium && activeData.medium != '' ">
+                                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                            style="max-width:200px;">
+                                                            <a :href="activeData.medium" target="_blank" class="d-block"
+                                                                style="margin-top:20px; margin-bottom:10px;">
+                                                                <b-img rounded :src="'/images/static/medium.png'" fluid class="w-50"
+                                                                    alt="Responsive image" />
+    
+                                                            </a>
+                                                            <div class="soicalLable soicalLable-2"
+                                                                v-if="activeData.medium_followers">
+                                                                {{kFormatter(activeData.medium_followers)}}
+                                                            </div>
+                                                            <div class="soicalLable soicalLable-2" v-else>Medium
+                                                            </div>
+                                                        </b-card>
+                                                    </div>
+                                                    <div class="radius_gradient" style="width:110px"
+                                                        v-if="activeData.reddit && activeData.reddit != '' ">
+                                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                            style="max-width:200px;">
+                                                            <a :href="activeData.reddit" target="_blank" class="d-block"
+                                                                style="margin-top:20px; margin-bottom:10px;">
+                                                                <b-img rounded :src="'/images/static/reddit.png'" fluid class="w-50"
+                                                                    alt="Responsive image" />
+    
+                                                            </a>
+                                                            <div class="soicalLable soicalLable-2"
+                                                                v-if="activeData.reddit_followers">
+                                                                {{kFormatter(activeData.reddit_followers)}}
+                                                            </div>
+                                                            <div class="soicalLable soicalLable-2" v-else>Reddit
+                                                            </div>
+                                                        </b-card>
+                                                    </div>
+                                                    <div class="radius_gradient" style="width:110px"
+                                                        v-if="activeData.whitepaper && activeData.whitepaper != '' ">
+                                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                            style="max-width:200px;">
+                                                            <a :href="activeData.whitepaper" target="_blank" class="d-block"
+                                                                style="margin-top:20px; margin-bottom:10px;">
+                                                                <b-img rounded :src="'/images/static/whitepaper.png'" fluid
+                                                                    class="w-50 bg-light" alt="Responsive image" />
+    
+                                                            </a>
+                                                            <div class="soicalLable soicalLable-2"
+                                                                v-if="activeData.whitepaper_followers">
+                                                                {{kFormatter(activeData.whitepaper_followers)}}
+                                                            </div>
+                                                            <div class="soicalLable soicalLable-2" v-else>Whitepaper
+                                                            </div>
+                                                        </b-card>
+                                                    </div>
+                                                    <div class="radius_gradient" style="width:110px"
+                                                        v-if="activeData.github && activeData.github != '' ">
+                                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                            style="max-width:200px;">
+                                                            <a :href="activeData.github" target="_blank" class="d-block"
+                                                                style="margin-top:20px; margin-bottom:10px;">
+                                                                <b-img rounded :src="'/images/static/github.png'" fluid class="w-50"
+                                                                    alt="Responsive image" />
+                                                            </a>
+                                                            <div class="soicalLable soicalLable-2"
+                                                                v-if="activeData.github_followers">
+                                                                {{kFormatter(activeData.github_followers)}}
+                                                            </div>
+                                                            <div class="soicalLable soicalLable-2" v-else>Github
+                                                            </div>
+                                                        </b-card>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="text-center mt-1 mb-1 justify-content-center d-flex flex-wrap socialData">
+    
+    
+                                                    <div class="radius_gradient cursor-pointer"
+                                                        v-b-tooltip.hover.bottom="'Social Score'" style="width:110px;"
+                                                        v-if="activeData.average_sentiment">
+                                                        <b-card title="" class="mx-auto  innerCard text-center str_grey_gradient"
+                                                            style="max-width:120px;">
+    
+                                                            <div class="justify-content-center text-nowrap socialText2 "
+                                                                style="margin-top: 10px; margin-bottom: 12px;">
+                                                                {{ calculate_social_score(activeData) }}/10</div>
+    
+                                                            <div class="soicalLable darkWhiteText lableText">Social Score: </div>
+    
+                                                        </b-card>
+                                                    </div>
+                                                    <div class="radius_gradient cursor-pointer" style="width:110px;"
+                                                        v-b-tooltip.hover.bottom="'Social Mentions'"
+                                                        v-if="activeData.social_mentions_change">
+                                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                            style="max-width:200px;">
+                                                            <div class="justify-content-center text-nowrap socialText2 text-success-green "
+                                                                style="margin-top: 10px; margin-bottom: 12px;"
+                                                                v-if="activeData.social_mentions_change>=0">
+                                                                +{{roundData(activeData.social_mentions_change)}} %
+                                                            </div>
+                                                            <div class="justify-content-center text-nowrap socialText2 text-danger "
+                                                                style="margin-top: 10px; margin-bottom: 12px;" v-else>
+                                                                {{roundData(activeData.social_mentions_change)}} %
+                                                            </div>
+                                                            <div class="soicalLable darkWhiteText lableText">Social Mentions: </div>
+    
+                                                        </b-card>
+                                                    </div>
+    
+                                                    <div class="radius_gradient cursor-pointer" style="width:110px;"
+                                                        v-b-tooltip.hover.bottom="'Average Sentiment'"
+                                                        v-if="activeData.average_sentiment">
+                                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                            style="max-width:200px;">
+                                                            <div class="justify-content-center text-nowrap socialText2 "
+                                                                style="margin-top: 10px; margin-bottom: 12px;"
+                                                                v-if="userData.currentPlan == 'free'">
+                                                                <feather-icon icon="LockIcon" size="30" style="" />
+                                                            </div>
+                                                            <div v-else class="justify-content-center text-nowrap socialText2 "
+                                                                style="margin-top: 10px; margin-bottom: 12px;">
+                                                                {{roundData(activeData.average_sentiment)}}</div>
+    
+                                                            <div class="soicalLable darkWhiteText lableText">Average Sentiment:
+                                                            </div>
+    
+                                                        </b-card>
+                                                    </div>
+    
+                                                    <div class="radius_gradient cursor-pointer" style="width:110px;"
+                                                        v-b-tooltip.hover.bottom="'Social Engagement'"
+                                                        v-if="activeData.social_engagement">
+                                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                            style="max-width:200px;">
+                                                            <div class="justify-content-center text-nowrap socialText2 "
+                                                                style="margin-top: 10px; margin-bottom: 12px;"
+                                                                v-if="userData.currentPlan == 'free'">
+                                                                <feather-icon icon="LockIcon" size="30" style="" />
+                                                            </div>
+                                                            <div class="justify-content-center text-nowrap socialText2 text-success-green"
+                                                                style="margin-top: 10px; margin-bottom: 12px;"
+                                                                v-else-if="activeData.social_engagement_change>=0">
+                                                                +{{roundData(activeData.social_engagement_change)}} %</div>
+                                                            <div class="justify-content-center text-nowrap socialText2  text-danger"
+                                                                style="margin-top: 10px; margin-bottom: 12px;" v-else>
+                                                                {{roundData(activeData.social_engagement_change)}} %</div>
+                                                            <div class="soicalLable darkWhiteText lableText">Social Engagement:
+                                                            </div>
+    
+                                                        </b-card>
+                                                    </div>
+                                                    <div class="radius_gradient cursor-pointer" style="width:110px;"
+                                                        v-b-tooltip.hover.bottom="'Bearish Sentiment'">
+                                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                            style="max-width:200px;">
+                                                            <div class="justify-content-center text-nowrap socialText2 "
+                                                                style="margin-top: 10px; margin-bottom: 12px;"
+                                                                v-if="userData.currentPlan == 'free'">
+                                                                <feather-icon icon="LockIcon" size="30" style="" />
+                                                            </div>
+                                                            <div class="justify-content-center text-nowrap socialText2"
+                                                                style="margin-top: 10px; margin-bottom: 12px;" v-else>2</div>
+                                                            <div class="soicalLable darkWhiteText lableText">Bearish Sentiment:
+                                                            </div>
+    
+                                                        </b-card>
+                                                    </div>
+    
+                                                    <div class="radius_gradient cursor-pointer" style="width:110px;"
+                                                        v-b-tooltip.hover.bottom="'Average Sentiment change  '"
+                                                        v-if="activeData.average_sentiment_change">
+                                                        <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                            style="max-width:200px;">
+                                                            <div class="justify-content-center text-nowrap socialText2 "
+                                                                style="margin-top: 10px; margin-bottom: 12px;"
+                                                                v-if="roundData(activeData.average_sentiment_change)>=0">
+                                                                +{{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
+                                                                %</div>
+                                                            <div class="justify-content-center text-nowrap socialText2 text-danger"
+                                                                style="margin-top: 10px; margin-bottom: 12px;" v-else>
+                                                                {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
+                                                                %</div>
+                                                            <div class="soicalLable darkWhiteText lableText">Average Sentiment
+                                                                change
+                                                            </div>
+    
+                                                        </b-card>
+                                                    </div>
+    
+                                                </div>
+                                            </b-card-body>
+                                        </b-card>
+                                    </app-collapse-item>
+                                    <app-collapse-item class="w-100" title="Unlocking Data" v-if="activeData.next_unlock_date_text || supplyChart.series.length >0 ||activeData.next_unlock_status || 
+                                    activeData.first_vc_unlock
+                                    ||activeData.end_vc_unlock
+                                    ||activeData.next_unlock_number_of_tokens
+                                    ||activeData.next_unlock_size
+                                    ||activeData.next_unlock_percent_of_tokens
+                                    ||activeData.seed_price
+                                    ||activeData.roi_seed
+                                    ||activeData.three_months_unlock_number_of_tokens
+                                    ||activeData.three_months_unlock_percent_of_tokens
+                                    ||activeData.three_months_unlock_size
+                                    ||activeData.six_months_unlock_number_of_tokens
+                                    ||activeData.six_months_unlock_percent_of_tokens
+                                    ||activeData.six_months_unlock_size
+                                    ||activeData.total_supply_percent ">
+                                        <div class="container d-flex" style="padding:0px;">
+                                            <div class="d-inline" v-if="activeData.next_unlock_date_text"
+                                                style="width:20%; font-family: 'Poppins-Light'; margin-right: 24px;  font-style: normal;  font-weight: 400; font-size: 12px;">
+                                                <span style="opacity: 0.5;">Next Unlock Date</span><br>
+                                                <span>{{ activeData.next_unlock_date_text}}</span><br>
+                                            </div>
+                                            <div class="d-inline" v-else-if="activeData.next_unlock_date"
+                                                style="width:20%; font-family: 'Poppins-Light'; margin-right: 24px;  font-style: normal;  font-weight: 400; font-size: 12px;">
+                                                <span style="opacity: 0.5;">Next Unlock Date</span><br>
+                                                <span>{{ getDateAndTime(activeData.next_unlock_date,'date') }}</span><br>
+                                                <span
+                                                    style="opacity: 0.5;">{{ getDateAndTime(activeData.next_unlock_date,'time') }}</span>
+                                            </div>
+                                            <div v-if="!activeData.next_unlock_date_text && activeData.next_unlock_date"
+                                                class="d-inline-flex justify-content-between" style="">
+                                                <div class="d-iline" style="max-width:65px">
+                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                        <div class="str_green_gradient text-center m-auto vertical-items-center"
+                                                            style="width:64px; height:64px; border-radius: 10px; background: black !important;">
+                                                            <span
+                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 26px; color: #2BFF4D"
+                                                                v-if="activeData.next_unlock_percent_of_tokens">{{ roundData2(activeData.next_unlock_percent_of_tokens,1) }}%</span><br>
+                                                            <span
+                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 14px; color: #2BFF4D">{{ roundData2(activeData.next_unlock_percent_of_tokens/1000000,2)  }}mil</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <vac :end-time="getTimeStamp(activeData.next_unlock_date)">
+                                                    <template v-slot:process="{ timeObj }">
+                                                        <div class="d-flex">
+                                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                                <div style="max-width:50px">
+                                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                                        <div class="str_green_gradient text-center"
+                                                                            style="width:49px; height:49px; border-radius: 10px;">
+                                                                            <span
+                                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">{{ timeObj.d }}</span><br>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div>D</div>
+                                                            </div>
+                                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                                <div style="max-width:50px">
+                                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                                        <div class="str_green_gradient text-center"
+                                                                            style="width:49px ; height:49px ; border-radius: 10px;">
+                                                                            <span
+                                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">{{ timeObj.h }}</span><br>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div>H</div>
+                                                            </div>
+                                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                                <div style="max-width:50px">
+                                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                                        <div class="str_green_gradient text-center"
+                                                                            style="width:49px ; height:49px ; border-radius: 10px;">
+                                                                            <span
+                                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">{{ timeObj.m }}</span><br>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div>M</div>
+                                                            </div>
+                                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                                <div style="max-width:50px">
+                                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                                        <div class="str_green_gradient text-center"
+                                                                            style="width:49px ; height:49px ; border-radius: 10px;">
+                                                                            <span
+                                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">{{ timeObj.s }}</span><br>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div>S</div>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                    <template v-slot:finish>
+                                                        <div class="d-flex">
+                                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                                <div style="max-width:50px">
+                                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                                        <div class="str_green_gradient text-center"
+                                                                            style="width:49px; height:49px; border-radius: 10px;">
+                                                                            <span
+                                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">0</span><br>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div>D</div>
+                                                            </div>
+                                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                                <div style="max-width:50px">
+                                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                                        <div class="str_green_gradient text-center"
+                                                                            style="width:49px ; height:49px ; border-radius: 10px;">
+                                                                            <span
+                                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">00</span><br>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div>H</div>
+                                                            </div>
+                                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                                <div style="max-width:50px">
+                                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                                        <div class="str_green_gradient text-center"
+                                                                            style="width:49px ; height:49px ; border-radius: 10px;">
+                                                                            <span
+                                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">00</span><br>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div>M</div>
+                                                            </div>
+                                                            <div class="d-iline text-center" style="margin-left: 12px;">
+                                                                <div style="max-width:50px">
+                                                                    <div class="radius_gradient" style="border-radius:10px">
+                                                                        <div class="str_green_gradient text-center"
+                                                                            style="width:49px ; height:49px ; border-radius: 10px;">
+                                                                            <span
+                                                                                style="font-family: monospace;font-style: normal;font-weight: 400;font-size: 25px; color: #2BFF4D">00</span><br>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div>S</div>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </vac>
+                                            </div>
+                                            <div v-if="activeData.next_unlock_date_text || activeData.next_unlock_date"
+                                                class="d-inline ml-2 mt-1" style="border-radius: 10px; margin-left: 45px;">
+    
+                                                <button v-if="notified == true" @click="notifyMe(activeData.symbol,'none')"
+                                                class="rounded-pill px-2 " style=" padding: 8px; font-size: 14px;">
+                                                <feather-icon size="15" icon="BellIcon" /> Remove Notification</button>
+                                            <div v-if="notified == true" style="font-size:12px">Will be notified: {{ notifyList(notifiedType) }} the unlock</div>
+                                                <b-dropdown
+                                                    v-if="validateDateRange(activeData.next_unlock_date_text , activeData.next_unlock_date)"
+                                                    size="lg" variant="flat-secondary" style="padding:0px !important;"
+                                                    id="notify-dropdown" no-caret class="cunningDrop-notify">
+                                                    <template #button-content class="p-0 text-left">
+                                                        <button v-if="notified != true" class="rounded-pill px-2 "
+                                                            style=" padding: 8px; font-size: 14px;">
+                                                            <feather-icon size="15" icon="BellIcon" /> Notify Me</button>
+                                                    
+    
+                                                    </template>
+                                                    <b-dropdown-form href="#" v-if="notified != true"
+                                                        class="cunningDrop-notify-form dropdown-mine darkBackgroundBlack "
+                                                        name="dropdownform2" style="z-index:999;">
+                                                        <b-dropdown-item href="#"
+                                                            v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'1-month-before',)"
+                                                            @click="notifyMe(activeData.symbol,'1-month-before')">1 Month before
+                                                        </b-dropdown-item>
+                                                        <b-dropdown-item href="#"
+                                                            v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'2-weeks-before')"
+                                                            @click="notifyMe(activeData.symbol,'2-weeks-before')">2 weeks before
+                                                        </b-dropdown-item>
+                                                        <b-dropdown-item href="#"
+                                                            v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'1-week-before')"
+                                                            @click="notifyMe(activeData.symbol,'1-week-before')">1 week before
+                                                        </b-dropdown-item>
+                                                        <b-dropdown-item href="#"
+                                                            v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'2-days-before')"
+                                                            @click="notifyMe(activeData.symbol,'2-days-before')">2 days before
+                                                        </b-dropdown-item>
+                                                        <b-dropdown-item href="#"
+                                                            v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'12-hours-before')"
+                                                            @click="notifyMe(activeData.symbol,'12-hours-before')">12 hours before
+                                                        </b-dropdown-item>
+                                                        <b-dropdown-item href="#"
+                                                            v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'10-min-before')"
+                                                            @click="notifyMe(activeData.symbol,'10-min-before')">10
+                                                            minutes before
+                                                        </b-dropdown-item>
+                                                        <b-dropdown-item href="#" @click="notifyMe(activeData.symbol,'on-time')">
+                                                            On-time</b-dropdown-item>
+                                                    </b-dropdown-form>
+    
+                                                </b-dropdown>
+                                                <b-dropdown v-else size="lg" variant="flat-secondary"
+                                                    style="padding:0px !important;" id="notify-dropdown" no-caret
+                                                    class="cunningDrop-notify">
+                                                    <template #button-content class="p-0">
+                                                        <button v-if="notified != true" class="rounded-pill px-2 "
+                                                            style=" padding: 8px; font-size: 14px; background-color: gray;">
+                                                            <feather-icon size="15" icon="BellIcon" /> Notify Me</button>
+                                                    </template>
+    
+                                                </b-dropdown>
+    
+                                                <!-- <button v-if="notified != true" class="rounded-pill px-2" style="padding:6px"
+                                                @click="notifyMe(activeData.symbol)">
                                                 <feather-icon size="15" icon="BellIcon" /> Notify Me</button>
-                                           
-
-                                        </template>
-                                        <b-dropdown-form href="#" v-if="notified != true"
-                                            class="cunningDrop-notify-form dropdown-mine darkBackgroundBlack "
-                                            name="dropdownform2" style="z-index:999;">
-                                            <b-dropdown-item href="#"
-                                                v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'1-month-before',)"
-                                                @click="notifyMe(activeData.symbol,'1-month-before')">1 Month before
-                                            </b-dropdown-item>
-                                            <b-dropdown-item href="#"
-                                                v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'2-weeks-before')"
-                                                @click="notifyMe(activeData.symbol,'2-weeks-before')">2 weeks before
-                                            </b-dropdown-item>
-                                            <b-dropdown-item href="#"
-                                                v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'1-week-before')"
-                                                @click="notifyMe(activeData.symbol,'1-week-before')">1 week before
-                                            </b-dropdown-item>
-                                            <b-dropdown-item href="#"
-                                                v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'2-days-before')"
-                                                @click="notifyMe(activeData.symbol,'2-days-before')">2 days before
-                                            </b-dropdown-item>
-                                            <b-dropdown-item href="#"
-                                                v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'12-hours-before')"
-                                                @click="notifyMe(activeData.symbol,'12-hours-before')">12 hours before
-                                            </b-dropdown-item>
-                                            <b-dropdown-item href="#"
-                                                v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'10-min-before')"
-                                                @click="notifyMe(activeData.symbol,'10-min-before')">10
-                                                minutes before
-                                            </b-dropdown-item>
-                                            <b-dropdown-item href="#" @click="notifyMe(activeData.symbol,'on-time')">
-                                                On-time</b-dropdown-item>
-                                        </b-dropdown-form>
-
-                                    </b-dropdown>
-                                    <b-dropdown v-else size="lg" variant="flat-secondary"
-                                        style="padding:0px !important;" id="notify-dropdown" no-caret
-                                        class="cunningDrop-notify">
-                                        <template #button-content class="p-0">
-                                            <button v-if="notified != true" class="rounded-pill px-2 "
-                                                style=" padding: 8px; font-size: 14px; background-color: gray;">
-                                                <feather-icon size="15" icon="BellIcon" /> Notify Me</button>
-                                        </template>
-
-                                    </b-dropdown>
-
-                                    <!-- <button v-if="notified != true" class="rounded-pill px-2" style="padding:6px"
-                                    @click="notifyMe(activeData.symbol)">
-                                    <feather-icon size="15" icon="BellIcon" /> Notify Me</button>
-                                <button v-else class="rounded-pill px-2" style="padding:6px"
-                                    @click="notifyMe(activeData.symbol)">
-                                    <feather-icon size="15" icon="BellIcon" /> Remove Notification</button> -->
+                                            <button v-else class="rounded-pill px-2" style="padding:6px"
+                                                @click="notifyMe(activeData.symbol)">
+                                                <feather-icon size="15" icon="BellIcon" /> Remove Notification</button> -->
+                                            </div>
+                                        </div>
+                                        <b-card no-body class="mb-1">
+                                            <b-card-body style=" margin-top: 19px;">
+                                                <b-row class="">
+                                                    <!-- <b-col cols="12" md="6" class="mb-1" xl="6"
+                                                        v-if="activeData.next_unlock_date_text">
+                                                        <div class="">
+                                                            <div class="mr-1">Next Unlock Date: </div>
+                                                            <div style="font-weight:600" class=""
+                                                                :class="{'blurry-text' :checkUserPlan(activeData.market_cap_rank)}">
+                                                                {{activeData.next_unlock_date_text}}</div>
+                                                        </div>
+                                                    </b-col> -->
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                                        v-if="activeData.next_unlock_status">
+                                                        <div class="">
+                                                            <div class="mr-1">Next Unlock Status: </div>
+                                                            <div style="font-weight:600" class=""
+                                                                :class="{'blurry-text' :checkUserPlan(activeData.market_cap_rank)}">
+                                                                {{activeData.next_unlock_status}}</div>
+                                                        </div>
+                                                    </b-col>
+    
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.first_vc_unlock">
+                                                        <div class="mr-1">First VC Unlock: </div>
+                                                        <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                            style="font-weight:600" class="blurry-text">
+                                                            {{activeData.first_vc_unlock}}
+                                                        </div>
+                                                        <div v-else style="font-weight:600">
+                                                            {{dateFormat(activeData.first_vc_unlock)}}
+                                                        </div>
+                                                    </b-col>
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.end_vc_unlock">
+                                                        <div class="mr-1">End VC Unlock: </div>
+                                                        <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                            style="font-weight:600" class="blurry-text">{{activeData.end_vc_unlock}}
+                                                        </div>
+                                                        <div v-else style="font-weight:600">{{dateFormat(activeData.end_vc_unlock)}}
+                                                        </div>
+    
+    
+                                                    </b-col>
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                                        v-if="activeData.next_unlock_number_of_tokens">
+                                                        <div class="mr-1">Next Unlock Number Of Tokens: </div>
+                                                        <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                            style="font-weight:600" class="blurry-text">
+                                                            {{activeData.next_unlock_number_of_tokens}}</div>
+                                                        <div v-else style="font-weight:600">
+                                                            {{toInterNationalNumber(activeData.next_unlock_number_of_tokens)}}
+                                                        </div>
+                                                    </b-col>
+    
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                                        v-if="activeData.next_unlock_percent_of_tokens">
+                                                        <div class="">
+                                                            <div class="mr-1">Next Unlock Percent Of Tokens: </div>
+                                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                                style="font-weight:600" class="blurry-text">
+                                                                {{ activeData.next_unlock_percent_of_tokens }}
+                                                            </div>
+                                                            <div style="font-weight:600" v-else>
+                                                                {{roundData(activeData.next_unlock_percent_of_tokens)}}
+                                                                %</div>
+                                                        </div>
+                                                    </b-col>
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.next_unlock_size">
+                                                        <div class="mr-1">Next Unlock Size: </div>
+                                                        <div class="" style="font-weight:600"
+                                                            :class="{'blurry-text' :checkUserPlan(activeData.market_cap_rank)}">
+                                                            {{activeData.next_unlock_size}}</div>
+                                                    </b-col>
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.seed_price">
+                                                        <div class="">
+                                                            <div class="mr-1">Seed Price: </div>
+                                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                                style="font-weight:600" class="blurry-text">
+                                                                {{ activeData.seed_price }}
+                                                            </div>
+                                                            <div style="font-weight:600" v-else>
+                                                                {{toInterNationalNumber(activeData.seed_price)}}
+                                                            </div>
+                                                        </div>
+                                                    </b-col>
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.roi_seed">
+                                                        <div class="">
+                                                            <div class="mr-1">ROI Seed: </div>
+                                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                                style="font-weight:600" class="blurry-text">
+                                                                {{ activeData.roi_seed }}
+                                                            </div>
+                                                            <div style="font-weight:600" v-else>
+                                                                ${{activeData.roi_seed}}
+                                                            </div>
+                                                        </div>
+                                                    </b-col>
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.total_locked">
+                                                        <div class="">
+                                                            <div class="mr-1">Total Locked: </div>
+                                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                                style="font-weight:600" class="blurry-text">
+                                                                {{ activeData.total_locked }}
+                                                            </div>
+                                                            <div style="font-weight:600" v-else>
+                                                                {{toInterNationalNumber(activeData.total_locked)}}
+                                                            </div>
+                                                        </div>
+                                                    </b-col>
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                                        v-if="activeData.three_months_unlock_number_of_tokens">
+                                                        <div class="">
+                                                            <div class="mr-1">3 Months Unlock # of Tokens </div>
+                                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                                style="font-weight:600" class="blurry-text">
+                                                                {{ activeData.three_months_unlock_number_of_tokens }}
+                                                            </div>
+                                                            <div style="font-weight:600" v-else>
+                                                                {{toInterNationalNumber(activeData.three_months_unlock_number_of_tokens)}}
+                                                            </div>
+                                                        </div>
+                                                    </b-col>
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                                        v-if="activeData.three_months_unlock_percent_of_tokens">
+                                                        <div class="">
+                                                            <div class="mr-1">3 Months Unlock Tokens % </div>
+                                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                                style="font-weight:600" class="blurry-text">
+                                                                {{ activeData.three_months_unlock_percent_of_tokens }}
+                                                            </div>
+                                                            <div style="font-weight:600" v-else>
+                                                                {{roundData(activeData.three_months_unlock_percent_of_tokens)}}%
+                                                            </div>
+                                                        </div>
+                                                    </b-col>
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                                        v-if="activeData.three_months_unlock_size">
+                                                        <div class="">
+                                                            <div class="mr-1">3 Months Unlock Tokens % </div>
+                                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                                style="font-weight:600" class="blurry-text">
+                                                                {{ activeData.three_months_unlock_size }}
+                                                            </div>
+                                                            <div style="font-weight:600" v-else>
+                                                                {{activeData.three_months_unlock_size}}
+                                                            </div>
+                                                        </div>
+                                                    </b-col>
+    
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                                        v-if="activeData.six_months_unlock_number_of_tokens">
+                                                        <div class="">
+                                                            <div class="mr-1">6 Months Unlock # of Tokens </div>
+                                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                                style="font-weight:600" class="blurry-text">
+                                                                {{ activeData.six_months_unlock_number_of_tokens }}
+                                                            </div>
+                                                            <div style="font-weight:600" v-else>
+                                                                {{toInterNationalNumber(activeData.six_months_unlock_number_of_tokens)}}
+                                                            </div>
+                                                        </div>
+                                                    </b-col>
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                                        v-if="activeData.six_months_unlock_percent_of_tokens">
+                                                        <div class="">
+                                                            <div class="mr-1">6 Months Unlock Tokens % </div>
+                                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                                style="font-weight:600" class="blurry-text">
+                                                                {{ activeData.six_months_unlock_percent_of_tokens }}
+                                                            </div>
+                                                            <div style="font-weight:600" v-else>
+                                                                {{roundData(activeData.six_months_unlock_percent_of_tokens)}}%
+                                                            </div>
+                                                        </div>
+                                                    </b-col>
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                                        v-if="activeData.six_months_unlock_size">
+                                                        <div class="">
+                                                            <div class="mr-1">6 Months Unlock Tokens % </div>
+                                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
+                                                                style="font-weight:600" class="blurry-text">
+                                                                {{ activeData.six_months_unlock_size }}
+                                                            </div>
+                                                            <div style="font-weight:600" v-else>
+                                                                {{activeData.six_months_unlock_size}}
+                                                            </div>
+                                                        </div>
+                                                    </b-col>
+                                                    <b-col cols="12" md="6" class="mb-1" xl="6"
+                                                        v-if="activeData.total_supply_percent">
+                                                        <div class="">
+                                                            <div class="mr-1">Total Supply %</div>
+                                                            <div v-if="checkUserPlan(activeData.total_supply_percent)"
+                                                                style="font-weight:600" class="">
+                                                                {{ activeData.total_supply_percent}} %
+                                                            </div>
+                                                            <div style="font-weight:600" v-else>
+                                                                {{activeData.total_supply_percent}}%
+                                                            </div>
+                                                        </div>
+                                                    </b-col>
+    
+                                                    <b-col cols="12" md="12">
+                                                        <span class="mr-1">Supply chart: </span>
+                                                        <div>
+    
+                                                            <vue-apex-charts type="pie" height="300"
+                                                                :options="supplyChart.chartOptions" :series="supplyChart.series" />
+                                                        </div>
+                                                    </b-col>
+                                                    <b-col v-if="   vestingDataChart.xaxis.categories.length>0">
+                                                        <span class="mr-1">Vesting Chart: </span>
+    
+    
+                                                        <vue-apex-charts class="full" width="100%" :dataLabels="true" type="area"
+                                                            height="290" :options="vestingDataChart" :series="vestingDataSerice">
+                                                        </vue-apex-charts>
+                                                    </b-col>
+    
+                                                </b-row>
+    
+                                            </b-card-body>
+                                        </b-card>
+                                    </app-collapse-item>
+                                    <app-collapse-item class="w-100" v-if="TradeHistoryseries[0].data.length>0"
+                                        title="Trading Volume History">
+                                        <div>
+                                            <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line" height="290"
+                                                :options="TradeHistoryOptions" :series="TradeHistoryseries">
+                                            </vue-apex-charts>
+                                        </div>
+                                    </app-collapse-item>
+    
+                                </app-collapse>
+                            </div>
+                            <div class="details-modal-container"  :class="{'loadingModal':!detailsModalLoaded}"  v-if="!detailsModalLoaded" >
+                                <div class="w-full justify-content-between d-flex  h-[70vh]" style="margin-top: 10px; margin-left: 10px;">
                                 </div>
                             </div>
-                            <b-card no-body class="mb-1">
-                                <b-card-body style=" margin-top: 19px;">
-                                    <b-row class="">
-                                        <!-- <b-col cols="12" md="6" class="mb-1" xl="6"
-                                            v-if="activeData.next_unlock_date_text">
-                                            <div class="">
-                                                <div class="mr-1">Next Unlock Date: </div>
-                                                <div style="font-weight:600" class=""
-                                                    :class="{'blurry-text' :checkUserPlan(activeData.market_cap_rank)}">
-                                                    {{activeData.next_unlock_date_text}}</div>
-                                            </div>
-                                        </b-col> -->
-                                        <b-col cols="12" md="6" class="mb-1" xl="6"
-                                            v-if="activeData.next_unlock_status">
-                                            <div class="">
-                                                <div class="mr-1">Next Unlock Status: </div>
-                                                <div style="font-weight:600" class=""
-                                                    :class="{'blurry-text' :checkUserPlan(activeData.market_cap_rank)}">
-                                                    {{activeData.next_unlock_status}}</div>
-                                            </div>
-                                        </b-col>
-
-                                        <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.first_vc_unlock">
-                                            <div class="mr-1">First VC Unlock: </div>
-                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
-                                                style="font-weight:600" class="blurry-text">
-                                                {{activeData.first_vc_unlock}}
-                                            </div>
-                                            <div v-else style="font-weight:600">
-                                                {{dateFormat(activeData.first_vc_unlock)}}
-                                            </div>
-                                        </b-col>
-                                        <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.end_vc_unlock">
-                                            <div class="mr-1">End VC Unlock: </div>
-                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
-                                                style="font-weight:600" class="blurry-text">{{activeData.end_vc_unlock}}
-                                            </div>
-                                            <div v-else style="font-weight:600">{{dateFormat(activeData.end_vc_unlock)}}
-                                            </div>
-
-
-                                        </b-col>
-                                        <b-col cols="12" md="6" class="mb-1" xl="6"
-                                            v-if="activeData.next_unlock_number_of_tokens">
-                                            <div class="mr-1">Next Unlock Number Of Tokens: </div>
-                                            <div v-if="checkUserPlan(activeData.market_cap_rank)"
-                                                style="font-weight:600" class="blurry-text">
-                                                {{activeData.next_unlock_number_of_tokens}}</div>
-                                            <div v-else style="font-weight:600">
-                                                {{toInterNationalNumber(activeData.next_unlock_number_of_tokens)}}
-                                            </div>
-                                        </b-col>
-
-                                        <b-col cols="12" md="6" class="mb-1" xl="6"
-                                            v-if="activeData.next_unlock_percent_of_tokens">
-                                            <div class="">
-                                                <div class="mr-1">Next Unlock Percent Of Tokens: </div>
-                                                <div v-if="checkUserPlan(activeData.market_cap_rank)"
-                                                    style="font-weight:600" class="blurry-text">
-                                                    {{ activeData.next_unlock_percent_of_tokens }}
-                                                </div>
-                                                <div style="font-weight:600" v-else>
-                                                    {{roundData(activeData.next_unlock_percent_of_tokens)}}
-                                                    %</div>
-                                            </div>
-                                        </b-col>
-                                        <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.next_unlock_size">
-                                            <div class="mr-1">Next Unlock Size: </div>
-                                            <div class="" style="font-weight:600"
-                                                :class="{'blurry-text' :checkUserPlan(activeData.market_cap_rank)}">
-                                                {{activeData.next_unlock_size}}</div>
-                                        </b-col>
-                                        <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.seed_price">
-                                            <div class="">
-                                                <div class="mr-1">Seed Price: </div>
-                                                <div v-if="checkUserPlan(activeData.market_cap_rank)"
-                                                    style="font-weight:600" class="blurry-text">
-                                                    {{ activeData.seed_price }}
-                                                </div>
-                                                <div style="font-weight:600" v-else>
-                                                    {{toInterNationalNumber(activeData.seed_price)}}
-                                                </div>
-                                            </div>
-                                        </b-col>
-                                        <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.roi_seed">
-                                            <div class="">
-                                                <div class="mr-1">ROI Seed: </div>
-                                                <div v-if="checkUserPlan(activeData.market_cap_rank)"
-                                                    style="font-weight:600" class="blurry-text">
-                                                    {{ activeData.roi_seed }}
-                                                </div>
-                                                <div style="font-weight:600" v-else>
-                                                    ${{activeData.roi_seed}}
-                                                </div>
-                                            </div>
-                                        </b-col>
-                                        <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.total_locked">
-                                            <div class="">
-                                                <div class="mr-1">Total Locked: </div>
-                                                <div v-if="checkUserPlan(activeData.market_cap_rank)"
-                                                    style="font-weight:600" class="blurry-text">
-                                                    {{ activeData.total_locked }}
-                                                </div>
-                                                <div style="font-weight:600" v-else>
-                                                    {{toInterNationalNumber(activeData.total_locked)}}
-                                                </div>
-                                            </div>
-                                        </b-col>
-                                        <b-col cols="12" md="6" class="mb-1" xl="6"
-                                            v-if="activeData.three_months_unlock_number_of_tokens">
-                                            <div class="">
-                                                <div class="mr-1">3 Months Unlock # of Tokens </div>
-                                                <div v-if="checkUserPlan(activeData.market_cap_rank)"
-                                                    style="font-weight:600" class="blurry-text">
-                                                    {{ activeData.three_months_unlock_number_of_tokens }}
-                                                </div>
-                                                <div style="font-weight:600" v-else>
-                                                    {{toInterNationalNumber(activeData.three_months_unlock_number_of_tokens)}}
-                                                </div>
-                                            </div>
-                                        </b-col>
-                                        <b-col cols="12" md="6" class="mb-1" xl="6"
-                                            v-if="activeData.three_months_unlock_percent_of_tokens">
-                                            <div class="">
-                                                <div class="mr-1">3 Months Unlock Tokens % </div>
-                                                <div v-if="checkUserPlan(activeData.market_cap_rank)"
-                                                    style="font-weight:600" class="blurry-text">
-                                                    {{ activeData.three_months_unlock_percent_of_tokens }}
-                                                </div>
-                                                <div style="font-weight:600" v-else>
-                                                    {{roundData(activeData.three_months_unlock_percent_of_tokens)}}%
-                                                </div>
-                                            </div>
-                                        </b-col>
-                                        <b-col cols="12" md="6" class="mb-1" xl="6"
-                                            v-if="activeData.three_months_unlock_size">
-                                            <div class="">
-                                                <div class="mr-1">3 Months Unlock Tokens % </div>
-                                                <div v-if="checkUserPlan(activeData.market_cap_rank)"
-                                                    style="font-weight:600" class="blurry-text">
-                                                    {{ activeData.three_months_unlock_size }}
-                                                </div>
-                                                <div style="font-weight:600" v-else>
-                                                    {{activeData.three_months_unlock_size}}
-                                                </div>
-                                            </div>
-                                        </b-col>
-
-                                        <b-col cols="12" md="6" class="mb-1" xl="6"
-                                            v-if="activeData.six_months_unlock_number_of_tokens">
-                                            <div class="">
-                                                <div class="mr-1">6 Months Unlock # of Tokens </div>
-                                                <div v-if="checkUserPlan(activeData.market_cap_rank)"
-                                                    style="font-weight:600" class="blurry-text">
-                                                    {{ activeData.six_months_unlock_number_of_tokens }}
-                                                </div>
-                                                <div style="font-weight:600" v-else>
-                                                    {{toInterNationalNumber(activeData.six_months_unlock_number_of_tokens)}}
-                                                </div>
-                                            </div>
-                                        </b-col>
-                                        <b-col cols="12" md="6" class="mb-1" xl="6"
-                                            v-if="activeData.six_months_unlock_percent_of_tokens">
-                                            <div class="">
-                                                <div class="mr-1">6 Months Unlock Tokens % </div>
-                                                <div v-if="checkUserPlan(activeData.market_cap_rank)"
-                                                    style="font-weight:600" class="blurry-text">
-                                                    {{ activeData.six_months_unlock_percent_of_tokens }}
-                                                </div>
-                                                <div style="font-weight:600" v-else>
-                                                    {{roundData(activeData.six_months_unlock_percent_of_tokens)}}%
-                                                </div>
-                                            </div>
-                                        </b-col>
-                                        <b-col cols="12" md="6" class="mb-1" xl="6"
-                                            v-if="activeData.six_months_unlock_size">
-                                            <div class="">
-                                                <div class="mr-1">6 Months Unlock Tokens % </div>
-                                                <div v-if="checkUserPlan(activeData.market_cap_rank)"
-                                                    style="font-weight:600" class="blurry-text">
-                                                    {{ activeData.six_months_unlock_size }}
-                                                </div>
-                                                <div style="font-weight:600" v-else>
-                                                    {{activeData.six_months_unlock_size}}
-                                                </div>
-                                            </div>
-                                        </b-col>
-                                        <b-col cols="12" md="6" class="mb-1" xl="6"
-                                            v-if="activeData.total_supply_percent">
-                                            <div class="">
-                                                <div class="mr-1">Total Supply %</div>
-                                                <div v-if="checkUserPlan(activeData.total_supply_percent)"
-                                                    style="font-weight:600" class="">
-                                                    {{ activeData.total_supply_percent}} %
-                                                </div>
-                                                <div style="font-weight:600" v-else>
-                                                    {{activeData.total_supply_percent}}%
-                                                </div>
-                                            </div>
-                                        </b-col>
-
-                                        <b-col cols="12" md="12">
-                                            <span class="mr-1">Supply chart: </span>
-                                            <div>
-
-                                                <vue-apex-charts type="pie" height="300"
-                                                    :options="supplyChart.chartOptions" :series="supplyChart.series" />
-                                            </div>
-                                        </b-col>
-                                        <b-col v-if="   vestingDataChart.xaxis.categories.length>0">
-                                            <span class="mr-1">Vesting Chart: </span>
-
-
-                                            <vue-apex-charts class="full" width="100%" :dataLabels="true" type="area"
-                                                height="290" :options="vestingDataChart" :series="vestingDataSerice">
-                                            </vue-apex-charts>
-                                        </b-col>
-
-                                    </b-row>
-
-                                </b-card-body>
-                            </b-card>
-                        </app-collapse-item>
-                        <app-collapse-item class="w-100" v-if="TradeHistoryseries[0].data.length>0"
-                            title="Trading Volume History">
-                            <div>
-                                <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line" height="290"
-                                    :options="TradeHistoryOptions" :series="TradeHistoryseries">
-                                </vue-apex-charts>
-                            </div>
-                        </app-collapse-item>
-
-                    </app-collapse>
-                </div>
-            </template>
-        </b-modal>
+                    </b-overlay>
+                </template>
+            </b-modal>
+    
         <b-modal id="modal-preset-create" :hide-footer="true" :hide-header="true" v-if="activeData" centered size="md"
             title="" style="background: transparent !important;">
             <div style="border-radius:10px;">
@@ -3635,6 +3643,7 @@
 
 
                 notifiedType:'',
+                detailsModalLoaded:false,
                 //end
 
             }
@@ -3677,8 +3686,9 @@
                         this.loadedData = true;
                         setTimeout(() => {
                             this.isBusy = false;
-                        }, 1000);
+                        }, 2000);
                     }
+                    this.isBusy = false;
 
                 })
 
@@ -4387,6 +4397,9 @@
                 this.filtered = false;
             },
             async detailsModel(item) {
+                this.detailsModalLoaded = false;
+                this.$bvModal.show('modal-details');
+
                 this.notified = false;
                 this.selectedContract = null;
                 this.supplyChart.series = [];
@@ -4499,9 +4512,8 @@
                     });
                     //   console.log(this.vestingDataSerice);
                 }
+                this.detailsModalLoaded = true;
 
-
-                this.$bvModal.show('modal-details');
             },
             dateFormat(val) {
                 if (val) {
@@ -5212,6 +5224,10 @@
             this.loadCoins();
             this.loadFag();
             this.loadPresetFilters();
+            if(this.$route.query.type == 'extention')
+            {
+                document.body.classList.add('AppExtentionMode')
+            }
         },
         created() {
             this.userData = getUserData()
@@ -5292,7 +5308,7 @@
         padding: 2px;
         border-radius: 5px;
     }
-
+   
     #dashboard .b-table-1 {
         overflow-y: auto !important;
         max-height: 56vh;
@@ -5698,8 +5714,6 @@
         background: linear-gradient(146.03deg, rgba(0, 255, 0, 1) 7%, rgba(255, 255, 255, 0) 50%) !important;
     }
 
-    #modal-details___BV_modal_content_ {}
-
     body.dark-layout .graph_tab-1 ul {
         justify-content: normal !important;
         margin-left: 87px !important;
@@ -5793,6 +5807,7 @@
         position: absolute;
         top: 0;
         right: 12px;
+        background:transparent !important;  
     }
 
     .details-modal-container {
@@ -5846,5 +5861,59 @@
     .dark-layout .apexcharts-legend-text {
         color: white !important;
     }
+   .loadingModal{
+        height:80vh !important;
+    }
+    #modal-details___BV_modal_content_ .b-overlay
+    {
+        height:80vh !important;
+    }
+   
 
+    .AppExtentionMode #dashboard .b-table-1 {
+        overflow-y: auto !important;
+        margin: 0;
+        max-height: 48vh;
+
+    }
+    .AppExtentionMode .cardBack{
+        padding: 6px 20px !important;
+    }
+    .cardBack{
+        padding:20px; box-shadow: 0px 0px 20px rgba(19, 20, 37, 0.5);backdrop-filter: blur(7.5px); border-radius: 30px;
+    }
+    .AppExtentionMode .DashboardHeader{
+        margin-bottom:10px !important;
+    }
+    .DashboardHeader{
+        margin-top:10px; margin-bottom:30px;
+    }
+
+    .AppExtentionMode .FGCharts{
+        margin-bottom:0px !important;
+    }
+    .FGCharts{
+        margin-bottom: 25px;
+    }
+    .AppExtentionMode #dashboard .b-table-1 tr {
+        height: 30px;
+    }
+    .AppExtentionMode .HeaderTopBar{
+        margin-bottom: -2px !important;
+    }
+    .HeaderTopBar{
+        margin-bottom:1rem;
+    }
+    .AppExtentionMode .SearchInputGroup{
+        margin-bottom: 0px !important;
+    }
+    .SearchInputGroup{
+        margin-bottom: 1rem ;
+    }
+   .AppExtentionMode .searchbar{
+        margin-top:4px !important;
+    }
+    .searchbar{
+        margin-top:1rem;
+    }
 </style>
