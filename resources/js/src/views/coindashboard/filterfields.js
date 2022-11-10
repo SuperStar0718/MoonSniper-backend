@@ -45,6 +45,7 @@ const data ={
     'min_next_unlock_percent_of_tokens' : null,
     'max_next_unlock_percent_of_tokens' : null,
     'next_unlock_size' : null,
+    'next_unlock_date' : null,
     'min_three_months_unlock_number_of_tokens' : null,
     'max_three_months_unlock_number_of_tokens' : null,
     'min_three_months_unlock_percent_of_tokens' : null,
