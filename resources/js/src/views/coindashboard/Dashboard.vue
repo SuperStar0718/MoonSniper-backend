@@ -1,13 +1,13 @@
 <template>
     <div id="dashboard">
         <b-overlay :show="fagLoad" rounded="sm" class="pt-1 DashboardHeader" style="">
-            <div class="mx-auto" style="">
+            <div class="mx-auto topbarDiv" style="">
                 <b-row class="HeaderTopBar">
                     <b-col md="3" sm="6" xl="3">
                         <div class="d-flex mx-auto justify-content-center">
                             <div class="greyLetter" style="margin-right:8px;">MC:</div>
                             <div class="whiteLetter" v-if="loaded">{{fag.data.market_cap?fag.data.market_cap:'-'}}</div>
-                            <div style="margin-left: 10px; margin-right:10px;">
+                            <div style="" class="TriangleIcon">
                                 <i class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
                             </div>
                             <div style="color:#6BBE83;">
@@ -20,7 +20,7 @@
                         <div class="d-flex mx-auto justify-content-center">
                             <div class="greyLetter" style="margin-right:8px;">Vol(24):</div>
                             <div class="whiteLetter" v-if="loaded"> {{fag.data.vol_24h?fag.data.vol_24h:'-'}}</div>
-                            <div style="margin-left: 10px; margin-right:10px;">
+                            <div style="" class="TriangleIcon">
                                 <i class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
                             </div>
                             <div style="color:#6BBE83;">
@@ -31,7 +31,7 @@
                     </b-col>
                     <b-col md="3" sm="6" xl="3" class="mb-1">
                         <div class="d-flex mx-auto justify-content-center">
-                            <div class="greyLetter" style="margin-right:8px;">Dominance:</div>
+                            <div class="greyLetter Dominance" style="margin-right:8px;">Dominance:</div>
                             <div class="d-flex justify-content-between whiteLetter" v-if="loaded">
                                 <div style="margin:0 8px 0 8px"> {{fag.data.btc_dom}}
                                 </div>
@@ -81,9 +81,9 @@
                                     :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}">
                                     <span class="d-block feerGreen">{{fag.data.fear_greed_index}}</span>
                                 </div>
-                                <div class="row" style="margin: 0% 15% 0% 15%;">
-                                    <span class="col-3 text-info" style="float:left; margin:auto;"><a
-                                            v-ripple.400="'rgba(113, 12, 240, 35)'" v-b-modal.modal-chart
+                                <div class="row" style="margin: 0% 0% 0% 0%;">
+                                    <span class="col-3 text-info my-auto" style="float:left;"><a
+                                             v-b-modal.modal-chart
                                             variant="outline-primary"><i class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
@@ -116,9 +116,9 @@
                                     :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}">
                                     <span class="d-block feerGreen">{{fag.data.fear_greed_index}}</span>
                                 </div>
-                                <div class="row" style="margin: 0% 15% 0% 15%;">
+                                <div class="row" style="margin: 0% 0% 0% 0%;">
                                     <span class="col-3 text-info" style="float:left; margin:auto;"><a
-                                            v-ripple.400="'rgba(113, 12, 240, 35)'" v-b-modal.modal-chart
+                                             v-b-modal.modal-chart
                                             variant="outline-primary"><i class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
@@ -149,9 +149,9 @@
                                     :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}">
                                     <span class="d-block feerGreen">{{fag.data.fear_greed_index}}</span>
                                 </div>
-                                <div class="row" style="margin: 0% 15% 0% 15%;">
+                                <div class="row" style="margin: 0% 0% 0% 0%;">
                                     <span class="col-3 text-info" style="float:left; margin:auto;"><a
-                                            v-ripple.400="'rgba(113, 12, 240, 35)'" v-b-modal.modal-chart
+                                             v-b-modal.modal-chart
                                             variant="outline-primary"><i class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
@@ -182,9 +182,9 @@
                                     :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}">
                                     <span class="d-block feerGreen">{{fag.data.fear_greed_index}}</span>
                                 </div>
-                                <div class="row" style="margin: 0% 15% 0% 15%;">
+                                <div class="row" style="margin: 0% 0% 0% 0%;">
                                     <span class="col-3 text-info" style="float:left; margin:auto;"><a
-                                            v-ripple.400="'rgba(113, 12, 240, 35)'" v-b-modal.modal-chart
+                                             v-b-modal.modal-chart
                                             variant="outline-primary"><i class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
@@ -816,6 +816,13 @@
 
                         <template #cell(name)="data">
                             <div class="d-flex justify-content-center">
+                                <div class="d-flex c" v-if="fields[0].filterColumn">
+                                    <div class="m-auto">
+                                        <feather-icon icon="StarIcon" size="22" />
+                                    </div>
+                                    <div style="padding-top:3px" class="my-auto mx-1">{{ toInterNationalNumber(data.item.market_cap_rank?data.item.market_cap_rank:0) }}
+                                    </div>
+                                </div>
                                 <div style="text-align: center;" class="d-flex justify-content-center">
 
                                     <div style="" class="my-auto">
@@ -1049,12 +1056,12 @@
 
                         <template #cell(current_price)="data">
                             <div v-if="data.value" class="text-center m-auto"
-                                :class="{ 'redFlash1': data.item.price_change_percentage_24h < 0,'greenFlash1': data.item.price_change_percentage_24h >= 0 ,'greenFlash':data.item.flash == 1,'redFlash':data.item.flash ==2 }"
+                                :class="{ 'redFlash1': data.item.price_change_percentage_24h < 0,'greenFlash1': data.item.price_change_percentage_24h >= 0 ,'greenFlash':data.item.flash == 1,'redFlash ':data.item.flash ==2,'whiteFlash':data.item.flash ==3  }"
                                 style="width: 100px;">
                                 ${{priceConversation(data.value)}}</div>
                         </template>
                         <template #cell(market_cap)="data">
-                            <div v-if="data.value" class="text-center" style="">${{twenty4HConversation(data.value)}}
+                            <div v-if="data.value" class="text-center mx-2" style="">${{twenty4HConversation(data.value)}}
                             </div>
                         </template>
                         <template #cell(high_24h)="data">
@@ -1861,12 +1868,8 @@
                                         :class="{'ml-[30px]':activeData.name && activeData.name.length > 8}">
                                         <div class="d-flex">
                                             <span class=""
-                                                :class="{'redFlash1': activeData.price_change_percentage_24h < 0,'greenFlash1': activeData.price_change_percentage_24h >= 0 ,'greenFlash':activeData.flash == 1,'redFlash':activeData.flash ==2}"
-                                                style="font-family: 'Poppins-Light';
-                                                        font-style: normal;
-                                                        font-weight: 400;
-                                                        font-size: 20px;
-                                                        "
+                                                :class="{'redFlash1': activeData.price_change_percentage_24h < 0,'greenFlash1': activeData.price_change_percentage_24h >= 0 ,'greenFlash':activeData.flash == 1,'redFlash':activeData.flash ==2,'whiteFlash':activeData.flash ==3}"
+                                                style="font-family: 'Poppins-Light'; font-style: normal;font-weight: 400; font-size: 20px;"
                                                 v-if="activeData.current_price && activeData.current_price>= 0">${{ roundData(activeData.current_price) }}
                                             </span>
                                         </div>
@@ -1906,7 +1909,7 @@
                                                     font-style: normal;
                                                     font-weight: 300;
                                                     font-size: 12px;
-                                                ">Contact </div>
+                                                ">Contract </div>
 
 
                                         <b-dropdown size="lg" variant="flat-secondary" style="padding:0px !important;"
@@ -2108,7 +2111,7 @@
                                                     padding-left: 0px !important;
                                                     justify-content: space-between;
                                                     flex-direction: column;">
-                                                <div v-if="activeData.total_volume" style="margin-bottom: 24px;">
+                                                <div v-if="activeData.total_volume" style="margin-bottom: 10px;">
                                                     <span
                                                         style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
                                                         Volume</span>
@@ -2117,7 +2120,7 @@
                                                             style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.total_volume) }}</span>
                                                     </div>
                                                 </div>
-                                                <div v-if="activeData.market_cap" style="margin-bottom: 24px;">
+                                                <div v-if="activeData.market_cap" style="margin-bottom: 10px;">
                                                     <span
                                                         style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
                                                         Market Cap</span>
@@ -2126,7 +2129,7 @@
                                                             style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.market_cap) }}</span>
                                                     </div>
                                                 </div>
-                                                <div style="margin-bottom: 24px;"
+                                                <div style="margin-bottom: 10px;"
                                                     v-if="activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0">
                                                     <span
                                                         style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
@@ -2141,7 +2144,7 @@
                                                     </div>
                                                 </div>
                                                 <div v-if="activeData.total_supply_percent"
-                                                    style="margin-bottom: 24px;">
+                                                    style="margin-bottom: 10px;">
                                                     <span
                                                         style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
                                                         Total Supply:</span>
@@ -2152,7 +2155,7 @@
                                                 </div>
                                                 <div class="float-left">
                                                     <button class="fs-6 "
-                                                        style="border-radius: 10px; font-size: 12px; font-weight: 400; font-family: 'Poppins-Light'; font-style: normal; padding:6px 14px;">Price
+                                                        style="border-radius: 10px; font-size: 12px; font-weight: 400; font-family: 'Poppins-Light'; font-style: normal; padding:6px 11px;">Price
                                                         Prediction</button>
                                                 </div>
                                             </b-col>
@@ -2173,7 +2176,7 @@
                                 <b-card no-body class="mb-1">
                                     <b-card-body>
 
-                                        <div class="d-flex flex-wrap justify-content-center">
+                                        <div class="d-flex flex-wrap justify-content-start">
                                             <div v-if="activeData.website && activeData.website != '' " cols="1" md="2"
                                                 lg="2" sm="2" class="radius_gradient" style="width:110px">
                                                 <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
@@ -2281,8 +2284,8 @@
                                             </div>
                                             <div class="radius_gradient" style="width:110px"
                                                 v-if="activeData.whitepaper && activeData.whitepaper != '' ">
-                                                <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                    style="max-width:200px;">
+                                                <b-card title="" class="mx-auto innerCard text-center str_grey_gradient whitepaper-card"
+                                                    style="max-width:200px; ">
                                                     <a :href="activeData.whitepaper" target="_blank" class="d-block"
                                                         style="margin-top:20px; margin-bottom:10px;">
                                                         <b-img rounded :src="'/images/static/whitepaper.png'" fluid
@@ -2297,7 +2300,7 @@
                                                     </div>
                                                 </b-card>
                                             </div>
-                                            <div class="radius_gradient" style="width:110px"
+                                            <div class="radius_gradient " style="width:110px"
                                                 v-if="activeData.github && activeData.github != '' ">
                                                 <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                                     style="max-width:200px;">
@@ -2316,7 +2319,7 @@
                                             </div>
                                         </div>
                                         <div
-                                            class="text-center mt-1 mb-1 justify-content-center d-flex flex-wrap socialData">
+                                            class="text-center mt-1 mb-1 justify-content-start d-flex flex-wrap socialData">
 
 
                                             <div class="radius_gradient cursor-pointer"
@@ -2330,7 +2333,7 @@
                                                         style="margin-top: 10px; margin-bottom: 12px;">
                                                         {{ calculate_social_score(activeData) }}/10</div>
 
-                                                    <div class="soicalLable darkWhiteText lableText">Social Score:
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">Social Score
                                                     </div>
 
                                                 </b-card>
@@ -2349,7 +2352,7 @@
                                                         style="margin-top: 10px; margin-bottom: 12px;" v-else>
                                                         {{roundData(activeData.social_mentions_change)}} %
                                                     </div>
-                                                    <div class="soicalLable darkWhiteText lableText">Social Mentions:
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">Social Mentions
                                                     </div>
 
                                                 </b-card>
@@ -2369,7 +2372,7 @@
                                                         style="margin-top: 10px; margin-bottom: 12px;">
                                                         {{roundData(activeData.average_sentiment)}}</div>
 
-                                                    <div class="soicalLable darkWhiteText lableText">Average Sentiment:
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">Average Sentiment
                                                     </div>
 
                                                 </b-card>
@@ -2392,7 +2395,7 @@
                                                     <div class="justify-content-center text-nowrap socialText2  text-danger"
                                                         style="margin-top: 10px; margin-bottom: 12px;" v-else>
                                                         {{roundData(activeData.social_engagement_change)}} %</div>
-                                                    <div class="soicalLable darkWhiteText lableText">Social Engagement:
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">Social Engagement
                                                     </div>
 
                                                 </b-card>
@@ -2408,7 +2411,7 @@
                                                     </div>
                                                     <div class="justify-content-center text-nowrap socialText2"
                                                         style="margin-top: 10px; margin-bottom: 12px;" v-else>2</div>
-                                                    <div class="soicalLable darkWhiteText lableText">Bearish Sentiment:
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">Bearish Sentiment
                                                     </div>
 
                                                 </b-card>
@@ -2428,7 +2431,7 @@
                                                         style="margin-top: 10px; margin-bottom: 12px;" v-else>
                                                         {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                         %</div>
-                                                    <div class="soicalLable darkWhiteText lableText">Average Sentiment
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">Average Sentiment
                                                         change
                                                     </div>
 
@@ -4712,22 +4715,32 @@
                 });
                 this.pricesWs = new WebSocket('wss://ws.coincap.io/prices?assets=' + this.coinsStr)
                 let thisScope = this;
+                let dta = this.items;
                 this.pricesWs.onmessage = function (msg) {
                     let coinFetched = JSON.parse(msg.data);
                     let objKeys = Object.keys(coinFetched);
+                  
                     objKeys.forEach(element => {
-                        let index = thisScope.items.data.findIndex(x => x.coin_id === element)
+                        let index = thisScope.items.data.findIndex(x => x.coin_id == element)
                         if (thisScope.items.data[index]) {
                             let oldVal = thisScope.items.data[index].current_price;
                             thisScope.items.data[index].current_price = coinFetched[element];
                             if (oldVal < coinFetched[element]) {
                                 thisScope.items.data[index].flash = 1;
+                                    setTimeout(() => {
+                                        thisScope.items.data[index].flash =3;
+                                        }, 1000);
+                                   
                             } else {
                                 thisScope.items.data[index].flash = 2;
+                                setTimeout(() => {
+                                        thisScope.items.data[index].flash =3;
+                                        }, 1000);
                             }
                         }
                     });
 
+                  
                 }
             },
             onCopy: function (e) {
@@ -5117,13 +5130,13 @@
             visibleFields() {
                 if (this.params.api_mode == 1) {
                     return this.fields.filter(field => {
-                        return field.visible == 1 && field.filterColumn == true || field.visible == 2 && field
-                            .filterColumn == true || field.visible == 3 && field.filterColumn == true;
+                        return field.visible == 1 && field.filterColumn == true&& field.key != 'market_cap_rank' || field.visible == 2 && field
+                            .filterColumn == true && field.key != 'market_cap_rank'|| field.visible == 3 && field.filterColumn == true && field.key != 'market_cap_rank' ;
                     })
                 } else {
                     return this.fields.filter(field => {
-                        return field.visible == 2 && field.filterColumn == true || field.visible == 3 && field
-                            .filterColumn == true;
+                        return field.visible == 2 && field.filterColumn == true && field.key != 'market_cap_rank' || field.visible == 3 && field
+                            .filterColumn == true && field.key != 'market_cap_rank';
                     })
                 }
             },
@@ -5376,17 +5389,26 @@
     }
 
     #dashboard .b-table-1:hover::-webkit-scrollbar {
+        width: 8px;
         height: 8px;
+        cursor: pointer;
     }
+   
+   
+    
+   #ctable .b-overlay-wrap.position-relative:hover {
+        margin-right:-4px;
 
+    }
     #dashboard .b-table-1::-webkit-scrollbar-corner {
         background: rgba(0, 0, 0, 0);
+        z-index:999;
     }
 
     #dashboard .b-table-1::-webkit-scrollbar-thumb {
         border-radius: 10px;
-        -webkit-box-shadow: inset 0 0 6px rgba(233, 229, 229, 0.3);
-        background-color: #676565;
+        -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+        background-color: #ffffff;
 
     }
 
@@ -5454,7 +5476,9 @@
         opacity: 0.8;
         margin: auto;
     }
-
+    .sl2{
+        font-size: 12px;
+    }
     .blurry-text {
         text-shadow: 0 0 32px white;
         color: transparent;
@@ -5498,7 +5522,11 @@
         color: #ea5455 !important;
 
     }
+    .whiteFlash {
+        color: #ffffff !important;
 
+    }
+    
     .greenFlash1 {
         color: #6BBE84;
 
@@ -5532,6 +5560,8 @@
         text-align: center;
         color: #6BD863;
         font-size: 20px;
+        padding: 0;
+        white-space: nowrap;
     }
 
     thead tr th {
@@ -5912,7 +5942,10 @@
     #modal-details___BV_modal_content_ .b-overlay {
         height: 80vh !important;
     }
-
+    .whitepaper-card .card-body{
+        padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    }
 
     .AppExtentionMode #dashboard .b-table-1 {
         overflow-y: auto !important;
@@ -5956,22 +5989,44 @@
     .AppExtentionMode .HeaderTopBar {
         margin-bottom: -2px !important;
     }
-
+    .AppExtentionMode .topbarDiv{
+        z-index: 999;
+    position: absolute;
+    top: -23px;
+    left: -60px
+    }
     .HeaderTopBar {
         margin-bottom: 1rem;
     }
-
+    .AppExtentionMode .topbarDiv .greyLetter {
+        font-size: 12px !important;
+    }
+    .AppExtentionMode .topbarDiv .whiteLetter {
+        font-size: 13px !important;
+    }
+    .AppExtentionMode .topbarDiv i.bi.bi-triangle-fill {
+        font-size:10px;
+    }
      .SearchInputGroup {
         margin-bottom: 0px !important;
     }
 
-   
+    .topbarDiv .TriangleIcon{
+    margin-left: 10px; margin-right:10px;
+   }
+   .AppExtentionMode  .topbarDiv .TriangleIcon{
+    margin-left: 3px; margin-right:3px;
+   }
+
+   .AppExtentionMode  .topbarDiv .Dominance{
+    margin-top: 4px !important;
+   }
 
     
     .searchbar {
         margin-top: 1rem;
     }
-
+   
 </style>
 
 <style lang="scss">

@@ -7,8 +7,9 @@ const data = [
         sortable: false,
         filterColumn:true,
         canHide:true,
-        visible: 3
+        visible: 3,
     },
+    
     {
         key: 'name',
         index: 1,
