@@ -82,8 +82,7 @@
                                     <span class="d-block feerGreen">{{fag.data.fear_greed_index}}</span>
                                 </div>
                                 <div class="row" style="margin: 0% 0% 0% 0%;">
-                                    <span class="col-3 text-info my-auto" style="float:left;"><a
-                                             v-b-modal.modal-chart
+                                    <span class="col-3 text-info my-auto" style="float:left;"><a v-b-modal.modal-chart
                                             variant="outline-primary"><i class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
@@ -118,8 +117,8 @@
                                 </div>
                                 <div class="row" style="margin: 0% 0% 0% 0%;">
                                     <span class="col-3 text-info" style="float:left; margin:auto;"><a
-                                             v-b-modal.modal-chart
-                                            variant="outline-primary"><i class="bi bi-clock-history darkWhiteText"
+                                            v-b-modal.modal-chart variant="outline-primary"><i
+                                                class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
                                     <span class="col-6 feerSmallGreen" style="text-align:center;">
@@ -151,8 +150,8 @@
                                 </div>
                                 <div class="row" style="margin: 0% 0% 0% 0%;">
                                     <span class="col-3 text-info" style="float:left; margin:auto;"><a
-                                             v-b-modal.modal-chart
-                                            variant="outline-primary"><i class="bi bi-clock-history darkWhiteText"
+                                            v-b-modal.modal-chart variant="outline-primary"><i
+                                                class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
                                     <span class="col-6 feerSmallGreen" style="text-align:center;">
@@ -184,8 +183,8 @@
                                 </div>
                                 <div class="row" style="margin: 0% 0% 0% 0%;">
                                     <span class="col-3 text-info" style="float:left; margin:auto;"><a
-                                             v-b-modal.modal-chart
-                                            variant="outline-primary"><i class="bi bi-clock-history darkWhiteText"
+                                            v-b-modal.modal-chart variant="outline-primary"><i
+                                                class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
                                     <span class="col-6 feerSmallGreen" style="text-align:center;">
@@ -219,10 +218,23 @@
                     </b-col>
                     <b-col cols="12" md="4" xl="2">
                         <div class="d-flex jusctify-content-between float-right">
+
+                            <div >
+                                <b-button style="padding:5px; color:white;" :class="{'text-':favoritised}" 
+                                    v-ripple.400="'rgba(255, 255, 255,1)'" title="Filter" variant="flat-success"
+                                    class="btn-icon mr-1">
+                                    <i v-if="favoritised" v-b-tooltip.hover.bottom="'My Favorites'"
+                                            class="fa-solid fa-star" style="font-size:20px" @click="disableFavorites()"
+                                           ></i>
+
+                                        <i v-else class="fa-regular fa-star " style="font-size:20px" v-b-tooltip.hover.bottom="'My Favorites'"
+                                             @click="enableFavorites()"></i>
+                                </b-button>
+                            </div>
                             <div v-b-modal.modal-filters>
                                 <b-button style="padding:5px; color:white;" :class="{'bg-danger text-danger':filtered}"
                                     v-ripple.400="'rgba(255, 255, 255,1)'" title="Filter" variant="flat-success"
-                                    class="btn-icon mx-1">
+                                    class="btn-icon mr-1">
                                     <feather-icon icon="FilterIcon" size="20"
                                         class="text-black cursor-pointer darkWhiteText" style="color:#28c76f; " />
                                 </b-button>
@@ -758,10 +770,9 @@
                 </div>
                 <b-overlay :show="isBusy" rounded="sm">
 
-                    <b-table :no-border-collapse="true"  tbody-tr-class="cursor-pointer box rounded-pill "
-                        :show-empty="isBusy" :busy="isBusy" class="b-table-1" @row-clicked="detailsModel($event)"
-                        style=" white-space: nowrap;" responsive :items="items.data"
-                        :fields="visibleFields">
+                    <b-table :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill "
+                        :show-empty="isBusy" :busy="isBusy"   class="b-table-1" @row-clicked="detailsModel($event)"
+                        style=" white-space: nowrap;" responsive :items="items.data" :fields="visibleFields">
                         <template #table-busy>
 
                         </template>
@@ -825,9 +836,16 @@
                             <div class="d-flex justify-content-start ml-2">
                                 <div class="d-flex c" v-if="fields[0].filterColumn">
                                     <div class="m-auto">
-                                        <feather-icon icon="StarIcon" size="22" />
+                                        <i v-if="checkFavoriteList(data.index,data.item.coin_id,data.item.symbol)"
+                                            class="fa-solid fa-star" style="font-size:20px"
+                                            @click.stop.prevent="manageFavorite(data.index,data.item.coin_id,data.item.symbol)"></i>
+
+                                        <i v-else class="fa-regular fa-star " style="font-size:20px"
+                                            @click.stop.prevent="manageFavorite(data.index,data.item.coin_id,data.item.symbol)"></i>
+                                        <!-- <feather-icon icon="StarIcon" size="22" /> -->
                                     </div>
-                                    <div style="padding-top:3px" class="my-auto mx-1">{{ toInterNationalNumber(data.item.market_cap_rank?data.item.market_cap_rank:0) }}
+                                    <div style="padding-top:3px" class="my-auto mx-1">
+                                        {{ toInterNationalNumber(data.item.market_cap_rank?data.item.market_cap_rank:0) }}
                                     </div>
                                 </div>
                                 <div style="text-align: center;" class="d-flex justify-content-center">
@@ -1068,7 +1086,8 @@
                                 ${{priceConversation(data.value)}}</div>
                         </template>
                         <template #cell(market_cap)="data">
-                            <div v-if="data.value" class="text-center mx-2" style="">${{twenty4HConversation(data.value)}}
+                            <div v-if="data.value" class="text-center mx-2" style="">
+                                ${{twenty4HConversation(data.value)}}
                             </div>
                         </template>
                         <template #cell(high_24h)="data">
@@ -1265,6 +1284,7 @@
 
                         </b-dropdown>
                     </b-col>
+                  
                     <b-col class="m-auto">
                         <b-button v-ripple.400="'rgb(31, 103, 211)'" style="    margin-right: 10px !important;"
                             v-if="selectedPreset && checkDefault(selectedPreset)" @click="savePresetFilter"
@@ -1279,6 +1299,12 @@
 
 
                     </b-col>
+                </b-row>
+                <b-row>
+                    <b-col v-if="params.favoritesMode == 1" class="d-flex">
+                        <p >Note: You are filtering your favorite coins only! </p> <p class="text-primary cursor-pointer ml-1" @click="exitfavorites">Click here to filter all coins</p>
+    
+                        </b-col>
                 </b-row>
                 <hr style="padding:0px; margin:0px 0px 10px 0px;">
                 <div class="accordion" role="tablist">
@@ -1678,8 +1704,9 @@
                                             <div class="d-flex">
                                                 <!-- <b-form-select id="" v-model="filterKey.next_unlock_size"
                                                     :options="nextUnlockSize" /> -->
-                                                <flat-pickr v-model="filterKey.next_unlock_date"   placeholder="Select date in range" class="form-control"   input-class="md-input"  
-                                                    :config="{ mode: 'range'}" />
+                                                <flat-pickr v-model="filterKey.next_unlock_date"
+                                                    placeholder="Select date in range" class="form-control"
+                                                    input-class="md-input" :config="{ mode: 'range'}" />
                                             </div>
                                         </b-form-group>
                                     </div>
@@ -2291,7 +2318,8 @@
                                             </div>
                                             <div class="radius_gradient" style="width:110px"
                                                 v-if="activeData.whitepaper && activeData.whitepaper != '' ">
-                                                <b-card title="" class="mx-auto innerCard text-center str_grey_gradient whitepaper-card"
+                                                <b-card title=""
+                                                    class="mx-auto innerCard text-center str_grey_gradient whitepaper-card"
                                                     style="max-width:200px; ">
                                                     <a :href="activeData.whitepaper" target="_blank" class="d-block"
                                                         style="margin-top:20px; margin-bottom:10px;">
@@ -2379,7 +2407,8 @@
                                                         style="margin-top: 10px; margin-bottom: 12px;">
                                                         {{roundData(activeData.average_sentiment)}}</div>
 
-                                                    <div class="soicalLable sl2 darkWhiteText lableText">Average Sentiment
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">Average
+                                                        Sentiment
                                                     </div>
 
                                                 </b-card>
@@ -2402,7 +2431,8 @@
                                                     <div class="justify-content-center text-nowrap socialText2  text-danger"
                                                         style="margin-top: 10px; margin-bottom: 12px;" v-else>
                                                         {{roundData(activeData.social_engagement_change)}} %</div>
-                                                    <div class="soicalLable sl2 darkWhiteText lableText">Social Engagement
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">Social
+                                                        Engagement
                                                     </div>
 
                                                 </b-card>
@@ -2418,7 +2448,8 @@
                                                     </div>
                                                     <div class="justify-content-center text-nowrap socialText2"
                                                         style="margin-top: 10px; margin-bottom: 12px;" v-else>2</div>
-                                                    <div class="soicalLable sl2 darkWhiteText lableText">Bearish Sentiment
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">Bearish
+                                                        Sentiment
                                                     </div>
 
                                                 </b-card>
@@ -2438,7 +2469,8 @@
                                                         style="margin-top: 10px; margin-bottom: 12px;" v-else>
                                                         {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
                                                         %</div>
-                                                    <div class="soicalLable sl2 darkWhiteText lableText">Average Sentiment
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">Average
+                                                        Sentiment
                                                         change
                                                     </div>
 
@@ -3080,6 +3112,7 @@
                 loadedData: false,
                 fields: fieldsData,
                 items: [],
+                favorites: [],
                 pricesWs: null,
                 coinsStr: '',
                 Cpagpage: 1,
@@ -3093,6 +3126,7 @@
                     filters2: "",
                     sort: ["market_cap_rank", "asc"],
                     api_mode: 1,
+                    favoritesMode: 0,
                     perpage: 50,
                 },
                 perPageOptions: [5, 6, 8, 9, 10, 20, 30, 50, 100],
@@ -3690,6 +3724,8 @@
 
                 notifiedType: '',
                 detailsModalLoaded: false,
+                favoritised:false,
+                emptyTextVal:'No Records Found'
                 //end
 
             }
@@ -3709,14 +3745,68 @@
                 this.$refs.dropdownpreset.hide(true)
             },
             check(str) {
-                // console.log("here!");
-                // console.log(str);
+
                 if (str.length > 8) return true;
                 else false;
             },
 
             say(message) {
                 alert("Please connect your metamask")
+            },
+            manageFavorite(index, coin_id, symbol) {
+
+                axios.post('api/manage-favorites', {
+                    coin_id: coin_id,
+                    symbol: symbol
+                }).then(res => {
+
+                    if (res.data.status == true && res.data.favorite == 'added') {
+                        this.favorites.push(res.data.favorites)
+
+                    } else if (res.data.status == true && res.data.favorite == 'removed') {
+                        let i = this.favorites.findIndex((item) => {
+                            return item.coinid == coin_id && item.coin_symbol == symbol
+                            //console.log(it.id,it.id===item.id,item.id);
+                        })
+                        if (i > -1) {
+                            this.favorites.splice(i, 1)
+                        }
+
+
+                    }
+
+                })
+
+            },
+            enableFavorites()
+            {
+                this.params.favoritesMode = 1;
+                this.clearFilters(true);
+                this.favoritised = true;
+            },
+            disableFavorites()
+            {
+                this.params.favoritesMode = 0;
+                this.clearFilters(true);
+                this.favoritised = false;
+            },
+            exitfavorites()
+            {
+                this.params.favoritesMode = 0;
+                this.favoritised = false;
+            },
+            checkFavoriteList(index, coin_id, symbol) {
+                var exists = this.favorites.some(function (field) {
+                    if (field.coin_symbol == symbol && field.coinid == coin_id) {
+                        return true;
+                    }
+                });
+
+                if (exists) {
+                    return true;
+                } else {
+                    return false;
+                }
             },
             // update_oBarValues(e) {
             //     filterKey.min_market_cap = e.minValue;
@@ -3727,8 +3817,9 @@
                 this.isBusy = true;
                 this.loadedData = false;
                 axios.post('api/get_coins?page=' + this.Cpagpage, JSON.stringify(this.params)).then(res => {
-                    if (res.data.data) {
-                        this.items = res.data;
+                    if (res.data.tokens.data) {
+                        this.items = res.data.tokens;
+                        this.favorites = res.data.favorites;
                         this.loadedData = true;
                         setTimeout(() => {
                             this.isBusy = false;
@@ -3753,8 +3844,10 @@
                             // let date = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
                             // array.unshift(date);
                             // this.chartOptions.xaxis.categories = array;
-                            this.series[0].data.unshift([parseInt(element.timestamp) * 1000, parseInt(
-                                element.value)])
+                            this.series[0].data.unshift([parseInt(element.timestamp) * 1000,
+                                parseInt(
+                                    element.value)
+                            ])
 
                         });
                         this.fagLoad = false;
@@ -4078,7 +4171,8 @@
 
             },
             checkUserPlan(val) {
-                if (this.userData.currentPlan == 'free' && val < 1 || this.userData.currentPlan == 'free' && val >=
+                if (this.userData.currentPlan == 'free' && val < 1 || this.userData.currentPlan == 'free' &&
+                    val >=
                     5) {
                     return true;
                 } else {
@@ -4103,12 +4197,10 @@
 
                 this.loadCoins();
             },
-            widthSetting(index)
-            {
-                if(this.visibleFields[this.visibleFields.length - 1].index == index)
-                {
+            widthSetting(index) {
+                if (this.visibleFields[this.visibleFields.length - 1].index == index) {
                     return true;
-                }else{
+                } else {
                     return false;
                 }
             },
@@ -4117,10 +4209,12 @@
                 this.isBusy = true;
                 this.params.filters = [];
                 if (this.filterKey.min_market_cap) {
-                    this.params.filters.push(["market_cap", ">=", this.filterKey.min_market_cap.replaceAll(",", "")]);
+                    this.params.filters.push(["market_cap", ">=", this.filterKey.min_market_cap.replaceAll(",",
+                        "")]);
                 }
                 if (this.filterKey.max_market_cap) {
-                    this.params.filters.push(["market_cap", "<=", this.filterKey.max_market_cap.replaceAll(",", "")]);
+                    this.params.filters.push(["market_cap", "<=", this.filterKey.max_market_cap.replaceAll(",",
+                        "")]);
                 }
                 if (this.filterKey.min_price_change_percentage_24h) {
                     this.params.filters.push(["price_change_percentage_24h", ">=", this.filterKey
@@ -4142,13 +4236,19 @@
                     this.params.filters.push(["current_price", "<=", this.filterKey.max_current_price]);
                 }
                 if (this.filterKey.min_circulating_supply) {
-                    this.params.filters.push(["circulating_supply", ">=", this.filterKey.min_circulating_supply]);
+                    this.params.filters.push(["circulating_supply", ">=", this.filterKey
+                        .min_circulating_supply
+                    ]);
                 }
                 if (this.filterKey.max_circulating_supply) {
-                    this.params.filters.push(["circulating_supply", "<=", this.filterKey.max_circulating_supply]);
+                    this.params.filters.push(["circulating_supply", "<=", this.filterKey
+                        .max_circulating_supply
+                    ]);
                 }
                 if (this.filterKey.coin_category && this.filterKey.coin_category != '') {
-                    this.params.filters.push(["coin_category", "like", "%" + this.filterKey.coin_category + "%"]);
+                    this.params.filters.push(["coin_category", "like", "%" + this.filterKey.coin_category +
+                        "%"
+                    ]);
                 }
                 if (this.filterKey.max_market_cap_rank) {
                     this.params.filters.push(["market_cap_rank", "<=", this.filterKey.max_market_cap_rank]);
@@ -4163,7 +4263,9 @@
                     this.params.filters.push(["total_supply", "<=", this.filterKey.max_total_supply]);
                 }
                 if (this.filterKey.keywords) {
-                    this.params.filters.push(["coin_description", "like", "%'" + this.filterKey.keywords + "'%"]);
+                    this.params.filters.push(["coin_description", "like", "%'" + this.filterKey.keywords +
+                        "'%"
+                    ]);
                 }
                 if (this.filterKey.min_trading_volume) {
                     this.params.filters.push(["trading_volume", ">=", this.filterKey.min_trading_volume]);
@@ -4197,11 +4299,15 @@
                 }
 
                 if (this.filterKey.min_total_supply_percent) {
-                    this.params.filters.push(["total_supply_percent", ">=", this.filterKey.min_total_supply_percent]);
+                    this.params.filters.push(["total_supply_percent", ">=", this.filterKey
+                        .min_total_supply_percent
+                    ]);
                 }
 
                 if (this.filterKey.max_total_supply_percent) {
-                    this.params.filters.push(["total_supply_percent", "<=", this.filterKey.max_total_supply_percent]);
+                    this.params.filters.push(["total_supply_percent", "<=", this.filterKey
+                        .max_total_supply_percent
+                    ]);
                 }
                 if (this.filterKey.min_seed_price) {
                     this.params.filters.push(["seed_price", ">=", this.filterKey.min_seed_price]);
@@ -4315,13 +4421,15 @@
                     ]);
                 }
                 if (this.filterKey.next_unlock_size) {
-                    this.params.filters.push(["next_unlock_size", "like", "%" + this.filterKey.next_unlock_size + "%"]);
+                    this.params.filters.push(["next_unlock_size", "like", "%" + this.filterKey
+                        .next_unlock_size + "%"
+                    ]);
                 }
 
                 if (this.filterKey.next_unlock_date) {
-                   let dates = this.filterKey.next_unlock_date.split(" to ");
-                   this.params.filters.push(["next_unlock_date", ">=", dates[0]]);
-                   this.params.filters.push(["next_unlock_date", "<=", dates[1]]);
+                    let dates = this.filterKey.next_unlock_date.split(" to ");
+                    this.params.filters.push(["next_unlock_date", ">=", dates[0]]);
+                    this.params.filters.push(["next_unlock_date", "<=", dates[1]]);
                     // this.params.filters.push(["next_unlock_date BETWEEN "+dates[0]+" AND "+dates[1]+""]);
                 }
                 if (this.filterKey.min_three_months_unlock_number_of_tokens) {
@@ -4510,20 +4618,23 @@
                             this.activeData.trading_volume_history_json = JSON.parse(res.data[0]
                                 .trading_volume_history_json);
                             if (this.activeData.trading_volume_history_json.total_volumes) {
-                                this.activeData.trading_volume_history_json.total_volumes.forEach(element => {
-                                    this.TradeHistoryseries[0].data.push([parseInt(element[0]),
-                                        parseInt(
-                                            element[1])
-                                    ])
-                                })
+                                this.activeData.trading_volume_history_json.total_volumes.forEach(
+                                    element => {
+                                        this.TradeHistoryseries[0].data.push([parseInt(element[0]),
+                                            parseInt(
+                                                element[1])
+                                        ])
+                                    })
                             }
 
 
                         }
-                        if (this.activeData.max_supply != null || this.activeData.circulating_supply != null ||
+                        if (this.activeData.max_supply != null || this.activeData.circulating_supply !=
+                            null ||
                             this
                             .activeData.next_unlock_number_of_tokens != null ||
-                            this.activeData.three_months_unlock_number_of_tokens != null && this.activeData
+                            this.activeData.three_months_unlock_number_of_tokens != null && this
+                            .activeData
                             .six_months_unlock_number_of_tokens != null) {
                             var ms = parseFloat(this.activeData.max_supply);
                             if (isNaN(ms))
@@ -4734,7 +4845,7 @@
                 this.pricesWs.onmessage = function (msg) {
                     let coinFetched = JSON.parse(msg.data);
                     let objKeys = Object.keys(coinFetched);
-                  
+
                     objKeys.forEach(element => {
                         let index = thisScope.items.data.findIndex(x => x.coin_id == element)
                         if (thisScope.items.data[index]) {
@@ -4742,20 +4853,27 @@
                             thisScope.items.data[index].current_price = coinFetched[element];
                             if (oldVal < coinFetched[element]) {
                                 thisScope.items.data[index].flash = 1;
-                                    setTimeout(() => {
-                                        thisScope.items.data[index].flash =3;
-                                        }, 1000);
-                                   
+                                setTimeout(() => {
+                                    if(thisScope.items.data[index])
+                                    {
+                                    thisScope.items.data[index].flash = 3;
+
+                                    }
+                                }, 1000);
+
                             } else {
                                 thisScope.items.data[index].flash = 2;
                                 setTimeout(() => {
-                                        thisScope.items.data[index].flash =3;
-                                        }, 1000);
+                                     if(thisScope.items.data[index])
+                                    {
+                                    thisScope.items.data[index].flash = 3;
+                                    }
+                                }, 1000);
                             }
                         }
                     });
 
-                  
+
                 }
             },
             onCopy: function (e) {
@@ -4785,7 +4903,8 @@
                 return false;
             },
             kFormatter(num) {
-                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math
+                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' :
+                    Math
                     .sign(
                         num) * Math.abs(num)
             },
@@ -4928,9 +5047,11 @@
                         if (keyval == "") {
                             keyval = null;
                         }
-                        if (element[0] == "coin_platform" || element[0] == "coin_category" ||
+                        if (element[0] == "coin_platform" || element[0] ==
+                            "coin_category" ||
                             element[0] ==
-                            "three_months_unlock_size" || element[0] == "next_unlock_size" ||
+                            "three_months_unlock_size" || element[0] ==
+                            "next_unlock_size" ||
                             element[0] ==
                             "six_months_unlock_size") {
                             keyval = keyval.replaceAll("%", "");
@@ -4987,7 +5108,8 @@
                     });
                 } else {
                     this.fields.forEach(element => {
-                        if (element.visible == 3 || element.canHide == true && element.visible == 2) {
+                        if (element.visible == 3 || element.canHide == true && element
+                            .visible == 2) {
                             if (element.filterColumn == true) {
                                 this.column_form.table_fields.push(element.key)
                             }
@@ -5049,7 +5171,7 @@
                             this.fields[31].filterColumn = false;
                             this.fields[32].filterColumn = false;
                             this.fields[33].filterColumn = false;
-                           
+
                         } else {
                             this.fields[0].filterColumn = false;
                             this.fields[20].filterColumn = true;
@@ -5065,11 +5187,12 @@
                             this.fields[31].filterColumn = true;
                             this.fields[32].filterColumn = true;
                             this.fields[33].filterColumn = true;
-                           
+
                         }
                         this.fields[38].filterColumn = true;
                         this.fields.forEach(element => {
-                            if (this.loadedFields.table_fields.includes(element.key)) {
+                            if (this.loadedFields.table_fields.includes(element
+                                    .key)) {
                                 element.filterColumn = true;
                             } else {
                                 if (element.canHide) {
@@ -5089,12 +5212,14 @@
                         } else {
                             this.mi_fear_nft = false;
                         }
-                        if (this.loadedFields.market_indicators.includes('mi_fear_btc_in_out')) {
+                        if (this.loadedFields.market_indicators.includes(
+                                'mi_fear_btc_in_out')) {
                             this.mi_fear_btc_in_out = true;
                         } else {
                             this.mi_fear_btc_in_out = false;
                         }
-                        if (this.loadedFields.market_indicators.includes('mi_fear_btc_alt')) {
+                        if (this.loadedFields.market_indicators.includes(
+                                'mi_fear_btc_alt')) {
                             this.mi_fear_btc_alt = true;
                         } else {
                             this.mi_fear_btc_alt = false;
@@ -5119,7 +5244,7 @@
                             this.fields[31].filterColumn = false;
                             this.fields[32].filterColumn = false;
                             this.fields[33].filterColumn = false;
-                           
+
                         } else {
                             this.fields[0].filterColumn = true;
                             this.fields[1].filterColumn = true;
@@ -5137,9 +5262,9 @@
                             this.fields[31].filterColumn = true;
                             this.fields[32].filterColumn = true;
                             this.fields[33].filterColumn = true;
-                           
+
                         }
-                          this.fields[38].filterColumn = true;
+                        this.fields[38].filterColumn = true;
                     }
                 })
             }
@@ -5150,12 +5275,15 @@
             visibleFields() {
                 if (this.params.api_mode == 1) {
                     return this.fields.filter(field => {
-                        return field.visible == 1 && field.filterColumn == true&& field.key != 'market_cap_rank' || field.visible == 2 && field
-                            .filterColumn == true && field.key != 'market_cap_rank'|| field.visible == 3 && field.filterColumn == true && field.key != 'market_cap_rank' ;
+                        return field.visible == 1 && field.filterColumn == true && field.key !=
+                            'market_cap_rank' || field.visible == 2 && field
+                            .filterColumn == true && field.key != 'market_cap_rank' || field.visible == 3 &&
+                            field.filterColumn == true && field.key != 'market_cap_rank';
                     })
                 } else {
                     return this.fields.filter(field => {
-                        return field.visible == 2 && field.filterColumn == true && field.key != 'market_cap_rank' || field.visible == 3 && field
+                        return field.visible == 2 && field.filterColumn == true && field.key !=
+                            'market_cap_rank' || field.visible == 3 && field
                             .filterColumn == true && field.key != 'market_cap_rank';
                     })
                 }
@@ -5211,7 +5339,9 @@
             },
             value5: {
                 get() {
-                    return [this.filterKey.min_social_mentions_change, this.filterKey.max_social_mentions_change]
+                    return [this.filterKey.min_social_mentions_change, this.filterKey
+                        .max_social_mentions_change
+                    ]
                 },
                 set([ldot5, rdot5]) {
                     this.filterKey.min_social_mentions_change = ldot5
@@ -5413,16 +5543,17 @@
         height: 8px;
         cursor: pointer;
     }
-   
-   
-    
-   #ctable .b-overlay-wrap.position-relative:hover {
-        margin-right:-4px;
+
+
+
+    #ctable .b-overlay-wrap.position-relative:hover {
+        margin-right: -4px;
 
     }
+
     #dashboard .b-table-1::-webkit-scrollbar-corner {
         background: rgba(0, 0, 0, 0);
-        z-index:999;
+        z-index: 999;
     }
 
     #dashboard .b-table-1::-webkit-scrollbar-thumb {
@@ -5496,9 +5627,11 @@
         opacity: 0.8;
         margin: auto;
     }
-    .sl2{
+
+    .sl2 {
         font-size: 12px;
     }
+
     .blurry-text {
         text-shadow: 0 0 32px white;
         color: transparent;
@@ -5542,11 +5675,12 @@
         color: #ea5455 !important;
 
     }
+
     .whiteFlash {
         color: #ffffff !important;
 
     }
-    
+
     .greenFlash1 {
         color: #6BBE84;
 
@@ -5962,9 +6096,10 @@
     #modal-details___BV_modal_content_ .b-overlay {
         height: 80vh !important;
     }
-    .whitepaper-card .card-body{
+
+    .whitepaper-card .card-body {
         padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
+        padding-right: 0.5rem !important;
     }
 
     .AppExtentionMode #dashboard .b-table-1 {
@@ -6002,55 +6137,67 @@
         margin-bottom: 25px;
     }
 
-     #dashboard .b-table-1 thead tr {
+    #dashboard .b-table-1 thead tr {
         height: 30px;
     }
 
     .AppExtentionMode .HeaderTopBar {
         margin-bottom: -2px !important;
     }
-    .AppExtentionMode .topbarDiv{
+
+    .AppExtentionMode .topbarDiv {
         z-index: 999;
-    position: absolute;
-    top: -23px;
-    left: -60px
+        position: absolute;
+        top: -23px;
+        left: -60px
     }
+
     .HeaderTopBar {
         margin-bottom: 1rem;
     }
+
     .AppExtentionMode .topbarDiv .greyLetter {
         font-size: 12px !important;
     }
+
     .AppExtentionMode .topbarDiv .whiteLetter {
         font-size: 13px !important;
     }
+
     .AppExtentionMode .topbarDiv i.bi.bi-triangle-fill {
-        font-size:10px;
+        font-size: 10px;
     }
-     .SearchInputGroup {
+
+    .SearchInputGroup {
         margin-bottom: 0px !important;
     }
 
-    .topbarDiv .TriangleIcon{
-    margin-left: 10px; margin-right:10px;
-   }
-   .AppExtentionMode  .topbarDiv .TriangleIcon{
-    margin-left: 3px; margin-right:3px;
-   }
+    .topbarDiv .TriangleIcon {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 
-   .AppExtentionMode  .topbarDiv .Dominance{
-    margin-top: 4px !important;
-   }
+    .AppExtentionMode .topbarDiv .TriangleIcon {
+        margin-left: 3px;
+        margin-right: 3px;
+    }
 
-    
+    .AppExtentionMode .topbarDiv .Dominance {
+        margin-top: 4px !important;
+    }
+
+
     .searchbar {
         margin-top: 1rem;
     }
-    .table > tbody > tr > td {
+
+    .table>tbody>tr>td {
         max-width: 300px;
-        }
+    }
+
 </style>
 
 <style lang="scss">
-@import '~@resources/scss/vue/libs/vue-flatpicker.scss';
+    @import '~@resources/scss/vue/libs/vue-flatpicker.scss';
+
 </style>

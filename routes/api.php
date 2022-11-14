@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Coingecko;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlansController;
 use App\Http\Controllers\UnlockingController;
@@ -77,6 +78,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     //Notify Unlcoking Table
     Route::post('/check-coin-notified', [UnlockingController::class, 'checkCoinNotified'])->name('/check-coin-notified');
     Route::post('/notify-unlock-token', [UnlockingController::class, 'notifyTokenUnlock'])->name('/notify-unlock-token');
+    Route::post('/manage-favorites', [Coingecko::class, 'manageFavorites'])->name('/manage-favorites');
 
     
 
