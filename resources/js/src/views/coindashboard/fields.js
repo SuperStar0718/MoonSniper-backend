@@ -2,6 +2,11 @@ const data = [
     {
         key: 'market_cap_rank',
         index: 0,
+         thStyle: {
+            'width':'50px',
+            
+            
+        },
         label: '',
         stickyColumn: false,
         sortable: false,
@@ -13,8 +18,11 @@ const data = [
     {
         key: 'name',
         index: 1,
-        thStyle: {
+         thStyle: {
+            'width':'50px',
+            
         },
+       
         tdStyle: {
         },
         thClass: '',
@@ -27,6 +35,10 @@ const data = [
     {
         key: 'current_price',
         index: 2,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Price($)',
         stickyColumn: false,
         filterColumn:true, canHide:true,
@@ -35,6 +47,10 @@ const data = [
     {
         key: 'price_change_percentage_24h',
         index: 3,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: '24h %',
         stickyColumn: false,
         filterColumn:true, canHide:true,
@@ -43,6 +59,10 @@ const data = [
     {
         key: 'price_change_percentage_7d_in_currency',
         index: 4,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: '7D %',
         stickyColumn: false,
         filterColumn:true, canHide:true,
@@ -51,6 +71,10 @@ const data = [
     {
         key: 'market_cap',
         index: 5,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'MC',
         stickyColumn: false,
         filterColumn:true, canHide:true,
@@ -59,6 +83,10 @@ const data = [
     {
         key: 'coin_description',
         index: 6,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Desc',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -68,6 +96,10 @@ const data = [
     {
         key: 'coin_platform',
         index: 7,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Platform',
         stickyColumn: false,
         filterColumn:false,
@@ -76,6 +108,10 @@ const data = [
     {
         key: 'total_volume',
         index: 8,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'VOL(24h)',
         stickyColumn: false,
         filterColumn:true, canHide:true,
@@ -84,6 +120,10 @@ const data = [
     {
         key: 'high_24h',
         index: 9,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'High $(24h)',
         stickyColumn: false,
         filterColumn:false,
@@ -92,6 +132,10 @@ const data = [
     {
         key: 'low_24h',
         index: 10,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Low $(24h)',
         stickyColumn: false,
         filterColumn:false,
@@ -101,6 +145,10 @@ const data = [
     {
         key: 'ath',
         index: 11,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'ATH($)',
         stickyColumn: false,
         filterColumn:false,
@@ -109,6 +157,10 @@ const data = [
     {
         key: 'atl',
         index: 12,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'ATL($)',
         stickyColumn: false,
         filterColumn:false,
@@ -117,6 +169,10 @@ const data = [
     {
         key: 'roi_times',
         index: 13,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: `ROI in X's`,
         stickyColumn: false,
         filterColumn:false,canHide:true,
@@ -125,6 +181,10 @@ const data = [
     {
         key: 'coin_category',
         index: 14,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: `Category`,
         stickyColumn: false, canHide:true,
         filterColumn:false,
@@ -136,6 +196,10 @@ const data = [
     {
         key: 'roi_percentage',
         index: 15,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'ROI %',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -145,6 +209,10 @@ const data = [
     {
         key: 'total_supply_percent',
         index: 16,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Total Supply %',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -153,6 +221,10 @@ const data = [
     {
         key: 'circulating_supply',
         index: 17,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Circulating Supply',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -161,6 +233,10 @@ const data = [
     {
         key: 'seed_price',
         index: 18,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Seed Price',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -170,6 +246,10 @@ const data = [
     {
         key: 'roi_seed',
         index: 19,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'ROI Seed',
         stickyColumn: false,
         filterColumn:false,
@@ -178,6 +258,10 @@ const data = [
     {
         key: 'total_locked',
         index: 20,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Total Locked',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -186,6 +270,10 @@ const data = [
     {
         key: 'next_unlock_date_text',
         index: 21,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Next Unlock Date',
         stickyColumn: false,
         filterColumn:true,canHide:true,
@@ -194,6 +282,10 @@ const data = [
     {
         key: 'next_unlock_status',
         index: 22,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Next Unlock Status',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -203,6 +295,10 @@ const data = [
     {
         key: 'next_unlock_number_of_tokens',
         index: 23,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Next Unlock # of Tokens',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -210,6 +306,10 @@ const data = [
     },{
         key: 'next_unlock_percent_of_tokens',
         index: 24,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Next Unlock Token %',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -217,6 +317,10 @@ const data = [
     },{
         key: 'next_unlock_size',
         index:25,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Next Unlock Size',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -224,6 +328,10 @@ const data = [
     },{
         key: 'first_vc_unlock',
         index: 26,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'First VC Unlock',
         stickyColumn: false,
         filterColumn:true,canHide:true,
@@ -231,6 +339,10 @@ const data = [
     },{
         key: 'end_vc_unlock',
         index: 27,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'End VC Unlock',
         stickyColumn: false,
         filterColumn:true,canHide:true,
@@ -238,6 +350,10 @@ const data = [
     },{
         key: 'three_months_unlock_number_of_tokens',
         index: 28,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: '3 Months Unlock # of Tokens',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -245,6 +361,10 @@ const data = [
     },{
         key: 'three_months_unlock_percent_of_tokens',
         index: 29,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: '3 Months Unlock Tokens %',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -252,6 +372,10 @@ const data = [
     },{
         key: 'three_months_unlock_size',
         index: 30,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: '3 Months Unlock Size',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -260,6 +384,10 @@ const data = [
     {
         key: 'six_months_unlock_number_of_tokens',
         index: 31,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: '6 Months Unlock # of Tokens',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -267,6 +395,10 @@ const data = [
     },{
         key: 'six_months_unlock_percent_of_tokens',
         index: 32,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: '6 Months Unlock Tokens %',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -274,6 +406,10 @@ const data = [
     },{
         key: 'six_months_unlock_size',
         index: 33,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: '6 Months Unlock Size',
         stickyColumn: false, canHide:true,
         filterColumn:false,
@@ -282,6 +418,10 @@ const data = [
     {
         key: 'social_mentions_change',
         index: 34,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Social Mentions Change',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -290,6 +430,10 @@ const data = [
     {
         key: 'social_engagement_change',
         index: 35,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Social Engagement Change',
         stickyColumn: false,
         filterColumn:false, canHide:true,
@@ -298,6 +442,10 @@ const data = [
     {
         key: 'average_sentiment',
         index: 36,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Average Sentiment',
         stickyColumn: false, canHide:true,
         filterColumn:false,
@@ -306,10 +454,24 @@ const data = [
     {
         key: 'average_sentiment_change',
         index: 37,
+         thStyle: {
+            'width':'50px',
+            
+        },
         label: 'Average Sentiment Change',
         stickyColumn: false,
         filterColumn:false,
         visible: 1,
+    },
+    {
+        key: 'empty',
+        index: 38,
+        
+        label: '',
+        stickyColumn: false,
+        filterColumn:true,
+        visible: 3
     }
+
 ]
 export default data;

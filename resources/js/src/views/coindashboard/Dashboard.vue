@@ -758,13 +758,20 @@
                 </div>
                 <b-overlay :show="isBusy" rounded="sm">
 
-                    <b-table :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill "
+                    <b-table :no-border-collapse="true"  tbody-tr-class="cursor-pointer box rounded-pill "
                         :show-empty="isBusy" :busy="isBusy" class="b-table-1" @row-clicked="detailsModel($event)"
                         style=" white-space: nowrap;" responsive :items="items.data"
                         :fields="visibleFields">
                         <template #table-busy>
 
                         </template>
+                        <!-- <template #table-colgroup="scope">
+                            <col
+                              v-for="field in scope.fields"
+                              :key="field.key"
+                              :style="{ width: field.key === 'empty'?'-' : '250px' }"
+                            > <col>
+                          </template> -->
                         <template #empty="scope">
                             <h4>{{ scope.emptyText }}</h4>
                         </template>
@@ -815,7 +822,7 @@
                         </template>
 
                         <template #cell(name)="data">
-                            <div class="d-flex justify-content-center">
+                            <div class="d-flex justify-content-start ml-2">
                                 <div class="d-flex c" v-if="fields[0].filterColumn">
                                     <div class="m-auto">
                                         <feather-icon icon="StarIcon" size="22" />
@@ -826,9 +833,9 @@
                                 <div style="text-align: center;" class="d-flex justify-content-center">
 
                                     <div style="" class="my-auto">
-                                        <b-avatar class="text-center mx-1" :src="data.item.image" />
+                                        <b-avatar class="text-center mr-1" :src="data.item.image" />
                                     </div>
-                                    <div class="">
+                                    <div class="" v-b-tooltip.hover.bottom="data.value">
 
                                         <div class="text-nowrap text-truncate"
                                             style="float: left; max-width: 100px; font-weight: 600;">
@@ -4096,6 +4103,15 @@
 
                 this.loadCoins();
             },
+            widthSetting(index)
+            {
+                if(this.visibleFields[this.visibleFields.length - 1].index == index)
+                {
+                    return true;
+                }else{
+                    return false;
+                }
+            },
             filterCoins(refresh_flag) {
                 this.filtered = true;
                 this.isBusy = true;
@@ -4304,7 +4320,6 @@
 
                 if (this.filterKey.next_unlock_date) {
                    let dates = this.filterKey.next_unlock_date.split(" to ");
-                   console.log(dates)
                    this.params.filters.push(["next_unlock_date", ">=", dates[0]]);
                    this.params.filters.push(["next_unlock_date", "<=", dates[1]]);
                     // this.params.filters.push(["next_unlock_date BETWEEN "+dates[0]+" AND "+dates[1]+""]);
@@ -5034,6 +5049,7 @@
                             this.fields[31].filterColumn = false;
                             this.fields[32].filterColumn = false;
                             this.fields[33].filterColumn = false;
+                           
                         } else {
                             this.fields[0].filterColumn = false;
                             this.fields[20].filterColumn = true;
@@ -5049,8 +5065,9 @@
                             this.fields[31].filterColumn = true;
                             this.fields[32].filterColumn = true;
                             this.fields[33].filterColumn = true;
+                           
                         }
-
+                        this.fields[38].filterColumn = true;
                         this.fields.forEach(element => {
                             if (this.loadedFields.table_fields.includes(element.key)) {
                                 element.filterColumn = true;
@@ -5102,6 +5119,7 @@
                             this.fields[31].filterColumn = false;
                             this.fields[32].filterColumn = false;
                             this.fields[33].filterColumn = false;
+                           
                         } else {
                             this.fields[0].filterColumn = true;
                             this.fields[1].filterColumn = true;
@@ -5119,7 +5137,9 @@
                             this.fields[31].filterColumn = true;
                             this.fields[32].filterColumn = true;
                             this.fields[33].filterColumn = true;
+                           
                         }
+                          this.fields[38].filterColumn = true;
                     }
                 })
             }
@@ -6026,7 +6046,9 @@
     .searchbar {
         margin-top: 1rem;
     }
-   
+    .table > tbody > tr > td {
+        max-width: 300px;
+        }
 </style>
 
 <style lang="scss">
