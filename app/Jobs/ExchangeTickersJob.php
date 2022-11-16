@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Exchange;
 use Illuminate\Bus\Queueable;
+use App\Models\ExchangeTicker;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
