@@ -41,6 +41,7 @@ class ExchangeTickersJob implements ShouldQueue
             foreach ($tickerData['tickers'] as $key => $valueTicker) {
                 if ($valueTicker['trust_score'] == 'green') {
                  $exchnageTicker = new ExchangeTicker();
+                 //Check
                     $variable = "";
                     $str = $valueTicker['trade_url'];
                     if ($str) {
