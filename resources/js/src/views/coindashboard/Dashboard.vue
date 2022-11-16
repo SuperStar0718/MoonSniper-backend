@@ -224,7 +224,7 @@
                                     v-ripple.400="'rgba(255, 255, 255,1)'" title="Filter" variant="flat-success"
                                     class="btn-icon mr-1">
                                     <i v-if="favoritised" v-b-tooltip.hover.bottom="'My Favorites'"
-                                            class="fa-solid fa-star" style="font-size:20px" @click="disableFavorites()"
+                                            class="fa-solid fa-star" style="font-size:20px; color:#fc6" @click="disableFavorites()"
                                            ></i>
 
                                         <i v-else class="fa-regular fa-star " style="font-size:20px" v-b-tooltip.hover.bottom="'My Favorites'"
@@ -771,7 +771,7 @@
                 <b-overlay :show="isBusy" rounded="sm">
 
                     <b-table :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill "
-                        :show-empty="isBusy" :busy="isBusy"   class="b-table-1" @row-clicked="detailsModel($event)"
+                        :show-empty="showEmpty" :busy="isBusy" :empty-text="emptyText"  class="b-table-1" @row-clicked="detailsModel($event)"
                         style=" white-space: nowrap;" responsive :items="items.data" :fields="visibleFields">
                         <template #table-busy>
 
@@ -837,11 +837,11 @@
                                 <div class="d-flex c" v-if="fields[0].filterColumn">
                                     <div class="m-auto">
                                         <i v-if="checkFavoriteList(data.index,data.item.coin_id,data.item.symbol)"
-                                            class="fa-solid fa-star" style="font-size:20px"
-                                            @click.stop.prevent="manageFavorite(data.index,data.item.coin_id,data.item.symbol)"></i>
+                                            class="fa-solid fa-star" style="font-size:20px; color:#fc6"
+                                            @click.stop.prevent="manageFavorite(data.index,data.item.coin_id,data.item.symbol,data.item.name)"></i>
 
                                         <i v-else class="fa-regular fa-star " style="font-size:20px"
-                                            @click.stop.prevent="manageFavorite(data.index,data.item.coin_id,data.item.symbol)"></i>
+                                            @click.stop.prevent="manageFavorite(data.index,data.item.coin_id,data.item.symbol,data.item.name)"></i>
                                         <!-- <feather-icon icon="StarIcon" size="22" /> -->
                                     </div>
                                     <div style="padding-top:3px" class="my-auto mx-1">
@@ -3119,6 +3119,8 @@
                 sortKey: '',
                 sortBy: '',
                 isBusy: true,
+                showEmpty:false,
+                emptyText: 'There are no records to show',
                 locked: false,
                 value_2: [0, 50],
                 params: {
@@ -3725,7 +3727,7 @@
                 notifiedType: '',
                 detailsModalLoaded: false,
                 favoritised:false,
-                emptyTextVal:'No Records Found'
+                emptyTextVal:'There are no records to show'
                 //end
 
             }
@@ -3753,7 +3755,7 @@
             say(message) {
                 alert("Please connect your metamask")
             },
-            manageFavorite(index, coin_id, symbol) {
+            manageFavorite(index, coin_id, symbol,name) {
 
                 axios.post('api/manage-favorites', {
                     coin_id: coin_id,
@@ -3762,6 +3764,14 @@
 
                     if (res.data.status == true && res.data.favorite == 'added') {
                         this.favorites.push(res.data.favorites)
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: ''+name+' added to your favorite list',
+                                icon: 'CheckCircleIcon',
+                                variant: 'success',
+                            },
+                     })
 
                     } else if (res.data.status == true && res.data.favorite == 'removed') {
                         let i = this.favorites.findIndex((item) => {
@@ -3815,6 +3825,7 @@
             loadCoins() {
                 this.$bvModal.hide('modal-filters');
                 this.isBusy = true;
+                this.showEmpty = false;
                 this.loadedData = false;
                 axios.post('api/get_coins?page=' + this.Cpagpage, JSON.stringify(this.params)).then(res => {
                     if (res.data.tokens.data) {
@@ -3822,8 +3833,17 @@
                         this.favorites = res.data.favorites;
                         this.loadedData = true;
                         setTimeout(() => {
-                            this.isBusy = false;
                         }, 2000);
+                    }
+                    this.isBusy = false;
+
+                    this.showEmpty = true;
+
+                    if(this.params.favoritesMode == 1)
+                    {
+                        this.emptyText ="There are no favorites in your list yet";
+                    }else{
+                        this.emptyText ="There are no records to show";
                     }
                     this.isBusy = false;
 
