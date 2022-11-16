@@ -42,128 +42,32 @@ class Coingecko extends Controller
         $query = DB::table('coins');
         $favorites = UserFavorites::where('user_id', Auth::user()->id)->get();
 
-        if (intval($input_array["favoritesMode"]) == 1) {
-            // $query->where('coins.symbol','!=',null);
-            $favoritesSymbols = UserFavorites::where('user_id', Auth::user()->id)->select('coin_symbol', 'coinid')->get();
-            foreach ($favoritesSymbols as $key => $value) {
-                $query->orWhere('coins.coin_id', $value->coinid)->where('coins.symbol', $value->coin_symbol);
-            }
+        
+        if (intval($input_array["api_mode"]) == 2) {
+            $query->whereRaw("(coin_data.`next_unlock_date` IS NOT NULL OR coin_data.`next_unlock_date_text` IS NOT NULL OR coin_data.`total_locked_percent` IS NOT NULL OR coin_data.`next_unlock_percent` IS NOT NULL OR coin_data.`next_unlock_status` IS NOT NULL OR coin_data.`next_unlock_number_of_tokens` IS NOT NULL OR coin_data.`next_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`next_unlock_size` IS NOT NULL OR coin_data.`first_vc_unlock` IS NOT NULL OR coin_data.`end_vc_unlock` IS NOT NULL OR coin_data.`first_vc_unlock_text` IS NOT NULL OR coin_data.`end_vc_unlock_text` IS NOT NULL OR coin_data.`three_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_size` IS NOT NULL OR coin_data.`six_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_size` IS NOT NULL)");
         }
-        if (intval($input_array["api_mode"]) == 1) {
-            if ($input_array["sort"][1] == "asc" || $input_array["sort"][1] == "desc") {
-
-                if ($input_array["filters2"] != "") {
-
-                    $data = $query->select('*')
-                        ->select('*')
-                        ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
-                        ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id')
-                        ->where($input_array["filters"])
-                    // ->where('coin_data.market_cap','>',0)
-                        ->whereNotNull('coin_data.coin_id')
-                        ->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%" . $input_array["filters2"] . "%")
-                        ->orderBy(DB::raw("ISNULL(" . $input_array["sort"][0] . "), " . $input_array["sort"][0]), $input_array["sort"][1])
-                        ->paginate($input_array["perpage"] ? $input_array["perpage"] : 6);
-                } else {
-
-                    $data = $query->select('*')
-                        ->select('*')
-                        ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
-
-                        ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id')
-                        ->where($input_array["filters"])
-                    // ->where('coin_data.market_cap','>',0)
-                        ->whereNotNull('coin_data.coin_id')
-                        ->orderBy(DB::raw("ISNULL(" . $input_array["sort"][0] . "), " . $input_array["sort"][0]), $input_array["sort"][1])
-                        ->paginate($input_array["perpage"] ? $input_array["perpage"] : 6);
-                }
-
-            } else {
-                if ($input_array["filters2"] != "") {
-
-                    $data = $query->select('*')
-                        ->select('*')
-                        ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
-
-                        ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id')
-                        ->where($input_array["filters"])
-                    // ->where('coin_data.market_cap','>',0)
-                        ->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%" . $input_array["filters2"] . "%")
-                        ->paginate(100);
-                } else {
-
-                    $data = $query->select('*')
-                        ->select('*')
-                        ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
-
-                        ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id')
-                        ->where($input_array["filters"])
-                    // ->where('coin_data.market_cap','>',0)
-                        ->paginate(100);
-                }
-
-            }
-        } else if (intval($input_array["api_mode"]) == 2) {
-            if ($input_array["sort"][1] == "asc" || $input_array["sort"][1] == "desc") {
-
-                if ($input_array["filters2"] != "") {
-
-                    $data = $query->select('*')
-                        ->select('*')
-                        ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
-
-                        ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id')
-                        ->where($input_array["filters"])
-                    // ->where('coin_data.market_cap','>',0)
-                        ->whereNotNull('coin_data.coin_id')
-                        ->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%" . $input_array["filters2"] . "%")
-                        ->whereRaw("(coin_data.`next_unlock_date` IS NOT NULL OR coin_data.`next_unlock_date_text` IS NOT NULL OR coin_data.`total_locked_percent` IS NOT NULL OR coin_data.`next_unlock_percent` IS NOT NULL OR coin_data.`next_unlock_status` IS NOT NULL OR coin_data.`next_unlock_number_of_tokens` IS NOT NULL OR coin_data.`next_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`next_unlock_size` IS NOT NULL OR coin_data.`first_vc_unlock` IS NOT NULL OR coin_data.`end_vc_unlock` IS NOT NULL OR coin_data.`first_vc_unlock_text` IS NOT NULL OR coin_data.`end_vc_unlock_text` IS NOT NULL OR coin_data.`three_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_size` IS NOT NULL OR coin_data.`six_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_size` IS NOT NULL)")
-                        ->orderBy(DB::raw("ISNULL(" . $input_array["sort"][0] . "), " . $input_array["sort"][0]), $input_array["sort"][1])
-                        ->paginate($input_array["perpage"] ? $input_array["perpage"] : 6);
-                } else {
-
-                    $data = $query->select('*')
-                        ->select('*')
-                        ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
-
-                        ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id')
-                        ->where($input_array["filters"])
-                    // ->where('coin_data.market_cap','>',0)
-                        ->whereNotNull('coin_data.coin_id')
-                        ->whereRaw("(coin_data.`next_unlock_date` IS NOT NULL OR coin_data.`next_unlock_date_text` IS NOT NULL OR coin_data.`total_locked_percent` IS NOT NULL OR coin_data.`next_unlock_percent` IS NOT NULL OR coin_data.`next_unlock_status` IS NOT NULL OR coin_data.`next_unlock_number_of_tokens` IS NOT NULL OR coin_data.`next_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`next_unlock_size` IS NOT NULL OR coin_data.`first_vc_unlock` IS NOT NULL OR coin_data.`end_vc_unlock` IS NOT NULL OR coin_data.`first_vc_unlock_text` IS NOT NULL OR coin_data.`end_vc_unlock_text` IS NOT NULL OR coin_data.`three_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_size` IS NOT NULL OR coin_data.`six_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_size` IS NOT NULL)")
-                        ->orderBy(DB::raw("ISNULL(" . $input_array["sort"][0] . "), " . $input_array["sort"][0]), $input_array["sort"][1])
-                        ->paginate($input_array["perpage"] ? $input_array["perpage"] : 6);
-                }
-
-            } else {
-                if ($input_array["filters2"] != "") {
-
-                    $data = $query->select('*')
-                        ->select('*')
-                        ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
-
-                        ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id')
-                        ->where($input_array["filters"])
-                    // ->where('coin_data.market_cap','>',0)
-                        ->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%" . $input_array["filters2"] . "%")
-                        ->whereRaw("(coin_data.`next_unlock_date` IS NOT NULL OR coin_data.`next_unlock_date_text` IS NOT NULL OR coin_data.`total_locked_percent` IS NOT NULL OR coin_data.`next_unlock_percent` IS NOT NULL OR coin_data.`next_unlock_status` IS NOT NULL OR coin_data.`next_unlock_number_of_tokens` IS NOT NULL OR coin_data.`next_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`next_unlock_size` IS NOT NULL OR coin_data.`first_vc_unlock` IS NOT NULL OR coin_data.`end_vc_unlock` IS NOT NULL OR coin_data.`first_vc_unlock_text` IS NOT NULL OR coin_data.`end_vc_unlock_text` IS NOT NULL OR coin_data.`three_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_size` IS NOT NULL OR coin_data.`six_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_size` IS NOT NULL)")
-                        ->paginate(100);
-                } else {
-
-                    $data = $query->select('*')
-                        ->select('*')
-                        ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
-
-                        ->whereColumn('coin_data.coin_id', '=', 'coins.coin_id')
-                        ->where($input_array["filters"])
-                    // ->where('coin_data.market_cap','>',0)
-                        ->whereRaw("(coin_data.`next_unlock_date` IS NOT NULL OR coin_data.`next_unlock_date_text` IS NOT NULL OR coin_data.`total_locked_percent` IS NOT NULL OR coin_data.`next_unlock_percent` IS NOT NULL OR coin_data.`next_unlock_status` IS NOT NULL OR coin_data.`next_unlock_number_of_tokens` IS NOT NULL OR coin_data.`next_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`next_unlock_size` IS NOT NULL OR coin_data.`first_vc_unlock` IS NOT NULL OR coin_data.`end_vc_unlock` IS NOT NULL OR coin_data.`first_vc_unlock_text` IS NOT NULL OR coin_data.`end_vc_unlock_text` IS NOT NULL OR coin_data.`three_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_size` IS NOT NULL OR coin_data.`six_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_size` IS NOT NULL)")
-                        ->paginate(100);
-                }
-
-            }
+        if ($input_array["sort"][1] == "asc" || $input_array["sort"][1] == "desc") {
+            $query->orderBy(DB::raw("ISNULL(" . $input_array["sort"][0] . "), " . $input_array["sort"][0]), $input_array["sort"][1]);
         }
-        $favorites = UserFavorites::where('user_id', Auth::user()->id)->get();
+        if ($input_array["filters2"] != "") {
+            $query->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%" . $input_array["filters2"] . "%");
+        }
+       
+         $query->select('*')
+            ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol');
+            if (intval($input_array["favoritesMode"]) == 1) {
+                // $query->where('coins.symbol','!=',null);
+                $query->join('user_favorites', function ($join) {
+                    $join->on('coins.symbol', '=', 'user_favorites.coin_symbol')
+                        ->on('coins.coin_id', '=', 'user_favorites.coinid')->where('user_favorites.user_id',Auth::user()->id);
+                });
+            }
+            $data = $query->whereColumn('coin_data.coin_id', '=', 'coins.coin_id')
+            ->where($input_array["filters"])
+        // ->where('coin_data.market_cap','>',0)
+            ->whereNotNull('coin_data.coin_id')
+            ->paginate($input_array["perpage"] ? $input_array["perpage"] : 6);
+            $favorites = UserFavorites::where('user_id', Auth::user()->id)->get();
 
         // Masking Data for Free Users
         $logged_in_user = Auth::user();

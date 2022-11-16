@@ -3781,13 +3781,13 @@
             enableFavorites()
             {
                 this.params.favoritesMode = 1;
-                this.clearFilters(true);
+                this.loadCoins();
                 this.favoritised = true;
             },
             disableFavorites()
             {
                 this.params.favoritesMode = 0;
-                this.clearFilters(true);
+                this.loadCoins();
                 this.favoritised = false;
             },
             exitfavorites()
