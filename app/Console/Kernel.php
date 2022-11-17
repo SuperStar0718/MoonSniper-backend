@@ -25,7 +25,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('moon:lunarcrush')->twiceDaily(1,13);
         $schedule->command('coin:scrape_unlock_data')->daily();
         $schedule->command('coin:scrape_vestintg_data')->everyThirtyMinutes();
-        // $schedule->command('moon:exchanges')->daily();
+        $schedule->command('moon:exchanges')->daily();
+        // $schedule->command('moon:exchangestickers')->everyMinute();
     }
 
     /**

@@ -43,18 +43,19 @@ class ExchangeDataJob implements ShouldQueue
             $exchange = new Exchange();
              $exchange->exchangeid =  $value['id'];
              $exchange->name =  $value['name'];
+             $exchange->flag = 0;
              $exchange->save();
              $newExchanges[] = $exchange;
         }
            
         }
 
-       $chunkedData = array_chunk($newExchanges,5);
-       $time  = 0;
-       foreach ($chunkedData as $key => $valueChunck) {
-            ExchangeTickersJob::dispatch($valueChunck)->onQueue('moon-sniper-worker')->delay($time);
-            $time = $time+100;
-        }
+    //    $chunkedData = array_chunk($newExchanges,5);
+    //    $time  = 0;
+    //    foreach ($chunkedData as $key => $valueChunck) {
+    //         ExchangeTickersJob::dispatch($valueChunck)->onQueue('moon-sniper-worker')->delay($time);
+    //         $time = $time+60;
+    //     }
 
     }
 }

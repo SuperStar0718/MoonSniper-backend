@@ -342,23 +342,61 @@ class UnlockingController extends Controller
        
         foreach ($exchanges as $key => $value) {
         //    
-        if(!Exchange::where('exchangeid',$value['id'])->exists()){
-            $exchange = new Exchange();
-             $exchange->exchangeid =  $value['id'];
-             $exchange->name =  $value['name'];
-             $exchange->save();
-             $newExchanges[] = $exchange;
-        }
+            if(!Exchange::where('exchangeid',$value['id'])->exists()){
+                $exchange = new Exchange();
+                $exchange->exchangeid =  $value['id'];
+                $exchange->name =  $value['name'];
+                $exchange->flag = 0;
+                $exchange->save();
+                $newExchanges[] = $exchange;
+            }
            
         }
+        $client = new CoinGeckoClient(false);
+        $tickers = Exchange::where('flag', 0)->limit(10)->get();
+        if (count($tickers) > 0) {
+            foreach ($tickers as $key => $value) {
+                    $tickerData = $client->exchanges()->getExchange($value->exchangeid);
+                    foreach ($tickerData['tickers'] as $key => $valueTicker) {
+                        if ($valueTicker['trust_score'] == 'green') {
+                            $exchnageTicker = new ExchangeTicker();
+                            //Check
+                            $variable = "";
+                            $str = $valueTicker['trade_url'];
+                            if ($str) {
+                                $str = stripslashes($str);
+                                $variable = substr($str, 0, strpos($str, "?"));
+                            }
+                            $exchnageTicker->exchange = $value->name;
+                            $exchnageTicker->exchange_id = $value->exchangeid;
+                            $exchnageTicker->base = $valueTicker['base'];
+                            $exchnageTicker->target = $valueTicker['target'];
+                            $exchnageTicker->volume = $valueTicker['volume'];
+                            $exchnageTicker->trade_url = $variable;
+                            $exchnageTicker->save();
 
-       $chunkedData = array_chunk($newExchanges,5);
-       $time  = 0;
-       foreach ($chunkedData as $key => $valueChunck) {
-            ExchangeTickersJob::dispatch($valueChunck)->onQueue('moon-sniper-worker')->delay($time);
-            $time = $time+100;
+                        }
+
+                    }
+               
+                DB::table('exchanges')
+                ->where('exchangeid', $value->exchangeid)
+                ->update(['flag' => 1]);
+    
+            }
+         
+        } else {
+            DB::table('exchanges')
+                ->update(['flag' => 0]);
         }
-        return $time;
+
+    //    $chunkedData = array_chunk($newExchanges,5);
+    //    $time  = 0;
+    //    foreach ($chunkedData as $key => $valueChunck) {
+    //         ExchangeTickersJob::dispatch($valueChunck)->onQueue('moon-sniper-worker')->delay($time);
+    //         $time = $time+60;
+    //     }
+    //     return $time;
     //     ExchangeDataJob::dispatch();
     //     return 11;
     //     $client = new CoinGeckoClient(false);

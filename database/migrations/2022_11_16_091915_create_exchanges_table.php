@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('exchangeid');
             $table->string('name');
+            $table->tinyInteger('flag')->default(0);
             $table->timestamps();
         });
     }

@@ -11,5 +11,6 @@ class Exchange extends Model
     protected $fillable = [
         'exchangeid',
         'name',
+        'flag',
     ];
 }
