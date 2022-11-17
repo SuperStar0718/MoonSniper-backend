@@ -3783,12 +3783,17 @@
                     
                         let i = this.favorites.findIndex((item) => {
                             return item.coinid == coin_id && item.coin_symbol == symbol
-                            //console.log(it.id,it.id===item.id,item.id);
                         })
                         if (i > -1) {
                           
                             this.favorites.splice(i, 1);
-                           
+                           if(this.params.favoritesMode == 1)
+                           {
+                            let j = this.items.data.findIndex((item) => {
+                                    return item.coin_id == coin_id && item.symbol == symbol
+                                })
+                                this.items.data.splice(j, 1);
+                           }
                             this.$toast({
                             component: ToastificationContent,
                             props: {
