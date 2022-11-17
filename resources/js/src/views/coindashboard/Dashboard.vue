@@ -220,14 +220,20 @@
                         <div class="d-flex jusctify-content-between float-right">
 
                             <div >
-                                <b-button style="padding:5px; color:white;" :class="{'text-':favoritised}" 
-                                    v-ripple.400="'rgba(255, 255, 255,1)'" title="Filter" variant="flat-success"
+                                <b-button  v-if="favoritised"  style="padding:5px; color:white;"  
+                                    v-ripple.400="'rgba(255, 255, 255,1)'" title="My Favorites" variant="flat-success"
                                     class="btn-icon mr-1">
-                                    <i v-if="favoritised" v-b-tooltip.hover.bottom="'My Favorites'"
+                                    <i
                                             class="fa-solid fa-star" style="font-size:20px; color:#fc6" @click="disableFavorites()"
                                            ></i>
+                                           
+                                        
+                                </b-button>
+                                <b-button   v-if="!favoritised" style="padding:5px; color:white;"  
+                                    v-ripple.400="'rgba(255, 255, 255,1)'" title="My Favorites" variant="flat-success"
+                                    class="btn-icon mr-1">
 
-                                        <i v-else class="fa-regular fa-star " style="font-size:20px" v-b-tooltip.hover.bottom="'My Favorites'"
+                                        <i  class="fa-regular fa-star " style="font-size:20px" 
                                              @click="enableFavorites()"></i>
                                 </b-button>
                             </div>
@@ -3774,14 +3780,24 @@
                      })
 
                     } else if (res.data.status == true && res.data.favorite == 'removed') {
+                    
                         let i = this.favorites.findIndex((item) => {
                             return item.coinid == coin_id && item.coin_symbol == symbol
                             //console.log(it.id,it.id===item.id,item.id);
                         })
                         if (i > -1) {
-                            this.favorites.splice(i, 1)
+                          
+                            this.favorites.splice(i, 1);
+                           
+                            this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: ''+name+' removed from your favorites list',
+                                icon: 'CheckCircleIcon',
+                                variant: 'success',
+                            },
+                     })
                         }
-
 
                     }
 
@@ -3791,19 +3807,20 @@
             enableFavorites()
             {
                 this.params.favoritesMode = 1;
-                this.loadCoins();
+                this.loadCoins(false);
                 this.favoritised = true;
             },
             disableFavorites()
             {
                 this.params.favoritesMode = 0;
-                this.loadCoins();
+                this.loadCoins(false);
                 this.favoritised = false;
             },
             exitfavorites()
             {
                 this.params.favoritesMode = 0;
                 this.favoritised = false;
+                this.loadCoins(true);
             },
             checkFavoriteList(index, coin_id, symbol) {
                 var exists = this.favorites.some(function (field) {
@@ -3822,8 +3839,11 @@
             //     filterKey.min_market_cap = e.minValue;
             //     filterKey.max_market_cap = e.maxValue;
             // },
-            loadCoins() {
-                this.$bvModal.hide('modal-filters');
+            loadCoins(filterModalClose) {
+                if(!filterModalClose)
+                {
+                    this.$bvModal.hide('modal-filters');
+                }
                 this.isBusy = true;
                 this.showEmpty = false;
                 this.loadedData = false;
@@ -4215,7 +4235,7 @@
 
 
 
-                this.loadCoins();
+                this.loadCoins(false);
             },
             widthSetting(index) {
                 if (this.visibleFields[this.visibleFields.length - 1].index == index) {
@@ -4505,7 +4525,7 @@
                     ]);
                 }
                 if (refresh_flag) {
-                    this.loadCoins();
+                    this.loadCoins(false);
                 } else {
                     this.isBusy = false;
                 }
@@ -4576,7 +4596,7 @@
                 this.params.sort = ["market_cap", "desc"];
                 if (refresh_flag) {
                     this.isBusy = true;
-                    this.loadCoins();
+                    this.loadCoins(false);
                     this.selectedPreset = null;
                     this.selectedPresetData = null;
 
@@ -4941,7 +4961,7 @@
                     this.unlocking_mode = true;
                 }
                 this.loadFileds();
-                this.loadCoins();
+                this.loadCoins(false);
             },
             async createPresetFilter() {
                 await this.filterCoins(false);
@@ -5448,7 +5468,7 @@
         },
         mounted() {
             this.loadFileds();
-            this.loadCoins();
+            this.loadCoins(false);
             this.loadFag();
             this.loadPresetFilters();
             if (this.$route.query.type == 'extention') {
@@ -5461,13 +5481,13 @@
         watch: {
             'Cpagpage': function (newVal, oldVal) {
                 if (oldVal && newVal) {
-                    this.loadCoins()
+                    this.loadCoins(false)
                 }
             },
             'params.filters2': function (newVal, oldVal) {
                 if (oldVal != newVal && newVal.trim().length == 0 || newVal.trim().length >= 3) {
                     this.Cpagpage = 1;
-                    this.loadCoins()
+                    this.loadCoins(false)
                 }
             },
             'loadedData': function (n, o) {
@@ -5483,7 +5503,7 @@
             },
             'params.perpage': function (n, o) {
                 this.Cpagpage = 1
-                this.loadCoins()
+                this.loadCoins(false)
             }
         },
 
