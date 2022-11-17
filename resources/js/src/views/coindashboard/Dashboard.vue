@@ -2946,6 +2946,11 @@
                                     </vue-apex-charts>
                                 </div>
                             </app-collapse-item>
+                            <app-collapse-item class="w-100"
+                                title="Exchanges">
+                              <ExchangesTable :token="activeData"/>
+                            </app-collapse-item>
+
 
                         </app-collapse>
                     </div>
@@ -3060,6 +3065,7 @@
     import 'bootstrap-icons/font/bootstrap-icons';
     import 'bootstrap-icons/font/bootstrap-icons.css';
     import flatPickr from 'vue-flatpickr-component'
+    import ExchangesTable from '../exchanges/ExchangesTable.vue'
     export default {
         components: {
             BTable,
@@ -3101,7 +3107,8 @@
             VueSlider,
             VBPopover,
             Cleave,
-            flatPickr
+            flatPickr,
+            ExchangesTable
 
         },
         data() {
@@ -3733,7 +3740,14 @@
                 notifiedType: '',
                 detailsModalLoaded: false,
                 favoritised:false,
-                emptyTextVal:'There are no records to show'
+                emptyTextVal:'There are no records to show',
+                exchangesLoaded:true,
+                exchangeData: [
+                { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
+                { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
+                { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
+                { age: 38, first_name: 'Jami', last_name: 'Carney' }
+                ]
                 //end
 
             }
@@ -6139,7 +6153,7 @@
     }
 
     #modal-details___BV_modal_content_ .b-overlay {
-        height: 80vh !important;
+        height: 80vh;
     }
 
     .whitepaper-card .card-body {

@@ -353,11 +353,35 @@ class UnlockingController extends Controller
            
         }
         $client = new CoinGeckoClient(false);
+        $tickerData = $client->exchanges()->getExchange('1bch');
+        foreach ($tickerData['tickers'] as $key => $valueTicker) {
+            // if ($valueTicker['trust_score'] == 'green') {
+                $exchnageTicker = new ExchangeTicker();
+                //Check
+                $variable = [];
+                $str = $valueTicker['trade_url'];
+                if ($str) {
+                    $str = stripslashes($str);
+                     $variable = $ar = explode("?",$str);
+                }else{
+                    $variable[0] = '';
+                }
+                $exchnageTicker->exchange = '1BCH';
+                $exchnageTicker->exchange_id = '1bch';
+                $exchnageTicker->base = $valueTicker['base'];
+                $exchnageTicker->target = $valueTicker['target'];
+                $exchnageTicker->volume = $valueTicker['volume'];
+                $exchnageTicker->trade_url = $variable[0];
+                $exchnageTicker->save();
+
+            // }
+
+        }
+        return true;
         $tickers = Exchange::where('flag', 0)->limit(10)->get();
-        if ($tickers && count($tickers) > 0) {
+        if (count($tickers) > 0) {
             foreach ($tickers as $key => $value) {
                     $tickerData = $client->exchanges()->getExchange($value->exchangeid);
-                   if($tickerData['tickers'] && count($tickerData['tickers'])>0){
                     foreach ($tickerData['tickers'] as $key => $valueTicker) {
                         if ($valueTicker['trust_score'] == 'green') {
                             $exchnageTicker = new ExchangeTicker();
@@ -379,7 +403,6 @@ class UnlockingController extends Controller
                         }
 
                     }
-                   }
                
                 DB::table('exchanges')
                 ->where('exchangeid', $value->exchangeid)
