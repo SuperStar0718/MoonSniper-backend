@@ -2968,9 +2968,7 @@
                             </app-collapse-item>
                             <app-collapse-item class="w-100" title="Exchanges">
                                 <ExchangesTable :token="activeData" />
-                                <div>
-                                    Hello
-                                </div>
+                               
                             </app-collapse-item>
 
 
