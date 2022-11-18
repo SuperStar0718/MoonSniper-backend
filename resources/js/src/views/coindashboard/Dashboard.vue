@@ -4641,6 +4641,7 @@
                 }
                 this.params.filters = [];
                 this.params.filters2 = '';
+                 this.params.selectedExchange = [];
                 this.params.sort = ["market_cap", "desc"];
                 if (refresh_flag) {
                     this.isBusy = true;

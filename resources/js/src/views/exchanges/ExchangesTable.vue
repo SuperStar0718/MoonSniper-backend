@@ -10,7 +10,7 @@
                         <div>
                             <a :href="data.item.trade_url" target="blank_" style="color:white !important">
                             <div class="">
-                                <div style="padding-top:3px">${{ data.value }}
+                                <div style="padding-top:3px">{{ data.value }}
                                 </div>
                             </div>
                         </a>
