@@ -52,7 +52,13 @@ class Coingecko extends Controller
         if ($input_array["filters2"] != "") {
             $query->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%" . $input_array["filters2"] . "%");
         }
-       
+        if ($input_array["selectedExchange"] && count($input_array["selectedExchange"])>0 ) {
+            $seList = [];
+            foreach ($input_array["selectedExchange"] as $key => $value) {
+                $seList[] = $value['exchangeid'];
+            }
+            $query->whereIn('coins.coin_id',$seList);
+        }
          $query->select('*')
             ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol');
             if (intval($input_array["favoritesMode"]) == 1) {

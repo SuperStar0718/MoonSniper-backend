@@ -219,25 +219,24 @@
                     <b-col cols="12" md="4" xl="2">
                         <div class="d-flex jusctify-content-between float-right">
 
-                            <div >
-                                <b-button  v-if="favoritised"  style="padding:5px; color:white;"  
+                            <div>
+                                <b-button v-if="favoritised" style="padding:5px; color:white;"
                                     v-ripple.400="'rgba(255, 255, 255,1)'" title="My Favorites" variant="flat-success"
                                     class="btn-icon mr-1">
-                                    <i
-                                            class="fa-solid fa-star" style="font-size:20px; color:#fc6" @click="disableFavorites()"
-                                           ></i>
-                                           
-                                        
+                                    <i class="fa-solid fa-star" style="font-size:20px; color:#fc6"
+                                        @click="disableFavorites()"></i>
+
+
                                 </b-button>
-                                <b-button   v-if="!favoritised" style="padding:5px; color:white;"  
+                                <b-button v-if="!favoritised" style="padding:5px; color:white;"
                                     v-ripple.400="'rgba(255, 255, 255,1)'" title="My Favorites" variant="flat-success"
                                     class="btn-icon mr-1">
 
-                                        <i  class="fa-regular fa-star " style="font-size:20px" 
-                                             @click="enableFavorites()"></i>
+                                    <i class="fa-regular fa-star " style="font-size:20px"
+                                        @click="enableFavorites()"></i>
                                 </b-button>
                             </div>
-                            <div v-b-modal.modal-filters>
+                            <div @click="openFilterModal">
                                 <b-button style="padding:5px; color:white;" :class="{'bg-danger text-danger':filtered}"
                                     v-ripple.400="'rgba(255, 255, 255,1)'" title="Filter" variant="flat-success"
                                     class="btn-icon mr-1">
@@ -777,8 +776,9 @@
                 <b-overlay :show="isBusy" rounded="sm">
 
                     <b-table :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill "
-                        :show-empty="showEmpty" :busy="isBusy" :empty-text="emptyText"  class="b-table-1" @row-clicked="detailsModel($event)"
-                        style=" white-space: nowrap;" responsive :items="items.data" :fields="visibleFields">
+                        :show-empty="showEmpty" :busy="isBusy" :empty-text="emptyText" class="b-table-1"
+                        @row-clicked="detailsModel($event)" style=" white-space: nowrap;" responsive :items="items.data"
+                        :fields="visibleFields">
                         <template #table-busy>
 
                         </template>
@@ -1290,7 +1290,7 @@
 
                         </b-dropdown>
                     </b-col>
-                  
+
                     <b-col class="m-auto">
                         <b-button v-ripple.400="'rgb(31, 103, 211)'" style="    margin-right: 10px !important;"
                             v-if="selectedPreset && checkDefault(selectedPreset)" @click="savePresetFilter"
@@ -1308,9 +1308,11 @@
                 </b-row>
                 <b-row>
                     <b-col v-if="params.favoritesMode == 1" class="d-flex">
-                        <p >Note: You are filtering your favorite coins only! </p> <p class="text-primary cursor-pointer ml-1" @click="exitfavorites">Click here to filter all coins</p>
-    
-                        </b-col>
+                        <p>Note: You are filtering your favorite coins only! </p>
+                        <p class="text-primary cursor-pointer ml-1" @click="exitfavorites">Click here to filter all
+                            coins</p>
+
+                    </b-col>
                 </b-row>
                 <hr style="padding:0px; margin:0px 0px 10px 0px;">
                 <div class="accordion" role="tablist">
@@ -1564,6 +1566,24 @@
                                             <div class="d-flex">
                                                 <b-form-select id="" v-model="filterKey.coin_category"
                                                     :options="categories" />
+                                            </div>
+                                        </b-form-group>
+                                    </div>
+                                    <div class="mb-2">
+                                        <b-form-group label="Exchange" label-for="">
+                                            <div class="d-flex Exchange-select">
+                                                <multiselect v-model="params.selectedExchange"
+                                                    :options="ExchangeOptions" :limit="3" :multiple="true"
+                                                    :close-on-select="false" :clear-on-select="false"
+                                                    :preserve-search="true" placeholder="Select exchange coin" label="name"
+                                                    track-by="name">
+                                                    <template slot="selection"
+                                                        slot-scope="{ values, search, isOpen }"><span
+                                                            class="multiselect__single"
+                                                            v-if="values.length &amp;&amp; !isOpen">{{ params.selectedExchange.length }}
+                                                            options selected</span></template>
+                                                </multiselect>
+
                                             </div>
                                         </b-form-group>
                                     </div>
@@ -2946,9 +2966,11 @@
                                     </vue-apex-charts>
                                 </div>
                             </app-collapse-item>
-                            <app-collapse-item class="w-100"
-                                title="Exchanges">
-                              <ExchangesTable :token="activeData"/>
+                            <app-collapse-item class="w-100" title="Exchanges">
+                                <ExchangesTable :token="activeData" />
+                                <div>
+                                    Hello
+                                </div>
                             </app-collapse-item>
 
 
@@ -2968,11 +2990,8 @@
             title="" style="background: transparent !important;">
             <div style="border-radius:10px;">
                 <template>
-                    <div style="font-family: 'Poppins-Light'; padding:20px; margin-top:10px;
-                            font-style: normal;
-                            font-weight: 500;
-                            font-size: 20px;
-                            line-height: 14px;">
+                    <div
+                        style="font-family: 'Poppins-Light'; padding:20px; margin-top:10px; font-style: normal; font-weight: 500;  font-size: 20px; line-height: 14px;">
                         Filter Preset Name:
                     </div>
 
@@ -3055,7 +3074,7 @@
     import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
     import VueSlider from 'vue-slider-component'
     import store from '@/store/index'
-
+    import Multiselect from 'vue-multiselect'
     import {
         getUserData
     } from '@/auth/utils'
@@ -3108,11 +3127,13 @@
             VBPopover,
             Cleave,
             flatPickr,
-            ExchangesTable
+            ExchangesTable,
+            Multiselect
 
         },
         data() {
             return {
+                ExchangeOptions: [],
                 oBarMinValue: 10,
                 oBarMaxValue: 90,
                 NumberFormaVal: {
@@ -3132,7 +3153,7 @@
                 sortKey: '',
                 sortBy: '',
                 isBusy: true,
-                showEmpty:false,
+                showEmpty: false,
                 emptyText: 'There are no records to show',
                 locked: false,
                 value_2: [0, 50],
@@ -3142,6 +3163,7 @@
                     sort: ["market_cap_rank", "asc"],
                     api_mode: 1,
                     favoritesMode: 0,
+                 selectedExchange: [],
                     perpage: 50,
                 },
                 perPageOptions: [5, 6, 8, 9, 10, 20, 30, 50, 100],
@@ -3739,14 +3761,29 @@
 
                 notifiedType: '',
                 detailsModalLoaded: false,
-                favoritised:false,
-                emptyTextVal:'There are no records to show',
-                exchangesLoaded:true,
-                exchangeData: [
-                { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-                { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-                { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-                { age: 38, first_name: 'Jami', last_name: 'Carney' }
+                favoritised: false,
+                emptyTextVal: 'There are no records to show',
+                exchangesLoaded: true,
+                exchangeData: [{
+                        age: 40,
+                        first_name: 'Dickerson',
+                        last_name: 'Macdonald'
+                    },
+                    {
+                        age: 21,
+                        first_name: 'Larsen',
+                        last_name: 'Shaw'
+                    },
+                    {
+                        age: 89,
+                        first_name: 'Geneva',
+                        last_name: 'Wilson'
+                    },
+                    {
+                        age: 38,
+                        first_name: 'Jami',
+                        last_name: 'Carney'
+                    }
                 ]
                 //end
 
@@ -3775,7 +3812,7 @@
             say(message) {
                 alert("Please connect your metamask")
             },
-            manageFavorite(index, coin_id, symbol,name) {
+            manageFavorite(index, coin_id, symbol, name) {
 
                 axios.post('api/manage-favorites', {
                     coin_id: coin_id,
@@ -3787,35 +3824,34 @@
                         this.$toast({
                             component: ToastificationContent,
                             props: {
-                                title: ''+name+' added to your favorite list',
+                                title: '' + name + ' added to your favorite list',
                                 icon: 'CheckCircleIcon',
                                 variant: 'success',
                             },
-                     })
+                        })
 
                     } else if (res.data.status == true && res.data.favorite == 'removed') {
-                    
+
                         let i = this.favorites.findIndex((item) => {
                             return item.coinid == coin_id && item.coin_symbol == symbol
                         })
                         if (i > -1) {
-                          
+
                             this.favorites.splice(i, 1);
-                           if(this.params.favoritesMode == 1)
-                           {
-                            let j = this.items.data.findIndex((item) => {
+                            if (this.params.favoritesMode == 1) {
+                                let j = this.items.data.findIndex((item) => {
                                     return item.coin_id == coin_id && item.symbol == symbol
                                 })
                                 this.items.data.splice(j, 1);
-                           }
+                            }
                             this.$toast({
-                            component: ToastificationContent,
-                            props: {
-                                title: ''+name+' removed from your favorites list',
-                                icon: 'CheckCircleIcon',
-                                variant: 'success',
-                            },
-                     })
+                                component: ToastificationContent,
+                                props: {
+                                    title: '' + name + ' removed from your favorites list',
+                                    icon: 'CheckCircleIcon',
+                                    variant: 'success',
+                                },
+                            })
                         }
 
                     }
@@ -3823,20 +3859,17 @@
                 })
 
             },
-            enableFavorites()
-            {
+            enableFavorites() {
                 this.params.favoritesMode = 1;
                 this.loadCoins(false);
                 this.favoritised = true;
             },
-            disableFavorites()
-            {
+            disableFavorites() {
                 this.params.favoritesMode = 0;
                 this.loadCoins(false);
                 this.favoritised = false;
             },
-            exitfavorites()
-            {
+            exitfavorites() {
                 this.params.favoritesMode = 0;
                 this.favoritised = false;
                 this.loadCoins(true);
@@ -3859,8 +3892,7 @@
             //     filterKey.max_market_cap = e.maxValue;
             // },
             loadCoins(filterModalClose) {
-                if(!filterModalClose)
-                {
+                if (!filterModalClose) {
                     this.$bvModal.hide('modal-filters');
                 }
                 this.isBusy = true;
@@ -3871,18 +3903,16 @@
                         this.items = res.data.tokens;
                         this.favorites = res.data.favorites;
                         this.loadedData = true;
-                        setTimeout(() => {
-                        }, 2000);
+                        setTimeout(() => {}, 2000);
                     }
                     this.isBusy = false;
 
                     this.showEmpty = true;
 
-                    if(this.params.favoritesMode == 1)
-                    {
-                        this.emptyText ="There are no favorites in your list yet";
-                    }else{
-                        this.emptyText ="There are no records to show";
+                    if (this.params.favoritesMode == 1) {
+                        this.emptyText = "There are no favorites in your list yet";
+                    } else {
+                        this.emptyText = "There are no records to show";
                     }
                     this.isBusy = false;
 
@@ -3925,6 +3955,7 @@
                 axios.post('api/get_preset_filters').then(res => {
                     if (res) {
                         this.presetFilters = res.data;
+                     
 
                     }
 
@@ -4625,6 +4656,15 @@
                 }
                 this.filtered = false;
             },
+            openFilterModal() {
+                axios.post('api/load-exchange-coins').then(res => {
+                    if (res.data.status) {
+                        this.ExchangeOptions = res.data.exchanges;
+                    }
+                })
+
+                this.$bvModal.show('modal-filters');
+            },
             async detailsModel(item) {
                 this.detailsModalLoaded = false;
                 this.$bvModal.show('modal-details');
@@ -4913,9 +4953,8 @@
                             if (oldVal < coinFetched[element]) {
                                 thisScope.items.data[index].flash = 1;
                                 setTimeout(() => {
-                                    if(thisScope.items.data[index])
-                                    {
-                                    thisScope.items.data[index].flash = 3;
+                                    if (thisScope.items.data[index]) {
+                                        thisScope.items.data[index].flash = 3;
 
                                     }
                                 }, 1000);
@@ -4923,9 +4962,8 @@
                             } else {
                                 thisScope.items.data[index].flash = 2;
                                 setTimeout(() => {
-                                     if(thisScope.items.data[index])
-                                    {
-                                    thisScope.items.data[index].flash = 3;
+                                    if (thisScope.items.data[index]) {
+                                        thisScope.items.data[index].flash = 3;
                                     }
                                 }, 1000);
                             }
@@ -4988,7 +5026,8 @@
                 let presetPayload = {
                     filters: this.params.filters,
                     filters2: this.params.filters2,
-                    filter_name: this.presetName
+                    filter_name: this.presetName,
+                    selectedExchange:this.params.selectedExchange
                 }
 
                 axios.post('api/create_preset_filter', JSON.stringify(presetPayload)).then(res => {
@@ -5023,7 +5062,8 @@
                 let presetPayload = {
                     filters: this.params.filters,
                     filters2: this.params.filters2,
-                    filter_name: this.presetName
+                    filter_name: this.presetName,
+                    selectedExchange:this.params.selectedExchange
                 }
 
                 axios.post('api/create_preset_filter', JSON.stringify(presetPayload)).then(res => {
@@ -5101,6 +5141,13 @@
                 let index = this.presetFilters.map(item => item.id).indexOf(this.selectedPreset);
                 if (index >= 0) {
                     var preset_json = JSON.parse(this.presetFilters[index].filter_json);
+                    if(preset_json.selectedExchange != null)
+                    {
+                         this.params.selectedExchange = preset_json.selectedExchange
+                    }else{
+                        this.params.selectedExchange = [];
+                    } 
+
                     preset_json.filters.forEach(element => {
                         let keyval = element[2];
                         if (keyval == "") {
@@ -6254,9 +6301,46 @@
         max-width: 300px;
     }
 
+    .Exchange-select .multiselect__tags {
+        border-radius: 1.5rem;
+        border: 1px solid #e8e8e8;
+        background: #fff;
+    }
+
+    .dark-layout .multiselect:focus {
+        outline: #7367f0;
+    }
+
+    .dark-layout .Exchange-select .multiselect__tags {
+        border: 1px solid #3b4253;
+        background: #18181A;
+    }
+
+    .dark-layout .Exchange-select .multiselect__input,
+    .dark-layout .multiselect__single {
+        background: #18181A !important;
+        color: #fff;
+    }
+
+    .dark-layout .Exchange-select .multiselect__option--selected.multiselect__option--highlight {
+        background: #7367f0 !important;
+        color: #18181A;
+    }
+    [dir] .multiselect__option--highlight {
+        background: #7367f0 !important;
+    }
+    [dir] .multiselect__option--highlight:after {
+        content: attr(data-select);
+        background: #7367f0 !important;
+        color: white;
+      }
+      [dir] .multiselect__tag {
+        background: #7367f0 !important;
+      }
 </style>
 
 <style lang="scss">
     @import '~@resources/scss/vue/libs/vue-flatpicker.scss';
 
 </style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

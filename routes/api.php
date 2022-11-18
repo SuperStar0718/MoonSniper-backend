@@ -84,6 +84,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     //Exchanges
 
     Route::post('/exchanges-by-token', [ExchangesController::class, 'exchangesByToken'])->name('/exchanges-by-token');
+    Route::post('/load-exchange-coins', [ExchangesController::class, 'ExchangeCoins'])->name('/load-exchange-coins');
 
 
 });

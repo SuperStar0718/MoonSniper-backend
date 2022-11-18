@@ -334,7 +334,48 @@ class UnlockingController extends Controller
     }
     public function dataFromUrl($c)
     {   
-      
+        $client = new CoinGeckoClient(false);
+        $tickers = Exchange::where('flag', 0)->limit(10)->get();
+        if (count($tickers) > 0) {
+            foreach ($tickers as $key => $value) {
+                    $tickerData = $client->exchanges()->getExchange('acsi_finance');
+                    $deleteDickers = ExchangeTicker::where('exchange_id','acsi_finance')->delete();
+                    foreach ($tickerData['tickers'] as $key => $valueTicker) {
+                        if ($valueTicker['trust_score'] == 'green') {
+                            $exchnageTicker = new ExchangeTicker();
+                            //Check
+                            $variable = [];
+                            $str = $valueTicker['trade_url'];
+                            if ($str) {
+                                $str = stripslashes($str);
+                                 $variable = $ar = explode("?",$str);
+                            }else{
+                                $variable[0] = '';
+                            }
+                            $exchnageTicker->exchange = $value->name;
+                            $exchnageTicker->exchange_id = 'acsi_finance';
+                            $exchnageTicker->base = $valueTicker['base'];
+                            $exchnageTicker->target = $valueTicker['target'];
+                            $exchnageTicker->volume = $valueTicker['volume'];
+                            $exchnageTicker->trade_url = $variable[0];
+                            $exchnageTicker->save();
+
+                        }
+
+                    }
+               
+                DB::table('exchanges')
+                ->where('exchangeid', $value->exchangeid)
+                ->update(['flag' => 1]);
+    
+            }
+         
+        } else {
+            DB::table('exchanges')
+                ->update(['flag' => 0]);
+        }
+        ExchangeDataJob::dispatch()->onQueue('moon-sniper-worker');
+        return 1;
         $client = new CoinGeckoClient(false);
         //Check
         $exchanges =  $client->exchanges()->getList();

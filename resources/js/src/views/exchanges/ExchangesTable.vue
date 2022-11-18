@@ -3,8 +3,8 @@
         <b-overlay :show="!exchangesLoaded" rounded="sm">
             <div >
                 <div>
-                    <b-table :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill "
-                    :show-empty="true"  class="b-table-1" :fields="fields"
+                    <b-table :no-border-collapse="true" tbody-tr-class="cursor-pointer  box rounded-pill"
+                    :show-empty="true"  class="b-table-2" :fields="fields"
                     style=" white-space: nowrap;" responsive   :items="exchangeData.data">
                     <template #cell(exchange)="data">
                         <div>
@@ -135,5 +135,11 @@
 <style>
 .ExchangeTableDiv .b-overlay {
     height: 100px !important;
+}
+[dir=ltr] .card .table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 48rem;
+}
+[dir=ltr] .card .table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 71.357rem;
 }
 </style>

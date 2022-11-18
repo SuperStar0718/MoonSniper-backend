@@ -56,5 +56,6 @@ const data ={
     'min_six_months_unlock_percent_of_tokens' : null,
     'max_six_months_unlock_percent_of_tokens' : null,
     'six_months_unlock_size' : null,
+   
 }
 export default data;
