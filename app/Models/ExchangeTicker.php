@@ -15,5 +15,6 @@ class ExchangeTicker extends Model
         'target',
         'volume',
         'trade_url',
+        'pair',
     ];
 }

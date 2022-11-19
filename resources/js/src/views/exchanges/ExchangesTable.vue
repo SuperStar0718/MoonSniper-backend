@@ -26,6 +26,15 @@
                            
                         </div>
                     </template>
+                    <template #cell(pair)="data">
+                        <div>
+                                <div class="">
+                                    <div style="padding-top:3px">{{ data.item.base}}/{{ data.item.target}}
+                                    </div>
+                                </div>
+                           
+                        </div>
+                    </template>
                    
                 </b-table>
                   </div>
@@ -99,7 +108,7 @@
             loadExchanges() {
                 this.exchangesLoaded= false;
                 this.isBusy = true;
-                axios.post('api/exchanges-by-token?token='+this.token.coin_id+'&page=' + this.pageNumber).then(res => {
+                axios.post('api/exchanges-by-token?token='+this.token.symbol+'&page=' + this.pageNumber).then(res => {
                     if (res.data.status == true) {
                         this.exchangeData = res.data.exchanges;
                         this.exchangesLoaded= true;
@@ -134,7 +143,7 @@
 </script>
 <style>
 .ExchangeTableDiv .b-overlay {
-    height: 100px !important;
+    /*height: 100px !important;*/
 }
 [dir=ltr] .card .table tbody tr:last-child td:first-child {
     border-bottom-left-radius: 48rem;

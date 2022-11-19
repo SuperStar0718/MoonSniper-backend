@@ -20,8 +20,9 @@ return new class extends Migration
             $table->foreign('exchange_id')->references('exchangeid')->on('exchanges')->onUpdate('cascade')->onDelete('cascade');
             $table->string('base')->nullable();
             $table->string('target')->nullable();
-            $table->string('volume')->nullable();
-            $table->string('trade_url')->nullable();
+            $table->decimal('volume',25,10)->nullable();
+            $table->longText('trade_url')->nullable();
+           
             $table->timestamps();
         });
     }
