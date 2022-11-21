@@ -3898,7 +3898,6 @@
                 axios.post('api/get_coins?page=' + this.Cpagpage, JSON.stringify(this.params)).then(res => {
                     if (res.data.status) {
                         if (res.data.tokens.data) {
-                            console.log(res.data.tokens);
                             this.items = res.data.tokens;
                             this.favorites = res.data.favorites;
                             this.loadedCoinData = true;
@@ -3960,8 +3959,6 @@
                
             },
             loadPresetFilters() {
-                this.isBusy = true;
-                this.fagLoad = true;
                 axios.post('api/get_preset_filters').then(res => {
                     if (res) {
                         this.presetFilters = res.data;
@@ -3971,9 +3968,7 @@
 
 
                 })
-                setTimeout(() => {
-                    this.isBusy = false;
-                }, 1000);
+              
             },
             getPlatformTags(val) {
                 var tags = "";
