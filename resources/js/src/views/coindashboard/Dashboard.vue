@@ -3161,7 +3161,7 @@
                     api_mode: 1,
                     favoritesMode: 0,
                     selectedExchange: [],
-                    perpage: 200,
+                    perpage: 50,
                 },
                 perPageOptions: [5, 6, 8, 9, 10, 20, 30, 50, 100],
                 fag: {
