@@ -3902,6 +3902,7 @@
                             this.items = res.data.tokens;
                             this.favorites = res.data.favorites;
                             this.loadedCoinData = true;
+                            this.isBusy = false;
                         }
 
                         this.showEmpty = true;
@@ -3922,18 +3923,16 @@
                         } else {
                             this.emptyText = "There are no records to show";
                         }
+                         this.isBusy = false;
 
                     }
-                    setTimeout(() => {
-                        this.isBusy = false;
-                    }, 2000);
+                  
 
 
                 })
 
             },
             loadFag() {
-                this.isBusy = true;
                 this.fagLoad = true;
                 axios.post('api/get_fag').then(res => {
                     if (res.data) {
@@ -3958,9 +3957,7 @@
 
 
                 })
-                setTimeout(() => {
-                    this.isBusy = false;
-                }, 1000);
+               
             },
             loadPresetFilters() {
                 this.isBusy = true;
