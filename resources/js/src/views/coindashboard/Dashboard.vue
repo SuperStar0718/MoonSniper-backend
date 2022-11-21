@@ -67,9 +67,9 @@
             <!-- graph -->
             <b-row class="FGCharts" style="">
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_greed">
-                    <div class="mx-auto w-75 text-center">
-                        <h5 class="w-75 mx-auto margin16_b feerTitle">Fear and Greed</h5>
-                        <VueSvgGauge width="60%" class="w-75 mx-auto" :start-angle="-90" :end-angle="90"
+                    <div class="mx-auto bmeter-w text-center">
+                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">Fear and Greed</h5>
+                        <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
                             :max="50"
                             :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
@@ -100,9 +100,9 @@
                     </div>
                 </b-col>
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_nft">
-                    <div class="mx-auto w-75 text-center">
-                        <h5 class="w-75 mx-auto margin16_b feerTitle">NFT Barometer</h5>
-                        <VueSvgGauge width="60%" class="w-75 mx-auto" :start-angle="-90" :end-angle="90"
+                    <div class="mx-auto bmeter-w text-center">
+                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">NFT Barometer</h5>
+                        <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
                             :max="50"
                             :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
@@ -134,9 +134,9 @@
                     </div>
                 </b-col>
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_btc_in_out">
-                    <div class="mx-auto w-75 text-center">
-                        <h5 class="w-75 mx-auto margin16_b feerTitle">BTC in/outflow</h5>
-                        <VueSvgGauge width="60%" class="w-75 mx-auto" :start-angle="-90" :end-angle="90"
+                    <div class="mx-auto bmeter-w text-center">
+                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">BTC in/outflow</h5>
+                        <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
                             :max="50"
                             :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
@@ -167,9 +167,9 @@
                     </div>
                 </b-col>
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_btc_alt">
-                    <div class="mx-auto w-75 text-center">
-                        <h5 class="w-75 mx-auto margin16_b feerTitle">BTC Outflow</h5>
-                        <VueSvgGauge width="60%" class="w-75 mx-auto" :start-angle="-90" :end-angle="90"
+                    <div class="mx-auto bmeter-w text-center">
+                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">BTC Outflow</h5>
+                        <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
                             :max="50"
                             :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'},  { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
@@ -777,18 +777,15 @@
 
                     <b-table :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill "
                         :show-empty="showEmpty" :busy="isBusy" :empty-text="emptyText" class="b-table-1"
-                        @row-clicked="detailsModel($event)" style=" white-space: nowrap;" responsive :items="items.data"
-                        :fields="visibleFields">
+                        :class="{'fullscreen':marketIndicators}" @row-clicked="detailsModel($event)"
+                        style=" white-space: nowrap;" responsive :items="items.data" :fields="visibleFields">
                         <template #table-busy>
-
+                            <!-- <div class="text-center text-success my-2">
+                              <b-spinner class="align-middle"></b-spinner>
+                              <strong>Loading...</strong>
+                            </div> -->
                         </template>
-                        <!-- <template #table-colgroup="scope">
-                            <col
-                              v-for="field in scope.fields"
-                              :key="field.key"
-                              :style="{ width: field.key === 'empty'?'-' : '250px' }"
-                            > <col>
-                          </template> -->
+
                         <template #empty="scope">
                             <h4>{{ scope.emptyText }}</h4>
                         </template>
@@ -859,12 +856,14 @@
                                     <div style="" class="my-auto">
                                         <b-avatar class="text-center mr-1" :src="data.item.image" />
                                     </div>
-                                    <div class="" v-b-tooltip.hover.bottom="data.value">
+                                    <div class="">
 
                                         <div class="text-nowrap text-truncate"
+                                            :title="data.value.length>10?data.value:''"
                                             style="float: left; max-width: 100px; font-weight: 600;">
                                             <b>{{ data.value }}</b>
                                         </div>
+
                                         <br />
                                         <div class="text-nowrap text-truncate text-left"
                                             style="float: left; max-width: 100px; width: 100px;  opacity: 0.8;">
@@ -1087,7 +1086,7 @@
 
                         <template #cell(current_price)="data">
                             <div v-if="data.value" class="text-center m-auto"
-                                :class="{ 'redFlash1': data.item.price_change_percentage_24h < 0,'greenFlash1': data.item.price_change_percentage_24h >= 0 ,'greenFlash':data.item.flash == 1,'redFlash ':data.item.flash ==2,'whiteFlash':data.item.flash ==3  }"
+                                :class="{'greenFlash':data.item.flash == 1,'redFlash ':data.item.flash ==2,'whiteFlash':data.item.flash ==3  }"
                                 style="width: 100px;">
                                 ${{priceConversation(data.value)}}</div>
                         </template>
@@ -1575,8 +1574,8 @@
                                                 <multiselect v-model="params.selectedExchange"
                                                     :options="ExchangeOptions" :limit="3" :multiple="true"
                                                     :close-on-select="false" :clear-on-select="false"
-                                                    :preserve-search="true" placeholder="Select exchange coin" label="name"
-                                                    track-by="name">
+                                                    :preserve-search="true" placeholder="Select exchange coin"
+                                                    label="name" track-by="name">
                                                     <template slot="selection"
                                                         slot-scope="{ values, search, isOpen }"><span
                                                             class="multiselect__single"
@@ -1855,8 +1854,8 @@
 
                 </div>
             </template>
-            <div class="d-flex justify-content-between max-block"
-                style="margin-top:50px; margin-bottom:50px; margin-left: 88px; margin-right: 88px;">
+            <div class="d-flex justify-content-between max-block filterButtons"
+                style="margin-top:50px; margin-bottom:50px;">
                 <b-button class="darkWhiteBackground darkBlackText rounded-lg text-[16px]" size="md"
                     v-b-modal.modal-preset-create v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary">
                     Add new preset
@@ -1928,7 +1927,7 @@
                                         :class="{'ml-[30px]':activeData.name && activeData.name.length > 8}">
                                         <div class="d-flex">
                                             <span class=""
-                                                :class="{'redFlash1': activeData.price_change_percentage_24h < 0,'greenFlash1': activeData.price_change_percentage_24h >= 0 ,'greenFlash':activeData.flash == 1,'redFlash':activeData.flash ==2,'whiteFlash':activeData.flash ==3}"
+                                                :class="{'greenFlash':activeData.flash == 1,'redFlash':activeData.flash ==2,'whiteFlash':activeData.flash ==3}"
                                                 style="font-family: 'Poppins-Light'; font-style: normal;font-weight: 400; font-size: 20px;"
                                                 v-if="activeData.current_price && activeData.current_price>= 0">${{ roundData(activeData.current_price) }}
                                             </span>
@@ -2213,7 +2212,7 @@
                                                             style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">{{ activeData.total_supply_percent }}
                                                             %</span> </div>
                                                 </div>
-                                                <div class="float-left">
+                                                <div class="float-left price_prediction">
                                                     <button class="fs-6 "
                                                         style="border-radius: 10px; font-size: 12px; font-weight: 400; font-family: 'Poppins-Light'; font-style: normal; padding:6px 11px;">Price
                                                         Prediction</button>
@@ -2968,7 +2967,7 @@
                             </app-collapse-item>
                             <app-collapse-item class="w-100" title="Exchanges">
                                 <ExchangesTable :token="activeData" />
-                               
+
                             </app-collapse-item>
 
 
@@ -3141,7 +3140,7 @@
                 stickyHeader: true,
                 true: false,
                 loaded: false,
-                loadedData: false,
+                loadedCoinData: false,
                 fields: fieldsData,
                 items: [],
                 favorites: [],
@@ -3161,8 +3160,8 @@
                     sort: ["market_cap_rank", "asc"],
                     api_mode: 1,
                     favoritesMode: 0,
-                 selectedExchange: [],
-                    perpage: 50,
+                    selectedExchange: [],
+                    perpage: 200,
                 },
                 perPageOptions: [5, 6, 8, 9, 10, 20, 30, 50, 100],
                 fag: {
@@ -3895,24 +3894,40 @@
                 }
                 this.isBusy = true;
                 this.showEmpty = false;
-                this.loadedData = false;
+                this.loadedCoinData = false;
                 axios.post('api/get_coins?page=' + this.Cpagpage, JSON.stringify(this.params)).then(res => {
-                    if (res.data.tokens.data) {
-                        this.items = res.data.tokens;
-                        this.favorites = res.data.favorites;
-                        this.loadedData = true;
-                        setTimeout(() => {}, 2000);
-                    }
-                    this.isBusy = false;
+                    if (res.data.status) {
+                        if (res.data.tokens.data) {
+                            console.log(res.data.tokens);
+                            this.items = res.data.tokens;
+                            this.favorites = res.data.favorites;
+                            this.loadedCoinData = true;
+                        }
 
-                    this.showEmpty = true;
+                        this.showEmpty = true;
 
-                    if (this.params.favoritesMode == 1) {
-                        this.emptyText = "There are no favorites in your list yet";
+                        if (this.params.favoritesMode == 1) {
+                            this.emptyText = "There are no favorites in your list yet";
+                        } else {
+                            this.emptyText = "There are no records to show";
+                        }
                     } else {
-                        this.emptyText = "There are no records to show";
+                        this.items.data = [];
+                        this.loadedCoinData = true;
+
+                        this.showEmpty = true;
+
+                        if (this.params.favoritesMode == 1) {
+                            this.emptyText = "There are no favorites in your list yet";
+                        } else {
+                            this.emptyText = "There are no records to show";
+                        }
+
                     }
-                    this.isBusy = false;
+                    setTimeout(() => {
+                        this.isBusy = false;
+                    }, 2000);
+
 
                 })
 
@@ -3953,7 +3968,7 @@
                 axios.post('api/get_preset_filters').then(res => {
                     if (res) {
                         this.presetFilters = res.data;
-                     
+
 
                     }
 
@@ -4641,7 +4656,7 @@
                 }
                 this.params.filters = [];
                 this.params.filters2 = '';
-                 this.params.selectedExchange = [];
+                this.params.selectedExchange = [];
                 this.params.sort = ["market_cap", "desc"];
                 if (refresh_flag) {
                     this.isBusy = true;
@@ -5026,7 +5041,7 @@
                     filters: this.params.filters,
                     filters2: this.params.filters2,
                     filter_name: this.presetName,
-                    selectedExchange:this.params.selectedExchange
+                    selectedExchange: this.params.selectedExchange
                 }
 
                 axios.post('api/create_preset_filter', JSON.stringify(presetPayload)).then(res => {
@@ -5062,7 +5077,7 @@
                     filters: this.params.filters,
                     filters2: this.params.filters2,
                     filter_name: this.presetName,
-                    selectedExchange:this.params.selectedExchange
+                    selectedExchange: this.params.selectedExchange
                 }
 
                 axios.post('api/create_preset_filter', JSON.stringify(presetPayload)).then(res => {
@@ -5140,12 +5155,11 @@
                 let index = this.presetFilters.map(item => item.id).indexOf(this.selectedPreset);
                 if (index >= 0) {
                     var preset_json = JSON.parse(this.presetFilters[index].filter_json);
-                    if(preset_json.selectedExchange != null)
-                    {
-                         this.params.selectedExchange = preset_json.selectedExchange
-                    }else{
+                    if (preset_json.selectedExchange != null) {
+                        this.params.selectedExchange = preset_json.selectedExchange
+                    } else {
                         this.params.selectedExchange = [];
-                    } 
+                    }
 
                     preset_json.filters.forEach(element => {
                         let keyval = element[2];
@@ -5377,6 +5391,13 @@
 
         },
         computed: {
+            marketIndicators() {
+                if (this.mi_fear_greed || this.mi_fear_nft || this.mi_fear_btc_in_out || this.mi_fear_btc_alt) {
+                    return false;
+                }else{
+                    return true;
+                }
+            },
             visibleFields() {
                 if (this.params.api_mode == 1) {
                     return this.fields.filter(field => {
@@ -5555,8 +5576,8 @@
                     this.loadCoins(false)
                 }
             },
-            'loadedData': function (n, o) {
-                if (this.loadedData == true) {
+            'loadedCoinData': function (n, o) {
+                if (this.loadedCoinData == true) {
 
                     this.liveCoinFetch();
                 }
@@ -5623,6 +5644,12 @@
     #dashboard .b-table-1 {
         overflow-y: auto !important;
         max-height: 56vh;
+
+    }
+
+    #dashboard .b-table-1.fullscreen {
+        overflow-y: auto !important;
+        max-height: 71vh;
 
     }
 
@@ -5863,6 +5890,10 @@
         box-shadow: inset 1px 2px 1px 0px rgb(82, 243, 109);
     }
 
+
+    .AppExtentionMode table {
+        border-spacing: 0 4px !important;
+    }
 
     table {
         border-collapse: separate;
@@ -6210,12 +6241,33 @@
     .AppExtentionMode #dashboard .b-table-1 {
         overflow-y: auto !important;
         margin: 0;
-        max-height: 48vh;
+        max-height: 50vh;
+
+    }
+    .AppExtentionMode #dashboard .b-table-1.fullscreen {
+        overflow-y: auto !important;
+        margin: 0;
+        max-height: 67vh;
 
     }
 
+
     .AppExtentionMode .cardBack {
         padding: 1px 16px !important;
+    }
+
+    .AppExtentionMode .price_prediction {
+        width: 200px;
+    }
+
+    .filterButtons {
+        margin: 50px 88px;
+    }
+
+    @media only screen and (max-width: 992px) {
+        .filterButtons {
+            margin: 50px 39px;
+        }
     }
 
     .cardBack {
@@ -6325,17 +6377,33 @@
         background: #7367f0 !important;
         color: #18181A;
     }
+
     [dir] .multiselect__option--highlight {
         background: #7367f0 !important;
     }
+
     [dir] .multiselect__option--highlight:after {
         content: attr(data-select);
         background: #7367f0 !important;
         color: white;
-      }
-      [dir] .multiselect__tag {
+    }
+
+    [dir] .multiselect__tag {
         background: #7367f0 !important;
-      }
+    }
+
+    body.AppExtentionMode {
+        line-height: 1.2;
+    }
+
+    .bmeter-w {
+        width: 75%
+    }
+
+    .AppExtentionMode .bmeter-w {
+        width: 100%
+    }
+
 </style>
 
 <style lang="scss">

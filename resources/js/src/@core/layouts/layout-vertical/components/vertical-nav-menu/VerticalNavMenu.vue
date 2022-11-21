@@ -1,5 +1,5 @@
 <template>
-  <div class="position-fixed nav-background" style="width:330px;height:100%;z-index:3;">
+  <div class="position-fixed nav-background" style="height:100%;z-index:3;">
 
   <div
     class="main-menu menu-fixed menu-accordion menu-shadow"

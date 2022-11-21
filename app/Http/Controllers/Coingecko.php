@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
 use App\Models\Dashboard;
+use App\Models\ExchangeTicker;
 use App\Models\TradingVolumeHistory;
 use App\Models\User;
 use App\Models\UserColumn;
@@ -57,7 +58,9 @@ class Coingecko extends Controller
             foreach ($input_array["selectedExchange"] as $key => $value) {
                 $seList[] = $value['exchangeid'];
             }
-            $query->whereIn('coins.coin_id',$seList);
+             $baseSymbol = CoinsData::whereIn('coin_id',$seList)->pluck('symbol');
+             $exchangesByBase = ExchangeTicker::whereIn('base',$baseSymbol)->distinct()->pluck('exchange_id');
+            $query->whereIn('coins.coin_id',$exchangesByBase);
         }
          $query->select('*')
             ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol');
@@ -104,7 +107,7 @@ class Coingecko extends Controller
 
             }
         }
-        return response()->json(['tokens' => $data, 'favorites' => $favorites]);
+        return response()->json(['status'=>true,'tokens' => $data, 'favorites' => $favorites]);
         echo json_encode($data);
 
     }
