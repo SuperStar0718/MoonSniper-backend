@@ -74,7 +74,7 @@ class GetCryptorankRIOJob implements ShouldQueue
 
 
         //push to DB:
-        Try {
+        try {
             CoinsData::massUpdate(
                 values: $newCoinsArray,
                 uniqueBy: 'coin_id'

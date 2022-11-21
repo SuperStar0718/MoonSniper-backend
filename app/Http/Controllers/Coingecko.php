@@ -58,9 +58,8 @@ class Coingecko extends Controller
             foreach ($input_array["selectedExchange"] as $key => $value) {
                 $seList[] = $value['exchangeid'];
             }
-             $baseSymbol = CoinsData::whereIn('coin_id',$seList)->pluck('symbol');
-             $exchangesByBase = ExchangeTicker::whereIn('base',$baseSymbol)->distinct()->pluck('exchange_id');
-            $query->whereIn('coins.coin_id',$exchangesByBase);
+            $BaseByExchange = ExchangeTicker::whereIn('exchange_id',$seList)->distinct()->pluck('base');
+            $query->whereIn('coins.symbol',$BaseByExchange);
         }
          $query->select('*')
             ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol');

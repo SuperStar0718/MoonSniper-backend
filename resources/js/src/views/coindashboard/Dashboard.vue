@@ -6389,11 +6389,11 @@
     }
 
     .bmeter-w {
-        width: 75%
+        width: 75%;
     }
 
     .AppExtentionMode .bmeter-w {
-        width: 100%
+        width: 100% !important;
     }
 
 </style>
