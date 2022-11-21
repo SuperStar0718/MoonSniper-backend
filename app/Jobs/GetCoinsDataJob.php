@@ -161,7 +161,7 @@ class GetCoinsDataJob implements ShouldQueue
         //first add all needed new items to db:
         $this->tryPushingToDB($newCoinsArray);
 
-        try {
+        Try {
             CoinsData::massUpdate(
                 values: $updateCoinsArray,
                 uniqueBy: 'coin_id'

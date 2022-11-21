@@ -169,7 +169,7 @@ class GetLunarCrushDataJob implements ShouldQueue
             }
         }
 
-        try {
+        Try {
             CoinsData::massUpdate(
                 values: $new_coins_array,
                 uniqueBy: 'symbol'
