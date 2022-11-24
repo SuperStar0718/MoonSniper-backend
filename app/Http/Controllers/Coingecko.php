@@ -125,7 +125,7 @@ class Coingecko extends Controller
         $symbol = $input_array["symbol"];
 
         $data = TradingVolumeHistory::where("coin_id", $coin_id)->where("symbol", $symbol)->get();
-        echo json_encode($data);
+        return json_encode($data);
     }
     public function updateVisibleFields(Request $request)
     {

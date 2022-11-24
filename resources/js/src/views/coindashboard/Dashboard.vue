@@ -1153,16 +1153,17 @@
                             </div>
                         </template>
                         <template #cell(social_mentions_change)="data">
-                            <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    @click="sortingCols(data.value)" style="">{{ twenty4HConversation(data.value) }}
-                                    <span v-if="data.value"> %</span></span>
-                                <span v-else-if="data.value!=null" class="text-danger"
-                                    style="">{{ twenty4HConversation(data.value) }}
-                                    <span v-if="data.value"> %</span></span></div>
+                            <div v-if="data.value">
+                                <span v-if="data.value>= 0 " class="text-success-green" style="">{{ twenty4HConversation(data.value) }}
+                                    <span > %</span></span>
+                                <span v-else-if="data.value!=null" class="text-danger" style="">{{ twenty4HConversation(data.value) }}
+                                    <span> %</span></span>
+                            </div>
+                            <div></div>
                         </template>
                         <template #cell(social_engagement_change)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    @click="sortingCols(data.value)" style="">{{ twenty4HConversation(data.value) }}
+                                    style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span>
                                 <span v-else-if="data.value!=null" class="text-danger"
                                     style="">{{ twenty4HConversation(data.value) }}
@@ -1170,7 +1171,7 @@
                         </template>
                         <template #cell(average_sentiment_change)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    @click="sortingCols(data.value)" style="">{{ twenty4HConversation(data.value) }}
+                                    style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span>
                                 <span v-else-if="data.value!=null" class="text-danger"
                                     style="">{{ twenty4HConversation(data.value) }}
@@ -1178,7 +1179,7 @@
                         </template>
                         <template #cell(average_sentiment)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class=""
-                                    @click="sortingCols(data.value)" style="">{{ twenty4HConversation(data.value) }}
+                                    style="">{{ twenty4HConversation(data.value) }}
                                 </span>
                             </div>
                         </template>
@@ -2441,7 +2442,7 @@
 
                                             <div class="radius_gradient cursor-pointer" style="width:110px;"
                                                 v-b-tooltip.hover.bottom="'Social Engagement'"
-                                                v-if="activeData.social_engagement">
+                                                v-if="activeData.social_engagement_change">
                                                 <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                                     style="max-width:200px;">
                                                     <div class="justify-content-center text-nowrap socialText2 "
@@ -4257,7 +4258,10 @@
                             }
                         }
                     }
-
+                    if(checkval == 0)
+                    {
+                        return 0;
+                    }
                     return new Intl.NumberFormat('en-US', {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 15,

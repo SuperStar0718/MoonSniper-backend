@@ -23,4 +23,14 @@ class ExchangesController extends Controller
         
         return response()->json(['status'=>true, 'exchanges'=>$exchanges]);
     }
+
+    public function CoinDetailsForCoinGecko(Request $request)
+    {
+        $query = DB::table('coins');
+
+        $data = $query->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')->where('coins.symbol',$request->coin)->first();
+       return response()->json(['status'=>true,'coin'=>$data]);
+    // ->where('coin_data.market_cap','>',0)
+
+    }
 }
