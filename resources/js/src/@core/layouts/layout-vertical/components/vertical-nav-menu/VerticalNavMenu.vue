@@ -58,9 +58,9 @@
           </li>
 
           <!--Dark Toggle button-->
-          <li class="nav-item nav-toggle m-auto rounded-pill" style="margin-right:0 !important; padding-right: 1rem !important; padding-left: 1rem; border: 3px black solid;">
+          <!-- <li class="nav-item nav-toggle m-auto rounded-pill" style="margin-right:0 !important; padding-right: 1rem !important; padding-left: 1rem; border: 3px black solid;">
             <dark-Toggler class="d- d-lg-block" />
-          </li>
+          </li> -->
         </ul>
       </slot>
     </div>

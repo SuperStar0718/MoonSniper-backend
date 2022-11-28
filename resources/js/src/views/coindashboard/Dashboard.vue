@@ -2,10 +2,11 @@
     <div id="dashboard">
         <b-overlay :show="fagLoad" rounded="sm" class="pt-1 DashboardHeader" style="">
             <div class="mx-auto topbarDiv" style="">
-                <b-row class="HeaderTopBar">
-                    <b-col md="3" sm="6" xl="3">
-                        <div class="d-flex mx-auto justify-content-center">
-                            <div class="greyLetter" style="margin-right:8px;">MC:</div>
+                <div class="HeaderTopBar">
+                    <div class="d-flex topHeader-flexing">
+                        <div class="d-flex mx-auto justify-content-center Topbar-items"
+                         style=""  >
+                            <div class="greyLetter" style="margin-right:4px;">MC:</div>
                             <div class="whiteLetter" v-if="loaded">{{fag.data.market_cap?fag.data.market_cap:'-'}}</div>
                             <div style="" class="TriangleIcon">
                                 <i class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
@@ -14,11 +15,10 @@
                                 4.4%
                             </div>
                         </div>
-
-                    </b-col>
-                    <b-col md="3" sm="6" xl="3" class="mb-1">
-                        <div class="d-flex mx-auto justify-content-center">
-                            <div class="greyLetter" style="margin-right:8px;">Vol(24):</div>
+                        <div class="d-flex mx-auto justify-content-center Topbar-items"
+                        style=""
+                        >
+                            <div class="greyLetter" style="margin-right:4px;">Vol(24):</div>
                             <div class="whiteLetter" v-if="loaded"> {{fag.data.vol_24h?fag.data.vol_24h:'-'}}</div>
                             <div style="" class="TriangleIcon">
                                 <i class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
@@ -27,22 +27,18 @@
                                 5%
                             </div>
                         </div>
-
-                    </b-col>
-                    <b-col md="3" sm="6" xl="3" class="mb-1">
-                        <div class="d-flex mx-auto justify-content-center">
-                            <div class="greyLetter Dominance" style="margin-right:8px;">Dominance:</div>
+                        <div class="d-flex mx-auto justify-content-center Topbar-items"
+                        style=""
+                        >
+                            <div class="greyLetter Dominance" style="margin-right:4px;">Dominance:</div>
                             <div class="d-flex justify-content-between whiteLetter" v-if="loaded">
-                                <div style="margin:0 8px 0 8px"> {{fag.data.btc_dom}}
+                                <div style="margin:0 4px 0 0px; white-space:nowrap;"> {{fag.data.btc_dom}}
                                 </div>
-                                <div style="margin:0 8px 0 8px">{{fag.data.eth_dom}}</div>
+                                <div style="margin:0 4px 0 0px; white-space:nowrap;">{{fag.data.eth_dom}}</div>
                             </div>
 
                         </div>
-
-                    </b-col>
-                    <b-col md="3" sm="6" xl="3" class="mb-1">
-                        <div class="d-flex mx-auto justify-content-center">
+                        <div class="d-flex mx-auto justify-content-center " style="padding-left:5px">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
                                 class="bi bi-fuel-pump-diesel" viewBox="0 0 16 16">
                                 <path
@@ -50,19 +46,17 @@
                                 <path
                                     d="M3 0a2 2 0 0 0-2 2v13H.5a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1H11v-4a1 1 0 0 1 1 1v.5a1.5 1.5 0 0 0 3 0V8h.5a.5.5 0 0 0 .5-.5V4.324c0-.616 0-1.426-.294-2.081a1.969 1.969 0 0 0-.794-.907C14.534 1.111 14.064 1 13.5 1a.5.5 0 0 0 0 1c.436 0 .716.086.9.195a.97.97 0 0 1 .394.458c.147.328.19.746.201 1.222H13.5a.5.5 0 0 0-.5.5V7.5a.5.5 0 0 0 .5.5h.5v4.5a.5.5 0 0 1-1 0V12a2 2 0 0 0-2-2V2a2 2 0 0 0-2-2H3Zm7 2v13H2V2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1Z" />
                             </svg>
-                            <div class="greyLetter" style="margin-right:8px; margin-left:8px;">ETH Gas:</div>
+                            <div class="greyLetter" style="margin-right:8px; margin-left:4px;">ETH Gas:</div>
                             <div class="d-flex justify-content-between">
-                                <div style="margin:0 8px 0 8px" class="whiteLetter" v-if="loaded">
+                                <div style="margin:0 8px 0 4px" class="whiteLetter" v-if="loaded">
                                     {{fag.data.eth_gas?fag.data.eth_gas:'-'}}
                                 </div>
 
                             </div>
 
                         </div>
-
-                    </b-col>
-
-                </b-row>
+                    </div>
+                </div>
             </div>
             <!-- graph -->
             <b-row class="FGCharts" style="">
@@ -1154,9 +1148,11 @@
                         </template>
                         <template #cell(social_mentions_change)="data">
                             <div v-if="data.value">
-                                <span v-if="data.value>= 0 " class="text-success-green" style="">{{ twenty4HConversation(data.value) }}
-                                    <span > %</span></span>
-                                <span v-else-if="data.value!=null" class="text-danger" style="">{{ twenty4HConversation(data.value) }}
+                                <span v-if="data.value>= 0 " class="text-success-green"
+                                    style="">{{ twenty4HConversation(data.value) }}
+                                    <span> %</span></span>
+                                <span v-else-if="data.value!=null" class="text-danger"
+                                    style="">{{ twenty4HConversation(data.value) }}
                                     <span> %</span></span>
                             </div>
                             <div></div>
@@ -1193,7 +1189,8 @@
                 </b-overlay>
 
             </div>
-            <div class="mx-2 mb-2">
+            <div class="p
+            ">
                 <b-row>
                     <b-col cols="12" sm="6"
                         class="d-flex align-items-center justify-content-center justify-content-sm-start">
@@ -1918,7 +1915,7 @@
                                                         font-size: 14px; position: relative;
                                                         font-style: normal; opacity: 0.7;
                                                         font-weight: 300; margin-right: 40px !important;">
-                                            <div style="position: absolute; top:-29px; left:4px">
+                                            <div class="modal-details-topbar">
                                                 &nbsp; {{activeData.symbol}}
                                             </div>
                                         </span>
@@ -1953,7 +1950,8 @@
                                                 <div style="display: inline; margin:auto;">
                                                     <feather-icon size="20" icon="ChevronDownIcon" />
                                                 </div>
-                                                <span>{{ roundData(activeData.price_change_percentage_24h) }}%</span>
+                                                <span style=" display: inline-flex;
+                                                align-items: center;">{{ roundData(activeData.price_change_percentage_24h) }}%</span>
 
                                             </span>
                                         </div>
@@ -3923,10 +3921,10 @@
                         } else {
                             this.emptyText = "There are no records to show";
                         }
-                         this.isBusy = false;
+                        this.isBusy = false;
 
                     }
-                  
+
 
 
                 })
@@ -3957,7 +3955,7 @@
 
 
                 })
-               
+
             },
             loadPresetFilters() {
                 axios.post('api/get_preset_filters').then(res => {
@@ -3969,7 +3967,7 @@
 
 
                 })
-              
+
             },
             getPlatformTags(val) {
                 var tags = "";
@@ -4258,8 +4256,7 @@
                             }
                         }
                     }
-                    if(checkval == 0)
-                    {
+                    if (checkval == 0) {
                         return 0;
                     }
                     return new Intl.NumberFormat('en-US', {
@@ -4686,8 +4683,19 @@
                 this.vestingDataChart.xaxis.categories = [];
                 this.seven_DaysChartseries[0].data = [];
                 this.vestingDataSerice = [];
-                let sparklines = item.sparkline_in_7d.split("|").map(Number);
-                sparklines = sparklines.slice(0, -1);
+                let sparklines = [];
+                if (item.sparkline_in_7d != null) {
+                    item.sparkline_in_7d = item.sparkline_in_7d.trim();
+                    if (item.sparkline_in_7d.charAt(item.sparkline_in_7d.length - 1) == '|') {
+                        item.sparkline_in_7d = item.sparkline_in_7d.substr(0, item.sparkline_in_7d.length - 1);
+                    }
+                    sparklines = item.sparkline_in_7d.split("|").map(Number);
+
+                    for (let s = 168; s < sparklines.length;) {
+                        sparklines.shift();
+                    }
+                }
+
 
                 for (let i = 0; i < 7; i++) {
                     for (let j = 0; j <= 23; j++) {
@@ -5390,7 +5398,7 @@
             marketIndicators() {
                 if (this.mi_fear_greed || this.mi_fear_nft || this.mi_fear_btc_in_out || this.mi_fear_btc_alt) {
                     return false;
-                }else{
+                } else {
                     return true;
                 }
             },
@@ -5653,8 +5661,20 @@
         height: 60px;
     }
 
+    .AppExtentionMode #dashboard .b-table-1 tbody tr {
+        height: 57px;
+    }
+
+    .AppExtentionMode #dashboard .b-table-1 thead tr {
+        height: 34px;
+    }
+
     #dashboard .b-table-1:hover {
         overflow-x: scroll !important;
+    }
+
+    .AppExtentionMode .searchbar {
+        margin-top: 0.5rem;
     }
 
     #dashboard td {
@@ -5735,7 +5755,12 @@
             display: block !important;
         }
     }
-
+    @media only screen and (max-width: 992px) {
+        .topHeader-flexing
+        {
+            flex-wrap:wrap;
+        }
+    }
     @media only screen and (max-width: 992px) {
         .max-block {
             display: block !important;
@@ -5823,8 +5848,13 @@
         margin: 0 8px 0 8px
     }
 
+
     .margin16_b {
         margin-bottom: 16px;
+    }
+
+    .AppExtentionMode .margin16_b {
+        margin-bottom: 5px;
     }
 
     .feerGreen {
@@ -6175,7 +6205,13 @@
         padding: 0.8rem 1.4rem;
 
     }
+    .AppExtentionMode .Topbar-items{
+                        padding-right: 5px;
+                        padding-left: 5px;
+                        border-right: 2px solid;
 
+                       
+    }
     #modal-details___BV_modal_body_ {
         padding: 0;
     }
@@ -6237,9 +6273,10 @@
     .AppExtentionMode #dashboard .b-table-1 {
         overflow-y: auto !important;
         margin: 0;
-        max-height: 50vh;
+        max-height: 58vh;
 
     }
+
     .AppExtentionMode #dashboard .b-table-1.fullscreen {
         overflow-y: auto !important;
         margin: 0;
@@ -6335,9 +6372,7 @@
         margin-right: 3px;
     }
 
-    .AppExtentionMode .topbarDiv .Dominance {
-        margin-top: 4px !important;
-    }
+
 
 
     .searchbar {
@@ -6399,7 +6434,15 @@
     .AppExtentionMode .bmeter-w {
         width: 100% !important;
     }
-
+    .modal-details-topbar{
+        position: absolute; top:-29px; left:4px;
+    }
+    .AppExtentionMode .modal-details-topbar{
+        position: absolute; top:-22px; left:4px;
+    }
+    .AppExtentionMode .details-modal-container{
+        overflow-x:hidden;
+    }
 </style>
 
 <style lang="scss">
