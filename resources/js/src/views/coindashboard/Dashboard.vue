@@ -5561,8 +5561,8 @@
             this.loadCoins(false);
             this.loadFag();
             this.loadPresetFilters();
-            if (this.$route.query.type == 'extention') {
-                document.body.classList.add('AppExtentionMode')
+            if (this.$route.query.type == 'extension') {
+                document.body.classList.add('AppExtensionMode')
             }
         },
         created() {
@@ -5661,11 +5661,11 @@
         height: 60px;
     }
 
-    .AppExtentionMode #dashboard .b-table-1 tbody tr {
+    .AppExtensionMode #dashboard .b-table-1 tbody tr {
         height: 57px;
     }
 
-    .AppExtentionMode #dashboard .b-table-1 thead tr {
+    .AppExtensionMode #dashboard .b-table-1 thead tr {
         height: 34px;
     }
 
@@ -5673,7 +5673,7 @@
         overflow-x: scroll !important;
     }
 
-    .AppExtentionMode .searchbar {
+    .AppExtensionMode .searchbar {
         margin-top: 0.5rem;
     }
 
@@ -5853,7 +5853,7 @@
         margin-bottom: 16px;
     }
 
-    .AppExtentionMode .margin16_b {
+    .AppExtensionMode .margin16_b {
         margin-bottom: 5px;
     }
 
@@ -5917,7 +5917,7 @@
     }
 
 
-    .AppExtentionMode table {
+    .AppExtensionMode table {
         border-spacing: 0 4px !important;
     }
 
@@ -6205,7 +6205,7 @@
         padding: 0.8rem 1.4rem;
 
     }
-    .AppExtentionMode .Topbar-items{
+    .AppExtensionMode .Topbar-items{
                         padding-right: 5px;
                         padding-left: 5px;
                         border-right: 2px solid;
@@ -6270,14 +6270,14 @@
         padding-right: 0.5rem !important;
     }
 
-    .AppExtentionMode #dashboard .b-table-1 {
+    .AppExtensionMode #dashboard .b-table-1 {
         overflow-y: auto !important;
         margin: 0;
         max-height: 58vh;
 
     }
 
-    .AppExtentionMode #dashboard .b-table-1.fullscreen {
+    .AppExtensionMode #dashboard .b-table-1.fullscreen {
         overflow-y: auto !important;
         margin: 0;
         max-height: 67vh;
@@ -6285,11 +6285,11 @@
     }
 
 
-    .AppExtentionMode .cardBack {
+    .AppExtensionMode .cardBack {
         padding: 1px 16px !important;
     }
 
-    .AppExtentionMode .price_prediction {
+    .AppExtensionMode .price_prediction {
         width: 200px;
     }
 
@@ -6310,7 +6310,7 @@
         border-radius: 30px;
     }
 
-    .AppExtentionMode .DashboardHeader {
+    .AppExtensionMode .DashboardHeader {
         margin-bottom: 10px !important;
     }
 
@@ -6319,7 +6319,7 @@
         margin-bottom: 30px;
     }
 
-    .AppExtentionMode .FGCharts {
+    .AppExtensionMode .FGCharts {
         margin-bottom: 0px !important;
     }
 
@@ -6331,11 +6331,11 @@
         height: 30px;
     }
 
-    .AppExtentionMode .HeaderTopBar {
+    .AppExtensionMode .HeaderTopBar {
         margin-bottom: -2px !important;
     }
 
-    .AppExtentionMode .topbarDiv {
+    .AppExtensionMode .topbarDiv {
         z-index: 999;
         position: absolute;
         top: -23px;
@@ -6346,15 +6346,15 @@
         margin-bottom: 1rem;
     }
 
-    .AppExtentionMode .topbarDiv .greyLetter {
+    .AppExtensionMode .topbarDiv .greyLetter {
         font-size: 12px !important;
     }
 
-    .AppExtentionMode .topbarDiv .whiteLetter {
+    .AppExtensionMode .topbarDiv .whiteLetter {
         font-size: 13px !important;
     }
 
-    .AppExtentionMode .topbarDiv i.bi.bi-triangle-fill {
+    .AppExtensionMode .topbarDiv i.bi.bi-triangle-fill {
         font-size: 10px;
     }
 
@@ -6367,7 +6367,7 @@
         margin-right: 10px;
     }
 
-    .AppExtentionMode .topbarDiv .TriangleIcon {
+    .AppExtensionMode .topbarDiv .TriangleIcon {
         margin-left: 3px;
         margin-right: 3px;
     }
@@ -6423,7 +6423,7 @@
         background: #7367f0 !important;
     }
 
-    body.AppExtentionMode {
+    body.AppExtensionMode {
         line-height: 1.2;
     }
 
@@ -6431,16 +6431,16 @@
         width: 75%;
     }
 
-    .AppExtentionMode .bmeter-w {
+    .AppExtensionMode .bmeter-w {
         width: 100% !important;
     }
     .modal-details-topbar{
         position: absolute; top:-29px; left:4px;
     }
-    .AppExtentionMode .modal-details-topbar{
+    .AppExtensionMode .modal-details-topbar{
         position: absolute; top:-22px; left:4px;
     }
-    .AppExtentionMode .details-modal-container{
+    .AppExtensionMode .details-modal-container{
         overflow-x:hidden;
     }
 </style>

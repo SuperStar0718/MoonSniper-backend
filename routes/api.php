@@ -88,10 +88,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 
 });
-Route::post('/extention-coin-data-coingecko', [ExchangesController::class, 'CoinDetailsForCoinGecko'])->name('/extention-coin-data-coingecko');
-Route::post('/get_trading_volume_history-extention', 'App\Http\Controllers\Coingecko@get_trading_volume_history');
+Route::post('/extension-coin-data-coingecko', [ExchangesController::class, 'CoinDetailsForCoinGecko'])->name('/extension-coin-data-coingecko');
+Route::post('/get_trading_volume_history-extension', 'App\Http\Controllers\Coingecko@get_trading_volume_history');
 
-Route::post('/exchanges-by-token-extention', [ExchangesController::class, 'exchangesByToken'])->name('/exchanges-by-token-extention');
+Route::post('/exchanges-by-token-extension', [ExchangesController::class, 'exchangesByToken'])->name('/exchanges-by-token-extension');
 //ChromeApp functions:
 //public Routes
 Route::post('/register', [AuthController::class, 'register']);
