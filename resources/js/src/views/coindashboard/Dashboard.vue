@@ -853,7 +853,7 @@
                                     <div class="">
 
                                         <div class="text-nowrap text-truncate"
-                                            :title="data.value.length>10?data.value:''"
+                                            :title="!fields[6].filterColumn?htmlToText(data.item.coin_description):''"
                                             style="float: left; max-width: 100px; font-weight: 600;">
                                             <b>{{ data.value }}</b>
                                         </div>
@@ -867,34 +867,20 @@
 
                                     </div>
 
-                                    <div class="btn-primary my-auto" style="display:inline-block;  float: right; padding: 2px 12px 2px 12px;
+                                    <!-- <div class="btn-primary my-auto" style="display:inline-block;  float: right; padding: 2px 12px 2px 12px;
                                         font-family: 'Poppins'; height: 21px; margin-right: auto;
                                         font-style: normal; border-radius: 16px !important; 
                                         font-weight: 400;
                                         font-size: 11px;">
                                         Buy
-
-                                    </div>
+                                    </div> -->
 
                                 </div>
                             </div>
                         </template>
 
 
-                        <!-- buy button -->
-                        <!-- <template #cell()="scope">
-                                <div style="text-align: center;" class="d-flex justify-content-start">
-                                        <b-button
-                                            v-ripple.400="'rgba(30, 30, 30, 0.15)'"
-                                            variant="outline-dark"
-                                            style="background-color: white; color:black;"
-                                            pill
-                                            >
-                                            Buy
-                                        </b-button>
-                                </div>
-                            </template> -->
-                        <!-- end of button -->
+                      
                         <template #cell(seed_price)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
                                 class="blurry-text">
@@ -5390,6 +5376,17 @@
                         this.fields[38].filterColumn = true;
                     }
                 })
+            },
+            htmlToText(html)
+            {
+                if(html != null)
+                {
+                    let text = '';
+                var parser = new DOMParser();
+                var htmlDoc = parser.parseFromString(html, 'text/html');
+                return text = htmlDoc.body.innerText;
+                }
+                
             }
 
 
