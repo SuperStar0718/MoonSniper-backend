@@ -29,7 +29,14 @@ class ExchangesController extends Controller
         $query = DB::table('coins');
 
         $data = $query->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')->where('coins.symbol',$request->coin)->first();
-       return response()->json(['status'=>true,'coin'=>$data]);
+        if($data)
+        {
+            return response()->json(['status'=>true,'coin'=>$data]);
+
+        }else{
+         return response()->json(['status'=>false]);
+
+        }
     // ->where('coin_data.market_cap','>',0)
 
     }
