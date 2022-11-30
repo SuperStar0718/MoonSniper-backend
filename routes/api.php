@@ -85,6 +85,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('/exchanges-by-token', [ExchangesController::class, 'exchangesByToken'])->name('/exchanges-by-token');
     Route::post('/load-exchange-coins', [ExchangesController::class, 'ExchangeCoins'])->name('/load-exchange-coins');
+    // ETh Price
+   
+    Route::get('/load-ethgas-values', [Coingecko::class, 'ethGasPrice'])->name('/load-ethgas-values');
 
 
 });

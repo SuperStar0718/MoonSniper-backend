@@ -47,9 +47,9 @@
                                     d="M3 0a2 2 0 0 0-2 2v13H.5a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1H11v-4a1 1 0 0 1 1 1v.5a1.5 1.5 0 0 0 3 0V8h.5a.5.5 0 0 0 .5-.5V4.324c0-.616 0-1.426-.294-2.081a1.969 1.969 0 0 0-.794-.907C14.534 1.111 14.064 1 13.5 1a.5.5 0 0 0 0 1c.436 0 .716.086.9.195a.97.97 0 0 1 .394.458c.147.328.19.746.201 1.222H13.5a.5.5 0 0 0-.5.5V7.5a.5.5 0 0 0 .5.5h.5v4.5a.5.5 0 0 1-1 0V12a2 2 0 0 0-2-2V2a2 2 0 0 0-2-2H3Zm7 2v13H2V2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1Z" />
                             </svg>
                             <div class="greyLetter" style="margin-right:8px; margin-left:4px;">ETH Gas:</div>
-                            <div class="d-flex justify-content-between">
-                                <div style="margin:0 8px 0 4px" class="whiteLetter" v-if="loaded">
-                                    {{fag.data.eth_gas?fag.data.eth_gas:'-'}}
+                            <div class="d-flex justify-content-between cursor-pointer">
+                                <div style="margin:0 8px 0 4px" class="whiteLetter"  v-b-tooltip.hover.bottom.html="ethGasPriceTooltip" v-if="loaded">
+                                    {{ethGas.ProposeGasPrice}}
                                 </div>
 
                             </div>
@@ -1919,15 +1919,13 @@
                                         <div class="d-flex m-auto">
                                             <span
                                                 v-if="activeData.price_change_percentage_24h && activeData.price_change_percentage_24h>= 0"
-                                                class="btn-success d-flex  marginx1"
-                                                style="font-family: 'Poppins-Light';
-                                                        font-style: normal;
-                                                        font-weight: 300;
-                                                        font-size: 12px; margin-top: 2px;border-radius:5px; padding:0px 5px">
+                                                style="font-size:12px; font-weight: 300; margin-top: 2px;border-radius:5px; padding:0px 5px"
+                                                class="btn-success d-flex marginx1">
                                                 <div style="display: inline; margin:auto;">
                                                     <feather-icon size="20" icon="ChevronUpIcon" />
                                                 </div>
-                                                <span>{{ roundData(activeData.price_change_percentage_24h) }}%</span>
+                                                <span style=" display: inline-flex;
+                                                align-items: center;">{{ roundData(activeData.price_change_percentage_24h) }}%</span>
 
                                             </span>
                                             <span v-else-if="activeData.price_change_percentage_24h"
@@ -3766,7 +3764,12 @@
                         first_name: 'Jami',
                         last_name: 'Carney'
                     }
-                ]
+                ],
+                ethGas : {
+                    SafeGasPrice:null,
+                    ProposeGasPrice :null,
+                    FastGasPrice:null,
+                },
                 //end
 
             }
@@ -5387,6 +5390,50 @@
                 return text = htmlDoc.body.innerText;
                 }
                 
+            },
+            loadEthGasValues()
+            {   
+                axios.
+                get('/api/load-ethgas-values')
+                .then(res=>{
+                    if(res.data.status)
+                    {
+                        this.ethGas.SafeGasPrice = res.data.result.SafeGasPrice;
+                        this.ethGas.ProposeGasPrice = res.data.result.ProposeGasPrice;
+                        this.ethGas.FastGasPrice = res.data.result.FastGasPrice;
+                    }
+                })
+
+            },
+            ethGasPriceTooltip()
+            {
+                let html = '';
+              return  html = `<div>
+                            <div class="d-flex">
+                                <span>
+                                    Fast:
+                                </span>
+                                <span>
+                                    ${this.ethGas.FastGasPrice}
+                                </span>
+                                </div>
+                                <div class="d-flex">
+                                <span>
+                                    Standard:
+                                </span>
+                                <span>
+                                    ${this.ethGas.ProposeGasPrice}
+                                </span>
+                                </div>
+                                <div class="d-flex">
+                                <span>
+                                    Low:
+                                </span>
+                                <span>
+                                    ${this.ethGas.SafeGasPrice}
+                                </span>
+                                </div>
+                        </div>`
             }
 
 
@@ -5551,6 +5598,7 @@
                 this.dir = 'ltr'
                 return this.dir
             },
+          
 
         },
         mounted() {
@@ -5558,6 +5606,7 @@
             this.loadCoins(false);
             this.loadFag();
             this.loadPresetFilters();
+            this.loadEthGasValues();
             if (this.$route.query.type == 'extension') {
                 document.body.classList.add('AppExtensionMode')
             }

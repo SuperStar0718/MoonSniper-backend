@@ -145,6 +145,7 @@ class Coingecko extends Controller
         $columnsObject = json_decode($Columns->columns);
         return response()->json(['status' => true, 'fields' => $columnsObject]);
     }
+    
     public function loadVisibleFileds(Request $request)
     {
         $Columns = UserColumn::where('user_id', '=', Auth::user()->id)->where('mode', '=', $request->mode)->first();
@@ -170,5 +171,21 @@ class Coingecko extends Controller
             return response()->json(['status' => true, 'favorite' => 'added', 'favorites' => $favorites]);
 
         }
+    }
+    public function ethGasPrice()
+    {
+        $url = 'https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=PPC3KTB1AUAKS4UE3M8RFKK8XI1YGXID9K';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, Array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15") );
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $result= curl_exec ($ch);
+        curl_close ($ch);
+        $ethprice = json_decode($result, true);
+        
+        return response()->json($ethprice);
     }
 }

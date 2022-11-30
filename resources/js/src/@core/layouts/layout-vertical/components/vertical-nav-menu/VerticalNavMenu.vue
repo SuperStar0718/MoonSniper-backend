@@ -78,7 +78,7 @@
           {{ userData.fullName || userData.username }}
         </p>
         <p style="font-family: Poppins;margin: 7px;font-style: normal;font-weight: 500;font-size: 17px;">{{ userData.role }}</p>
-        <button onclick="" style="font-family: Poppins; font-size:17px; border-radius: 10px;padding:4px 20px">Upgrade</button>
+        <!-- <button onclick="" style="font-family: Poppins; font-size:17px; border-radius: 10px;padding:4px 20px">Upgrade</button> -->
       </div>
       <div class="float-right w-50 text-right pr-4">
         <b-avatar size="100" :src="userData.avatar" :to="{ name: 'pages-profile'}" variant="light-primary" badge class="badge-minimal" badge-variant="success">
