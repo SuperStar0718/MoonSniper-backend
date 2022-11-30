@@ -28,7 +28,7 @@ class ExchangesController extends Controller
     {
         $query = DB::table('coins');
 
-        $data = $query->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')->where('coins.symbol',$request->coin)->first();
+        $data = $query->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')->orderBy('coin_data.total_volume','DESC')->where('coins.symbol',$request->coin)->first();
         if($data)
         {
             return response()->json(['status'=>true,'coin'=>$data]);
