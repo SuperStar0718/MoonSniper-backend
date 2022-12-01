@@ -230,6 +230,8 @@
                                         @click="enableFavorites()"></i>
                                 </b-button>
                             </div>
+                           
+
                             <div @click="openFilterModal">
                                 <b-button style="padding:5px; color:white;" :class="{'bg-danger text-danger':filtered}"
                                     v-ripple.400="'rgba(255, 255, 255,1)'" title="Filter" variant="flat-success"
@@ -241,14 +243,14 @@
                             <div>
                                 <b-button v-if="!locked" @click="lockedFilter"
                                     style="color:white; padding:5px; width:33px" variant="flat-success"
-                                    title="Unlocking" v-ripple.400="'rgba(255, 255, 255,1)'" class="btn-icon mr-1 ">
+                                    title="Unlocking" v-ripple.400="'rgba(255, 255, 255,1)'" class="btn-icon -1 ">
                                     <feather-icon icon="UnlockIcon" size="20"
                                         class="text-black cursor-pointer darkWhiteText" style="color:#28c76f; " />
 
                                 </b-button>
                                 <b-button v-else @click="lockedFilter" style="color:white; padding:5px; width:33px"
                                     title="All Tokens" variant="flat-success" v-ripple.400="'rgba(255, 255, 255,1)'"
-                                    class="btn-icon mr-1 ">
+                                    class="btn-icon m1 ">
 
                                     <b-img class=" cursor-pointer rounded-full" width="25px" height="25px" fluid
                                         src="/images/static/noun-cryptocurrency-3262833.svg" />
@@ -264,6 +266,7 @@
                                 </b-button>
 
                             </div>
+                            
                             <div class="ml-1" style="padding:5px; color:white;">
 
                                 <b-dropdown size="lg" variant="flat-dark"
@@ -756,7 +759,16 @@
 
                             </div>
 
+                            <div class="maximizeButton">
+                                <b-button   href="/" target="_blank" 
+                                    style="color:white; padding:5px; width:33px" variant="flat-success"
+                                    title="Full screen" v-ripple.400="'rgba(255, 255, 255,1)'" class="btn-icon ml-1 ">
+                                    <feather-icon icon="MaximizeIcon" size="20"
+                                        class="text-black cursor-pointer darkWhiteText" style="color:#28c76f; " />
 
+                                </b-button>
+                               
+                            </div>
                         </div>
                     </b-col>
                 </b-row>
@@ -6489,6 +6501,13 @@
     .AppExtensionMode .details-modal-container{
         overflow-x:hidden;
     }
+    .maximizeButton{
+        display: none;
+    }
+   .AppExtensionMode .maximizeButton{
+        display: block;
+    }
+    
 </style>
 
 <style lang="scss">

@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use DateTime;
-use stdClass;
-use Carbon\Carbon;
-use App\Models\Exchange;
+use App\Http\Controllers\Controller;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
 use App\Models\UnlockingPdf;
-use Illuminate\Http\Request;
-use App\Jobs\ExchangeTickersJob;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Jobs\ExchangeDataJob;
-use Illuminate\Support\Facades\Auth;
-use App\Libraries\CoinGecko\Api\Exchanges;
-use App\Libraries\CoinGecko\CoinGeckoClient;
-use App\Models\ExchangeTicker;
 use App\Notifications\NotifyTokenUnlockNotification;
+use Carbon\Carbon;
+use DateTime;
+use DOMDocument;
+use DOMXPath;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UnlockingController extends Controller
 {
@@ -333,9 +328,35 @@ class UnlockingController extends Controller
         );
     }
     public function dataFromUrl($c)
-    {   
+    {
+        $html = file_get_contents('https://www.coingecko.com/?page=132');
+        $pagination = $this->getBetween($html, '<ul class="pagination">', '</ul>');
+        $docPage = new DOMDocument();
+        $docPage->loadHTML($pagination);
+        $xpath = new DOMXPath($docPage);
+        $query = "//a";
+        $entriesPage = $xpath->query($query);
+       $totalPages =  $entriesPage[count($entriesPage)-2]->textContent;
+       
+        for ($i=1; $i <= $totalPages ; $i++) { 
+            $html = file_get_contents('https://www.coingecko.com/?page='.$i.'');
+            $data = $this->getBetween($html, '<tbody', '</tbody>');
+            $doc = new DOMDocument();
+            $doc->loadHTML($data);
+            $xpath = new DOMXPath($doc);
+            $query = "//i";
+            $entries = $xpath->query($query);
+            $items = array();
+            foreach ($entries as $key => $entry) {
+                $items2 = array();
+                $items2[] = $entry->getAttribute("data-coin-id");
+                $items2[] = $entry->getAttribute("data-coin-slug");
+                $items2[] = $entry->getAttribute("data-coin-symbol");
+                $items[$entry->getAttribute("data-coin-slug")] = $items2;
+            }
+        }
       
-
+        return $items;
     }
 
     public static function getBetween($content, $start, $end)
