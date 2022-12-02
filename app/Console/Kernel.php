@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('coin:scrape_vestintg_data')->everyThirtyMinutes();
         $schedule->command('moon:exchanges')->daily();
         $schedule->command('moon:exchangestickers')->twiceDaily(4,22);
+        $schedule->command('moon:scrapecoinid')->daily();
     }
 
     /**

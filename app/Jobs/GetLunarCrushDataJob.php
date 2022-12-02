@@ -154,7 +154,7 @@ class GetLunarCrushDataJob implements ShouldQueue
                     }
                     $historical_social_mentions = json_encode($decoded_historical_social_mentions);
                 }
-                $new_coins_array = [
+                $new_coins_array[] = [
                     "symbol" => $symbol,
                     "average_sentiment" => $average_sentiment,
                     "social_mentions" => $social_mentions,
@@ -166,7 +166,7 @@ class GetLunarCrushDataJob implements ShouldQueue
                     "historical_social_mentions" => $historical_social_mentions,
                     "historical_social_engagement" => $historical_social_engagement
                 ];
-                 $coins = CoinsData::where('symbol', $symbol)->update( $new_coins_array);
+                //  $coins = CoinsData::where('symbol', $symbol)->update( $new_coins_array);
             }
         }
 

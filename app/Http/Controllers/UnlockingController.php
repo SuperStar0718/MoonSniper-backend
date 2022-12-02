@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use DateTime;
+use DOMXPath;
+use DOMDocument;
+use Carbon\Carbon;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
 use App\Models\UnlockingPdf;
-use App\Notifications\NotifyTokenUnlockNotification;
-use Carbon\Carbon;
-use DateTime;
-use DOMDocument;
-use DOMXPath;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\NotifyTokenUnlockNotification;
 
 class UnlockingController extends Controller
 {
@@ -348,15 +349,27 @@ class UnlockingController extends Controller
             $entries = $xpath->query($query);
             $items = array();
             foreach ($entries as $key => $entry) {
-                $items2 = array();
-                $items2[] = $entry->getAttribute("data-coin-id");
-                $items2[] = $entry->getAttribute("data-coin-slug");
-                $items2[] = $entry->getAttribute("data-coin-symbol");
-                $items[$entry->getAttribute("data-coin-slug")] = $items2;
+                $items2 = array(
+                    'uniqueid'=>$entry->getAttribute("data-coin-id"),
+                    'coin_id'=>$entry->getAttribute("data-coin-slug"),
+                    'symbol'=>$entry->getAttribute("data-coin-symbol"),
+                );
+                $items[] = $items2;
             }
+            try {
+                CoinsData::massUpdate(
+                    values: $items,
+                    uniqueBy: ['symbol'],
+                );
+            }catch (\Exception $exception){
+                Log::info("The Problem here is: ".$exception);
+            }
+
         }
-      
-        return $items;
+
+        
+
+        
     }
 
     public static function getBetween($content, $start, $end)
