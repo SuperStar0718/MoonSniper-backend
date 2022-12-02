@@ -44,7 +44,7 @@ class GetIdForCoinDataJob implements ShouldQueue
         $entriesPage = $xpath->query($query);
         $totalPages =  $entriesPage[count($entriesPage)-2]->textContent;
         for ($j=1; $j <= $totalPages ; $j++) { 
-            $html = file_get_contents('https://www.coingecko.com/?page='.$this->pageno.'');
+            $html = file_get_contents('https://www.coingecko.com/?page='.$j.'');
             $data = $this->getBetween($html, '<tbody', '</tbody>');
             $doc = new DOMDocument();
             $doc->loadHTML($data);
