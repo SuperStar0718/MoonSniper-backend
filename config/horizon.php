@@ -181,7 +181,7 @@ return [
             'maxProcesses' => 3,
             'memory' => 128,
             'tries' => 2,
-            'timeout' => 900,
+            'timeout' => 1600,
             'nice' => 0,
         ],
     ],

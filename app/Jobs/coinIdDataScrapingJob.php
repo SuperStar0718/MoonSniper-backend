@@ -17,15 +17,18 @@ class coinIdDataScrapingJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private $pageno;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($pn)
     {
-       
+        $this->pageno = $pn;
     }
+
    
     /**
      * Execute the job.
@@ -34,17 +37,9 @@ class coinIdDataScrapingJob implements ShouldQueue
      */
     public function handle()
     {
-        $html = file_get_contents('https://www.coingecko.com/?page=132');
-        $pagination = $this->getBetween($html, '<ul class="pagination">', '</ul>');
-        $docPage = new DOMDocument();
-        $docPage->loadHTML($pagination);
-        $xpath = new DOMXPath($docPage);
-        $query = "//a";
-        $entriesPage = $xpath->query($query);
-       $totalPages =  $entriesPage[count($entriesPage)-2]->textContent;
        
-        for ($i=1; $i <= $totalPages ; $i++) { 
-            $html = file_get_contents('https://www.coingecko.com/?page='.$i.'');
+       
+            $html = file_get_contents('https://www.coingecko.com/?page='.$this->pageno.'');
             $data = $this->getBetween($html, '<tbody', '</tbody>');
             $doc = new DOMDocument();
             $doc->loadHTML($data);
@@ -68,7 +63,6 @@ class coinIdDataScrapingJob implements ShouldQueue
             }catch (\Exception $exception){
                 Log::info("The Problem here is: ".$exception);
             }
-        }
       
         return $items;
     }

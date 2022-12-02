@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\coinIdDataScrapingJob;
 use Illuminate\Console\Command;
+use App\Jobs\GetIdForCoinDataJob;
+use App\Jobs\coinIdDataScrapingJob;
 
 class ScrapeCoinId extends Command
 {
@@ -28,7 +29,7 @@ class ScrapeCoinId extends Command
      */
     public function handle()
     {
-        coinIdDataScrapingJob::dispatch()->onQueue('moon-sniper-worker');
+        GetIdForCoinDataJob::dispatch()->onQueue('moon-sniper-worker');
         return Command::SUCCESS;
     }
 }
