@@ -4,8 +4,7 @@
             <div class="mx-auto topbarDiv" style="">
                 <div class="HeaderTopBar">
                     <div class="d-flex topHeader-flexing">
-                        <div class="d-flex mx-auto justify-content-center Topbar-items"
-                         style=""  >
+                        <div class="d-flex mx-auto justify-content-center Topbar-items" style="">
                             <div class="greyLetter" style="margin-right:4px;">MC:</div>
                             <div class="whiteLetter" v-if="loaded">{{fag.data.market_cap?fag.data.market_cap:'-'}}</div>
                             <div style="" class="TriangleIcon">
@@ -15,9 +14,7 @@
                                 4.4%
                             </div>
                         </div>
-                        <div class="d-flex mx-auto justify-content-center Topbar-items"
-                        style=""
-                        >
+                        <div class="d-flex mx-auto justify-content-center Topbar-items" style="">
                             <div class="greyLetter" style="margin-right:4px;">Vol(24):</div>
                             <div class="whiteLetter" v-if="loaded"> {{fag.data.vol_24h?fag.data.vol_24h:'-'}}</div>
                             <div style="" class="TriangleIcon">
@@ -27,9 +24,7 @@
                                 5%
                             </div>
                         </div>
-                        <div class="d-flex mx-auto justify-content-center Topbar-items"
-                        style=""
-                        >
+                        <div class="d-flex mx-auto justify-content-center Topbar-items" style="">
                             <div class="greyLetter Dominance" style="margin-right:4px;">Dominance:</div>
                             <div class="d-flex justify-content-between whiteLetter" v-if="loaded">
                                 <div style="margin:0 4px 0 0px; white-space:nowrap;"> {{fag.data.btc_dom}}
@@ -48,7 +43,8 @@
                             </svg>
                             <div class="greyLetter" style="margin-right:8px; margin-left:4px;">ETH Gas:</div>
                             <div class="d-flex justify-content-between cursor-pointer">
-                                <div style="margin:0 8px 0 4px" class="whiteLetter"  v-b-tooltip.hover.bottom.html="ethGasPriceTooltip" v-if="loaded">
+                                <div style="margin:0 8px 0 4px" class="whiteLetter"
+                                    v-b-tooltip.hover.bottom.html="ethGasPriceTooltip" v-if="loaded">
                                     {{ethGas.ProposeGasPrice}}
                                 </div>
 
@@ -230,7 +226,7 @@
                                         @click="enableFavorites()"></i>
                                 </b-button>
                             </div>
-                           
+
 
                             <div @click="openFilterModal">
                                 <b-button style="padding:5px; color:white;" :class="{'bg-danger text-danger':filtered}"
@@ -266,7 +262,7 @@
                                 </b-button>
 
                             </div>
-                            
+
                             <div class="ml-1" style="padding:5px; color:white;">
 
                                 <b-dropdown size="lg" variant="flat-dark"
@@ -760,14 +756,14 @@
                             </div>
 
                             <div class="maximizeButton">
-                                <b-button   href="/" target="_blank" 
-                                    style="color:white; padding:5px; width:33px" variant="flat-success"
-                                    title="Full screen" v-ripple.400="'rgba(255, 255, 255,1)'" class="btn-icon ml-1 ">
+                                <b-button href="/" target="_blank" style="color:white; padding:5px; width:33px"
+                                    variant="flat-success" title="Full screen" v-ripple.400="'rgba(255, 255, 255,1)'"
+                                    class="btn-icon ml-1 ">
                                     <feather-icon icon="MaximizeIcon" size="20"
                                         class="text-black cursor-pointer darkWhiteText" style="color:#28c76f; " />
 
                                 </b-button>
-                               
+
                             </div>
                         </div>
                     </b-col>
@@ -892,7 +888,7 @@
                         </template>
 
 
-                      
+
                         <template #cell(seed_price)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
                                 class="blurry-text">
@@ -1936,7 +1932,8 @@
                                                 <div style="display: inline; margin:auto;">
                                                     <feather-icon size="20" icon="ChevronUpIcon" />
                                                 </div>
-                                                <span style=" display: inline-flex;
+                                                <span
+                                                    style=" display: inline-flex;
                                                 align-items: center;">{{ roundData(activeData.price_change_percentage_24h) }}%</span>
 
                                             </span>
@@ -1946,7 +1943,8 @@
                                                 <div style="display: inline; margin:auto;">
                                                     <feather-icon size="20" icon="ChevronDownIcon" />
                                                 </div>
-                                                <span style=" display: inline-flex;
+                                                <span
+                                                    style=" display: inline-flex;
                                                 align-items: center;">{{ roundData(activeData.price_change_percentage_24h) }}%</span>
 
                                             </span>
@@ -2127,22 +2125,25 @@
                                                         style="padding-right: 40px !important;">
                                                         <b-tabs content-class="" class="graph_tab my-auto"
                                                             style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
-                                                            <b-tab active title="1D">
+                                                            <b-tab active title="1D" @click="loadHistoryChart('24')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="7D">
+                                                            <b-tab title="7D" @click="loadHistoryChart('7')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="1M">
+                                                            <b-tab title="14" @click="loadHistoryChart('14')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="3M">
+                                                            <b-tab title="3M" @click="loadHistoryChart('30')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="1Y">
+                                                            <b-tab title="3M" @click="loadHistoryChart('90')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="ALL">
+                                                            <b-tab title="1Y" @click="loadHistoryChart('365')">
+                                                                <div></div>
+                                                            </b-tab>
+                                                            <b-tab title="ALL" @click="loadHistoryChart('all')">
                                                                 <div></div>
                                                             </b-tab>
                                                         </b-tabs>
@@ -2151,10 +2152,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <vue-apex-charts class="full" width="100%" :dataLabels="true"
-                                                    type="area" height="290" :options="seven_DaysChart"
-                                                    :series="seven_DaysChartseries">
-                                                </vue-apex-charts>
+                                                <div v-if="loadingHchart">
+                                                    <vue-apex-charts red="apexChart1"  class="full" width="100%" :dataLabels="true"
+                                                        type="area" height="290" :options="seven_DaysChart"
+                                                        :series="seven_DaysChartseries">
+                                                    </vue-apex-charts>
+                                                </div>
+
                                                 <!-- <sparkline width="300" height="150">
                                                         <sparklineLine :data="activeData.sparkline_in_7d"
                                                             :limit="activeData.sparkline_in_7d?activeData.sparkline_in_7d.length:1000"
@@ -3270,9 +3274,10 @@
 
                 },
                 seven_DaysChartseries: [{
-                    name: '7 Days History',
+                    name: '24 Hours History',
                     data: []
-                }],
+                }
+            ],
                 seven_DaysChart: {
 
                     chart: {
@@ -3392,6 +3397,7 @@
                     },
 
                 },
+                loadingHchart: true,
                 vestingDataSerice: [{
                     name: '7 Days History',
                     data: []
@@ -3777,11 +3783,21 @@
                         last_name: 'Carney'
                     }
                 ],
-                ethGas : {
-                    SafeGasPrice:null,
-                    ProposeGasPrice :null,
-                    FastGasPrice:null,
+                ethGas: {
+                    SafeGasPrice: null,
+                    ProposeGasPrice: null,
+                    FastGasPrice: null,
                 },
+
+                price_24h: [],
+                price_7d: [],
+                price_14d: [],
+                price_30d: [],
+                price_90d: [],
+                price_365d: [],
+                price_1y: [],
+                price_all: [],
+
                 //end
 
             }
@@ -4698,21 +4714,22 @@
                 }
 
 
-                for (let i = 0; i < 7; i++) {
-                    for (let j = 0; j <= 23; j++) {
-                        var d = new Date();
-                        d.setUTCHours(0, 0, 0, 0);
-                        d.setDate(d.getDate() - i);
-                        d.setHours(d.getHours() - j);
-                        this.seven_DaysChart.xaxis.categories.unshift(d.getTime());
-                    }
-                }
-                this.seven_DaysChartseries[0].data = sparklines;
+                // for (let i = 0; i < 7; i++) {
+                //     for (let j = 0; j <= 23; j++) {
+                //         var d = new Date();
+                //         d.setUTCHours(0, 0, 0, 0);
+                //         d.setDate(d.getDate() - i);
+                //         d.setHours(d.getHours() - j);
+                //         this.seven_DaysChart.xaxis.categories.unshift(d.getTime());
+                //     }
+                // }
+                // this.seven_DaysChartseries[0].data = sparklines;
                 if (typeof item.contract_address == 'string') {
                     item.contract_address = JSON.parse(item.contract_address);
                 }
 
                 this.activeData = item;
+                this.loadHistoryChart('24');
                 await axios.post('api/check-coin-notified', {
                         symbol: item.symbol,
                     })
@@ -4805,6 +4822,19 @@
                 }
                 this.detailsModalLoaded = true;
 
+            },
+            loadHistoryChart(type) {
+
+                axios.post('api/load-price-chart-by-coin', {
+                        coingickoid: this.activeData.coingeckoid ? this.activeData.coingeckoid : 1,
+                        type: type,
+                    })
+                    .then(res => {
+
+                        if (res.data.status) {
+                            this.seven_DaysChartseries = [{data: res.data.chart}];
+                        }
+                    })
             },
             dateFormat(val) {
                 if (val) {
@@ -5392,35 +5422,30 @@
                     }
                 })
             },
-            htmlToText(html)
-            {
-                if(html != null)
-                {
+            htmlToText(html) {
+                if (html != null) {
                     let text = '';
-                var parser = new DOMParser();
-                var htmlDoc = parser.parseFromString(html, 'text/html');
-                return text = htmlDoc.body.innerText;
+                    var parser = new DOMParser();
+                    var htmlDoc = parser.parseFromString(html, 'text/html');
+                    return text = htmlDoc.body.innerText;
                 }
-                
-            },
-            loadEthGasValues()
-            {   
-                axios.
-                get('/api/load-ethgas-values')
-                .then(res=>{
-                    if(res.data.status)
-                    {
-                        this.ethGas.SafeGasPrice = res.data.result.SafeGasPrice;
-                        this.ethGas.ProposeGasPrice = res.data.result.ProposeGasPrice;
-                        this.ethGas.FastGasPrice = res.data.result.FastGasPrice;
-                    }
-                })
 
             },
-            ethGasPriceTooltip()
-            {
+            loadEthGasValues() {
+                axios.
+                get('/api/load-ethgas-values')
+                    .then(res => {
+                        if (res.data.status) {
+                            this.ethGas.SafeGasPrice = res.data.result.SafeGasPrice;
+                            this.ethGas.ProposeGasPrice = res.data.result.ProposeGasPrice;
+                            this.ethGas.FastGasPrice = res.data.result.FastGasPrice;
+                        }
+                    })
+
+            },
+            ethGasPriceTooltip() {
                 let html = '';
-              return  html = `<div>
+                return html = `<div>
                             <div class="d-flex">
                                 <span>
                                     Fast:
@@ -5610,7 +5635,7 @@
                 this.dir = 'ltr'
                 return this.dir
             },
-          
+
 
         },
         mounted() {
@@ -5813,12 +5838,13 @@
             display: block !important;
         }
     }
+
     @media only screen and (max-width: 992px) {
-        .topHeader-flexing
-        {
-            flex-wrap:wrap;
+        .topHeader-flexing {
+            flex-wrap: wrap;
         }
     }
+
     @media only screen and (max-width: 992px) {
         .max-block {
             display: block !important;
@@ -6263,13 +6289,15 @@
         padding: 0.8rem 1.4rem;
 
     }
-    .AppExtensionMode .Topbar-items{
-                        padding-right: 5px;
-                        padding-left: 5px;
-                        border-right: 2px solid;
 
-                       
+    .AppExtensionMode .Topbar-items {
+        padding-right: 5px;
+        padding-left: 5px;
+        border-right: 2px solid;
+
+
     }
+
     #modal-details___BV_modal_body_ {
         padding: 0;
     }
@@ -6492,22 +6520,31 @@
     .AppExtensionMode .bmeter-w {
         width: 100% !important;
     }
-    .modal-details-topbar{
-        position: absolute; top:-29px; left:4px;
+
+    .modal-details-topbar {
+        position: absolute;
+        top: -29px;
+        left: 4px;
     }
-    .AppExtensionMode .modal-details-topbar{
-        position: absolute; top:-22px; left:4px;
+
+    .AppExtensionMode .modal-details-topbar {
+        position: absolute;
+        top: -22px;
+        left: 4px;
     }
-    .AppExtensionMode .details-modal-container{
-        overflow-x:hidden;
+
+    .AppExtensionMode .details-modal-container {
+        overflow-x: hidden;
     }
-    .maximizeButton{
+
+    .maximizeButton {
         display: none;
     }
-   .AppExtensionMode .maximizeButton{
+
+    .AppExtensionMode .maximizeButton {
         display: block;
     }
-    
+
 </style>
 
 <style lang="scss">

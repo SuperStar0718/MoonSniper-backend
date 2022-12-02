@@ -43,7 +43,6 @@ class Coingecko extends Controller
         $query = DB::table('coins');
         $favorites = UserFavorites::where('user_id', Auth::user()->id)->get();
 
-        
         if (intval($input_array["api_mode"]) == 2) {
             $query->whereRaw("(coin_data.`next_unlock_date` IS NOT NULL OR coin_data.`next_unlock_date_text` IS NOT NULL OR coin_data.`total_locked_percent` IS NOT NULL OR coin_data.`next_unlock_percent` IS NOT NULL OR coin_data.`next_unlock_status` IS NOT NULL OR coin_data.`next_unlock_number_of_tokens` IS NOT NULL OR coin_data.`next_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`next_unlock_size` IS NOT NULL OR coin_data.`first_vc_unlock` IS NOT NULL OR coin_data.`end_vc_unlock` IS NOT NULL OR coin_data.`first_vc_unlock_text` IS NOT NULL OR coin_data.`end_vc_unlock_text` IS NOT NULL OR coin_data.`three_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_size` IS NOT NULL OR coin_data.`six_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_size` IS NOT NULL)");
         }
@@ -53,29 +52,29 @@ class Coingecko extends Controller
         if ($input_array["filters2"] != "") {
             $query->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%" . $input_array["filters2"] . "%");
         }
-        if ($input_array["selectedExchange"] && count($input_array["selectedExchange"])>0 ) {
+        if ($input_array["selectedExchange"] && count($input_array["selectedExchange"]) > 0) {
             $seList = [];
             foreach ($input_array["selectedExchange"] as $key => $value) {
                 $seList[] = $value['exchangeid'];
             }
-            $BaseByExchange = ExchangeTicker::whereIn('exchange_id',$seList)->distinct()->pluck('base');
-            $query->whereIn('coins.symbol',$BaseByExchange);
+            $BaseByExchange = ExchangeTicker::whereIn('exchange_id', $seList)->distinct()->pluck('base');
+            $query->whereIn('coins.symbol', $BaseByExchange);
         }
-         $query->select('*')
+        $query->select('*')
             ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol');
-            if (intval($input_array["favoritesMode"]) == 1) {
-                // $query->where('coins.symbol','!=',null);
-                $query->join('user_favorites', function ($join) {
-                    $join->on('coins.symbol', '=', 'user_favorites.coin_symbol')
-                        ->on('coins.coin_id', '=', 'user_favorites.coinid')->where('user_favorites.user_id',Auth::user()->id);
-                });
-            }
-            $data = $query->whereColumn('coin_data.coin_id', '=', 'coins.coin_id')
+        if (intval($input_array["favoritesMode"]) == 1) {
+            // $query->where('coins.symbol','!=',null);
+            $query->join('user_favorites', function ($join) {
+                $join->on('coins.symbol', '=', 'user_favorites.coin_symbol')
+                    ->on('coins.coin_id', '=', 'user_favorites.coinid')->where('user_favorites.user_id', Auth::user()->id);
+            });
+        }
+        $data = $query->whereColumn('coin_data.coin_id', '=', 'coins.coin_id')
             ->where($input_array["filters"])
         // ->where('coin_data.market_cap','>',0)
             ->whereNotNull('coin_data.coin_id')
             ->paginate($input_array["perpage"] ? $input_array["perpage"] : 6);
-            $favorites = UserFavorites::where('user_id', Auth::user()->id)->get();
+        $favorites = UserFavorites::where('user_id', Auth::user()->id)->get();
 
         // Masking Data for Free Users
         $logged_in_user = Auth::user();
@@ -106,7 +105,7 @@ class Coingecko extends Controller
 
             }
         }
-        return response()->json(['status'=>true,'tokens' => $data, 'favorites' => $favorites]);
+        return response()->json(['status' => true, 'tokens' => $data, 'favorites' => $favorites]);
         echo json_encode($data);
 
     }
@@ -145,7 +144,7 @@ class Coingecko extends Controller
         $columnsObject = json_decode($Columns->columns);
         return response()->json(['status' => true, 'fields' => $columnsObject]);
     }
-    
+
     public function loadVisibleFileds(Request $request)
     {
         $Columns = UserColumn::where('user_id', '=', Auth::user()->id)->where('mode', '=', $request->mode)->first();
@@ -176,16 +175,89 @@ class Coingecko extends Controller
     {
         $url = 'https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=PPC3KTB1AUAKS4UE3M8RFKK8XI1YGXID9K';
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, Array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15") );
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15"));
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $result= curl_exec ($ch);
-        curl_close ($ch);
+        $result = curl_exec($ch);
+        curl_close($ch);
         $ethprice = json_decode($result, true);
-        
+
         return response()->json($ethprice);
+    }
+    public function loadPriceChartByCoin(Request $request)
+    {
+
+        $apisData = array();
+        $typeApi = ['24_hours.json', '7_days.json', '14_days.json', '30_days.json', 'max.json'];
+        $type = $request->type;
+        switch ($type) {
+            case '24':
+                $value = '24_hours.json';
+                break;
+            case '7':
+                $value = '7_days.json';
+                break;
+            case '14':
+                $value = '14_days.json';
+                break;
+            case '30':
+                $value = '30_days.json';
+                break;
+            case '90':
+                $value = '90_days.json';
+                break;
+            case '365':
+                $value = '365_days.json';
+                break;
+            case 'all':
+                $value = 'max.json';
+                break;
+            default:
+                $value = 'max.json';
+                break;
+        }
+        $url = 'https://www.coingecko.com/price_charts/' . $request->coingickoid . '/usd/' . $value . '';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15"));
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        $data = json_decode($result, true);
+        $apisData[$value] = $data;
+        switch ($type) {
+            case '24':
+                $typeData = $apisData['24_hours.json']['stats'];
+                break;
+            case '7':
+                $typeData = '7_days.json';
+                $typeData = $apisData['7_days.json']['stats'];
+                break;
+            case '14':
+                $typeData = $apisData['14_days.json']['stats'];
+                break;
+            case '30':
+                $typeData = $apisData['30_days.json']['stats'];
+                break;
+            case '90':
+                $typeData = $apisData['90_days.json']['stats'];
+                break;
+            case '365':
+                $typeData = $apisData['365_days.json']['stats'];
+                break;
+            case 'all':
+                $typeData = $apisData['max.json']['stats'];
+                break;
+            default:
+                $typeData = $apisData['max.json']['stats'];
+                break;
+        }
+        return response()->json(['status'=>true,'chart'=>$typeData]);
     }
 }
