@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use DOMXPath;
 use DOMDocument;
+use App\Models\CoinsData;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
@@ -33,7 +34,7 @@ class GetIdForCoinDataJob implements ShouldQueue
      */
     public function handle()
     {
-    Log::info("Coin id scraping");
+        ini_set('max_execution_time', 1600);
         $html = file_get_contents('https://www.coingecko.com/?page=1');
         $pagination = $this->getBetween($html, '<ul class="pagination">', '</ul>');
         $docPage = new DOMDocument();
@@ -41,12 +42,32 @@ class GetIdForCoinDataJob implements ShouldQueue
         $xpath = new DOMXPath($docPage);
         $query = "//a";
         $entriesPage = $xpath->query($query);
-       $totalPages =  $entriesPage[count($entriesPage)-2]->textContent;
-       $i=0;
-        for ($i=1; $i <= $totalPages ; $i++) { 
-            $job = (new coinIdDataScrapingJob($i))->onQueue('moon-sniper-worker')->delay(now()->addseconds($i));
-            $i=$i+5;
-            dispatch($job);
+        $totalPages =  $entriesPage[count($entriesPage)-2]->textContent;
+        for ($j=1; $j <= $totalPages ; $j++) { 
+            $html = file_get_contents('https://www.coingecko.com/?page='.$this->pageno.'');
+            $data = $this->getBetween($html, '<tbody', '</tbody>');
+            $doc = new DOMDocument();
+            $doc->loadHTML($data);
+            $xpath = new DOMXPath($doc);
+            $query = "//i";
+            $entries = $xpath->query($query);
+            $items = array();
+            foreach ($entries as $key => $entry) {
+                $items2 = array(
+                    'uniqueid'=>$entry->getAttribute("data-coin-id"),
+                    'coin_id'=>$entry->getAttribute("data-coin-slug"),
+                    'symbol'=>$entry->getAttribute("data-coin-symbol"),
+                );
+                $items[] = $items2;
+            }
+            try {
+                CoinsData::massUpdate(
+                    values: $items,
+                    uniqueBy: 'symbol',
+                );
+            }catch (\Exception $exception){
+                Log::info("CoingeckoID: ".$exception);
+            }
         }
       
     }

@@ -330,6 +330,24 @@ class UnlockingController extends Controller
     }
     public function dataFromUrl($c)
     {
+
+        $html = file_get_contents('https://www.coingecko.com/?page=1');
+        $pagination = $this->getBetween($html, '<ul class="pagination">', '</ul>');
+        $docPage = new DOMDocument();
+        $docPage->loadHTML($pagination);
+        $xpath = new DOMXPath($docPage);
+        $query = "//a";
+        $entriesPage = $xpath->query($query);
+       $totalPages =  $entriesPage[count($entriesPage)-2]->textContent;
+       $i=0;
+       $nA = array();
+        for ($j=1; $j <= $totalPages ; $j++) { 
+            $i=$i+5;
+                $nA[]= $j;
+        }
+        return $nA;
+      
+    
         $html = file_get_contents('https://www.coingecko.com/?page=132');
         $pagination = $this->getBetween($html, '<ul class="pagination">', '</ul>');
         $docPage = new DOMDocument();
