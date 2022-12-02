@@ -368,7 +368,7 @@ class UnlockingController extends Controller
             $items = array();
             foreach ($entries as $key => $entry) {
                 $items2 = array(
-                    'uniqueid'=>$entry->getAttribute("data-coin-id"),
+                    'coingeckoid'=>$entry->getAttribute("data-coin-id"),
                     'coin_id'=>$entry->getAttribute("data-coin-slug"),
                     'symbol'=>$entry->getAttribute("data-coin-symbol"),
                 );

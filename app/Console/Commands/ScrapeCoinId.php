@@ -29,7 +29,7 @@ class ScrapeCoinId extends Command
      */
     public function handle()
     {
-        GetIdForCoinDataJob::dispatch()->onQueue('moon-sniper-worker');
+        GetIdForCoinDataJob::dispatch()->onQueue('moon-sniper-worker-long');
         return Command::SUCCESS;
     }
 }

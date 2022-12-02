@@ -54,20 +54,14 @@ class GetIdForCoinDataJob implements ShouldQueue
             $items = array();
             foreach ($entries as $key => $entry) {
                 $items2 = array(
-                    'uniqueid'=>$entry->getAttribute("data-coin-id"),
-                    'coin_id'=>$entry->getAttribute("data-coin-slug"),
-                    'symbol'=>$entry->getAttribute("data-coin-symbol"),
+                    'coingeckoid'=>$entry->getAttribute("data-coin-id"),
                 );
-                $items[] = $items2;
+                
+                $coinData  = CoinsData::where('symbol',$entry->getAttribute("data-coin-symbol"))->update($items2);
+
+                // $items[] = $items2;
             }
-            try {
-                CoinsData::massUpdate(
-                    values: $items,
-                    uniqueBy: 'symbol',
-                );
-            }catch (\Exception $exception){
-                Log::info("CoingeckoID: ".$exception);
-            }
+           
         }
       
     }
