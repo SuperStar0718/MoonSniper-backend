@@ -5,6 +5,7 @@ namespace App\Jobs;
 use DOMXPath;
 use DOMDocument;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -32,6 +33,7 @@ class GetIdForCoinDataJob implements ShouldQueue
      */
     public function handle()
     {
+    Log::info("Coin id scraping");
         $html = file_get_contents('https://www.coingecko.com/?page=1');
         $pagination = $this->getBetween($html, '<ul class="pagination">', '</ul>');
         $docPage = new DOMDocument();
