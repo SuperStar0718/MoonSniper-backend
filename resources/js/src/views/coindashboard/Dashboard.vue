@@ -4829,6 +4829,7 @@
                 this.$bvModal.show('modal-filters');
             },
             async detailsModel(item) {
+                this.chartType= 'cp';
                 this.detailsModalLoaded = false;
                 this.$bvModal.show('modal-details');
 
@@ -4986,7 +4987,9 @@
             },
             loadPriceHistoryChart(type) {
 
-                axios.post('api/load-price-chart-by-coin', {
+                if(this.activeData.coingeckoid != null)
+                {
+                    axios.post('api/load-price-chart-by-coin', {
                         coingickoid: this.activeData.coingeckoid ? this.activeData.coingeckoid : 1,
                         type: type,
                     })
@@ -5027,9 +5030,12 @@
 
                         }
                     })
-            },
+          
+                }
+                 },
             loadMCHistoryChart(type) {
-
+                if(this.activeData.coingeckoid != null)
+                {
                 axios.post('api/load-mc-chart-by-coin', {
                         coingickoid: this.activeData.coingeckoid ? this.activeData.coingeckoid : 1,
                         type: type,
@@ -5070,7 +5076,9 @@
                             this.chartType= 'mc';
                         }
                     })
-            },
+                    
+                }
+                },
             dateFormat(val) {
                 if (val) {
                     let d = new Date(val)

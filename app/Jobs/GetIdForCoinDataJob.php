@@ -57,7 +57,19 @@ class GetIdForCoinDataJob implements ShouldQueue
                     'coingeckoid'=>$entry->getAttribute("data-coin-id"),
                 );
                 
-                $coinData  = CoinsData::where('symbol',$entry->getAttribute("data-coin-symbol"))->update($items2);
+                try {
+                    $exist = CoinsData::where('symbol',$entry->getAttribute("data-coin-symbol"))->first();
+                    if($exist)
+                    {
+                        $coinData  = CoinsData::where('symbol',$entry->getAttribute("data-coin-symbol"))->update($items2);
+
+                    }else{
+                        $coinData  = CoinsData::where('coin_id',$entry->getAttribute("data-coin-slug"))->update($items2);
+
+                    }
+                } catch (\Throwable $th) {
+                    $coinData  = CoinsData::where('symbol',$entry->getAttribute("data-coin-symbol"))->orWhere('coin_id',$entry->getAttribute("data-coin-slug"))->update($items2);
+                }
 
                 // $items[] = $items2;
             }

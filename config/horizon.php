@@ -84,7 +84,7 @@ return [
     */
 
     'waits' => [
-        'redis:default' => 1800,
+        'redis:default' => 60,
     ],
 
     /*
@@ -178,10 +178,10 @@ return [
             'connection' => 'redis_long',
             'queue' => ['moon-sniper-worker-long'],
             'balance' => 'auto',
-            'maxProcesses' => 3,
+            'maxProcesses' => 4,
             'memory' => 128,
-            'tries' => 2,
-            'timeout' => 900,
+            'tries' => 3,
+            'timeout' => 1600,
             'nice' => 0,
         ],
     ],
