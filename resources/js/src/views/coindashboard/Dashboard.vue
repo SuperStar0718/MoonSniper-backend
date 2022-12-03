@@ -2114,66 +2114,42 @@
                                                     <b-tabs content-class=""
                                                         class="graph_tab graph_tab-1 float-left w-50"
                                                         style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
-                                                        <b-tab active title="Price" @click="chartType='cp'">
+                                                        <b-tab active title="Price" @click="toggleChartType('cp')">
                                                             <div></div>
                                                         </b-tab>
-                                                        <b-tab title="MC" @click="chartType='mc'">
+                                                        <b-tab title="MC" @click="toggleChartType('mc')">
                                                             <div></div>
                                                         </b-tab>
                                                     </b-tabs>
                                                     <div class="d-inline-flex float-right"
                                                         style="padding-right: 40px !important;">
-                                                        <b-tabs v-show="chartType == 'cp'" content-class=""
+                                                        <b-tabs  content-class=""
                                                             class="graph_tab my-auto"
                                                             style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
                                                             <b-tab active title="1D"
-                                                                @click="loadPriceHistoryChart('24')">
+                                                                @click="loadHistoryChart('24')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="7D" @click="loadPriceHistoryChart('7')">
+                                                            <b-tab title="7D" @click="loadHistoryChart('7')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="14D" @click="loadPriceHistoryChart('14')">
+                                                            <b-tab title="14D" @click="loadHistoryChart('14')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="1M" @click="loadPriceHistoryChart('30')">
+                                                            <b-tab title="1M" @click="loadHistoryChart('30')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="3M" @click="loadPriceHistoryChart('90')">
+                                                            <b-tab title="3M" @click="loadHistoryChart('90')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="1Y" @click="loadPriceHistoryChart('365')">
+                                                            <b-tab title="1Y" @click="loadHistoryChart('365')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="ALL" @click="loadPriceHistoryChart('all')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                        </b-tabs>
-                                                        <b-tabs v-show="chartType == 'mc'" content-class=""
-                                                            class="graph_tab my-auto"
-                                                            style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
-                                                            <b-tab active title="1D" @click="loadMCHistoryChart('24')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                            <b-tab title="7D" @click="loadMCHistoryChart('7')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                            <b-tab title="14D" @click="loadMCHistoryChart('14')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                            <b-tab title="1M" @click="loadMCHistoryChart('30')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                            <b-tab title="3M" @click="loadMCHistoryChart('90')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                            <b-tab title="1Y" @click="loadMCHistoryChart('365')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                            <b-tab title="ALL" @click="loadMCHistoryChart('all')">
+                                                            <b-tab title="ALL" @click="loadHistoryChart('all')">
                                                                 <div></div>
                                                             </b-tab>
                                                         </b-tabs>
+                                                      
                                                         <div style="width:20px">
                                                             <feather-icon size='12' icon='CalendarIcon' />
                                                         </div>
@@ -3559,6 +3535,7 @@
 
                 },
                 chartType: 'cp',
+                intervalChat: '24',
                 loadingHchart: true,
                 vestingDataSerice: [{
                     name: '7 Days History',
@@ -4987,6 +4964,26 @@
                 this.detailsModalLoaded = true;
 
             },
+            toggleChartType(type)
+            {
+                if(type == 'cp')
+                {
+                    this.loadPriceHistoryChart(this.intervalChat)
+                }else{
+                    this.loadMCHistoryChart(this.intervalChat)
+                }
+
+            },
+            loadHistoryChart(int)
+            {
+                this.intervalChat = int;
+                if(this.chartType == 'cp')
+                {
+                    this.loadPriceHistoryChart(this.intervalChat)
+                }else{
+                    this.loadMCHistoryChart(this.intervalChat)
+                }
+            },
             loadPriceHistoryChart(type) {
 
                 axios.post('api/load-price-chart-by-coin', {
@@ -5026,6 +5023,8 @@
                                 name: name,
                                 data: res.data.chart
                             }];
+                         this.chartType= 'cp';
+
                         }
                     })
             },
@@ -5068,6 +5067,7 @@
                                 name: name,
                                 data: res.data.chart
                             }];
+                            this.chartType= 'mc';
                         }
                     })
             },
