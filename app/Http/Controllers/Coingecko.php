@@ -260,4 +260,77 @@ class Coingecko extends Controller
         }
         return response()->json(['status'=>true,'chart'=>$typeData]);
     }
+    public function loadMcChartByCoin(Request $request)
+    {
+
+        $apisData = array();
+        $typeApi = ['24_hours.json', '7_days.json', '14_days.json', '30_days.json', 'max.json'];
+        $type = $request->type;
+        switch ($type) {
+            case '24':
+                $value = '24_hours.json';
+                break;
+            case '7':
+                $value = '7_days.json';
+                break;
+            case '14':
+                $value = '14_days.json';
+                break;
+            case '30':
+                $value = '30_days.json';
+                break;
+            case '90':
+                $value = '90_days.json';
+                break;
+            case '365':
+                $value = '365_days.json';
+                break;
+            case 'all':
+                $value = 'max.json';
+                break;
+            default:
+                $value = 'max.json';
+                break;
+        }
+        $url = 'https://www.coingecko.com/market_cap/' . $request->coingickoid . '/usd/' . $value . '';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15"));
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        $data = json_decode($result, true);
+        $apisData[$value] = $data;
+        switch ($type) {
+            case '24':
+                $typeData = $apisData['24_hours.json']['stats'];
+                break;
+            case '7':
+                $typeData = '7_days.json';
+                $typeData = $apisData['7_days.json']['stats'];
+                break;
+            case '14':
+                $typeData = $apisData['14_days.json']['stats'];
+                break;
+            case '30':
+                $typeData = $apisData['30_days.json']['stats'];
+                break;
+            case '90':
+                $typeData = $apisData['90_days.json']['stats'];
+                break;
+            case '365':
+                $typeData = $apisData['365_days.json']['stats'];
+                break;
+            case 'all':
+                $typeData = $apisData['max.json']['stats'];
+                break;
+            default:
+                $typeData = $apisData['max.json']['stats'];
+                break;
+        }
+        return response()->json(['status'=>true,'chart'=>$typeData]);
+    }
 }

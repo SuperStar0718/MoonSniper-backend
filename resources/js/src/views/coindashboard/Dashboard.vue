@@ -2114,36 +2114,63 @@
                                                     <b-tabs content-class=""
                                                         class="graph_tab graph_tab-1 float-left w-50"
                                                         style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
-                                                        <b-tab active title="Price">
+                                                        <b-tab active title="Price" @click="chartType='cp'">
                                                             <div></div>
                                                         </b-tab>
-                                                        <b-tab title="MC">
+                                                        <b-tab title="MC" @click="chartType='mc'">
                                                             <div></div>
                                                         </b-tab>
                                                     </b-tabs>
                                                     <div class="d-inline-flex float-right"
                                                         style="padding-right: 40px !important;">
-                                                        <b-tabs content-class="" class="graph_tab my-auto"
+                                                        <b-tabs v-show="chartType == 'cp'" content-class=""
+                                                            class="graph_tab my-auto"
                                                             style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
-                                                            <b-tab active title="1D" @click="loadHistoryChart('24')">
+                                                            <b-tab active title="1D"
+                                                                @click="loadPriceHistoryChart('24')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="7D" @click="loadHistoryChart('7')">
+                                                            <b-tab title="7D" @click="loadPriceHistoryChart('7')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="14" @click="loadHistoryChart('14')">
+                                                            <b-tab title="14D" @click="loadPriceHistoryChart('14')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="3M" @click="loadHistoryChart('30')">
+                                                            <b-tab title="1M" @click="loadPriceHistoryChart('30')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="3M" @click="loadHistoryChart('90')">
+                                                            <b-tab title="3M" @click="loadPriceHistoryChart('90')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="1Y" @click="loadHistoryChart('365')">
+                                                            <b-tab title="1Y" @click="loadPriceHistoryChart('365')">
                                                                 <div></div>
                                                             </b-tab>
-                                                            <b-tab title="ALL" @click="loadHistoryChart('all')">
+                                                            <b-tab title="ALL" @click="loadPriceHistoryChart('all')">
+                                                                <div></div>
+                                                            </b-tab>
+                                                        </b-tabs>
+                                                        <b-tabs v-show="chartType == 'mc'" content-class=""
+                                                            class="graph_tab my-auto"
+                                                            style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
+                                                            <b-tab active title="1D" @click="loadMCHistoryChart('24')">
+                                                                <div></div>
+                                                            </b-tab>
+                                                            <b-tab title="7D" @click="loadMCHistoryChart('7')">
+                                                                <div></div>
+                                                            </b-tab>
+                                                            <b-tab title="14D" @click="loadMCHistoryChart('14')">
+                                                                <div></div>
+                                                            </b-tab>
+                                                            <b-tab title="1M" @click="loadMCHistoryChart('30')">
+                                                                <div></div>
+                                                            </b-tab>
+                                                            <b-tab title="3M" @click="loadMCHistoryChart('90')">
+                                                                <div></div>
+                                                            </b-tab>
+                                                            <b-tab title="1Y" @click="loadMCHistoryChart('365')">
+                                                                <div></div>
+                                                            </b-tab>
+                                                            <b-tab title="ALL" @click="loadMCHistoryChart('all')">
                                                                 <div></div>
                                                             </b-tab>
                                                         </b-tabs>
@@ -2152,11 +2179,21 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div v-if="loadingHchart">
-                                                    <vue-apex-charts red="apexChart1"  class="full" width="100%" :dataLabels="true"
-                                                        type="area" height="290" :options="seven_DaysChart"
-                                                        :series="seven_DaysChartseries">
-                                                    </vue-apex-charts>
+                                                <div v-show="chartType == 'cp'">
+                                                    <div v-if="activeData.coingeckoid != null">
+                                                        <vue-apex-charts red="apexChart1" class="full" width="100%"
+                                                            :dataLabels="true" type="area" height="290"
+                                                            :options="Price_DaysChart" :series="Price_DaysChartseries">
+                                                        </vue-apex-charts>
+                                                    </div>
+                                                </div>
+                                                <div v-show="chartType == 'mc'">
+                                                    <div v-if="activeData.coingeckoid != null">
+                                                        <vue-apex-charts red="apexChart1" class="full" width="100%"
+                                                            :dataLabels="true" type="area" height="290"
+                                                            :options="MC_DaysChart" :series="MC_DaysChartseries">
+                                                        </vue-apex-charts>
+                                                    </div>
                                                 </div>
 
                                                 <!-- <sparkline width="300" height="150">
@@ -3273,12 +3310,11 @@
                     },
 
                 },
-                seven_DaysChartseries: [{
+                Price_DaysChartseries: [{
                     name: '24 Hours History',
                     data: []
-                }
-            ],
-                seven_DaysChart: {
+                }],
+                Price_DaysChart: {
 
                     chart: {
                         toolbar: {
@@ -3384,10 +3420,11 @@
                         shared: false,
                         y: {
                             formatter: function (value) {
-                                return new Intl.NumberFormat('en-US', {
+                                let val =  new Intl.NumberFormat('en-US', {
                                     minimumFractionDigits: 0,
                                     maximumFractionDigits: 15,
                                 }).format(value);
+                                return '$'+val
                             }
                         },
                         x: {
@@ -3397,6 +3434,131 @@
                     },
 
                 },
+                MC_DaysChartseries: [{
+                    name: '24 Hours History',
+                    data: []
+                }],
+                MC_DaysChart: {
+
+                    chart: {
+                        toolbar: {
+                            show: false,
+                        },
+                        id: '7days-history',
+                        height: 290,
+                        foreColor: 'black'
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    colors: ['#50DC5F'],
+                    fill: {
+                        shade: 'dark',
+                        type: 'gradient',
+                        gradient: {
+                            shadeIntensity: 1,
+                            opacityFrom: 0.7,
+                            gradientToColors: ['#50DC5F 30%'],
+                            stops: [0, 90, 100]
+                        }
+                    },
+                    xaxis: {
+                        axisBorder: {
+                            show: true,
+                            color: '#78909C',
+                            offsetX: 0,
+                            offsetY: 0
+                        },
+                        labels: {
+                            show: true,
+                            style: {
+                                colors: '#78909C',
+                            },
+                            x: {
+                                format: "dd.MM.yyyy HH:mm"
+                            }
+                        },
+                        categories: [],
+                        type: 'datetime',
+                    },
+
+                    grid: {
+                        show: true,
+                        borderColor: '#424244',
+                        strokeDashArray: 0,
+                        position: 'back',
+                        xaxis: {
+                            lines: {
+                                show: false
+                            }
+                        },
+                        yaxis: {
+                            lines: {
+                                show: true
+                            }
+                        },
+                        row: {
+                            colors: undefined,
+                            opacity: 0.5
+                        },
+                        column: {
+                            colors: undefined,
+                            opacity: 0.5
+                        },
+
+                    },
+                    yaxis: {
+                        axisBorder: {
+                            show: true,
+                            color: '#78909C',
+                            offsetX: 0,
+                            offsetY: 0
+                        },
+                        type: "value",
+                        labels: {
+                            show: true,
+                            style: {
+                                colors: '#78909C',
+                            },
+                            formatter: function (value) {
+                                return value.toFixed(2);
+                            }
+                        },
+                    },
+                    stroke: {
+                        show: true,
+                        curve: 'smooth',
+                        lineCap: 'butt',
+                        width: 2,
+                        dashArray: 0,
+                        labels: {
+                            show: true,
+                            hideOverlappingLabels: true,
+                        }
+                    },
+                    tooltip: {
+                        style: {
+                            colors: '#78909C',
+
+                        },
+                        shared: false,
+                        y: {
+                            formatter: function (value) {
+                                let val =  new Intl.NumberFormat('en-US', {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 15,
+                                }).format(value);
+                                return '$'+val
+                            }
+                        },
+                        x: {
+                            format: "dd.MM.yyyy HH:mm"
+                        }
+
+                    },
+
+                },
+                chartType: 'cp',
                 loadingHchart: true,
                 vestingDataSerice: [{
                     name: '7 Days History',
@@ -4698,7 +4860,8 @@
                 this.supplyChart.series = [];
                 this.TradeHistoryOptions.xaxis.categories = [];
                 this.vestingDataChart.xaxis.categories = [];
-                this.seven_DaysChartseries[0].data = [];
+                this.Price_DaysChartseries[0].data = [];
+                this.MC_DaysChartseries[0].data = [];
                 this.vestingDataSerice = [];
                 let sparklines = [];
                 if (item.sparkline_in_7d != null) {
@@ -4720,16 +4883,17 @@
                 //         d.setUTCHours(0, 0, 0, 0);
                 //         d.setDate(d.getDate() - i);
                 //         d.setHours(d.getHours() - j);
-                //         this.seven_DaysChart.xaxis.categories.unshift(d.getTime());
+                //         this.Price_DaysChart.xaxis.categories.unshift(d.getTime());
                 //     }
                 // }
-                // this.seven_DaysChartseries[0].data = sparklines;
+                // this.Price_DaysChartseries[0].data = sparklines;
                 if (typeof item.contract_address == 'string') {
                     item.contract_address = JSON.parse(item.contract_address);
                 }
 
                 this.activeData = item;
-                this.loadHistoryChart('24');
+                this.loadPriceHistoryChart('24');
+                this.loadMCHistoryChart('24');
                 await axios.post('api/check-coin-notified', {
                         symbol: item.symbol,
                     })
@@ -4823,16 +4987,87 @@
                 this.detailsModalLoaded = true;
 
             },
-            loadHistoryChart(type) {
+            loadPriceHistoryChart(type) {
 
                 axios.post('api/load-price-chart-by-coin', {
                         coingickoid: this.activeData.coingeckoid ? this.activeData.coingeckoid : 1,
                         type: type,
                     })
                     .then(res => {
-
+                        let name = '24 hours price history'
+                        switch (type) {
+                            case '24':
+                                name = '24 hours price history';
+                                break;
+                            case '7':
+                                name = '7 days price history';
+                                break;
+                            case '14':
+                                name = '14 days price history';
+                                break;
+                            case '30':
+                                name = '30 days price history';
+                                break;
+                            case '90':
+                                name = '90 days price history';
+                                break;
+                            case '365':
+                                name = '365 days price history';
+                                break;
+                            case 'all':
+                                name = 'All time price history';
+                                break;
+                            default:
+                                name = 'All time price history';
+                                break;
+                        }
                         if (res.data.status) {
-                            this.seven_DaysChartseries = [{data: res.data.chart}];
+                            this.Price_DaysChartseries = [{
+                                name: name,
+                                data: res.data.chart
+                            }];
+                        }
+                    })
+            },
+            loadMCHistoryChart(type) {
+
+                axios.post('api/load-mc-chart-by-coin', {
+                        coingickoid: this.activeData.coingeckoid ? this.activeData.coingeckoid : 1,
+                        type: type,
+                    })
+                    .then(res => {
+                        let name = '24 hours market cap history'
+                        switch (type) {
+                            case '24':
+                                name = '24 hours market cap history';
+                                break;
+                            case '7':
+                                name = '7 days market cap history';
+                                break;
+                            case '14':
+                                name = '14 days market cap history';
+                                break;
+                            case '30':
+                                name = '30 days market cap history';
+                                break;
+                            case '90':
+                                name = '90 days market cap history';
+                                break;
+                            case '365':
+                                name = '365 days market cap history';
+                                break;
+                            case 'all':
+                                name = 'All time market cap history';
+                                break;
+                            default:
+                                name = 'All time history';
+                                break;
+                        }
+                        if (res.data.status) {
+                            this.MC_DaysChartseries = [{
+                                name: name,
+                                data: res.data.chart
+                            }];
                         }
                     })
             },
