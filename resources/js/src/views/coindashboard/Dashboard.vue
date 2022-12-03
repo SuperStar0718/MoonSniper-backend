@@ -4870,8 +4870,8 @@
                 }
 
                 this.activeData = item;
+                this.loadMCHistoryChart('24',1);
                 this.loadPriceHistoryChart('24');
-                this.loadMCHistoryChart('24');
                 await axios.post('api/check-coin-notified', {
                         symbol: item.symbol,
                     })
@@ -5033,7 +5033,7 @@
           
                 }
                  },
-            loadMCHistoryChart(type) {
+            loadMCHistoryChart(type,lev) {
                 if(this.activeData.coingeckoid != null)
                 {
                 axios.post('api/load-mc-chart-by-coin', {
@@ -5073,10 +5073,13 @@
                                 name: name,
                                 data: res.data.chart
                             }];
+                            if(lev !=1)
+                            {
                             this.chartType= 'mc';
+
+                            }
                         }
                     })
-                    
                 }
                 },
             dateFormat(val) {
