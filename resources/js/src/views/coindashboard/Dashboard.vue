@@ -4830,6 +4830,7 @@
             },
             async detailsModel(item) {
                 this.chartType= 'cp';
+                this.intervalChat= '24';
                 this.detailsModalLoaded = false;
                 this.$bvModal.show('modal-details');
 
