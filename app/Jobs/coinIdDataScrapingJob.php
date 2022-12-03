@@ -53,16 +53,26 @@ class coinIdDataScrapingJob implements ShouldQueue
                     'coin_id'=>$entry->getAttribute("data-coin-slug"),
                     'symbol'=>$entry->getAttribute("data-coin-symbol"),
                 );
-                $items[] = $items2;
-            }
-            try {
-                CoinsData::massUpdate(
-                    values: $items,
-                    uniqueBy: ['symbol'],
+                $items2 = array(
+                    'coingeckoid'=>$entry->getAttribute("data-coin-id"),
                 );
-            }catch (\Exception $exception){
-                Log::info("The Problem here is: ".$exception);
+                
+                try {
+                    $exist = CoinsData::where('symbol',$entry->getAttribute("data-coin-symbol"))->first();
+                    if($exist)
+                    {
+                        $coinData  = CoinsData::where('symbol',$entry->getAttribute("data-coin-symbol"))->update($items2);
+
+                    }else{
+                        $coinData  = CoinsData::where('coin_id',$entry->getAttribute("data-coin-slug"))->update($items2);
+
+                    }
+                } catch (\Throwable $th) {
+                    $coinData  = CoinsData::where('symbol',$entry->getAttribute("data-coin-symbol"))->orWhere('coin_id',$entry->getAttribute("data-coin-slug"))->update($items2);
+                }
+
             }
+           
       
         return $items;
     }

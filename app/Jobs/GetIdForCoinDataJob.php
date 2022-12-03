@@ -34,7 +34,6 @@ class GetIdForCoinDataJob implements ShouldQueue
      */
     public function handle()
     {
-        ini_set('max_execution_time', 1600);
         $html = file_get_contents('https://www.coingecko.com/?page=1');
         $pagination = $this->getBetween($html, '<ul class="pagination">', '</ul>');
         $docPage = new DOMDocument();
