@@ -45,7 +45,7 @@
                             <div class="d-flex justify-content-between cursor-pointer">
                                 <div style="margin:0 8px 0 4px" class="whiteLetter"
                                     v-b-tooltip.hover.bottom.html="ethGasPriceTooltip" v-if="loaded">
-                                    {{ethGas.ProposeGasPrice}}
+                                    {{ethGas.ProposeGasPrice}} GWEI
                                 </div>
 
                             </div>
@@ -5698,7 +5698,7 @@
                                     Fast:
                                 </span>
                                 <span>
-                                    ${this.ethGas.FastGasPrice}
+                                    ${this.ethGas.FastGasPrice} GWEI
                                 </span>
                                 </div>
                                 <div class="d-flex">
@@ -5706,7 +5706,7 @@
                                     Standard:
                                 </span>
                                 <span>
-                                    ${this.ethGas.ProposeGasPrice}
+                                    ${this.ethGas.ProposeGasPrice} GWEI
                                 </span>
                                 </div>
                                 <div class="d-flex">
@@ -5714,7 +5714,7 @@
                                     Low:
                                 </span>
                                 <span>
-                                    ${this.ethGas.SafeGasPrice}
+                                    ${this.ethGas.SafeGasPrice} GWEI
                                 </span>
                                 </div>
                         </div>`

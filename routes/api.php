@@ -88,15 +88,16 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // ETh Price
    
     Route::get('/load-ethgas-values', [Coingecko::class, 'ethGasPrice'])->name('/load-ethgas-values');
-    Route::post('/load-price-chart-by-coin', [Coingecko::class, 'loadPriceChartByCoin'])->name('/load-price-chart-by-coin');
-    Route::post('/load-mc-chart-by-coin', [Coingecko::class, 'loadMcChartByCoin'])->name('/load-mc-chart-by-coin');
-
+   
 
 });
 Route::post('/extension-coin-data-coingecko', [ExchangesController::class, 'CoinDetailsForCoinGecko'])->name('/extension-coin-data-coingecko');
 Route::post('/get_trading_volume_history-extension', 'App\Http\Controllers\Coingecko@get_trading_volume_history');
 
 Route::post('/exchanges-by-token-extension', [ExchangesController::class, 'exchangesByToken'])->name('/exchanges-by-token-extension');
+Route::post('/load-price-chart-by-coin', [Coingecko::class, 'loadPriceChartByCoin'])->name('/load-price-chart-by-coin');
+Route::post('/load-mc-chart-by-coin', [Coingecko::class, 'loadMcChartByCoin'])->name('/load-mc-chart-by-coin');
+
 //ChromeApp functions:
 //public Routes
 Route::post('/register', [AuthController::class, 'register']);
