@@ -28,9 +28,11 @@ class ExchangesController extends Controller
     {
         $query = DB::table('coins');
 
-        $data = $query->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
+        $data = $query->join('coin_data', function ($join) {
+            $join->on('coins.symbol', '=', 'coin_data.symbol')
+                ->on('coins.coin_id', '=', 'coin_data.coin_id')  ->orderBy('coin_data.total_volume','DESC');
+        })
         ->where('coins.symbol',$request->coin)
-        ->where('coin_data.coin_id',$request->coinid)
         ->orderBy('coin_data.total_volume','DESC')->first();
         if($data)
         {
