@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Dashboard;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\NotifyTokenUnlockNotification;
 
@@ -330,85 +331,23 @@ class UnlockingController extends Controller
     }
     public function dataFromUrl($c)
     {
- 
-       
-            $html = file_get_contents('https://www.coingecko.com/?page='.$c.'');
-            $data = $this->getBetween($html, '<tbody', '</tbody>');
-            $doc = new DOMDocument();
-            $doc->loadHTML($data);
-            $xpath = new DOMXPath($doc);
-            $query = "//i";
-            $entries = $xpath->query($query);
-            $items = array();
-            foreach ($entries as $key => $entry) {
-                $items2 = array(
-                    'coingeckoid'=>$entry->getAttribute("data-coin-id"),
-                    'coin_id'=>$entry->getAttribute("data-coin-slug"),
-                    'symbol'=>$entry->getAttribute("data-coin-symbol"),
-                );
-                $items[] = $items2;
-            }
-
-
-        return $items;
         
-
-        $html = file_get_contents('https://www.coingecko.com/?page=1');
-        $pagination = $this->getBetween($html, '<ul class="pagination">', '</ul>');
+        $html = file_get_contents('https://www.blockchaincenter.net/altcoin-season-index/');
+        $numberDiv = $this->getBetween($html, '<div style="margin-top:-74px">', '</div>');
+        $chartData = $this->getBetween($html, 'chartdata2[30] =', ';');
         $docPage = new DOMDocument();
-        $docPage->loadHTML($pagination);
+        $docPage->loadHTML($numberDiv);
         $xpath = new DOMXPath($docPage);
-        $query = "//a";
-        $entriesPage = $xpath->query($query);
-       $totalPages =  $entriesPage[count($entriesPage)-2]->textContent;
-       $i=0;
-       $nA = array();
-        for ($j=1; $j <= $totalPages ; $j++) { 
-            $i=$i+5;
-                $nA[]= $j;
-        }
-        return $nA;
-      
-    
-        $html = file_get_contents('https://www.coingecko.com/?page=132');
-        $pagination = $this->getBetween($html, '<ul class="pagination">', '</ul>');
-        $docPage = new DOMDocument();
-        $docPage->loadHTML($pagination);
-        $xpath = new DOMXPath($docPage);
-        $query = "//a";
-        $entriesPage = $xpath->query($query);
-       $totalPages =  $entriesPage[count($entriesPage)-2]->textContent;
-       
-        for ($i=1; $i <= $totalPages ; $i++) { 
-            $html = file_get_contents('https://www.coingecko.com/?page='.$i.'');
-            $data = $this->getBetween($html, '<tbody', '</tbody>');
-            $doc = new DOMDocument();
-            $doc->loadHTML($data);
-            $xpath = new DOMXPath($doc);
-            $query = "//i";
-            $entries = $xpath->query($query);
-            $items = array();
-            foreach ($entries as $key => $entry) {
-                $items2 = array(
-                    'coingeckoid'=>$entry->getAttribute("data-coin-id"),
-                    'coin_id'=>$entry->getAttribute("data-coin-slug"),
-                    'symbol'=>$entry->getAttribute("data-coin-symbol"),
-                );
-                $items[] = $items2;
-            }
-            try {
-                CoinsData::massUpdate(
-                    values: $items,
-                    uniqueBy: ['symbol'],
-                );
-            }catch (\Exception $exception){
-                Log::info("The Problem here is: ".$exception);
-            }
-
-        }
-
-        
-
+        $query = "//div";
+        $num = $xpath->query($query);
+        $seasonval =   $num[0]->textContent;
+         $dashboard = Dashboard::first();
+         if($dashboard)
+         {
+            $dashboard->coinseason =   $seasonval;
+            $dashboard->coin_season_history =   json_decode($chartData);
+            $dashboard->save();
+         }
         
     }
 

@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('moon:exchanges')->daily();
         $schedule->command('moon:exchangestickers')->twiceDaily(4,22);
         $schedule->command('moon:scrapecoinid')->twiceDaily(1,13);
+        $schedule->command('moon:coinseasondata')->daily();
     }
 
     /**

@@ -158,27 +158,42 @@
                 </b-col>
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_btc_alt">
                     <div class="mx-auto bmeter-w text-center">
-                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">BTC Outflow</h5>
+                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">Alt/Btc Season <i
+                                class="fa-solid fa-circle-info cursor-pointer"
+                                title="If 75% of the Top 50 coins performed better than Bitcoin over the last season (90 days) it is Altcoin Season"></i>
+                        </h5>
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
-                            :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
-                            :max="50"
-                            :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'},  { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
-                            :scale-interval="0" :transition-duration="0">
+                            :inner-radius="96.5" :value="fag.data.coinseason" :separator-step="0" :min="0" :max="100"
+                            :gauge-color="
+                            [{offset: 0, color: '#FF0000'}, 
+                            { offset: 13, color: '#FFA500'}, 
+                             { offset: 28, color: '#7CFC00'}, 
+                             { offset: 45, color: '#0000FF'}, 
+                             { offset: 65, color: '#7CFC00'}, 
+                             { offset: 74, color: '#FFA500'},
+                             {offset: 88, color: '#FF0000'}]" :scale-interval="0" :transition-duration="0">
                             <div class="rounded-circle" id="marker_3" style="width:8px; height:8px; position: absolute">
                             </div>
                             <div class="inner-text" style="display:block;">
-                                <div style="margin-top: 2rem !important;"
-                                    :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}">
-                                    <span class="d-block feerGreen">{{fag.data.fear_greed_index}}</span>
+                                <div style="margin-top: 2rem !important;">
+                                    <span class="d-block feerGreen">{{fag.data.coinseason}}</span>
                                 </div>
                                 <div class="row" style="margin: 0% 0% 0% 0%;">
-                                    <span class="col-3 text-info" style="float:left; margin:auto;"><a
-                                            v-b-modal.modal-chart variant="outline-primary"><i
+                                    <span class="col-2 text-info" style="float: left;margin: auto;
+                                    padding: 0;
+                                    margin-left: auto;
+                                    margin-right: 5px;"><a v-b-modal.modal-altseason variant="outline-primary"><i
                                                 class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
-                                    <span class="col-6 feerSmallGreen" style="text-align:center;">
-                                        {{fag.data.fear_greed_classification}}
+                                    <span class="col-6 feerSmallGreen" style="text-align: center;
+                                    margin-right: 7px;">
+                                        <div v-if="fag.data.coinseason >=75">
+                                            Altcoin Season
+                                        </div>
+                                        <div v-else>
+                                            Bitcoin Season
+                                        </div>
                                     </span>
                                     <span class="col-3">
 
@@ -1218,6 +1233,11 @@
             <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line" :options="chartOptions"
                 :series="series"></vue-apex-charts>
         </b-modal>
+        <b-modal id="modal-altseason" ok-only ok-title="Close" :hide-footer="true" centered size="lg"
+            title="Alt/Bitcoin Season History">
+            <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line" :options="AltBtcchartOptions"
+                :series="AltBtcseries"></vue-apex-charts>
+        </b-modal>
         <b-modal id="modal-filters" :hide-footer="true" size="lg" title="" style="border-radius: 30px;">
             <template>
                 <b-row style="margin:0px 0px 24px 0px;">
@@ -2123,11 +2143,9 @@
                                                     </b-tabs>
                                                     <div class="d-inline-flex float-right"
                                                         style="padding-right: 40px !important;">
-                                                        <b-tabs  content-class=""
-                                                            class="graph_tab my-auto"
+                                                        <b-tabs content-class="" class="graph_tab my-auto"
                                                             style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
-                                                            <b-tab active title="1D"
-                                                                @click="loadHistoryChart('24')">
+                                                            <b-tab active title="1D" @click="loadHistoryChart('24')">
                                                                 <div></div>
                                                             </b-tab>
                                                             <b-tab title="7D" @click="loadHistoryChart('7')">
@@ -2149,7 +2167,7 @@
                                                                 <div></div>
                                                             </b-tab>
                                                         </b-tabs>
-                                                      
+
                                                         <div style="width:20px">
                                                             <feather-icon size='12' icon='CalendarIcon' />
                                                         </div>
@@ -3187,6 +3205,73 @@
                     stroke: '#c7361c',
 
                 },
+                AltBtcchartOptions: {
+
+                    fill: {
+                        colors: ['#F44336', '#E91E63', '#9C27B0']
+                    },
+
+                    chart: {
+                        id: 'alt-season-history-chart'
+                    },
+                    yaxis: {
+                        labels: {
+                            style: {
+                                colors: '#78909C',
+                            }
+                        },
+
+                    },
+
+                    xaxis: {
+                        categories: [],
+                        type: 'datetime',
+                        tickPlacement: 'between',
+                        labels: {
+                            show: true,
+                            rotateAlways: false,
+                            maxHeight: 120,
+                            style: {
+                                colors: '#78909C',
+                                fontSize: '12px',
+                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                fontWeight: 400,
+                                cssClass: 'apexcharts-xaxis-label',
+                            },
+                            offsetX: 0,
+                            offsetY: 0,
+
+                        },
+                    },
+                    tooltip: {
+                        style: {
+                            colors: '#78909C',
+
+                        },
+                        shared: false,
+                        x: {
+                            format: "dd.MM.yyyy"
+                        }
+                    },
+                    colors: ['#fca503'],
+                    stroke: {
+                        show: true,
+                        curve: 'smooth',
+                        lineCap: 'butt',
+                        width: 1,
+                        dashArray: 0,
+                        labels: {
+                            show: true,
+                            hideOverlappingLabels: true,
+                        }
+                    },
+
+                },
+
+                AltBtcseries: [{
+                    name: 'Altcoin/Bitcoin  Season',
+                    data: []
+                }],
                 chartOptions: {
 
                     fill: {
@@ -3396,11 +3481,11 @@
                         shared: false,
                         y: {
                             formatter: function (value) {
-                                let val =  new Intl.NumberFormat('en-US', {
+                                let val = new Intl.NumberFormat('en-US', {
                                     minimumFractionDigits: 0,
                                     maximumFractionDigits: 15,
                                 }).format(value);
-                                return '$'+val
+                                return '$' + val
                             }
                         },
                         x: {
@@ -3520,11 +3605,11 @@
                         shared: false,
                         y: {
                             formatter: function (value) {
-                                let val =  new Intl.NumberFormat('en-US', {
+                                let val = new Intl.NumberFormat('en-US', {
                                     minimumFractionDigits: 0,
                                     maximumFractionDigits: 15,
                                 }).format(value);
-                                return '$'+val
+                                return '$' + val
                             }
                         },
                         x: {
@@ -4105,6 +4190,19 @@
                             ])
 
                         });
+                        let coinSeasonH = JSON.parse(this.fag.data.coin_season_history);
+                        coinSeasonH.forEach(element => {
+                            // var d = new Date(parseInt(element.timestamp) * 1000);
+                            // let date = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+                            // array.unshift(date);
+                            // this.chartOptions.xaxis.categories = array;
+                            this.AltBtcseries[0].data.unshift([ new Date(element.time),
+                                parseInt(
+                                    element.value)
+                            ])
+
+                        });
+                        
                         this.fagLoad = false;
 
                     }
@@ -4829,8 +4927,8 @@
                 this.$bvModal.show('modal-filters');
             },
             async detailsModel(item) {
-                this.chartType= 'cp';
-                this.intervalChat= '24';
+                this.chartType = 'cp';
+                this.intervalChat = '24';
                 this.detailsModalLoaded = false;
                 this.$bvModal.show('modal-details');
 
@@ -4871,7 +4969,7 @@
                 }
 
                 this.activeData = item;
-                this.loadMCHistoryChart('24',1);
+                this.loadMCHistoryChart('24', 1);
                 this.loadPriceHistoryChart('24');
                 await axios.post('api/check-coin-notified', {
                         symbol: item.symbol,
@@ -4966,123 +5064,116 @@
                 this.detailsModalLoaded = true;
 
             },
-            toggleChartType(type)
-            {
-                if(type == 'cp')
-                {
+            toggleChartType(type) {
+                if (type == 'cp') {
                     this.loadPriceHistoryChart(this.intervalChat)
-                }else{
+                } else {
                     this.loadMCHistoryChart(this.intervalChat)
                 }
 
             },
-            loadHistoryChart(int)
-            {
+            loadHistoryChart(int) {
                 this.intervalChat = int;
-                if(this.chartType == 'cp')
-                {
+                if (this.chartType == 'cp') {
                     this.loadPriceHistoryChart(this.intervalChat)
-                }else{
+                } else {
                     this.loadMCHistoryChart(this.intervalChat)
                 }
             },
             loadPriceHistoryChart(type) {
 
-                if(this.activeData.coingeckoid != null)
-                {
+                if (this.activeData.coingeckoid != null) {
                     axios.post('api/load-price-chart-by-coin', {
-                        coingickoid: this.activeData.coingeckoid ? this.activeData.coingeckoid : 1,
-                        type: type,
-                    })
-                    .then(res => {
-                        let name = '24 hours price history'
-                        switch (type) {
-                            case '24':
-                                name = '24 hours price history';
-                                break;
-                            case '7':
-                                name = '7 days price history';
-                                break;
-                            case '14':
-                                name = '14 days price history';
-                                break;
-                            case '30':
-                                name = '30 days price history';
-                                break;
-                            case '90':
-                                name = '90 days price history';
-                                break;
-                            case '365':
-                                name = '365 days price history';
-                                break;
-                            case 'all':
-                                name = 'All time price history';
-                                break;
-                            default:
-                                name = 'All time price history';
-                                break;
-                        }
-                        if (res.data.status) {
-                            this.Price_DaysChartseries = [{
-                                name: name,
-                                data: res.data.chart
-                            }];
-                         this.chartType= 'cp';
-
-                        }
-                    })
-          
-                }
-                 },
-            loadMCHistoryChart(type,lev) {
-                if(this.activeData.coingeckoid != null)
-                {
-                axios.post('api/load-mc-chart-by-coin', {
-                        coingickoid: this.activeData.coingeckoid ? this.activeData.coingeckoid : 1,
-                        type: type,
-                    })
-                    .then(res => {
-                        let name = '24 hours market cap history'
-                        switch (type) {
-                            case '24':
-                                name = '24 hours market cap history';
-                                break;
-                            case '7':
-                                name = '7 days market cap history';
-                                break;
-                            case '14':
-                                name = '14 days market cap history';
-                                break;
-                            case '30':
-                                name = '30 days market cap history';
-                                break;
-                            case '90':
-                                name = '90 days market cap history';
-                                break;
-                            case '365':
-                                name = '365 days market cap history';
-                                break;
-                            case 'all':
-                                name = 'All time market cap history';
-                                break;
-                            default:
-                                name = 'All time history';
-                                break;
-                        }
-                        if (res.data.status) {
-                            this.MC_DaysChartseries = [{
-                                name: name,
-                                data: res.data.chart
-                            }];
-                            if(lev !=1)
-                            {
-                            this.chartType= 'mc';
+                            coingickoid: this.activeData.coingeckoid ? this.activeData.coingeckoid : 1,
+                            type: type,
+                        })
+                        .then(res => {
+                            let name = '24 hours price history'
+                            switch (type) {
+                                case '24':
+                                    name = '24 hours price history';
+                                    break;
+                                case '7':
+                                    name = '7 days price history';
+                                    break;
+                                case '14':
+                                    name = '14 days price history';
+                                    break;
+                                case '30':
+                                    name = '30 days price history';
+                                    break;
+                                case '90':
+                                    name = '90 days price history';
+                                    break;
+                                case '365':
+                                    name = '365 days price history';
+                                    break;
+                                case 'all':
+                                    name = 'All time price history';
+                                    break;
+                                default:
+                                    name = 'All time price history';
+                                    break;
+                            }
+                            if (res.data.status) {
+                                this.Price_DaysChartseries = [{
+                                    name: name,
+                                    data: res.data.chart
+                                }];
+                                this.chartType = 'cp';
 
                             }
-                        }
-                    })
+                        })
+
                 }
-                },
+            },
+            loadMCHistoryChart(type, lev) {
+                if (this.activeData.coingeckoid != null) {
+                    axios.post('api/load-mc-chart-by-coin', {
+                            coingickoid: this.activeData.coingeckoid ? this.activeData.coingeckoid : 1,
+                            type: type,
+                        })
+                        .then(res => {
+                            let name = '24 hours market cap history'
+                            switch (type) {
+                                case '24':
+                                    name = '24 hours market cap history';
+                                    break;
+                                case '7':
+                                    name = '7 days market cap history';
+                                    break;
+                                case '14':
+                                    name = '14 days market cap history';
+                                    break;
+                                case '30':
+                                    name = '30 days market cap history';
+                                    break;
+                                case '90':
+                                    name = '90 days market cap history';
+                                    break;
+                                case '365':
+                                    name = '365 days market cap history';
+                                    break;
+                                case 'all':
+                                    name = 'All time market cap history';
+                                    break;
+                                default:
+                                    name = 'All time history';
+                                    break;
+                            }
+                            if (res.data.status) {
+                                this.MC_DaysChartseries = [{
+                                    name: name,
+                                    data: res.data.chart
+                                }];
+                                if (lev != 1) {
+                                    this.chartType = 'mc';
+
+                                }
+                            }
+                        })
+                }
+            },
             dateFormat(val) {
                 if (val) {
                     let d = new Date(val)
@@ -5698,7 +5789,7 @@
                                     Fast:
                                 </span>
                                 <span>
-                                    ${this.ethGas.FastGasPrice} GWEI
+                                     &nbsp; ${this.ethGas.FastGasPrice} GWEI
                                 </span>
                                 </div>
                                 <div class="d-flex">
@@ -5706,7 +5797,7 @@
                                     Standard:
                                 </span>
                                 <span>
-                                    ${this.ethGas.ProposeGasPrice} GWEI
+                                     &nbsp; ${this.ethGas.ProposeGasPrice} GWEI
                                 </span>
                                 </div>
                                 <div class="d-flex">
@@ -5714,7 +5805,7 @@
                                     Low:
                                 </span>
                                 <span>
-                                    ${this.ethGas.SafeGasPrice} GWEI
+                                     &nbsp; ${this.ethGas.SafeGasPrice} GWEI
                                 </span>
                                 </div>
                         </div>`
