@@ -93,30 +93,47 @@
                     <div class="mx-auto bmeter-w text-center">
                         <h5 class="bmeter-w mx-auto margin16_b feerTitle">NFT Barometer</h5>
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
-                            :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
-                            :max="50"
-                            :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
+                            :inner-radius="96.5" :value="fag.data.nftindex" :separator-step="0" :min="0"
+                            :max="100"
+                            :gauge-color="[
+                                {offset: 0, color: '#51D868'}, 
+                                { offset: 17, color: '#7DD75F'}, 
+                                { offset: 25, color: '#FD7941'}, 
+                                { offset: 50, color: '#E7D45D'},
+                                 { offset: 75, color: '#F6573E'},
+                                  { offset: 100, color: '#232632'},
+                                
+                                  ]"
                             :scale-interval="0" :transition-duration="0">
                             <div class="rounded-circle" id="marker_1" style="width:8px; height:8px; position: absolute">
                             </div>
 
                             <div class="inner-text" style="display:block;">
-                                <div style="margin-top: 2rem !important;"
-                                    :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}">
-                                    <span class="d-block feerGreen">{{fag.data.fear_greed_index}}</span>
+                                <div style="margin-top: 2rem !important;">
+                                    <span class="d-block feerGreen">{{fag.data.nftindex}}</span>
                                 </div>
-                                <div class="row" style="margin: 0% 0% 0% 0%;">
-                                    <span class="col-3 text-info" style="float:left; margin:auto;"><a
-                                            v-b-modal.modal-chart variant="outline-primary"><i
-                                                class="bi bi-clock-history darkWhiteText"
-                                                style="color:#28c76f;"></i></a>
+                                <div class="" style="margin: 0% 0% 0% 0%;">
+                                  
+                                    
+                                    <span class="col feerSmallGreen" style="text-align: center;
+                                    margin-right: 7px;">
+                                    <div v-if="(fag.data.nftindex >=0 &&fag.data.nftindex <=39)">
+                                        Cool
+                                    </div>
+                                    <div v-else-if="(fag.data.nftindex >=40  &&fag.data.nftindex <=59 )">
+                                        Getting warm
+                                    </div>
+                                    <div v-else-if="(fag.data.nftindex >=60   &&fag.data.nftindex <=89  )">
+                                        Hot
+                                    </div>
+                                    <div v-else-if="(fag.data.nftindex >=90  )">
+                                        Extremally Hot
+                                    </div>
                                     </span>
-                                    <span class="col-6 feerSmallGreen" style="text-align:center;">
-                                        {{fag.data.fear_greed_classification}}
-                                    </span>
-                                    <span class="col-3">
+                                    <!-- <span class="col-3">
 
-                                    </span>
+                                    </span> -->
+                                    
                                 </div>
 
                             </div>
@@ -1234,7 +1251,7 @@
                 :series="series"></vue-apex-charts>
         </b-modal>
         <b-modal id="modal-altseason" ok-only ok-title="Close" :hide-footer="true" centered size="lg"
-            title="Alt/Bitcoin Season History">
+            title="Altcoin - Bitcoin Season History">
             <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line" :options="AltBtcchartOptions"
                 :series="AltBtcseries"></vue-apex-charts>
         </b-modal>
@@ -3197,7 +3214,8 @@
                 fag: {
                     data: {
                         fear_greed_index: 0,
-                        fear_greed_classification: ''
+                        fear_greed_classification: '',
+                        nftindex: 0,
                     }
                 },
                 selectedContract: null,
@@ -4196,13 +4214,18 @@
                             // let date = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
                             // array.unshift(date);
                             // this.chartOptions.xaxis.categories = array;
-                            this.AltBtcseries[0].data.unshift([ new Date(element.time),
+                            this.AltBtcseries[0].data.unshift([new Date(element.time),
                                 parseInt(
                                     element.value)
                             ])
 
                         });
-                        
+                       axios.get('https://api.nftgo.io/api/v1/data/overview')
+                       .then(res=>{
+                        let nftData = res.data;
+                                // this.fag.data.nftindex = parseInt(nftData.data.nftIndex.toFixed(0));
+                                this.fag.data.nftindex = 90;
+                       })
                         this.fagLoad = false;
 
                     }
