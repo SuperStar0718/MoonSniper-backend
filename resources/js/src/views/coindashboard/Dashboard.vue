@@ -4223,8 +4223,7 @@
                        axios.get('https://api.nftgo.io/api/v1/data/overview')
                        .then(res=>{
                         let nftData = res.data;
-                                // this.fag.data.nftindex = parseInt(nftData.data.nftIndex.toFixed(0));
-                                this.fag.data.nftindex = 90;
+                                this.fag.data.nftindex = parseInt(nftData.data.nftIndex.toFixed(0));
                        })
                         this.fagLoad = false;
 
