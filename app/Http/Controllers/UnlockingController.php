@@ -334,7 +334,7 @@ class UnlockingController extends Controller
         
         $html = file_get_contents('https://www.blockchaincenter.net/altcoin-season-index/');
         $numberDiv = $this->getBetween($html, '<div style="margin-top:-74px">', '</div>');
-        $chartData = $this->getBetween($html, 'chartdata2[30] =', ';');
+        $chartData = $this->getBetween($html, 'chartdata2[365] =', ';');
         $docPage = new DOMDocument();
         $docPage->loadHTML($numberDiv);
         $xpath = new DOMXPath($docPage);
