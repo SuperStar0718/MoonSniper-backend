@@ -91,7 +91,12 @@
                 </b-col>
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_nft">
                     <div class="mx-auto bmeter-w text-center">
-                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">NFT Barometer</h5>
+                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">NFT Barometer
+                            <i
+                            class="fa-solid fa-circle-info cursor-pointer"
+                            v-b-tooltip.hover.top="'The Market Sentiment Index (experimental) is calculated based on volatility, trading volume, social media and google trends. The score is updated every hour.'"></i>
+
+                        </h5>
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.nftindex" :separator-step="0" :min="0"
                             :max="100"
@@ -120,7 +125,7 @@
                                     <div v-if="(fag.data.nftindex >=0 &&fag.data.nftindex <=39)">
                                         Cool
                                     </div>
-                                    <div v-else-if="(fag.data.nftindex >=40  &&fag.data.nftindex <=59 )">
+                                    <div v-else-if="(fag.data.nftindex >=40  && fag.data.nftindex <=59 )">
                                         Getting warm
                                     </div>
                                     <div v-else-if="(fag.data.nftindex >=60   &&fag.data.nftindex <=89  )">
@@ -177,7 +182,8 @@
                     <div class="mx-auto bmeter-w text-center">
                         <h5 class="bmeter-w mx-auto margin16_b feerTitle">Alt/Btc Season <i
                                 class="fa-solid fa-circle-info cursor-pointer"
-                                title="If 75% of the Top 50 coins performed better than Bitcoin over the last season (90 days) it is Altcoin Season"></i>
+                                v-b-tooltip.hover.top="'If 75% of the Top 50 coins performed better than Bitcoin over the last season (90 days) it is Altcoin Season.'"
+                                ></i>
                         </h5>
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.coinseason" :separator-step="0" :min="0" :max="100"
