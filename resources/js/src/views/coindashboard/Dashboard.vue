@@ -83,9 +83,7 @@
 
                                     </span>
                                 </div>
-
                             </div>
-
                         </VueSvgGauge>
                     </div>
                 </b-col>
@@ -94,7 +92,6 @@
                         <h5 class="bmeter-w mx-auto margin16_b feerTitle">NFT Barometer
                             <i class="fa-solid fa-circle-info cursor-pointer"
                                 v-b-tooltip.hover.top="'The Market Sentiment Index (experimental) is calculated based on volatility, trading volume, social media and google trends. The score is updated every hour.'"></i>
-
                         </h5>
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.nftindex" :separator-step="0" :min="0" :max="100"
@@ -105,7 +102,6 @@
                                 { offset: 50, color: '#E7D45D'},
                                  { offset: 75, color: '#F6573E'},
                                   { offset: 100, color: '#232632'},
-                                
                                   ]" :scale-interval="0" :transition-duration="0">
                             <div class="rounded-circle" id="marker_1" style="width:8px; height:8px; position: absolute">
                             </div>
@@ -146,7 +142,7 @@
                     <div class="mx-auto bmeter-w text-center">
                         <h5 class="bmeter-w mx-auto margin16_b feerTitle">BTC in/outflow</h5>
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
-                            :inner-radius="96.5" :value="fag.data.inoutper" :separator-step="0" :min="0" :max="50"
+                            :inner-radius="96.5" :value="fag.data.inoutper" :separator-step="0" :min="-100" :max="100"
                             :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
                             :scale-interval="0" :transition-duration="0">
                             <div class="rounded-circle" id="marker_2" style="width:8px; height:8px; position: absolute">
@@ -1451,7 +1447,7 @@
 
                                         </b-form-group>
 
-                                        <vue-slider v-model="value1" :direction="direction" class="mb-2" />
+                                        <vue-slider  v-model="value1" :direction="direction" class="mb-2" />
                                     </div>
                                     <div class="">
                                         <b-form-group label="Daily Price Change (%)"
@@ -4301,9 +4297,9 @@
                 })
 
             },
-            loadFag() {
+            async  loadFag() {
                 this.fagLoad = true;
-                axios.post('api/get_fag').then(res => {
+                await  axios.post('api/get_fag').then(res => {
                     if (res.data) {
                         this.fag.data = res.data.data;
                         this.fag.btcflow = JSON.parse(res.data.btcflow);
@@ -4376,19 +4372,20 @@
                             ])
 
                         });
-                        axios.get('https://api.nftgo.io/api/v1/data/overview')
+                    
+
+                       
+                    }
+                     
+
+
+                })
+                await  axios.get('https://api.nftgo.io/api/v1/data/overview')
                             .then(res => {
                                 let nftData = res.data;
                                 this.fag.data.nftindex = parseInt(nftData.data.nftIndex.toFixed(0));
                             })
-
-                        this.fagLoad = false;
-
-                    }
-
-
-                })
-
+                    this.fagLoad = false;
             },
             relDiff(a, b) {
                 return 100 * Math.abs((a - b) / ((a + b) / 2));
