@@ -4358,7 +4358,6 @@
                             }else{
                                 this.fag.data.inoutperOval =100-Math.abs(this.fag.data.inoutper); 
                             }
-                            alert(this.fag.data.inoutperOval);
                         let key = Object.keys(this.fag.btcflow.data.main);
                        for (let index = 0; index < key.length; index++) {
                         this.BtcFlowseries[0].data.unshift([new Date(parseInt(key[index])),
