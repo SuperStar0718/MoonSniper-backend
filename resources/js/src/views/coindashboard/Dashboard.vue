@@ -92,14 +92,12 @@
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_nft">
                     <div class="mx-auto bmeter-w text-center">
                         <h5 class="bmeter-w mx-auto margin16_b feerTitle">NFT Barometer
-                            <i
-                            class="fa-solid fa-circle-info cursor-pointer"
-                            v-b-tooltip.hover.top="'The Market Sentiment Index (experimental) is calculated based on volatility, trading volume, social media and google trends. The score is updated every hour.'"></i>
+                            <i class="fa-solid fa-circle-info cursor-pointer"
+                                v-b-tooltip.hover.top="'The Market Sentiment Index (experimental) is calculated based on volatility, trading volume, social media and google trends. The score is updated every hour.'"></i>
 
                         </h5>
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
-                            :inner-radius="96.5" :value="fag.data.nftindex" :separator-step="0" :min="0"
-                            :max="100"
+                            :inner-radius="96.5" :value="fag.data.nftindex" :separator-step="0" :min="0" :max="100"
                             :gauge-color="[
                                 {offset: 0, color: '#51D868'}, 
                                 { offset: 17, color: '#7DD75F'}, 
@@ -108,8 +106,7 @@
                                  { offset: 75, color: '#F6573E'},
                                   { offset: 100, color: '#232632'},
                                 
-                                  ]"
-                            :scale-interval="0" :transition-duration="0">
+                                  ]" :scale-interval="0" :transition-duration="0">
                             <div class="rounded-circle" id="marker_1" style="width:8px; height:8px; position: absolute">
                             </div>
 
@@ -118,27 +115,27 @@
                                     <span class="d-block feerGreen">{{fag.data.nftindex}}</span>
                                 </div>
                                 <div class="" style="margin: 0% 0% 0% 0%;">
-                                  
-                                    
+
+
                                     <span class="col feerSmallGreen" style="text-align: center;
                                     margin-right: 7px;">
-                                    <div v-if="(fag.data.nftindex >=0 &&fag.data.nftindex <=39)">
-                                        Cool
-                                    </div>
-                                    <div v-else-if="(fag.data.nftindex >=40  && fag.data.nftindex <=59 )">
-                                        Getting warm
-                                    </div>
-                                    <div v-else-if="(fag.data.nftindex >=60   &&fag.data.nftindex <=89  )">
-                                        Hot
-                                    </div>
-                                    <div v-else-if="(fag.data.nftindex >=90  )">
-                                        Extremally Hot
-                                    </div>
+                                        <div v-if="(fag.data.nftindex >=0 &&fag.data.nftindex <=39)">
+                                            Cool
+                                        </div>
+                                        <div v-else-if="(fag.data.nftindex >=40  && fag.data.nftindex <=59 )">
+                                            Getting warm
+                                        </div>
+                                        <div v-else-if="(fag.data.nftindex >=60   &&fag.data.nftindex <=89  )">
+                                            Hot
+                                        </div>
+                                        <div v-else-if="(fag.data.nftindex >=90  )">
+                                            Extremally Hot
+                                        </div>
                                     </span>
                                     <!-- <span class="col-3">
 
                                     </span> -->
-                                    
+
                                 </div>
 
                             </div>
@@ -149,25 +146,25 @@
                     <div class="mx-auto bmeter-w text-center">
                         <h5 class="bmeter-w mx-auto margin16_b feerTitle">BTC in/outflow</h5>
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
-                            :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
-                            :max="50"
+                            :inner-radius="96.5" :value="fag.data.inoutper" :separator-step="0" :min="0" :max="50"
                             :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
                             :scale-interval="0" :transition-duration="0">
                             <div class="rounded-circle" id="marker_2" style="width:8px; height:8px; position: absolute">
                             </div>
                             <div class="inner-text" style="display:block;">
                                 <div style="margin-top: 2rem !important;"
-                                    :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}">
-                                    <span class="d-block feerGreen">{{fag.data.fear_greed_index}}</span>
+                                    :class="{'text-danger':fag.data.inoutper<50,'text-success-green':fag.data.inoutper>=50}">
+                                    <span class="d-block feerGreen">{{fag.data.inoutper}} %</span>
                                 </div>
                                 <div class="row" style="margin: 0% 0% 0% 0%;">
                                     <span class="col-3 text-info" style="float:left; margin:auto;"><a
-                                            v-b-modal.modal-chart variant="outline-primary"><i
+                                            v-b-modal.modal-btcflow
+                                            variant="outline-primary"><i
                                                 class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
                                     <span class="col-6 feerSmallGreen" style="text-align:center;">
-                                        {{fag.data.fear_greed_classification}}
+                                    1d :  {{ fag.data.btcflowDif }}
                                     </span>
                                     <span class="col-3">
 
@@ -182,8 +179,7 @@
                     <div class="mx-auto bmeter-w text-center">
                         <h5 class="bmeter-w mx-auto margin16_b feerTitle">Alt/Btc Season <i
                                 class="fa-solid fa-circle-info cursor-pointer"
-                                v-b-tooltip.hover.top="'If 75% of the Top 50 coins performed better than Bitcoin over the last season (90 days) it is Altcoin Season.'"
-                                ></i>
+                                v-b-tooltip.hover.top="'If 75% of the Top 50 coins performed better than Bitcoin over the last season (90 days) it is Altcoin Season.'"></i>
                         </h5>
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.coinseason" :separator-step="0" :min="0" :max="100"
@@ -1260,6 +1256,38 @@
             title="Altcoin - Bitcoin Season History">
             <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line" :options="AltBtcchartOptions"
                 :series="AltBtcseries"></vue-apex-charts>
+        </b-modal>
+        <b-modal id="modal-btcflow" ok-only ok-title="Close" :hide-footer="true" centered size="lg"
+            title="Bitcoin In/Out Flow Season History">
+           <div class="p-2">
+            <b-tabs content-class=""
+                                                        class="graph_tab graph_tab-1 float-left w-50"
+                                                        style="
+                                                        font-family: Poppins-Light;
+                                                        font-style: normal;
+                                                        font-weight: 400;
+                                                        position: relative;
+                                                        font-size: 10px;
+                                                        z-index: 999 !important;"
+                                                        >
+                                                        <b-tab active title="USD" @click="BtcFlowUSD = true">
+                                                            <div></div>
+                                                        </b-tab>
+                                                        <b-tab title="Asset" @click="BtcFlowUSD = false">
+                                                            <div></div>
+                                                        </b-tab>
+                                                    </b-tabs>
+                                                    <div v-if="BtcFlowUSD">
+                                                        <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line" :options="BtcFlowchartOptions"
+                                                        :series="BtcFlowseries2"></vue-apex-charts>
+                                                    </div> 
+                                                    <div v-else>
+                                                        <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line" :options="BtcFlowchartOptions"
+                                                        :series="BtcFlowseries"></vue-apex-charts>
+                                                    </div>
+           
+           </div>
+
         </b-modal>
         <b-modal id="modal-filters" :hide-footer="true" size="lg" title="" style="border-radius: 30px;">
             <template>
@@ -3222,7 +3250,12 @@
                         fear_greed_index: 0,
                         fear_greed_classification: '',
                         nftindex: 0,
-                    }
+                        inoutper: 0,
+                        btcflowDif: 0,
+
+
+                    },
+                    btcflow: [],
                 },
                 selectedContract: null,
                 spLineStyles: {
@@ -3296,6 +3329,79 @@
                     name: 'Altcoin/Bitcoin  Season',
                     data: []
                 }],
+                BtcFlowchartOptions: {
+
+                    fill: {
+                        colors: ['#F44336', '#E91E63', '#9C27B0']
+                    },
+
+                    chart: {
+                        id: 'btc-flow-chart'
+                    },
+                    yaxis: {
+                        labels: {
+                            style: {
+                                colors: '#78909C',
+                            }
+                        },
+
+                    },
+
+                    xaxis: {
+                        categories: [],
+                        type: 'datetime',
+                        tickPlacement: 'between',
+                        labels: {
+                            show: true,
+                            rotateAlways: false,
+                            maxHeight: 120,
+                            style: {
+                                colors: '#78909C',
+                                fontSize: '12px',
+                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                fontWeight: 400,
+                                cssClass: 'apexcharts-xaxis-label',
+                            },
+                            offsetX: 0,
+                            offsetY: 0,
+
+                        },
+                    },
+                    tooltip: {
+                        style: {
+                            colors: '#78909C',
+
+                        },
+                        shared: false,
+                        x: {
+                            format: "dd.MM.yyyy"
+                        }
+                    },
+                    colors: ['#fca503'],
+                    stroke: {
+                        show: true,
+                        curve: 'smooth',
+                        lineCap: 'butt',
+                        width: 1,
+                        dashArray: 0,
+                        labels: {
+                            show: true,
+                            hideOverlappingLabels: true,
+                        }
+                    },
+
+                },
+
+                BtcFlowseries: [{
+                    name: 'Bicoin In/Out Flow',
+                    data: []
+                }],
+                BtcFlowseries2: [{
+                    name: 'Bicoin In/Out Flow',
+                    data: []
+                }],
+                
+                BtcFlowUSD:true,
                 chartOptions: {
 
                     fill: {
@@ -4199,15 +4305,13 @@
                 this.fagLoad = true;
                 axios.post('api/get_fag').then(res => {
                     if (res.data) {
-                        this.fag = res;
+                        this.fag.data = res.data.data;
+                        this.fag.btcflow = JSON.parse(res.data.btcflow);
                         this.loaded = true;
                         this.fag.data.fear_greed_history = JSON.parse(this.fag.data.fear_greed_history);
                         let array = [];
                         this.fag.data.fear_greed_history.forEach(element => {
-                            // var d = new Date(parseInt(element.timestamp) * 1000);
-                            // let date = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-                            // array.unshift(date);
-                            // this.chartOptions.xaxis.categories = array;
+
                             this.series[0].data.unshift([parseInt(element.timestamp) * 1000,
                                 parseInt(
                                     element.value)
@@ -4215,6 +4319,52 @@
 
                         });
                         let coinSeasonH = JSON.parse(this.fag.data.coin_season_history);
+                        coinSeasonH.forEach(element => {
+
+                            this.AltBtcseries[0].data.unshift([new Date(element.time),
+                                parseInt(
+                                    element.value)
+                            ])
+
+                        });
+
+                        // example
+                        let item1 = this.fag.btcflow.data.main[Object.keys(this.fag.btcflow.data.main)[Object
+                            .keys(this.fag.btcflow.data.main).length - 1]];
+                        let item2 = this.fag.btcflow.data.main[Object.keys(this.fag.btcflow.data.main)[Object
+                            .keys(this.fag.btcflow.data.main).length - 2]];
+                        this.fag.data.inoutper = this.relDiff(item1[0].values[1], item2[0].values[1]);
+                        if (item1[0].values[1] > item1[0].values[1]) {
+                            this.fag.data.inoutper = this.fag.data.inoutper.toFixed(1);
+                            this.fag.data.inoutper = parseFloat(-1 * (this.fag.data.inoutper));
+
+                        } else {
+                            this.fag.data.inoutper = this.fag.data.inoutper.toFixed(1);
+                            this.fag.data.inoutper = -Math.abs(parseFloat((this.fag.data.inoutper)));
+                        }
+                        this.fag.data.btcflowDif = this.kFormatter((item1[0].values[1]-item2[0].values[1]))
+                        
+                        let key = Object.keys(this.fag.btcflow.data.main);
+                       for (let index = 0; index < key.length; index++) {
+                        this.BtcFlowseries[0].data.unshift([new Date(parseInt(key[index])),
+                            parseFloat(this.fag.btcflow.data.main[key[index]][0].values[1])
+                            ])
+                            this.BtcFlowseries2[0].data.unshift([new Date(parseInt(key[index])),
+                            parseFloat(this.fag.btcflow.data.main[key[index]][0].values[0])
+                            ])
+                        
+                       }
+                        coinSeasonH.forEach(element => {
+                            // var d = new Date(parseInt(element.timestamp) * 1000);
+                            // let date = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+                            // array.unshift(date);
+                            // this.chartOptions.xaxis.categories = array;
+                            this.AltBtcseries[0].data.unshift([new Date(element.time),
+                                parseFloat(
+                                    element.value)
+                            ])
+
+                        });
                         coinSeasonH.forEach(element => {
                             // var d = new Date(parseInt(element.timestamp) * 1000);
                             // let date = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
@@ -4226,11 +4376,12 @@
                             ])
 
                         });
-                       axios.get('https://api.nftgo.io/api/v1/data/overview')
-                       .then(res=>{
-                        let nftData = res.data;
+                        axios.get('https://api.nftgo.io/api/v1/data/overview')
+                            .then(res => {
+                                let nftData = res.data;
                                 this.fag.data.nftindex = parseInt(nftData.data.nftIndex.toFixed(0));
-                       })
+                            })
+
                         this.fagLoad = false;
 
                     }
@@ -4238,6 +4389,9 @@
 
                 })
 
+            },
+            relDiff(a, b) {
+                return 100 * Math.abs((a - b) / ((a + b) / 2));
             },
             loadPresetFilters() {
                 axios.post('api/get_preset_filters').then(res => {

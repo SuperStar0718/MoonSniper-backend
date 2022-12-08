@@ -332,6 +332,9 @@ class UnlockingController extends Controller
     public function dataFromUrl($c)
     {
         
+
+      
+
         $html = file_get_contents('https://www.blockchaincenter.net/altcoin-season-index/');
         $numberDiv = $this->getBetween($html, '<div style="margin-top:-74px">', '</div>');
         $chartData = $this->getBetween($html, 'chartdata2[30] =', ';');
