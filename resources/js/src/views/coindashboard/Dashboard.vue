@@ -58,7 +58,10 @@
             <b-row class="FGCharts" style="">
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_greed">
                     <div class="mx-auto bmeter-w text-center">
-                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">Fear and Greed</h5>
+                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">Fear & Greed
+                            <i class="fa-solid fa-circle-info cursor-pointer"
+                            v-b-tooltip.hover.top="'The fear and greed index uses different indicators that measure the aspect of the stock market behavior what influence how much investors are willing to pay for the stocks'"></i>
+                        </h5>
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
                             :max="50"
@@ -140,17 +143,25 @@
                 </b-col>
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_btc_in_out">
                     <div class="mx-auto bmeter-w text-center">
-                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">BTC in/outflow</h5>
+                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">BTC in/outflow
+
+                            <i class="fa-solid fa-circle-info cursor-pointer"
+                            v-b-tooltip.hover.top="'Inflows to exchanges fluctuate with changes in market sentiment, for instance, an increase in inflows suggests increased selling pressure in the market.'"></i>
+                        </h5>
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
-                            :inner-radius="96.5" :value="fag.data.inoutper" :separator-step="0" :min="-100" :max="100"
-                            :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
+                            :inner-radius="96.5" :value="fag.data.inoutperOval" :separator-step="0" :min="0" :max="200"
+                            :gauge-color="[
+                                {offset: 0, color: '#51D868'}, 
+                                { offset: 90, color: '#e53e10'}
+                               
+                                ]"
                             :scale-interval="0" :transition-duration="0">
                             <div class="rounded-circle" id="marker_2" style="width:8px; height:8px; position: absolute">
                             </div>
                             <div class="inner-text" style="display:block;">
                                 <div style="margin-top: 2rem !important;"
-                                    :class="{'text-danger':fag.data.inoutper<50,'text-success-green':fag.data.inoutper>=50}">
-                                    <span class="d-block feerGreen">{{fag.data.inoutper}} %</span>
+                                    :class="{'text-danger':fag.data.inoutper>0,'text-success-green':fag.data.inoutper<=0}">
+                                    <span class="d-block barometerStyle">{{fag.data.inoutper}} %</span>
                                 </div>
                                 <div class="row" style="margin: 0% 0% 0% 0%;">
                                     <span class="col-3 text-info" style="float:left; margin:auto;"><a
@@ -159,7 +170,7 @@
                                                 class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
-                                    <span class="col-6 feerSmallGreen" style="text-align:center;">
+                                    <span class="col-6 btcInoutVal" style="text-align:center;"  :class="{'text-danger':fag.data.inoutper>0,'text-success-green':fag.data.inoutper<=0}">
                                     1d :  {{ fag.data.btcflowDif }}
                                     </span>
                                     <span class="col-3">
@@ -3247,6 +3258,7 @@
                         fear_greed_classification: '',
                         nftindex: 0,
                         inoutper: 0,
+                        inoutperOval: 0,
                         btcflowDif: 0,
 
 
@@ -4329,17 +4341,24 @@
                             .keys(this.fag.btcflow.data.main).length - 1]];
                         let item2 = this.fag.btcflow.data.main[Object.keys(this.fag.btcflow.data.main)[Object
                             .keys(this.fag.btcflow.data.main).length - 2]];
+                         
                         this.fag.data.inoutper = this.relDiff(item1[0].values[1], item2[0].values[1]);
-                        if (item1[0].values[1] > item1[0].values[1]) {
+                        // this.fag.data.inoutper = 11.3;
+                        if (item1[0].values[1] > item2[0].values[1]) {
                             this.fag.data.inoutper = this.fag.data.inoutper.toFixed(1);
-                            this.fag.data.inoutper = parseFloat(-1 * (this.fag.data.inoutper));
-
+                            this.fag.data.inoutper = parseFloat(1 * (this.fag.data.inoutper));
                         } else {
                             this.fag.data.inoutper = this.fag.data.inoutper.toFixed(1);
-                            this.fag.data.inoutper = -Math.abs(parseFloat((this.fag.data.inoutper)));
+                            this.fag.data.inoutper = -parseFloat(this.fag.data.inoutper);
                         }
                         this.fag.data.btcflowDif = this.kFormatter((item1[0].values[1]-item2[0].values[1]))
-                        
+                            if(this.fag.data.inoutper >=0)
+                            {
+                                this.fag.data.inoutperOval =100 + Math.abs(this.fag.data.inoutper);
+                            }else{
+                                this.fag.data.inoutperOval =100-Math.abs(this.fag.data.inoutper); 
+                            }
+                            alert(this.fag.data.inoutperOval);
                         let key = Object.keys(this.fag.btcflow.data.main);
                        for (let index = 0; index < key.length; index++) {
                         this.BtcFlowseries[0].data.unshift([new Date(parseInt(key[index])),
@@ -6466,12 +6485,27 @@
         text-align: center;
         color: #6BD863;
     }
+    .barometerStyle {
+        font-family: 'Poppins-Light';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 35px;
+        text-align: center;
+    }
 
     .feerSmallGreen {
         font-family: 'Poppins-Light';
         font-style: normal;
         text-align: center;
         color: #6BD863;
+        font-size: 20px;
+        padding: 0;
+        white-space: nowrap;
+    }
+    .btcInoutVal {
+        font-family: 'Poppins-Light';
+        font-style: normal;
+        text-align: center;
         font-size: 20px;
         padding: 0;
         white-space: nowrap;
