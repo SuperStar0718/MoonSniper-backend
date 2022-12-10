@@ -63,15 +63,9 @@
                 }
             },
             value: function (newVal, oldVal) {
-               this.value3 = newVal[0]
-                this.value4 = newVal[1]
-                if(this.value4 < this.value3)
-                {
-                    this.value2 = [this.value4, this.value3];
-                }else{
-                    this.value2 = [this.value3, this.value4];
-                }
-
+               this.value2 = newVal;
+            //    this.value3 = newVal[0]
+            //     this.value4 = newVal[1]
             },
             value3: function (newVal, oldVal) {
                
@@ -85,7 +79,7 @@
             },
             value4: function (newVal, oldVal) {
                
-                if(this.value4 < this.value3)
+                  if(this.value4 < this.value3)
                 {
                     this.value2 = [this.value4, this.value3];
                 }else{
