@@ -1442,59 +1442,22 @@
 
                                     </div>
                                     <div class="">
-                                        <b-form-group label="ROI %">
-                                            <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.min_roi_percentage" v-numeric-only
-                                                    placeholder="min" />
-                                                <span>
-                                                    <feather-icon icon="MinusIcon" size="16" class="align-middle"
-                                                        style="margin:10px 6px 0 0px" />
-                                                </span>
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.max_roi_percentage" v-numeric-only
-                                                    placeholder="max" />
-                                            </div>
-
-                                        </b-form-group>
-
-                                        <vue-slider  v-model="value1" :direction="direction" class="mb-2" />
+                                      
+                                        <FilterComp :value="value1" :item="1" @updateSlider="updateSlider($event)" modal="ROI %"  />
+                                        <!-- <vue-slider   step="1" v-model="value1" :direction="direction" class="mb-2" /> -->
                                     </div>
                                     <div class="">
-                                        <b-form-group label="Daily Price Change (%)"
-                                            label-for="price_change_percentage_24h">
-                                            <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    name="price_change_percentage_24h" v-numeric-only
-                                                    v-model="filterKey.min_price_change_percentage_24h"
-                                                    placeholder="min" />
-                                                <span>
-                                                    <feather-icon icon="MinusIcon" size="16" class="align-middle"
-                                                        style="margin:10px 6px 0 0px" />
-                                                </span>
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.max_price_change_percentage_24h" v-numeric-only
-                                                    placeholder="max" />
-                                            </div>
-                                        </b-form-group>
-                                        <vue-slider v-model="value2" :direction="direction" class="mb-2" />
+                                       
+                                        <div>
+                                        <FilterComp :value="value2" :item="2" @updateSlider="updateSlider($event)" modal="Daily Price Change (%)"  />
+                                        </div>
+                                        <!-- <vue-slider v-model="value2" :direction="direction" class="mb-2" /> -->
                                     </div>
                                     <div class="">
-                                        <b-form-group label="Total Supply (%)">
-                                            <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.min_total_supply_percent" v-numeric-only
-                                                    placeholder="min" />
-                                                <span>
-                                                    <feather-icon icon="MinusIcon" size="16" class="align-middle"
-                                                        style="margin:10px 6px 0 0px" />
-                                                </span>
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.max_total_supply_percent" v-numeric-only
-                                                    placeholder="max" />
+                                        <div>
+                                            <FilterComp :value="value3" :item="3" @updateSlider="updateSlider($event)" modal="Total Supply (%)"  />
                                             </div>
-                                        </b-form-group>
-                                        <vue-slider v-model="value3" :direction="direction" class="mb-2" />
+                                       
                                     </div>
                                     <div class="mb-2">
                                         <b-form-group label="Public ROI">
@@ -1664,21 +1627,10 @@
                             <b-row>
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
                                     <div class="">
-                                        <b-form-group label="Sentiment Change %">
-                                            <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.min_average_sentiment_change" v-numeric-only
-                                                    placeholder="min" />
-                                                <span>
-                                                    <feather-icon icon="MinusIcon" size="16" class="align-middle"
-                                                        style="margin:10px 6px 0 0px" />
-                                                </span>
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.max_average_sentiment_change" v-numeric-only
-                                                    placeholder="max" />
+                                        <div>
+                                            <FilterComp :value="value4" :item="4" @updateSlider="updateSlider($event)" modal="Total Supply (%)"  />
                                             </div>
-                                        </b-form-group>
-                                        <vue-slider v-model="value4" :direction="direction" class="mb-2" />
+                                        
                                     </div>
                                 </b-col>
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
@@ -1686,64 +1638,30 @@
 
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
                                     <div class="">
-                                        <b-form-group label="Social Mentions Change %">
-                                            <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.min_social_mentions_change" v-numeric-only
-                                                    placeholder="min" />
-                                                <span>
-                                                    <feather-icon icon="MinusIcon" size="16" class="align-middle"
-                                                        style="margin:10px 6px 0 0px" />
-                                                </span>
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.max_social_mentions_change" v-numeric-only
-                                                    placeholder="max" />
+                                        <div>
+                                            <FilterComp :value="value5" :item="5" @updateSlider="updateSlider($event)" modal="Social Mentions Change %"  />
                                             </div>
-                                        </b-form-group>
-                                        <vue-slider v-model="value5" :direction="direction" class="mb-2" />
+                                        
                                     </div>
                                 </b-col>
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
                                 </b-col>
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
                                     <div class="">
-                                        <b-form-group label="Social Engagement Change %">
-                                            <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.min_social_engagement_change" v-numeric-only
-                                                    placeholder="min" />
-                                                <span>
-                                                    <feather-icon icon="MinusIcon" size="16" class="align-middle"
-                                                        style="margin:10px 6px 0 0px" />
-                                                </span>
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.max_social_engagement_change" v-numeric-only
-                                                    placeholder="max" />
+                                        <div>
+                                            <FilterComp :value="value6" :item="6" @updateSlider="updateSlider($event)" modal="Social Engagement Change %"  />
                                             </div>
-                                        </b-form-group>
-                                        <vue-slider v-model="value6" :direction="direction" class="mb-2" />
+                                    
                                     </div>
                                 </b-col>
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
                                 </b-col>
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
                                     <div class="">
-                                        <b-form-group label="Average Sentiment (1-5)">
-                                            <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.min_average_sentiment" v-numeric-only
-                                                    placeholder="min" />
-                                                <span>
-                                                    <feather-icon icon="MinusIcon" size="16" class="align-middle"
-                                                        style="margin:10px 6px 0 0px" />
-                                                </span>
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.max_average_sentiment" v-numeric-only
-                                                    placeholder="max" />
+                                        <div>
+                                            <FilterComp :value="value7" :item="7" @updateSlider="updateSlider($event)" modal="Average Sentiment (1-5)"  />
                                             </div>
-                                        </b-form-group>
-                                        <vue-slider :max="5" :min="1" v-model="value7" :direction="direction"
-                                            class="mb-2 oneToFive" />
+                                     
                                     </div>
                                 </b-col>
 
@@ -1806,7 +1724,10 @@
                                         </b-form-group>
                                     </div>
                                     <div class="">
-                                        <b-form-group label="3 Months Unlock %">
+                                        <div>
+                                            <FilterComp :value="value8" :item="8" @updateSlider="updateSlider($event)" modal="3 Months Unlock %"  />
+                                            </div>
+                                        <!-- <b-form-group label="3 Months Unlock %">
                                             <div class="d-flex">
                                                 <cleave :options="NumberFormaVal" class="form-control"
                                                     v-model="filterKey.min_three_months_unlock_percent_of_tokens"
@@ -1820,7 +1741,7 @@
                                                     v-numeric-only placeholder="max" />
                                             </div>
                                         </b-form-group>
-                                        <vue-slider v-model="value8" :direction="direction" class="mb-2" />
+                                        <vue-slider v-model="value8" :direction="direction" class="mb-2" /> -->
                                     </div>
                                     <div class="mb-2">
                                         <b-form-group label="6 Months Unlock # of Tokens">
@@ -1858,21 +1779,10 @@
                                         </b-form-group>
                                     </div>
                                     <div class="">
-                                        <b-form-group label="Next Unlock %">
-                                            <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.min_next_unlock_percent_of_tokens" v-numeric-only
-                                                    placeholder="min" />
-                                                <span>
-                                                    <feather-icon icon="MinusIcon" size="16" class="align-middle"
-                                                        style="margin:10px 6px 0 0px" />
-                                                </span>
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.max_next_unlock_percent_of_tokens" v-numeric-only
-                                                    placeholder="max" />
+                                        <div>
+                                            <FilterComp :value="value9" :item="9" @updateSlider="updateSlider($event)" modal="Next Unlock %"  />
                                             </div>
-                                        </b-form-group>
-                                        <vue-slider v-model="value9" :direction="direction" class="mb-2" />
+                                       
                                     </div>
                                     <div class="mb-2">
                                         <b-form-group label="3 Months Unlock # of Tokens">
@@ -1900,21 +1810,9 @@
                                         </b-form-group>
                                     </div>
                                     <div class="">
-                                        <b-form-group label="6 Months Unlock %">
-                                            <div class="d-flex">
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.min_six_months_unlock_percent_of_tokens"
-                                                    v-numeric-only placeholder="min" />
-                                                <span>
-                                                    <feather-icon icon="MinusIcon" size="16" class="align-middle"
-                                                        style="margin:10px 6px 0 0px" />
-                                                </span>
-                                                <cleave :options="NumberFormaVal" class="form-control"
-                                                    v-model="filterKey.max_six_months_unlock_percent_of_tokens"
-                                                    v-numeric-only placeholder="max" />
+                                        <div>
+                                            <FilterComp :value="value10" :item="10" @updateSlider="updateSlider($event)" modal="6 Months Unlock %"  />
                                             </div>
-                                        </b-form-group>
-                                        <vue-slider v-model="value10" :direction="direction" class="mb-2" />
                                     </div>
                                 </b-col>
 
@@ -3107,6 +3005,7 @@
 </template>
 
 <script>
+import FilterComp from './FilterComp.vue'
     import {
         BTable,
         BTabs,
@@ -3213,11 +3112,22 @@
             Cleave,
             flatPickr,
             ExchangesTable,
-            Multiselect
+            Multiselect,
+            FilterComp
 
         },
         data() {
             return {
+                value1:[null,null],
+                value2:[null,null],
+                value3:[null,null],
+                value4:[null,null],
+                value5:[null,null],
+                value6:[null,null],
+                value7:[null,null],
+                value8:[null,null],
+                value9:[null,null],
+                value10:[null,null],
                 ExchangeOptions: [],
                 oBarMinValue: 10,
                 oBarMaxValue: 90,
@@ -5120,8 +5030,22 @@
                         this.ExchangeOptions = res.data.exchanges;
                     }
                 })
-
+             
                 this.$bvModal.show('modal-filters');
+            },
+
+            updateSliders()
+            {
+                this.value1 = [this.filterKey.min_roi_percentage,this.filterKey.max_roi_percentage]
+                this.value2 = [this.filterKey.min_price_change_percentage_24h,this.filterKey.max_price_change_percentage_24h]
+                this.value3 = [this.filterKey.min_total_supply_percent,this.filterKey.max_total_supply_percent]
+                this.value4 = [this.filterKey.min_average_sentiment_change,this.filterKey.max_average_sentiment_change]
+                this.value5 = [this.filterKey.min_social_mentions_change,this.filterKey.max_social_mentions_change]
+                this.value6 = [this.filterKey.min_social_engagement_change,this.filterKey.max_social_engagement_change]
+                this.value7 = [this.filterKey.min_average_sentiment,this.filterKey.max_average_sentiment]
+                this.value8 = [this.filterKey.min_three_months_unlock_percent_of_tokens,this.filterKey.max_three_months_unlock_percent_of_tokens]
+                this.value9 = [this.filterKey.min_next_unlock_percent_of_tokens,this.filterKey.max_next_unlock_percent_of_tokens]
+                this.value10 = [this.filterKey.min_six_months_unlock_percent_of_tokens,this.filterKey.max_six_months_unlock_percent_of_tokens]
             },
             async detailsModel(item) {
                 this.chartType = 'cp';
@@ -5764,19 +5688,19 @@
                         }
 
                     });
+                    this.updateSliders();
 
                 }
-
             },
             selectPreset(preset) {
                 this.selectedPresetData = preset;
                 this.selectedPreset = preset.id;
                 this.closeDropDown();
-
             },
             clearPreset() {
                 this.selectedPreset = null
                 this.closeDropDown();
+                this.updateSliders()
             },
             updateFields() {
                 let mode = 'all';
@@ -6006,6 +5930,59 @@
                                 </span>
                                 </div>
                         </div>`
+            },
+            updateSlider(evt)
+            {
+               if(evt[1] == 1)
+               {
+                this.filterKey.min_roi_percentage = evt[0][0]; 
+                this.filterKey.max_roi_percentage = evt[0][1]; 
+               }
+               if(evt[1] == 2)
+               {
+                    this.filterKey.min_price_change_percentage_24h = evt[0][0]; 
+                    this.filterKey.max_price_change_percentage_24h = evt[0][1]; 
+               }
+               if(evt[1] == 3)
+               {
+                    this.filterKey.min_total_supply_percent = evt[0][0]; 
+                    this.filterKey.max_total_supply_percent = evt[0][1]; 
+               }
+               if(evt[1] == 4)
+               {
+                    this.filterKey.min_average_sentiment_change = evt[0][0]; 
+                    this.filterKey.max_average_sentiment_change = evt[0][1]; 
+               }
+               if(evt[1] == 5)
+               {
+                    this.filterKey.min_social_mentions_change = evt[0][0]; 
+                    this.filterKey.max_social_mentions_change = evt[0][1]; 
+               }
+               if(evt[1] == 6)
+               {
+                    this.filterKey.min_social_engagement_change = evt[0][0]; 
+                    this.filterKey.max_social_engagement_change = evt[0][1]; 
+               }
+               if(evt[1] == 7)
+               {
+                    this.filterKey.min_average_sentiment = evt[0][0]; 
+                    this.filterKey.max_average_sentiment = evt[0][1]; 
+               }
+               if(evt[1] == 8)
+               {
+                    this.filterKey.min_three_months_unlock_percent_of_tokens = evt[0][0]; 
+                    this.filterKey.max_three_months_unlock_percent_of_tokens = evt[0][1]; 
+               }
+               if(evt[1] == 9)
+               {
+                    this.filterKey.min_next_unlock_percent_of_tokens = evt[0][0]; 
+                    this.filterKey.max_next_unlock_percent_of_tokens = evt[0][1]; 
+               }
+               if(evt[1] == 10)
+               {
+                    this.filterKey.min_six_months_unlock_percent_of_tokens = evt[0][0]; 
+                    this.filterKey.max_six_months_unlock_percent_of_tokens = evt[0][1]; 
+               }
             }
 
 
@@ -6043,111 +6020,111 @@
                     this.rdot = rdot
                 },
             },
-            value1: {
-                get() {
-                    return [this.filterKey.min_roi_percentage, this.filterKey.max_roi_percentage]
-                },
-                set([ldot1, rdot1]) {
-                    this.filterKey.min_roi_percentage = ldot1
-                    this.filterKey.max_roi_percentage = rdot1
-                },
-            },
-            value2: {
-                get() {
-                    return [this.filterKey.min_price_change_percentage_24h, this.filterKey
-                        .max_price_change_percentage_24h
-                    ]
-                },
-                set([ldot2, rdot2]) {
-                    this.filterKey.min_price_change_percentage_24h = ldot2
-                    this.filterKey.max_price_change_percentage_24h = rdot2
-                },
-            },
-            value3: {
-                get() {
-                    return [this.filterKey.min_total_supply_percent, this.filterKey.max_total_supply_percent]
-                },
-                set([ldot3, rdot3]) {
-                    this.filterKey.min_total_supply_percent = ldot3
-                    this.filterKey.max_total_supply_percent = rdot3
-                },
-            },
-            value4: {
-                get() {
-                    return [this.filterKey.min_average_sentiment_change, this.filterKey
-                        .max_average_sentiment_change
-                    ]
-                },
-                set([ldot4, rdot4]) {
-                    this.filterKey.min_average_sentiment_change = ldot4
-                    this.filterKey.max_average_sentiment_change = rdot4
-                },
-            },
-            value5: {
-                get() {
-                    return [this.filterKey.min_social_mentions_change, this.filterKey
-                        .max_social_mentions_change
-                    ]
-                },
-                set([ldot5, rdot5]) {
-                    this.filterKey.min_social_mentions_change = ldot5
-                    this.filterKey.max_social_mentions_change = rdot5
-                },
-            },
-            value6: {
-                get() {
-                    return [this.filterKey.min_social_engagement_change, this.filterKey
-                        .max_social_engagement_change
-                    ]
-                },
-                set([ldot6, rdot6]) {
-                    this.filterKey.min_social_engagement_change = ldot6
-                    this.filterKey.max_social_engagement_change = rdot6
-                },
-            },
-            value7: {
-                get() {
-                    return [this.filterKey.min_average_sentiment, this.filterKey.min_average_sentiment]
-                },
-                set([ldot7, rdot7]) {
-                    this.filterKey.min_average_sentiment = ldot7
-                    this.filterKey.min_average_sentiment = rdot7
-                },
-            },
-            value8: {
-                get() {
-                    return [this.filterKey.min_three_months_unlock_percent_of_tokens, this.filterKey
-                        .max_three_months_unlock_percent_of_tokens
-                    ]
-                },
-                set([ldot8, rdot8]) {
-                    this.filterKey.min_three_months_unlock_percent_of_tokens = ldot8
-                    this.filterKey.max_three_months_unlock_percent_of_tokens = rdot8
-                },
-            },
-            value9: {
-                get() {
-                    return [this.filterKey.min_next_unlock_percent_of_tokens, this.filterKey
-                        .max_next_unlock_percent_of_tokens
-                    ]
-                },
-                set([ldot9, rdot9]) {
-                    this.filterKey.min_next_unlock_percent_of_tokens = ldot9
-                    this.filterKey.max_next_unlock_percent_of_tokens = rdot9
-                },
-            },
-            value10: {
-                get() {
-                    return [this.filterKey.min_six_months_unlock_percent_of_tokens, this.filterKey
-                        .max_six_months_unlock_percent_of_tokens
-                    ]
-                },
-                set([ldot10, rdot10]) {
-                    this.filterKey.min_six_months_unlock_percent_of_tokens = ldot10
-                    this.filterKey.max_six_months_unlock_percent_of_tokens = rdot10
-                },
+            // value1: {
+            //     get() {
+            //         return [this.filterKey.min_roi_percentage, this.filterKey.max_roi_percentage]
+            //     },
+            //     set([ldot1, rdot1]) {
+            //         this.filterKey.min_roi_percentage = ldot1
+            //         this.filterKey.max_roi_percentage = rdot1
+            //     },
+            // },
+            // value2: {
+            //     get() {
+            //         return [this.filterKey.min_price_change_percentage_24h, this.filterKey
+            //             .max_price_change_percentage_24h
+            //         ]
+            //     },
+            //     set([ldot2, rdot2]) {
+            //         this.filterKey.min_price_change_percentage_24h = ldot2
+            //         this.filterKey.max_price_change_percentage_24h = rdot2
+            //     },
+            // },
+            // value3: {
+            //     get() {
+            //         return [this.filterKey.min_total_supply_percent, this.filterKey.max_total_supply_percent]
+            //     },
+            //     set([ldot3, rdot3]) {
+            //         this.filterKey.min_total_supply_percent = ldot3
+            //         this.filterKey.max_total_supply_percent = rdot3
+            //     },
+            // },
+            // value4: {
+            //     get() {
+            //         return [this.filterKey.min_average_sentiment_change, this.filterKey
+            //             .max_average_sentiment_change
+            //         ]
+            //     },
+            //     set([ldot4, rdot4]) {
+            //         this.filterKey.min_average_sentiment_change = ldot4
+            //         this.filterKey.max_average_sentiment_change = rdot4
+            //     },
+            // },
+            // value5: {
+            //     get() {
+            //         return [this.filterKey.min_social_mentions_change, this.filterKey
+            //             .max_social_mentions_change
+            //         ]
+            //     },
+            //     set([ldot5, rdot5]) {
+            //         this.filterKey.min_social_mentions_change = ldot5
+            //         this.filterKey.max_social_mentions_change = rdot5
+            //     },
+            // },
+            // value6: {
+            //     get() {
+            //         return [this.filterKey.min_social_engagement_change, this.filterKey
+            //             .max_social_engagement_change
+            //         ]
+            //     },
+            //     set([ldot6, rdot6]) {
+            //         this.filterKey.min_social_engagement_change = ldot6
+            //         this.filterKey.max_social_engagement_change = rdot6
+            //     },
+            // },
+            // value7: {
+            //     get() {
+            //         return [this.filterKey.min_average_sentiment, this.filterKey.min_average_sentiment]
+            //     },
+            //     set([ldot7, rdot7]) {
+            //         this.filterKey.min_average_sentiment = ldot7
+            //         this.filterKey.min_average_sentiment = rdot7
+            //     },
+            // },
+            // value8: {
+            //     get() {
+            //         return [this.filterKey.min_three_months_unlock_percent_of_tokens, this.filterKey
+            //             .max_three_months_unlock_percent_of_tokens
+            //         ]
+            //     },
+            //     set([ldot8, rdot8]) {
+            //         this.filterKey.min_three_months_unlock_percent_of_tokens = ldot8
+            //         this.filterKey.max_three_months_unlock_percent_of_tokens = rdot8
+            //     },
+            // },
+            // value9: {
+            //     get() {
+            //         return [this.filterKey.min_next_unlock_percent_of_tokens, this.filterKey
+            //             .max_next_unlock_percent_of_tokens
+            //         ]
+            //     },
+            //     set([ldot9, rdot9]) {
+            //         this.filterKey.min_next_unlock_percent_of_tokens = ldot9
+            //         this.filterKey.max_next_unlock_percent_of_tokens = rdot9
+            //     },
+            // },
+            // value10: {
+            //     get() {
+            //         return [this.filterKey.min_six_months_unlock_percent_of_tokens, this.filterKey
+            //             .max_six_months_unlock_percent_of_tokens
+            //         ]
+            //     },
+            //     set([ldot10, rdot10]) {
+            //         this.filterKey.min_six_months_unlock_percent_of_tokens = ldot10
+            //         this.filterKey.max_six_months_unlock_percent_of_tokens = rdot10
+            //     },
 
-            },
+            // },
             presetFiltersapp1() {
                 return this.presetFilters.filter(filter => {
                     return filter.default == 1
