@@ -44,7 +44,6 @@ class GetCoinsLinksJob implements ShouldQueue
         $data = collect();
         $data2 = collect();
         if(isset($allAssets["data"])){
-            $updated =[];
             foreach ($allAssets["data"] as $coin){
                 $dataToPush = array();
                 $coinInfoToPush = array();
@@ -141,25 +140,10 @@ class GetCoinsLinksJob implements ShouldQueue
                     ->update($dataToPush);
 
                 //$data->push(array_merge(['coin_id' => $coin['slug']],$coinInfoToPush));
-                $exist = CoinsData::where('symbol', strtoupper($coin['symbol']))
-                ->whereNotIn('id',$updated)->first();
-                if($exist)
-                {
-                    CoinsList::where('symbol', strtoupper($coin['symbol']))
-                    ->whereNotIn('id',$updated)
+
+                CoinsList::where('symbol', strtoupper($coin['symbol']))
                     ->update($coinInfoToPush);
-                    $updated[] = $exist->id;
-                }else{
-                    $exist = CoinsData::where('coin_id', strtoupper($coin['slug']))
-                    ->whereNotIn('id',$updated)->first();
-                    CoinsList::where('coin_id', strtoupper($coin['slug']))
-                    ->whereNotIn('id',$updated)
-                    ->update($coinInfoToPush);
-                    $updated[] = $exist->id;
-                }
-                     
-                }
-               
+                     }
             }
         }
 
