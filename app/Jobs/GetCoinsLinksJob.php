@@ -148,14 +148,16 @@ class GetCoinsLinksJob implements ShouldQueue
                     CoinsList::where('symbol', strtoupper($coin['symbol']))
                     ->whereNotIn('id',$updated)
                     ->update($coinInfoToPush);
+                    $updated[] = $exist->id;
                 }else{
                     $exist = CoinsData::where('coin_id', strtoupper($coin['slug']))
                     ->whereNotIn('id',$updated)->first();
                     CoinsList::where('coin_id', strtoupper($coin['slug']))
                     ->whereNotIn('id',$updated)
                     ->update($coinInfoToPush);
+                    $updated[] = $exist->id;
                 }
-                     $updated[] = $exist->id;
+                     
                 }
                
             }
