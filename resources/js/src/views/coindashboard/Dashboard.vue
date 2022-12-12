@@ -5032,6 +5032,7 @@ import FilterComp from './FilterComp.vue'
                 })
              
                 this.$bvModal.show('modal-filters');
+                this.updateSliders();
             },
 
             updateSliders()

@@ -332,28 +332,77 @@ class UnlockingController extends Controller
     public function dataFromUrl($c)
     {
         
-
-      
-
-        $html = file_get_contents('https://www.blockchaincenter.net/altcoin-season-index/');
-        $numberDiv = $this->getBetween($html, '<div style="margin-top:-74px">', '</div>');
-        $chartData = $this->getBetween($html, 'chartdata2[30] =', ';');
+        $html = file_get_contents('https://www.coingecko.com/?page=1');
+        $pagination = $this->getBetween($html, '<ul class="pagination">', '</ul>');
         $docPage = new DOMDocument();
-        $docPage->loadHTML($numberDiv);
+        $docPage->loadHTML($pagination);
         $xpath = new DOMXPath($docPage);
-        $query = "//div";
-        $num = $xpath->query($query);
-        $seasonval =   $num[0]->textContent;
-         $dashboard = Dashboard::first();
-         if($dashboard)
-         {
-            $dashboard->coinseason =   $seasonval;
-            $dashboard->coin_season_history =   json_decode($chartData);
-            $dashboard->save();
-         }
+        $query = "//a";
+        $entriesPage = $xpath->query($query);
+        
+        $totalPages =  $entriesPage[count($entriesPage)-2]->textContent;
+        for ($j=1; $j <= 1 ; $j++) { 
+            $html = file_get_contents('https://www.coingecko.com/?page='.$j.'');
+            $data = $this->getBetween($html, '<tbody', '</tbody>');
+          
+            $doc = new DOMDocument();
+            $doc->loadHTML($data);
+            $thirdTable = $doc->getElementsByTagName('tr');
+            $items1 = array();
+            foreach($thirdTable as $tr)
+            {
+                $items2 = [];
+                
+               $is = $tr->getElementsByTagName('i');
+               $items2[] = $is[0]->getAttribute('data-coin-symbol'); 
+               $items2[] = $is[0]->getAttribute('data-coin-id'); 
+               $items2[] = $is[0]->getAttribute('data-coin-slug'); 
+               $divs = $tr->getElementsByTagName('div'); // get the columns in this row
+               $apisym = $divs[6]->getAttribute('data-api-symbol'); 
+               $qry = array(
+                    'coingeckoid'=>$items2[1],
+                );
+               if($apisym !="")
+               {
+                $items2[] = $apisym;
+               }
+               $items1[] = $items2; 
+               if(count($items2)>=4)
+               {
+                      $exist = CoinsData::where('coin_id',$items2[3])->first();
+                       if($exist)
+                       {
+                           $coinData = CoinsData::where('coin_id',$items2[3])->update($qry);
+                       }
+                 
+               
+               }else{
+                  $items3= $exist = CoinsData::where('symbol',$items2[0])->first();
+                   if($exist)
+                   {
+                       $coinData = CoinsData::where('symbol',$items2[0])->update($qry);
+
+                   }
+               }
+               
+            }
+           return $items3;
+        }
         
     }
-
+    public static function getBetween2($content, $start, $end)
+    {
+        $r = explode($start, $content);
+        $arr = array();
+        for ($i=0; $i <count($r); $i++) { 
+            if (isset($r[$i])) {
+                $r = explode($end, $r[1]);
+                $arr[]  = $r[0];
+            }
+        }
+       return $arr;
+        return '';
+    }
     public static function getBetween($content, $start, $end)
     {
         $r = explode($start, $content);

@@ -6,14 +6,13 @@ use DOMXPath;
 use DOMDocument;
 use App\Models\CoinsData;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
-class GetIdForCoinDataJob implements ShouldQueue
+class GetIdForCoinDataJob2 implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -45,7 +44,7 @@ class GetIdForCoinDataJob implements ShouldQueue
         $totalPages =  $entriesPage[count($entriesPage)-2]->textContent;
         $updated =[];
 
-        for ($j=1; $j <= 75 ; $j++) { 
+        for ($j=75; $j <= $totalPages ; $j++) { 
             $html = file_get_contents('https://www.coingecko.com/?page='.$j.'');
             $data = $this->getBetween($html, '<tbody', '</tbody>');
             $doc = new DOMDocument();
