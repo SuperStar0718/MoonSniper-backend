@@ -331,7 +331,7 @@ class UnlockingController extends Controller
     }
     public function dataFromUrl($c)
     {
-        return $allAssets = Messari::getAllAssets(['limit'=>1,'page'=>23]);
+        return $allAssets = Messari::getAllAssets(['limit'=>2,'page'=>12]);
         $html = file_get_contents('https://www.coingecko.com/?page=1');
         $pagination = $this->getBetween($html, '<ul class="pagination">', '</ul>');
         $docPage = new DOMDocument();

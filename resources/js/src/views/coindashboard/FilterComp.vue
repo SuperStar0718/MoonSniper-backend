@@ -2,12 +2,12 @@
     <div>
         <b-form-group :label="modal">
             <div class="d-flex">
-                <cleave :options="NumberFormaVal" class="form-control" v-model="value3[0]" v-numeric-only
+                <cleave :options="NumberFormaVal" @blur="updateModelValue" class="form-control" v-model="value4[0]" v-numeric-only
                     placeholder="min" />
                 <span>
                     <feather-icon icon="MinusIcon" size="16" class="align-middle" style="margin:10px 6px 0 0px" />
                 </span>
-                <cleave :options="NumberFormaVal" class="form-control" v-model="value3[1]" v-numeric-only
+                <cleave :options="NumberFormaVal" @blur="updateModelValue" class="form-control" v-model="value4[1]" v-numeric-only
                     placeholder="max" />
             </div>
 
@@ -47,10 +47,16 @@
             return {
                 value2: this.value,
                 value3: this.value,
+                value4:[this.value[0],this.value[1]],
                 NumberFormaVal: {
                     numeral: true,
                     numeralThousandsGroupStyle: 'thousand',
                 },
+            }
+        },
+        methods:{
+            updateModelValue(){
+               this.value3  = [this.value4[0],this.value4[1]];
             }
         },
         watch: {
@@ -68,12 +74,12 @@
                
                 if(this.value3[1] == null)
                 {
-                    this.value3 = [this.value3[0], this.value3[0]+0];
+                    this.value3 = [this.value3[0], this.value3[0]];
                     // this.value2 = [this.value3[0], this.value3[0]+1];
                 }else{
+
                     if(this.value3[1] < this.value3[0])
                     {
-                        
                         if(this.value3[0] > 100)
                         {
                         this.value3 = [100,100];
@@ -92,6 +98,7 @@
 
                         }else{
                             this.value2 = [this.value3[0], this.value3[1]];
+                            this.value4 = [this.value2[0],this.value2[1]];
 
                         }
                     }

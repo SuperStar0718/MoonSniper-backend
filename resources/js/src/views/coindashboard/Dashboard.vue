@@ -899,16 +899,17 @@
                                     <div style="" class="my-auto">
                                         <b-avatar class="text-center mr-1" :src="data.item.image" />
                                     </div>
-                                    <div class="">
-
-                                        <div class="text-nowrap text-truncate"
-                                            :title="!fields[6].filterColumn?htmlToText(data.item.coin_description):''"
+                                    <div class="extn-flex">
+                                        <div class="text-nowrap text-truncate extn-name"
+                                            
                                             style="float: left; max-width: 100px; font-weight: 600;">
-                                            <b>{{ data.value }}</b>
+                                           <b :title="!fields[6].filterColumn?htmlToText(data.item.coin_description):''">{{ data.value.substring(0,8)}}</b>
+                                            <b style="font-weight: 400;" :title="data.value" v-if="data.value.length >8">...</b>
+
                                         </div>
 
                                         <br />
-                                        <div class="text-nowrap text-truncate text-left"
+                                        <div class="text-nowrap text-truncate text-left extn-symb"
                                             style="float: left; max-width: 100px; width: 100px;  opacity: 0.8;">
                                             {{ data.item.symbol }}
                                         </div>
@@ -6258,7 +6259,7 @@ import FilterComp from './FilterComp.vue'
     }
 
     .AppExtensionMode #dashboard .b-table-1 tbody tr {
-        height: 57px;
+        height: 45px;
     }
 
     .AppExtensionMode #dashboard .b-table-1 thead tr {
@@ -7071,6 +7072,28 @@ import FilterComp from './FilterComp.vue'
 
     .AppExtensionMode .maximizeButton {
         display: block;
+    }
+    .AppExtensionMode .extn-flex{
+        display:flex;
+    }
+    .AppExtensionMode .extn-symb{
+    float: left;
+    max-width: 100px;
+    width: 100px;
+    opacity: 0.8;
+    margin: auto;
+    }
+    .AppExtensionMode .extn-name{
+        display:flex;
+        float: left;
+    max-width: 100px;
+    margin-right: 5px;
+    font-weight: 600;
+    margin-top: auto;
+    margin-bottom: auto;
+    }
+    .AppExtensionMode tbody tr{
+        font-size:14px;
     }
 
 </style>
