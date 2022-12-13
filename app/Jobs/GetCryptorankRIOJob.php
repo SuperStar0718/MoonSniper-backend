@@ -22,6 +22,17 @@ class GetCryptorankRIOJob implements ShouldQueue
      */
     public function __construct()
     {
+       
+        
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
         $existing_coin_ids = CoinsData::select('coin_id','current_price')->get();
 
         $tokens_id = [];
@@ -82,16 +93,5 @@ class GetCryptorankRIOJob implements ShouldQueue
         }catch (\Exception $exception){
             Log::info("The Problem here is: ".$exception);
         }
-        
-    }
-
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
-    {
-        //
     }
 }
