@@ -64,7 +64,7 @@
                         </h5>
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
-                            :max="50"
+                            :max="100"
                             :gauge-color="[{offset: 0, color: '#232632'}, { offset: 17, color: '#F6573E'}, { offset: 25, color: '#FD7941'}, { offset: 50, color: '#E7D45D'}, { offset: 75, color: '#7DD75F'}, { offset: 100, color: '#51D868'}]"
                             :scale-interval="0" :transition-duration="0">
                             <div class="rounded-circle" id="marker_0" style="width:8px; height:8px; position: absolute">
