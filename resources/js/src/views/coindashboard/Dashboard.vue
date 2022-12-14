@@ -6,23 +6,35 @@
                     <div class="d-flex topHeader-flexing">
                         <div class="d-flex mx-auto justify-content-center Topbar-items" style="">
                             <div class="greyLetter" style="margin-right:4px;">MC:</div>
-                            <div class="whiteLetter" v-if="loaded">{{fag.data.market_cap?fag.data.market_cap:'-'}}</div>
-                            <div style="" class="TriangleIcon">
-                                <i class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
+                            <div class="whiteLetter" v-if="loaded">{{todaysMc != null?todaysMc:'-'}}</div>
+                            <div  v-if="todaysMcChange >0" style="" class="TriangleIcon ">
+                                <i   class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
                             </div>
-                            <div style="color:#6BBE83;">
-                                4.4%
+                            <div v-else style="" class="TriangleIcon rotate-180">
+                                <i   class="bi bi-triangle-fill " style="color:#ea5455;"></i>
                             </div>
+                            <div v-if="todaysMcChange >0" style="color:#6BBE83;">
+                               +{{todaysMcChange}}%
+                            </div>
+                            <div v-else style="color:#ea5455;">
+                                {{todaysMcChange}}%
+                             </div>
                         </div>
                         <div class="d-flex mx-auto justify-content-center Topbar-items" style="">
                             <div class="greyLetter" style="margin-right:4px;">Vol(24):</div>
-                            <div class="whiteLetter" v-if="loaded"> {{fag.data.vol_24h?fag.data.vol_24h:'-'}}</div>
-                            <div style="" class="TriangleIcon">
-                                <i class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
+                            <div class="whiteLetter" v-if="loaded"> {{todaysVol?todaysVol:'-'}}</div>
+                            <div  v-if="todaysVolChange >0" style="" class="TriangleIcon ">
+                                <i   class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
                             </div>
-                            <div style="color:#6BBE83;">
-                                5%
+                            <div v-else style="" class="TriangleIcon rotate-180">
+                                <i   class="bi bi-triangle-fill " style="color:#ea5455;"></i>
                             </div>
+                            <div v-if="todaysVolChange >0" style="color:#6BBE83;">
+                               +{{todaysVolChange}}%
+                            </div>
+                            <div v-else style="color:#ea5455;">
+                                {{todaysVolChange}}%
+                             </div>
                         </div>
                         <div class="d-flex mx-auto justify-content-center Topbar-items" style="">
                             <div class="greyLetter Dominance" style="margin-right:4px;">Dominance:</div>
@@ -3119,6 +3131,13 @@ import FilterComp from './FilterComp.vue'
         },
         data() {
             return {
+                weeklyMcAndVolume:{
+                   
+                },
+                todaysMc:0,
+                todaysMcChange:0,
+                todaysVol:0,
+                todaysVolChange:0,
                 value1:[null,null],
                 value2:[null,null],
                 value3:[null,null],
@@ -5904,6 +5923,27 @@ import FilterComp from './FilterComp.vue'
                     })
 
             },
+            loadMarketCap() {
+                axios.
+                get('/api/load-marketcap-values')
+                    .then(res => {
+                        if (res.data.status) {
+                            this.weeklyMcAndVolume = res.data;
+                            this.todaysMc = this.toInterNationalNumber(res.data.mcValues.stats[7][1].toFixed(0));
+                            let A = res.data.mcValues.stats[7][1];
+                            let B = res.data.mcValues.stats[6][1];
+                            this.todaysMcChange =   100 * ( (A - B) / ( (A+B)/2 ) );
+                            this.todaysMcChange  = this.todaysMcChange.toFixed(2);
+
+                            this.todaysVol = this.toInterNationalNumber(res.data.mcValues.total_volumes[7][1].toFixed(0));
+                            let C = res.data.mcValues.total_volumes[7][1];
+                            let D = res.data.mcValues.total_volumes[6][1];
+                            this.todaysVolChange =   100 * ( (C - D) / ( (C+D)/2 ) );
+                            this.todaysVolChange  = this.todaysVolChange.toFixed(2);
+                        }
+                    })
+
+            },
             ethGasPriceTooltip() {
                 let html = '';
                 return html = `<div>
@@ -6158,6 +6198,7 @@ import FilterComp from './FilterComp.vue'
             this.loadFag();
             this.loadPresetFilters();
             this.loadEthGasValues();
+            this.loadMarketCap();
             if (this.$route.query.type == 'extension') {
                 document.body.classList.add('AppExtensionMode')
             }
@@ -7095,7 +7136,9 @@ import FilterComp from './FilterComp.vue'
     .AppExtensionMode tbody tr{
         font-size:14px;
     }
-
+    .AppExtensionMode #dashboard table td {
+        padding: 0.22rem 2rem !important; 
+    }
 </style>
 
 <style lang="scss">

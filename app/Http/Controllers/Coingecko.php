@@ -60,6 +60,8 @@ class Coingecko extends Controller
         }
         if ($input_array["filters2"] != "") {
             $query->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%" . $input_array["filters2"] . "%");
+        }else{
+            $query->where('coin_data.market_cap', '!=', null)->where('coin_data.market_cap', '!=', '');
         }
         if ($input_array["selectedExchange"] && count($input_array["selectedExchange"]) > 0) {
             $seList = [];
@@ -195,6 +197,21 @@ class Coingecko extends Controller
         $ethprice = json_decode($result, true);
 
         return response()->json($ethprice);
+    }
+    public function marketcapValues()
+    {
+        $url = 'https://www.coingecko.com/market_cap/total_charts_data?duration=7&locale=en&vs_currency=usd';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15"));
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        $mcValues = json_decode($result, true);
+        return response()->json(['status'=>true, 'mcValues'=>$mcValues]);
     }
     public function loadPriceChartByCoin(Request $request)
     {

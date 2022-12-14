@@ -8,13 +8,15 @@ use DOMDocument;
 use Carbon\Carbon;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
+use App\Models\Dashboard;
+use App\Models\ContractIcon;
 use App\Models\UnlockingPdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\Dashboard;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Notifications\NotifyTokenUnlockNotification;
 
 class UnlockingController extends Controller
@@ -331,64 +333,33 @@ class UnlockingController extends Controller
     }
     public function dataFromUrl($c)
     {
-        return $allAssets = Messari::getAllAssets(['limit'=>2,'page'=>12]);
-        $html = file_get_contents('https://www.coingecko.com/?page=1');
-        $pagination = $this->getBetween($html, '<ul class="pagination">', '</ul>');
+        $html = file_get_contents('https://chainlist.org/');
+        $data = $this->getBetween($html, '<body>', '</body>');
+        libxml_use_internal_errors(true);
         $docPage = new DOMDocument();
-        $docPage->loadHTML($pagination);
+        $docPage->loadHTML($data);
         $xpath = new DOMXPath($docPage);
-        $query = "//a";
-        $entriesPage = $xpath->query($query);
-        
-        $totalPages =  $entriesPage[count($entriesPage)-2]->textContent;
-        for ($j=1; $j <= 1 ; $j++) { 
-            $html = file_get_contents('https://www.coingecko.com/?page='.$j.'');
-            $data = $this->getBetween($html, '<tbody', '</tbody>');
-          
-            $doc = new DOMDocument();
-            $doc->loadHTML($data);
-            $thirdTable = $doc->getElementsByTagName('tr');
-            $items1 = array();
-            foreach($thirdTable as $tr)
-            {
-                $items2 = [];
-                
-               $is = $tr->getElementsByTagName('i');
-               $items2[] = $is[0]->getAttribute('data-coin-symbol'); 
-               $items2[] = $is[0]->getAttribute('data-coin-id'); 
-               $items2[] = $is[0]->getAttribute('data-coin-slug'); 
-               $divs = $tr->getElementsByTagName('div'); // get the columns in this row
-               $apisym = $divs[6]->getAttribute('data-api-symbol'); 
-               $qry = array(
-                    'coingeckoid'=>$items2[1],
-                );
-               if($apisym !="")
-               {
-                $items2[] = $apisym;
-               }
-               $items1[] = $items2; 
-               if(count($items2)>=4)
-               {
-                      $exist = CoinsData::where('coin_id',$items2[3])->first();
-                       if($exist)
-                       {
-                           $coinData = CoinsData::where('coin_id',$items2[3])->update($qry);
-                       }
-                 
-               
-               }else{
-                  $items3= $exist = CoinsData::where('symbol',$items2[0])->first();
-                   if($exist)
-                   {
-                       $coinData = CoinsData::where('symbol',$items2[0])->update($qry);
-
-                   }
-               }
-               
-            }
-           return $items3;
-        }
-        
+        $nodes = $xpath->query('//div[@class="shadow bg-white p-8 pb-0 rounded-[10px] flex flex-col gap-3 overflow-hidden"]');
+        $tmp_dom = new DOMDocument();
+        foreach ($nodes as $node) {
+           $name = $node->getElementsByTagName('a');
+           $icons = $node->getElementsByTagName("img");
+                  $valUrl= $icons[0]->getAttribute("src");
+                  $oUrl = 'https://chainlist.org'.$valUrl;
+                  $valName= $name[0]->nodeValue;
+                  $table = $node->getElementsByTagName("td");
+                  $valChainId= $table[0]->nodeValue;
+                  $val= $table[1]->nodeValue;
+                    $fileName = str_replace(" ","-",$valName);
+                    $contents = file_get_contents($oUrl);
+                    Storage::put('public/contracticons/'.$fileName.'.jpg', $contents);
+                      asset('/storage/contracticons/' .$fileName.'.jpg');
+                    $conIcon = new ContractIcon();
+                    $conIcon->contract_type = $valName;
+                    $conIcon->icon = $fileName;
+                    $conIcon->url = $oUrl;
+                    $conIcon->save();
+          }
     }
     public static function getBetween2($content, $start, $end)
     {

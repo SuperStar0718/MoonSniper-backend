@@ -88,6 +88,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // ETh Price
    
     Route::get('/load-ethgas-values', [Coingecko::class, 'ethGasPrice'])->name('/load-ethgas-values');
+    Route::get('/load-marketcap-values', [Coingecko::class, 'marketcapValues'])->name('/load-marketcap-values');
    
 
 });

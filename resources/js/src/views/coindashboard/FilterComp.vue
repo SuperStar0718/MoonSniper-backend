@@ -20,6 +20,14 @@
             <vue-slider :max="5" :min="0" v-model="value3" class="mb-2" />
 
         </div>
+
+
+
+
+
+
+
+        
     </div>
 </template>
 <script>
