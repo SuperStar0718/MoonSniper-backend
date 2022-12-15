@@ -5653,6 +5653,7 @@ import FilterComp from './FilterComp.vue'
                     if (res) {
                         this.presetFilters = res.data;
                         this.selectedPreset = null;
+                        this.loadSelectedPresetFilter();
                         this.$toast({
                             component: ToastificationContent,
                             props: {
@@ -5720,6 +5721,7 @@ import FilterComp from './FilterComp.vue'
             },
             clearPreset() {
                 this.selectedPreset = null
+                this.loadSelectedPresetFilter();
                 this.closeDropDown();
                 this.updateSliders()
             },
