@@ -356,7 +356,7 @@ class UnlockingController extends Controller
                       asset('/storage/contracticons/' .$fileName.'.jpg');
                     $conIcon = new ContractIcon();
                     $conIcon->contract_type = $valName;
-                    $conIcon->icon = $fileName;
+                    $conIcon->icon =  asset('/storage/contracticons/' .$fileName.'.jpg');
                     $conIcon->url = $oUrl;
                     $conIcon->save();
           }
