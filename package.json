@@ -73,6 +73,7 @@
     "vue-feather-icons": "^5.1.0",
     "vue-flatpickr-component": "8.1.6",
     "vue-form-wizard": "^0.8.4",
+    "vue-global-emitter": "^1.1.0",
     "vue-good-table": "^2.21.10",
     "vue-i18n": "^8.25.0",
     "vue-input-restriction-directives": "^1.2.2",

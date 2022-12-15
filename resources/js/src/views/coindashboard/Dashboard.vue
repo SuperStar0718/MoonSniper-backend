@@ -6189,6 +6189,10 @@ import FilterComp from './FilterComp.vue'
                 this.dir = 'ltr'
                 return this.dir
             },
+            refreshEvent()
+            {
+
+            }
 
 
         },
@@ -6202,6 +6206,16 @@ import FilterComp from './FilterComp.vue'
             if (this.$route.query.type == 'extension') {
                 document.body.classList.add('AppExtensionMode')
             }
+            this.$emitter.listen('refreshEvent', data => {
+                    this.params.filters2 = "";
+                    this.locked = false;
+                    this.favoritised = false;
+                    this.params.favoritesMode = 0;
+                    this.params.api_mode = 1;
+                    this.Cpagpage = 1;
+                    this.all_coins_mode = true;
+                    this.loadCoins(false)
+            })
         },
         created() {
             this.userData = getUserData()

@@ -27,6 +27,15 @@ export default [
     },
   },
   {
+    path: '/dashboard/:id',
+    name: 'dashboard',
+    component: () => import('@/views/coindashboard/Dashboard.vue'),
+    meta: {
+      resource: 'Dashboard',
+      action: 'read',
+    },
+  },
+  {
     path: '/dashboard',
     name: 'dashboard',
     component: () => import('@/views/coindashboard/Dashboard.vue'),

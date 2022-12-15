@@ -24,7 +24,7 @@ import VueSocialauth from 'vue-social-auth'
 import vueNumeralFilterInstaller from 'vue-numeral-filter';
 import Sparkline from 'vue-sparklines'
 import vueAwesomeCountdown from 'vue-awesome-countdown'
-
+import VueGlobalEmitter from 'vue-global-emitter'
 // Axios Mock Adapter
 // import '@/@fake-db/db'
 
@@ -35,6 +35,7 @@ Vue.use(ModalPlugin)
 Vue.use(Sparkline)
 // Composition API
 Vue.use(VueCompositionAPI)
+Vue.use(VueGlobalEmitter)
 Vue.use(VueInputRestrictionDirectives);
 Vue.use(vueAwesomeCountdown, 'vac')
 
