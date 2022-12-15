@@ -53,7 +53,7 @@
           {
             var domain = window.location.href;
             if (domain.includes("dashboard")) {
-              this.$emitter.emit('refreshEvent', {foo: 'Refresh'})
+              this.$emitter.emit('refreshEvent', {time: 'Refresh'})
             }
             // this.timestamp = Math.floor((Math.random() * 10) + 1);
           }
