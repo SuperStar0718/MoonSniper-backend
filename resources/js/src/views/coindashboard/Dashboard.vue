@@ -70,10 +70,7 @@
             <b-row class="FGCharts" style="">
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_greed">
                     <div class="mx-auto bmeter-w text-center">
-                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">Fear & Greed
-                            <i class="fa-solid fa-circle-info cursor-pointer"
-                            v-b-tooltip.hover.top="'The fear and greed index uses different indicators that measure the aspect of the stock market behavior what influence how much investors are willing to pay for the stocks'"></i>
-                        </h5>
+                        
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
                             :max="100"
@@ -100,14 +97,15 @@
                                 </div>
                             </div>
                         </VueSvgGauge>
+                        <h5 class="bmeter-w mx-auto margin16_t feerTitle">Fear & Greed
+                            <i class="fa-solid fa-circle-info cursor-pointer"
+                            v-b-tooltip.hover.top="'The fear and greed index uses different indicators that measure the aspect of the stock market behavior what influence how much investors are willing to pay for the stocks'"></i>
+                        </h5>
                     </div>
                 </b-col>
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_nft">
                     <div class="mx-auto bmeter-w text-center">
-                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">NFT Barometer
-                            <i class="fa-solid fa-circle-info cursor-pointer"
-                                v-b-tooltip.hover.top="'The Market Sentiment Index (experimental) is calculated based on volatility, trading volume, social media and google trends. The score is updated every hour.'"></i>
-                        </h5>
+                       
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.nftindex" :separator-step="0" :min="0" :max="100"
                             :gauge-color="[
@@ -151,15 +149,15 @@
 
                             </div>
                         </VueSvgGauge>
+                        <h5 class="bmeter-w mx-auto margin16_t feerTitle">NFT Barometer
+                            <i class="fa-solid fa-circle-info cursor-pointer"
+                                v-b-tooltip.hover.top="'The Market Sentiment Index (experimental) is calculated based on volatility, trading volume, social media and google trends. The score is updated every hour.'"></i>
+                        </h5>
                     </div>
                 </b-col>
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_btc_in_out">
                     <div class="mx-auto bmeter-w text-center">
-                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">BTC in/outflow
-
-                            <i class="fa-solid fa-circle-info cursor-pointer"
-                            v-b-tooltip.hover.top="'Inflows to exchanges fluctuate with changes in market sentiment, for instance, an increase in inflows suggests increased selling pressure in the market.'"></i>
-                        </h5>
+                       
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.inoutperOval" :separator-step="0" :min="0" :max="200"
                             :gauge-color="[
@@ -192,14 +190,16 @@
 
                             </div>
                         </VueSvgGauge>
+                        <h5 class="bmeter-w mx-auto margin16_t feerTitle">BTC in/outflow
+
+                            <i class="fa-solid fa-circle-info cursor-pointer"
+                            v-b-tooltip.hover.top="'Inflows to exchanges fluctuate with changes in market sentiment, for instance, an increase in inflows suggests increased selling pressure in the market.'"></i>
+                        </h5>
                     </div>
                 </b-col>
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_btc_alt">
                     <div class="mx-auto bmeter-w text-center">
-                        <h5 class="bmeter-w mx-auto margin16_b feerTitle">Alt/Btc Season <i
-                                class="fa-solid fa-circle-info cursor-pointer"
-                                v-b-tooltip.hover.top="'If 75% of the Top 50 coins performed better than Bitcoin over the last season (90 days) it is Altcoin Season.'"></i>
-                        </h5>
+                       
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.coinseason" :separator-step="0" :min="0" :max="100"
                             :gauge-color="
@@ -240,6 +240,10 @@
 
                             </div>
                         </VueSvgGauge>
+                        <h5 class="bmeter-w mx-auto margin16_t feerTitle">Alt/Btc Season <i
+                            class="fa-solid fa-circle-info cursor-pointer"
+                            v-b-tooltip.hover.top="'If 75% of the Top 50 coins performed better than Bitcoin over the last season (90 days) it is Altcoin Season.'"></i>
+                    </h5>
                     </div>
                 </b-col>
             </b-row>
@@ -6216,6 +6220,7 @@ import FilterComp from './FilterComp.vue'
                     this.params.api_mode = 1;
                     this.Cpagpage = 1;
                     this.all_coins_mode = true;
+                    this.params.sort = ["market_cap_rank", "asc"],
                     this.loadCoins(false)
             })
         },
@@ -6504,12 +6509,12 @@ import FilterComp from './FilterComp.vue'
     }
 
 
-    .margin16_b {
-        margin-bottom: 16px;
+    .margin16_t {
+        margin-top: 16px;
     }
 
-    .AppExtensionMode .margin16_b {
-        margin-bottom: 5px;
+    .AppExtensionMode .margin16_t {
+        margin-top: 5px;
     }
 
     .feerGreen {
@@ -6711,8 +6716,9 @@ import FilterComp from './FilterComp.vue'
         overflow: hidden;
         font-family: 'Poppins-Light';
         font-style: normal;
-        font-weight: 400;
-        font-size: 20px;
+        font-weight: 600;
+        font-size: 30px;
+        height: 34px;
     }
 
     .apexcharts-menu-open {
@@ -6792,9 +6798,7 @@ import FilterComp from './FilterComp.vue'
         color: white !important;
     }
 
-    .socialText2 {
-        height: 33px;
-    }
+ 
 
     .soicalLable.darkWhiteText.lableText {
         height: 32px;
@@ -7104,7 +7108,7 @@ import FilterComp from './FilterComp.vue'
     }
 
     .AppExtensionMode .bmeter-w {
-        width: 100% !important;
+        width: 95% !important;
     }
 
     .modal-details-topbar {
