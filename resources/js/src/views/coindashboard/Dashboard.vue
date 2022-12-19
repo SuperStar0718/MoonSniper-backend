@@ -255,11 +255,17 @@
             <div class="searchbar ">
                 <b-row>
                     <b-col cols="8" md="6" xl="6">
-                        <b-input-group class="input-group-merge SearchInputGroup">
-                            <b-form-input v-model="params.filters2" placeholder="Search"
+                        <b-form-group>
+                            <b-input-group class="input-group-merge">
+                                <b-form-input v-model="params.filters2" placeholder="Search"
                                 class="search-product searchdark" style="border-radius: 20px;" />
-
-                        </b-input-group>
+                              <b-input-group-append style="z-index: 999;">
+                                <i  v-if="params.filters2 != null && params.filters2.trim() != ''" @click="params.filters2 = ''"  class="fa-solid fa-xmark cursor-pointer" style="font-size: 28px; position: relative;   right: 32px;
+                                margin: auto;"></i>
+                              </b-input-group-append>
+                            </b-input-group>
+                          </b-form-group>
+                       
                     </b-col>
                     <b-col cols="4" md="2" xl="4">
                     </b-col>
@@ -834,7 +840,7 @@
                 </div>
                 <b-overlay :show="isBusy" rounded="sm">
 
-                    <b-table :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill "
+                    <b-table sticky-header :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill "
                         :show-empty="showEmpty" :busy="isBusy" :empty-text="emptyText" class="b-table-1"
                         :class="{'fullscreen':marketIndicators}" @row-clicked="detailsModel($event)"
                         style=" white-space: nowrap;" responsive :items="items.data" :fields="visibleFields">
@@ -1873,26 +1879,15 @@
                                     <div class="d-flex m-auto">
                                         <b-avatar class="bg-light mr-1" v-if="activeData.image" :src="activeData.image">
                                         </b-avatar>
-                                        <span class="marginx1 m-auto a darkWhiteText" style="font-family: 'Poppins';   font-size: 20px;  font-style: normal;  font-weight: 400;
-                                                        width: 105px;
-                                                        text-overflow: ellipsis;
-                                                        white-space: nowrap;
-                                                        overflow: hidden;" data-toggle="tooltip" data-placement="top"
-                                            :title="activeData.name"
-                                            v-if="activeData.name && activeData.name.length > 8 ">
-                                            {{activeData.name}}
-
-
-                                        </span>
+                                        
                                         <span class="marginx1 m-auto b darkWhiteText mr-3"
-                                            :class="{'w-[105px]':activeData.name && activeData.name.length > 8}" style="font-family: 'Poppins';
+                                             style="font-family: 'Poppins';
                                                         font-size: 20px; 
                                                         font-style: normal;
                                                         font-weight: 400;
-                                                        
                                                         text-overflow: ellipsis;
                                                         white-space: nowrap;
-                                                        overflow: hidden;" v-else>
+                                                        overflow: hidden;" >
                                             {{activeData.name}}
 
 
@@ -1964,11 +1959,11 @@
                                                     v-for="(address,index) in activeData.contract_address.slice(0, 1)"
                                                     :key="index"
                                                     style="display:block; padding: 2px; border-radius: 20px;">
-                                                    <div class="flex">
+                                                    <div class="d-flex">
 
                                                         <b-img v-if="activeData.image" :src="activeData.image" fluid
                                                             alt="Responsive image" style="margin-right:5px; height:30px;     position: relative;
-                                                                    bottom: 4px;" />
+                                                                    bottom: 4px;    margin: auto;"  />
                                                         <div style="font-family: 'Poppins-Light'; display:inline-block;
                                                                     font-style: normal;    position: relative;
                                                                     top: 4px;
@@ -2024,7 +2019,7 @@
                                                     v-for="(address,index) in activeData.contract_address" :key="index"
                                                     style="display:flex; padding: 4px;">
                                                     <b-img v-if="activeData.image" :src="activeData.image" fluid
-                                                        alt="Responsive image" style="margin-right:5px; height:30px;" />
+                                                        alt="Responsive image" style="margin-right:5px; height:30px; " />
                                                     <div class="" style="font-family: 'Poppins-Light'; display:inline-block; font-style: normal;
                                                                         font-weight: 500;
                                                                         font-size: 14px;
@@ -2042,7 +2037,7 @@
                                                         </div>
 
                                                     </div>
-                                                    <div style="display:inline-block; float:right;">
+                                                    <div style="display:flex; float:right;">
 
 
                                                         <b-button size="sm" class="ml-1"
@@ -2055,7 +2050,7 @@
                                                                 class="fa-regular fa-copy cursor-pointer darkWhiteText fa-xl m-1"></i>
                                                         </b-button>
                                                         <img src='/images/static/metamask.png' class="img-fluid"
-                                                            alt="metamask" style="cursor:pointer; width:23px;"
+                                                            alt="metamask" style="cursor:pointer; width:22px; height:22px; margin:auto;"
                                                             @click="say('hello')">
 
                                                     </div>
@@ -2149,7 +2144,7 @@
                                                 <div v-show="chartType == 'cp'">
                                                     <div v-if="activeData.coingeckoid != null">
                                                         <vue-apex-charts red="apexChart1" class="full" width="100%"
-                                                            :dataLabels="true" type="area" height="290"
+                                                            :dataLabels="true" type="area" height="330"
                                                             :options="Price_DaysChart" :series="Price_DaysChartseries">
                                                         </vue-apex-charts>
                                                     </div>
@@ -2157,7 +2152,7 @@
                                                 <div v-show="chartType == 'mc'">
                                                     <div v-if="activeData.coingeckoid != null">
                                                         <vue-apex-charts red="apexChart1" class="full" width="100%"
-                                                            :dataLabels="true" type="area" height="290"
+                                                            :dataLabels="true" type="area" height="330"
                                                             :options="MC_DaysChart" :series="MC_DaysChartseries">
                                                         </vue-apex-charts>
                                                     </div>
@@ -2176,7 +2171,7 @@
                                                 <div v-if="activeData.total_volume" style="margin-bottom: 10px;">
                                                     <span
                                                         style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                        Volume</span>
+                                                        24h Volume</span>
                                                     <div class="" style="font-size:16px; font-weight: 600;">
                                                         <span
                                                             style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.total_volume) }}</span>
@@ -2189,6 +2184,50 @@
                                                     <div class="" style="font-size:16px; font-weight: 600;">
                                                         <span
                                                             style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.market_cap) }}</span>
+                                                    </div>
+                                                </div>
+                                                <div v-if="activeData.fully_diluted_valuation" style="margin-bottom: 10px;">
+                                                    <span
+                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;white-space: nowrap;">
+                                                       Fully Diluted Valuation</span>
+                                                    <div class="" style="font-size:16px; font-weight: 600;">
+                                                        <span
+                                                            style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.fully_diluted_valuation) }}</span>
+                                                    </div>
+                                                </div>
+                                                 <div v-if="activeData.ath" style="margin-bottom: 10px;">
+                                                    <span
+                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
+                                                       ATH</span>
+                                                       <div class="d-flex" style="font-size:16px; font-weight: 600;" >
+                                                        <span
+                                                            style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.ath) }}</span>
+                                                            <span
+                                                            style="font-family: Poppins-Light;
+                                                            font-style: normal;
+                                                            font-weight: 400;
+                                                            font-size: 11px;
+                                                            white-space: nowrap;
+                                                            margin: auto;
+                                                            margin-left: 6px;">{{ toInterNationalNumber(activeData.ath_change_percentage) }} %</span>
+                                                    </div>
+                                                </div>
+                                                <div v-if="activeData.atl" style="margin-bottom: 10px;">
+                                                    <span
+                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
+                                                       ATL</span>
+                                                       
+                                                    <div class="d-flex" style="font-size:16px; font-weight: 600;" >
+                                                        <span
+                                                            style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.atl) }}</span>
+                                                            <span
+                                                            style="font-family: Poppins-Light;
+                                                            font-style: normal;
+                                                            font-weight: 400;
+                                                            font-size: 11px;
+                                                            white-space: nowrap;
+                                                            margin: auto;
+                                                            margin-left: 6px;">{{ toInterNationalNumber(activeData.atl_change_percentage) }} %</span>
                                                     </div>
                                                 </div>
                                                 <div style="margin-bottom: 10px;"
@@ -2523,6 +2562,8 @@
                                     ||activeData.six_months_unlock_number_of_tokens
                                     ||activeData.six_months_unlock_percent_of_tokens
                                     ||activeData.six_months_unlock_size
+                                    ||activeData.max_supply
+                                    ||activeData.circulating_supply
                                     ||activeData.total_supply_percent ">
                                 <div class="container d-flex" style="padding:0px;">
                                     <div class="d-inline" v-if="activeData.next_unlock_date_text"
@@ -2923,19 +2964,47 @@
                                                 </div>
                                             </b-col>
                                             <b-col cols="12" md="6" class="mb-1" xl="6"
+                                            v-if="activeData.circulating_supply">
+                                            <div class="">
+                                                <div class="mr-1">  Circulating supply </div>
+                                                <div v-if="checkUserPlan(activeData.circulating_supply)"
+                                                    style="font-weight:600" class="">
+                                                    {{ kFormatter(activeData.circulating_supply)}} 
+                                                </div>
+                                                <div style="font-weight:600" v-else>
+                                                    {{kFormatter(activeData.circulating_supply)}}
+                                                </div>
+                                            </div>
+                                        </b-col>
+                                            <b-col cols="12" md="6" class="mb-1" xl="6"
                                                 v-if="activeData.total_supply_percent">
                                                 <div class="">
                                                     <div class="mr-1">Total Supply %</div>
                                                     <div v-if="checkUserPlan(activeData.total_supply_percent)"
                                                         style="font-weight:600" class="">
-                                                        {{ activeData.total_supply_percent}} %
+                                                        {{ toInterNationalNumber(activeData.total_supply_percent)}} %
                                                     </div>
                                                     <div style="font-weight:600" v-else>
-                                                        {{activeData.total_supply_percent}}%
+                                                        {{toInterNationalNumber(activeData.total_supply_percent)}}%
                                                     </div>
                                                 </div>
                                             </b-col>
 
+                                            
+                                           
+                                        <b-col cols="12" md="6" class="mb-1" xl="6"
+                                            v-if="activeData.max_supply">
+                                            <div class="">
+                                                <div class="mr-1">  Max supply </div>
+                                                <div v-if="checkUserPlan(activeData.max_supply)"
+                                                    style="font-weight:600" class="">
+                                                    {{ kFormatter(activeData.max_supply)}} 
+                                                </div>
+                                                <div style="font-weight:600" v-else>
+                                                    {{kFormatter(activeData.max_supply)}}
+                                                </div>
+                                            </div>
+                                        </b-col>
                                             <b-col cols="12" md="12">
                                                 <span class="mr-1">Supply chart: </span>
                                                 <div>
@@ -3047,6 +3116,7 @@ import FilterComp from './FilterComp.vue'
         BInputGroup,
         BInputGroupAppend,
         BFormInput,
+        BInputGroupPrepend,
         BButton,
         BFormGroup,
         BCollapse,
@@ -3086,6 +3156,7 @@ import FilterComp from './FilterComp.vue'
     import 'bootstrap-icons/font/bootstrap-icons.css';
     import flatPickr from 'vue-flatpickr-component'
     import ExchangesTable from '../exchanges/ExchangesTable.vue'
+
     export default {
         components: {
             BTable,
@@ -3094,6 +3165,7 @@ import FilterComp from './FilterComp.vue'
             BTab,
             BAvatar,
             BBadge,
+            BInputGroupPrepend,
             BPagination,
             BCard,
             BCardHeader,
@@ -3672,6 +3744,7 @@ import FilterComp from './FilterComp.vue'
                     tooltip: {
                         style: {
                             colors: '#78909C',
+                            opacity:0.75,
 
                         },
                         shared: false,
@@ -7158,6 +7231,13 @@ import FilterComp from './FilterComp.vue'
     }
     .AppExtensionMode #dashboard table td {
         padding: 0.22rem 2rem !important; 
+    }
+    #apexcharts7days-history .apexcharts-tooltip{
+        opacity:0.75;
+    }
+    body.dark-layout #dashboard table th {
+        background: #232228 !important;
+        color: white;
     }
 </style>
 
