@@ -331,10 +331,7 @@ class UnlockingController extends Controller
             $this->strposX($haystack, $needle, $number - 1) + strlen($needle) : 0
         );
     }
-    public function FunctionName(Type $var = null)
-    {
-        
-    }
+    
     public function dataFromUrl($c)
     {
         $coins = CoinsData::where('coingeckoid','!=',null)->select('coin_id','symbol','coingeckoid')->get();
@@ -349,7 +346,7 @@ class UnlockingController extends Controller
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             $result = curl_exec($ch);
              Storage::put('public/sparkline/sparline_'.$coin->coingeckoid.'.svg', $result);
-            return asset('/storage/sparkline/sparline_' .$coin->coingeckoid.'.svg');
+           return  asset('/storage/sparkline/sparline_' .$coin->coingeckoid.'.svg');
             curl_close($ch);
             $coin->coin_id =  $coin->coin_id;
             $coin->save();
