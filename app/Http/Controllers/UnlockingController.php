@@ -12,6 +12,7 @@ use App\Models\Dashboard;
 use App\Models\ContractIcon;
 use App\Models\UnlockingPdf;
 use Illuminate\Http\Request;
+use App\Jobs\SparklineSaveJob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -334,12 +335,23 @@ class UnlockingController extends Controller
     
     public function dataFromUrl($c)
     {
-        $coins = CoinsData::where('coingeckoid','!=',null)->select('coin_id','symbol','coingeckoid')->get();
-        foreach ($coins as $key => $coin) {
-          $html = file_get_contents('https://www.coingecko.com/coins/'.$coin->coingeckoid.'/sparkline');
-          Storage::put('public/sparklineicon/sparline_'.$coin->coingeckoid.'.svg', $html);
-      
-     }
+
+        $coins = CoinsData::where('coingeckoid','!=',null)->pluck('coingeckoid')->toArray();
+        $chunks =  array_chunk($coins,100);
+        $i = 0;
+
+        foreach ($chunks as $key => $value) {
+            $job = (new SparklineSaveJob($value))->onQueue('moon-sniper-worker');
+            dispatch($job);
+            $i = $i+1;
+            if($i == 10)
+            {
+             sleep(60);
+             $i = 0;
+            }
+
+       }
+        
     }
     public static function getBetween2($content, $start, $end)
     {

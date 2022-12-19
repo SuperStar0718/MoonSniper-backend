@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\CoinsData;
 use Illuminate\Bus\Queueable;
+use App\Jobs\ScrapeSparklineChartJob;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
@@ -32,11 +33,19 @@ class ScrapeSparklineChartJob implements ShouldQueue
      */
     public function handle()
     {
-        $coins = CoinsData::where('coingeckoid','!=',null)->select('coin_id','symbol','coingeckoid')->get();
-           foreach ($coins as $key => $coin) {
-             $html = file_get_contents('https://www.coingecko.com/coins/'.$coin->coingeckoid.'/sparkline');
-             Storage::put('public/sparklineicon/sparkline_'.$coin->coingeckoid.'.svg', $html);
-         
-        }
+        $coins = CoinsData::where('coingeckoid','!=',null)->pluck('coingeckoid')->toArray();
+        $chunks =  array_chunk($coins,100);
+        $i = 0;
+
+        foreach ($chunks as $key => $value) {
+            $job = (new SparklineSaveJob($value))->onQueue('moon-sniper-worker');
+            dispatch($job);
+            $i = $i+1;
+            if($i == 10)
+            {
+             sleep(60);
+             $i = 0;
+            }
+       }
     }
 }
