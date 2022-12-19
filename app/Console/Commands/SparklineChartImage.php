@@ -28,7 +28,7 @@ class SparklineChartImage extends Command
      */
     public function handle()
     {
-        ScrapeSparklineChartJob::dispatch()->onQueue('moon-sniper-worker');
+        ScrapeSparklineChartJob::dispatch()->onQueue('moon-sniper-worker-long');
         return Command::SUCCESS;
     }
 }
