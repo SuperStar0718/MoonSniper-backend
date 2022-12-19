@@ -35,7 +35,7 @@ class ScrapeSparklineChartJob implements ShouldQueue
         $coins = CoinsData::where('coingeckoid','!=',null)->select('coin_id','symbol','coingeckoid')->get();
            foreach ($coins as $key => $coin) {
              $html = file_get_contents('https://www.coingecko.com/coins/'.$coin->coingeckoid.'/sparkline');
-             Storage::put('public/sparklineimage/sparline_'.$coin->coingeckoid.'.svg', $html);
+             Storage::put('public/sparklineimage/sparkline_'.$coin->coingeckoid.'.svg', $html);
          
         }
     }
