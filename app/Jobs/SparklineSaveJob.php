@@ -19,7 +19,7 @@ class SparklineSaveJob implements ShouldQueue
      *
      * @return void
      */
-    public $coins;
+    private $coins;
     public function __construct($coins)
     {
         $this->coins = $coins;
@@ -33,8 +33,8 @@ class SparklineSaveJob implements ShouldQueue
     public function handle()
     {
          foreach ($this->coins as $key => $coin) {
-            $html = file_get_contents('https://www.coingecko.com/coins/'.$coin[$key].'/sparkline');
-            Storage::put('public/sparklineicon/sparkline_'.$coin->coingeckoid.'.svg', $html);
+            $html = file_get_contents('https://www.coingecko.com/coins/'.$coin.'/sparkline');
+            Storage::put('public/sparklineicon/sparkline_'.$coin.'.svg', $html);
          }//
     }
 }
