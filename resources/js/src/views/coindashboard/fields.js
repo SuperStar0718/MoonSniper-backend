@@ -464,14 +464,23 @@ const data = [
         visible: 1,
     },
     {
-        key: 'empty',
+        key: 'sparkline_in_7d',
         index: 38,
+        label: '7d chart', 
+        stickyColumn: false,
+        filterColumn:true,
+        visible: 3
+    },
+    {
+        key: 'empty',
+        index: 39,
         
         label: '',
         stickyColumn: false,
         filterColumn:true,
         visible: 3
     }
+    
 
 ]
 export default data;

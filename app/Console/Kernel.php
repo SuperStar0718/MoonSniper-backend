@@ -30,6 +30,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('moon:scrapecoinid')->twiceDaily(1,13);
         $schedule->command('moon:coinseasondata')->daily();
         $schedule->command('moon:getcryptoROI')->daily();
+        $schedule->command('moon:sparklineimage')->daily();
     }
 
     /**

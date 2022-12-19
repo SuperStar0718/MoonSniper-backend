@@ -260,7 +260,7 @@
                                 <b-form-input v-model="params.filters2" placeholder="Search"
                                 class="search-product searchdark" style="border-radius: 20px;" />
                               <b-input-group-append style="z-index: 999;">
-                                <i  v-if="params.filters2 != null && params.filters2.trim() != ''" @click="params.filters2 = ''"  class="fa-solid fa-xmark cursor-pointer" style="font-size: 28px; position: relative;   right: 32px;
+                                <i  v-if="params.filters2 != null && params.filters2.trim() != ''" @click="params.filters2 = ''"  class="fa-solid fa-xmark cursor-pointer" style="font-size: 16px; position: relative;   right: 32px;
                                 margin: auto;"></i>
                               </b-input-group-append>
                             </b-input-group>
@@ -854,7 +854,7 @@
                         <template #empty="scope">
                             <h4>{{ scope.emptyText }}</h4>
                         </template>
-
+                      
                         <template #head()="scope">
                             <div class="text-nowrap cursor-pointer text-center" style=""
                                 @click="sortingCols(scope.field.key)">
@@ -871,7 +871,10 @@
                                 </div>
                             </div>
                         </template>
-
+                        <template #cell(sparkline_in_7d)="data">
+                            <span v-if="data.item.coingeckoid">
+                                <img :src="'/storage/sparkline/sparline_'+data.item.coingeckoid+'.svg'"/> </span>
+                        </template>
                         <template #cell(coin_platform)="data">
                             <div class="" v-html="getPlatformTags(data.value)"></div>
                             <div class="" v-ripple.400="'rgba(113, 102, 240, 0.15)'" variant="outline-success"
@@ -1178,7 +1181,7 @@
                         </template>
                         <template #cell(roi_percentage)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    @click="sortingCols(data.value)" style="">{{ twenty4HConversation(data.value) }}
+                                    style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span>
                                 <span v-else-if="data.value" class="text-danger"
                                     style="">{{ twenty4HConversation(data.value) }}
@@ -1186,7 +1189,7 @@
                         </template>
                         <template #cell(total_supply_percent)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    @click="sortingCols(data.value)" style="">{{ twenty4HConversation(data.value) }}
+                                    style="">{{ twenty4HConversation(data.value) }}
                                     <span v-if="data.value"> %</span></span>
                                 <span v-else-if="data.value" class="text-danger"
                                     style="">{{ twenty4HConversation(data.value) }}
@@ -1250,13 +1253,13 @@
             <div class="p
             ">
                 <b-row>
-                    <b-col cols="12" sm="6"
-                        class="d-flex align-items-center justify-content-center justify-content-sm-start">
-                    </b-col>
+                    
                     <!-- Pagination -->
-                    <b-col cols="12" sm="6"
-                        class="d-flex align-items-center justify-content-center justify-content-sm-end">
-
+                    <b-col cols="12" 
+                        class="d-flex align-items-center justify-content-center justify-content-around">
+                            <div>
+                               <span class="" v-if="!isBusy"> Showing {{ items.from }} to {{ items.to }} of {{ items.total }}</span>
+                            </div>
                         <b-pagination id="pagination" v-model="Cpagpage" :total-rows="items.total"
                             :per-page="items.per_page" first-number last-number class="mb-0 mt-1 mt-sm-0"
                             prev-class="prev-item" next-class="next-item"
@@ -1270,7 +1273,15 @@
                                     style="background-color:transaprent !important;" />
                             </template>
                         </b-pagination>
-
+                        <div>
+                            <span>
+                                <select v-model="Cpagpage" v-if="!isBusy">
+                                    <option v-for="(item,index) in items.last_page" :key="index">
+                                        {{ index+1 }}
+                                    </option>
+                                </select>
+                            </span>
+                         </div>
                     </b-col>
 
                 </b-row>
@@ -7233,7 +7244,7 @@ import FilterComp from './FilterComp.vue'
         padding: 0.22rem 2rem !important; 
     }
     #apexcharts7days-history .apexcharts-tooltip{
-        opacity:0.75;
+        opacity:0.85;
     }
     body.dark-layout #dashboard table th {
         background: #232228 !important;

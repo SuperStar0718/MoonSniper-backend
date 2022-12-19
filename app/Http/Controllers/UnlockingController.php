@@ -331,35 +331,29 @@ class UnlockingController extends Controller
             $this->strposX($haystack, $needle, $number - 1) + strlen($needle) : 0
         );
     }
+    public function FunctionName(Type $var = null)
+    {
+        
+    }
     public function dataFromUrl($c)
     {
-        $html = file_get_contents('https://chainlist.org/');
-        $data = $this->getBetween($html, '<body>', '</body>');
-        libxml_use_internal_errors(true);
-        $docPage = new DOMDocument();
-        $docPage->loadHTML($data);
-        $xpath = new DOMXPath($docPage);
-        $nodes = $xpath->query('//div[@class="shadow bg-white p-8 pb-0 rounded-[10px] flex flex-col gap-3 overflow-hidden"]');
-        $tmp_dom = new DOMDocument();
-        foreach ($nodes as $node) {
-           $name = $node->getElementsByTagName('a');
-           $icons = $node->getElementsByTagName("img");
-                  $valUrl= $icons[0]->getAttribute("src");
-                  $oUrl = 'https://chainlist.org'.$valUrl;
-                  $valName= $name[0]->nodeValue;
-                  $table = $node->getElementsByTagName("td");
-                  $valChainId= $table[0]->nodeValue;
-                  $val= $table[1]->nodeValue;
-                    $fileName = str_replace(" ","-",$valName);
-                    $contents = file_get_contents($oUrl);
-                    Storage::put('public/contracticons/'.$fileName.'.jpg', $contents);
-                      asset('/storage/contracticons/' .$fileName.'.jpg');
-                    $conIcon = new ContractIcon();
-                    $conIcon->contract_type = $valName;
-                    $conIcon->icon =  asset('/storage/contracticons/' .$fileName.'.jpg');
-                    $conIcon->url = $oUrl;
-                    $conIcon->save();
-          }
+        $coins = CoinsData::where('coingeckoid','!=',null)->select('coin_id','symbol','coingeckoid')->get();
+        foreach ($coins as $key => $coin) {
+            $url = 'https://www.coingecko.com/coins/'.$coin->coingeckoid.'/sparkline';
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15"));
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            $result = curl_exec($ch);
+             Storage::put('public/sparkline/sparline_'.$coin->coingeckoid.'.svg', $result);
+            return asset('/storage/sparkline/sparline_' .$coin->coingeckoid.'.svg');
+            curl_close($ch);
+            $coin->coin_id =  $coin->coin_id;
+            $coin->save();
+        }
     }
     public static function getBetween2($content, $start, $end)
     {
