@@ -48,7 +48,7 @@ class ScrapeSparklineChartJob implements ShouldQueue
                 foreach ($chunks as $key => $chunkVal) {
                     $job = (new SparklineSaveJob($chunkVal))->onQueue('moon-sniper-worker-long')->delay($t);
                     dispatch($job);
-                    $t+60;
+                    $t = $t+60;
                 }
              
                 // sleep(60);
