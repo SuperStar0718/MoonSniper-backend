@@ -336,6 +336,9 @@ class UnlockingController extends Controller
     
     public function dataFromUrl($c)
     {
+            return $coins = CoinsData::where('coingeckoid','!=',null)->select('coingeckoid','market_cap_rank')->orderBy('market_cap_rank','ASC')->paginate(100, ['*'], 'page', 1)->toArray();
+            
+       return $coins = CoinsData::where('coingeckoid','!=',null)->orderBy('market_cap_rank','ASC')->select('coingeckoid')->paginate(100, ['*'], 'page', 2)->toArray();
         $t =0;
         $coinsData = CoinsData::where('coingeckoid','!=',null)->paginate(100, ['*'], 'page', 1);
         $page  = $coinsData->lastPage();

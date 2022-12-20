@@ -38,12 +38,12 @@ class ScrapeSparklineChartJob implements ShouldQueue
         $page  = $coinsData->lastPage();
         $p = 0;
         for ($i=1; $i <=$page ; $i++) { 
-            $coins = CoinsData::where('coingeckoid','!=',null)->select('coingeckoid')->paginate(100, ['*'], 'page', $i)->toArray();
+            $coins = CoinsData::where('coingeckoid','!=',null)->select('coingeckoid')->orderBy('market_cap','DESC')->paginate(100, ['*'], 'page', $i)->toArray();
               $box = [];
               foreach ($coins['data'] as $key => $value) {
                 $box[] =$value['coingeckoid'];
               }
-              $chunks =  array_chunk($box,10);
+              $chunks =  array_chunk($box,20);
 
                 foreach ($chunks as $key => $chunkVal) {
                     $job = (new SparklineSaveJob($chunkVal))->onQueue('moon-sniper-worker-long')->delay($t);
