@@ -873,7 +873,7 @@
                         </template>
                         <template #cell(sparkline_in_7d)="data">
                             <span v-if="data.item.coingeckoid">
-                                <img :src="'/storage/sparklineicon/sparkline_'+data.item.coingeckoid+'.html'"/> </span>
+                                <img :src="'/storage/sparklineicon/sparkline_'+data.item.coingeckoid+'.svg'"/> </span>
                         </template>
                         <template #cell(coin_platform)="data">
                             <div class="" v-html="getPlatformTags(data.value)"></div>
