@@ -32,9 +32,18 @@ class SparklineSaveJob implements ShouldQueue
      */
     public function handle()
     {
-         foreach ($this->coins as $key => $coin) {
-            $html = file_get_contents('https://www.coingecko.com/coins/'.$coin.'/sparkline');
-            Storage::put('public/sparklineicon/sparkline_'.$coin.'.svg', $html);
-         }//
+        foreach ($this->coins as $key => $coin) {
+           try {
+               $html = file_get_contents('https://www.coingecko.com/coins/'.$coin.'/sparkline');
+               Storage::put('public/sparklineicon/sparkline_'.$coin.'.html', $html);
+           } catch (\Throwable $th) {
+                sleep(60);
+               //  $html = file_get_contents('https://www.coingecko.com/coins/'.$coin.'/sparkline');
+               //  Storage::put('public/sparklineicon/sparkline_'.$coin.'.html', $html);
+                
+           }
+          
+
+        }//
     }
 }
