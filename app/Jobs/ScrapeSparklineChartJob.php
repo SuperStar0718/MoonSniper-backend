@@ -33,20 +33,25 @@ class ScrapeSparklineChartJob implements ShouldQueue
      */
     public function handle()
     {
-        $coins = CoinsData::where('coingeckoid','!=',null)->pluck('coingeckoid')->toArray();
-        $chunks =  array_chunk($coins,50);
-        $i = 0;
-        $t=0;
-        foreach ($chunks as $key => $value) {
-            $job = (new SparklineSaveJob($value))->onQueue('moon-sniper-worker-long')->delay(now()->addseconds($t));
-            dispatch($job);
-            $t=$t+50;
-            $i = $i+1;
-            if($i == 10)
-            {
-             sleep(60);
-             $i = 0;
-            }
-       }
+        $t =0;
+        $coinsData = CoinsData::where('coingeckoid','!=',null)->paginate(100, ['*'], 'page', 1);
+        $page  = $coinsData->lastPage();
+        $p = 0;
+        for ($i=1; $i <=$page ; $i++) { 
+            $coins = CoinsData::where('coingeckoid','!=',null)->select('coingeckoid')->paginate(100, ['*'], 'page', $i)->toArray();
+              $box = [];
+              foreach ($coins['data'] as $key => $value) {
+                $box[] =$value['coingeckoid'];
+              }
+              $chunks =  array_chunk($box,10);
+
+             foreach ($chunks as $key => $chunkVal) {
+                $job = (new SparklineSaveJob($chunkVal))->onQueue('moon-sniper-worker-long')->delay($t);
+                $t+60;
+             }
+             
+                sleep(60);
+               
+        }
     }
 }

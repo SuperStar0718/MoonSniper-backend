@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Libraries\CoinGecko\CoinGeckoClient;
 use App\Notifications\NotifyTokenUnlockNotification;
 
 class UnlockingController extends Controller
@@ -335,22 +336,27 @@ class UnlockingController extends Controller
     
     public function dataFromUrl($c)
     {
+        $t =0;
+        $coinsData = CoinsData::where('coingeckoid','!=',null)->paginate(100, ['*'], 'page', 1);
+        $page  = $coinsData->lastPage();
+        $p = 0;
+        for ($i=1; $i <=$page ; $i++) { 
+            $coins = CoinsData::where('coingeckoid','!=',null)->select('coingeckoid')->paginate(100, ['*'], 'page', $i)->toArray();
+              $box = [];
+              foreach ($coins['data'] as $key => $value) {
+                $box[] =$value['coingeckoid'];
+              }
+              $chunks =  array_chunk($box,10);
 
-        $coins = CoinsData::where('coingeckoid','!=',null)->pluck('coingeckoid')->toArray();
-        $chunks =  array_chunk($coins,100);
-        $i = 0;
-
-        foreach ($chunks as $key => $value) {
-            $job = (new SparklineSaveJob($value))->onQueue('moon-sniper-worker');
-            dispatch($job);
-            $i = $i+1;
-            if($i == 10)
-            {
-             sleep(60);
-             $i = 0;
-            }
-
-       }
+             foreach ($chunks as $key => $chunkVal) {
+                $job = (new SparklineSaveJob($chunkVal))->onQueue('moon-sniper-worker-long')->delay($t);
+                $t+60;
+             }
+             
+                sleep(60);
+               
+        }
+      
         
     }
     public static function getBetween2($content, $start, $end)

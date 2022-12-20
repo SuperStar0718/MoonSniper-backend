@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
@@ -38,8 +39,9 @@ class SparklineSaveJob implements ShouldQueue
                Storage::put('public/sparklineicon/sparkline_'.$coin.'.svg', $html);
            } catch (\Throwable $th) {
                 sleep(60);
-               //  $html = file_get_contents('https://www.coingecko.com/coins/'.$coin.'/sparkline');
-               //  Storage::put('public/sparklineicon/sparkline_'.$coin.'.html', $html);
+                Log::info("Chart Data: $th");
+                // $html = file_get_contents('https://www.coingecko.com/coins/'.$coin.'/sparkline');
+                // Storage::put('public/sparklineicon/sparkline_'.$coin.'.html', $html);
                 
            }
           
