@@ -21,7 +21,7 @@
                              </div>
                         </div>
                         <div class="d-flex mx-auto justify-content-center Topbar-items" style="">
-                            <div class="greyLetter" style="margin-right:4px;">Vol(24):</div>
+                            <div class="greyLetter" style="margin-right:4px;">Vol(24h):</div>
                             <div class="whiteLetter" v-if="loaded"> {{todaysVol?todaysVol:'-'}}</div>
                             <div  v-if="todaysVolChange >0" style="" class="TriangleIcon ">
                                 <i   class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
@@ -181,7 +181,7 @@
                                                 style="color:#28c76f;"></i></a>
                                     </span>
                                     <span class="col-6 btcInoutVal" style="text-align:center;"  :class="{'text-danger':fag.data.inoutper>0,'text-success-green':fag.data.inoutper<=0}">
-                                    1d :  {{ fag.data.btcflowDif }}
+                                    1d :  {{roundData2( fag.data.btcflowDif,1) }}
                                     </span>
                                     <span class="col-3">
 
@@ -193,7 +193,7 @@
                         <h5 class="bmeter-w mx-auto margin16_t feerTitle">BTC in/outflow
 
                             <i class="fa-solid fa-circle-info cursor-pointer"
-                            v-b-tooltip.hover.top="'Inflows to exchanges fluctuate with changes in market sentiment, for instance, an increase in inflows suggests increased selling pressure in the market.'"></i>
+                            v-b-tooltip.hover.top.html="btcInOutFlowTooltip"></i>
                         </h5>
                     </div>
                 </b-col>
@@ -858,12 +858,15 @@
                         <template #head()="scope">
                             <div class="text-nowrap cursor-pointer text-center" style=""
                                 @click="sortingCols(scope.field.key)">
-                                <div v-if="scope.label" class="d-flex justify-content-center text-capitalize">
+                                <div  :title="scope.field.title" v-if="scope.label" class="d-flex justify-content-center text-capitalize">
                                     <span> {{ scope.label }} </span>
                                     <span class="my-auto d-inline">
                                         <feather-icon icon="TriangleIcon" size="8"
                                             style="rotate:180deg;margin-left: 5px; margin-top: -9px; "
                                             :class="{'text-danger':params.sort[1] =='asc'&& params.sort[0] ==scope.field.key}" />
+                                           
+                                            <!-- <i v-if="scope.field.title != null" class="fa-solid fa-circle-info cursor-pointer"
+                                            ></i> -->
                                         <!-- <feather-icon icon="ChevronDownIcon" size="8"
                                             :class="{'text-danger':params.sort[1] =='desc'&& params.sort[0] ==scope.field.key}"
                                             class="align-middle d-block" />  -->
@@ -898,7 +901,7 @@
                         </template>
 
                         <template #cell(coin_description)="data">
-                            <div class="d-flex text-center" v-if="data.value" v-html="data.value.substring(0,20)">
+                            <div  v-b-tooltip.hover.bottom.html="data.value" class="d-flex text-center" v-if="data.value" v-html="data.value.substring(0,20)">
 
                             </div>
                         </template>
@@ -928,7 +931,7 @@
                                         <div class="text-nowrap text-truncate extn-name"
                                             
                                             style="float: left; max-width: 100px; font-weight: 600;">
-                                           <b :title="!fields[6].filterColumn?htmlToText(data.item.coin_description):''">{{ data.value.substring(0,8)}}</b>
+                                           <b  v-b-tooltip.hover.bottom.html="!fields[6].filterColumn?data.item.coin_description:''">{{ data.value.substring(0,8)}}</b>
                                             <b style="font-weight: 400;" :title="data.value" v-if="data.value.length >8">...</b>
 
                                         </div>
@@ -976,14 +979,19 @@
                                 {{twenty4HConversation(data.value)}} <span v-if="data.value">X</span>
                             </div>
                         </template>
-                        <template #cell(total_locked)="data">
+                        <template #cell(total_locked_percent)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
                                 class="d-flex2 justify-content-start blurry-text">
-                                {{data.value}}
+                                {{data.item.total_locked_percent}}
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
-                                class="d-flex2 justify-content-start">
-                                {{twenty4HConversation(data.value)}}
+                                class="d-flex2 justify-content-start total_locked_progress">
+                                <i class="fa-solid fa-lock  opacity-75" style="margin-right: 4px;" ></i> {{roundData(data.item.total_locked_percent)}}%
+                                <b-progress
+                                :value="data.item.total_locked_percent"
+                                max="100"
+                                height="8px"
+                              />
                             </div>
                         </template>
                         <template #cell(next_unlock_date_text)="data">
@@ -1004,7 +1012,7 @@
                             <div v-else-if="data.item.next_unlock_date" style="text-align: center;"
                                 class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
-                                {{dateFormat3(data.item.next_unlock_date)}}
+                                {{dateFormat2(data.item.next_unlock_date)}}
                                 <br />
                                 <vac :end-time="getTimeStamp(data.item.next_unlock_date)">
                                     <template v-slot:process="{ timeObj }">
@@ -1314,7 +1322,7 @@
                                                         <b-tab active title="USD" @click="BtcFlowUSD = true">
                                                             <div></div>
                                                         </b-tab>
-                                                        <b-tab title="Asset" @click="BtcFlowUSD = false">
+                                                        <b-tab title="BTC" @click="BtcFlowUSD = false">
                                                             <div></div>
                                                         </b-tab>
                                                     </b-tabs>
@@ -3020,7 +3028,7 @@
                                                 <span class="mr-1">Supply chart: </span>
                                                 <div>
 
-                                                    <vue-apex-charts type="pie" height="300"
+                                                    <vue-apex-charts type="donut" height="300"
                                                         :options="supplyChart.chartOptions"
                                                         :series="supplyChart.series" />
                                                 </div>
@@ -3138,7 +3146,8 @@ import FilterComp from './FilterComp.vue'
         BSpinner,
         BOverlay,
         VBPopover,
-        VBTooltip
+        VBTooltip,
+        BProgress
     } from 'bootstrap-vue'
     import Ripple from 'vue-ripple-directive'
     import axios from '@axios'
@@ -3213,11 +3222,14 @@ import FilterComp from './FilterComp.vue'
             flatPickr,
             ExchangesTable,
             Multiselect,
-            FilterComp
+            FilterComp,
+            BProgress
 
         },
         data() {
             return {
+                btcInOutFlowTooltip:'<span>Inflows to exchanges fluctuate with changes in market sentiment, for instance, an increase in inflows suggests increased selling pressure in the market. </br> The percentage movement refers to the previous day, for example, if the barometer shows a -20% movement, that means there has been an increase in the withdrawal of BTC from exchanges to decentralized wallets. This suggests that people are selling less Bitcoin and have more confidence in the market.</span>',
+                
                 weeklyMcAndVolume:{
                    
                 },
@@ -4192,6 +4204,11 @@ import FilterComp from './FilterComp.vue'
 
         },
         methods: {
+            checkToolTipExist(id)
+            {
+                
+                return true;
+            },
             closeDropDown() {
 
                 this.$refs.dropdownpreset.hide(true)
@@ -6564,7 +6581,7 @@ import FilterComp from './FilterComp.vue'
 
 
     .greenFlash {
-        color: #6BBE84 !important;
+        color: #6BD863 !important;
 
     }
 
@@ -6579,7 +6596,7 @@ import FilterComp from './FilterComp.vue'
     }
 
     .greenFlash1 {
-        color: #6BBE84;
+        color: #6BD863;
 
     }
 
@@ -6850,7 +6867,7 @@ import FilterComp from './FilterComp.vue'
     }
 
     .text-success-green {
-        color: #6BBE84
+        color: #6BD863
     }
 
     #modal-preset-create___BV_modal_body_ {
@@ -7192,7 +7209,7 @@ import FilterComp from './FilterComp.vue'
     }
 
     .AppExtensionMode .bmeter-w {
-        width: 95% !important;
+        width: 90% !important;
     }
 
     .modal-details-topbar {
@@ -7240,15 +7257,25 @@ import FilterComp from './FilterComp.vue'
     .AppExtensionMode tbody tr{
         font-size:14px;
     }
+    .AppExtensionMode #dashboard table td:nth-child(1) {
+        padding: 0.22rem 0rem !important; 
+    }
     .AppExtensionMode #dashboard table td {
         padding: 0.22rem 2rem !important; 
     }
+   
     #apexcharts7days-history .apexcharts-tooltip{
         opacity:0.85;
     }
     body.dark-layout #dashboard table th {
         background: #232228 !important;
         color: white;
+    }
+    .total_locked_progress .progress{
+        background: gray !important;
+    }
+    .total_locked_progress .progress-bar{
+        background: #6BD863 !important;
     }
 </style>
 

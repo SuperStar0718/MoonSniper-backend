@@ -2,24 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use DateTime;
-use DOMXPath;
-use DOMDocument;
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
+use App\Jobs\SparklineSaveJob;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
-use App\Models\Dashboard;
-use App\Models\ContractIcon;
 use App\Models\UnlockingPdf;
-use Illuminate\Http\Request;
-use App\Jobs\SparklineSaveJob;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use App\Libraries\CoinGecko\CoinGeckoClient;
 use App\Notifications\NotifyTokenUnlockNotification;
+use Carbon\Carbon;
+use DateTime;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UnlockingController extends Controller
 {
@@ -333,46 +326,124 @@ class UnlockingController extends Controller
             $this->strposX($haystack, $needle, $number - 1) + strlen($needle) : 0
         );
     }
-    
+
     public function dataFromUrl($c)
     {
-            return $coins = CoinsData::where('coingeckoid','!=',null)->select('coingeckoid','market_cap_rank')->orderBy('market_cap_rank','ASC')->paginate(100, ['*'], 'page', 1)->toArray();
-            
-       return $coins = CoinsData::where('coingeckoid','!=',null)->orderBy('market_cap_rank','ASC')->select('coingeckoid')->paginate(100, ['*'], 'page', 2)->toArray();
-        $t =0;
-        $coinsData = CoinsData::where('coingeckoid','!=',null)->paginate(100, ['*'], 'page', 1);
-        $page  = $coinsData->lastPage();
-        $p = 0;
-        for ($i=1; $i <=$page ; $i++) { 
-            $coins = CoinsData::where('coingeckoid','!=',null)->select('coingeckoid')->paginate(100, ['*'], 'page', $i)->toArray();
-              $box = [];
-              foreach ($coins['data'] as $key => $value) {
-                $box[] =$value['coingeckoid'];
-              }
-              $chunks =  array_chunk($box,10);
+        $jsonData = file_get_contents('https://token.unlocks.app/');
+        $data = $this->getBetween($jsonData, 'type="application/json">', '</script>');
+         $data1 = json_decode($data);
+        $array = [];
+        foreach ($data1->props->pageProps->info->data as $key => $value) {
+            $coin = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)->first();
+            if ($value->token->coingeckoId) {
+                if (!$coin) {
+                    $newCoin = new CoinsList();
+                    $newCoin->coin_id = $value->token->coingeckoId;
+                    $newCoin->symbol = $value->token->symbol;
+                    $newCoin->name = $value->token->name;
+                    $newCoin->trading_history_flag = 0;
+                    $newCoin->save();
+                    $coin = $newCoin;
+                }
+                $coinData = CoinsData::where('coin_id', $coin->coin_id)->where('symbol', $value->token->symbol)->first();
+                if ($coinData) {
+                    $coinData->current_price = $value->token->price;
+                    $coinData->fully_diluted_valuation = $value->token->fullyDiluted;
+                    $coinData->market_cap = $value->token->marketCap;
+                    $coinData->max_supply = $value->token->maxSupply;
+                    $coinData->total_locked = $value->totalLockedAmount;
+                    if($value->totalLockedPercent !='-Infinity')
+                    {
+                        $coinData->total_locked_percent = $value->totalLockedPercent;
+                        if ($coinData->total_locked_percent >= 0 && $coinData->total_locked_percent <= 8) {
+                            $coinData->next_unlock_size = 'SMALL';
+                        } else if ($coinData->total_locked_percent > 8 && $coinData->total_locked_percent <= 14) {
+                            $coinData->next_unlock_size = 'MEDIUM';
+                        } else if ($coinData->total_locked_percent > 14) {
+                            $coinData->next_unlock_size = 'BIG';
+                        }
+                    }
+                  
+                    if ($value->nextEventData != null) {
+                        $coinData->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
+                        $coinData->next_unlock_number_of_tokens = $value->nextEventData->amount;
+                        $coinData->vesting_status = 0;
 
-             foreach ($chunks as $key => $chunkVal) {
-                $job = (new SparklineSaveJob($chunkVal))->onQueue('moon-sniper-worker-long')->delay($t);
-                $t+60;
-             }
-             
-                sleep(60);
-               
+                    }
+                    $coinData->save();
+                } else {
+                    $coinData2 = new CoinsData();
+                    $coinData2->coin_id = $value->token->coingeckoId;
+                    $coinData2->image = $value->token->icon;
+                    $coinData2->symbol = $value->token->symbol;
+                    $coinData2->circulating_supply = $value->token->circulatingSupply;
+                    $coinData2->current_price = $value->token->price;
+                    $coinData2->fully_diluted_valuation = $value->token->fullyDiluted;
+                    $coinData2->market_cap = $value->token->marketCap;
+                    $coinData2->max_supply = $value->token->maxSupply;
+                    $coinData2->historical_sentiment = '[]';
+                    $coinData2->historical_social_mentions = '[]';
+                    $coinData2->historical_social_engagement = '[]';
+                    if ($value->nextEventData != null) {
+                        $coinData2->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
+                        $coinData2->next_unlock_number_of_tokens = $value->nextEventData->amount;
+                        $coinData2->total_locked = $value->totalLockedAmount;
+                        $coinData2->total_locked_percent = $value->totalLockedPercent;
+                        if ($value->token->maxSupply != 0) {
+                            $tokenPer = $value->nextEventData->amount / $value->token->maxSupply * 100;
+                            if ($tokenPer >= 0 && $tokenPer <= 8) {
+                                $coinData2->next_unlock_size = 'SMALL';
+                            } else if ($tokenPer > 8 && $tokenPer <= 14) {
+                                $coinData2->next_unlock_size = 'MEDIUM';
+                            } else if ($tokenPer > 14) {
+                                $coinData2->next_unlock_size = 'BIG';
+                            }
+                            $coinData2->next_unlock_percent_of_tokens = $tokenPer;
+
+                        }
+                        $coinData2->vesting_status = 0;
+
+                    }
+                    $coinData2->save();
+                }
+
+            }
         }
-      
-        
+        return $array;
+        return $coins = CoinsData::where('coingeckoid', '!=', null)->orderBy('market_cap_rank', 'ASC')->select('coingeckoid')->paginate(100, ['*'], 'page', 2)->toArray();
+        $t = 0;
+        $coinsData = CoinsData::where('coingeckoid', '!=', null)->paginate(100, ['*'], 'page', 1);
+        $page = $coinsData->lastPage();
+        $p = 0;
+        for ($i = 1; $i <= $page; $i++) {
+            $coins = CoinsData::where('coingeckoid', '!=', null)->select('coingeckoid')->paginate(100, ['*'], 'page', $i)->toArray();
+            $box = [];
+            foreach ($coins['data'] as $key => $value) {
+                $box[] = $value['coingeckoid'];
+            }
+            $chunks = array_chunk($box, 10);
+
+            foreach ($chunks as $key => $chunkVal) {
+                $job = (new SparklineSaveJob($chunkVal))->onQueue('moon-sniper-worker-long')->delay($t);
+                $t + 60;
+            }
+
+            sleep(60);
+
+        }
+
     }
     public static function getBetween2($content, $start, $end)
     {
         $r = explode($start, $content);
         $arr = array();
-        for ($i=0; $i <count($r); $i++) { 
+        for ($i = 0; $i < count($r); $i++) {
             if (isset($r[$i])) {
                 $r = explode($end, $r[1]);
-                $arr[]  = $r[0];
+                $arr[] = $r[0];
             }
         }
-       return $arr;
+        return $arr;
         return '';
     }
     public static function getBetween($content, $start, $end)

@@ -2,6 +2,7 @@ const data = [
     {
         key: 'market_cap_rank',
         index: 0,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -18,6 +19,7 @@ const data = [
     {
         key: 'name',
         index: 1,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -35,6 +37,7 @@ const data = [
     {
         key: 'current_price',
         index: 2,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -47,6 +50,7 @@ const data = [
     {
         key: 'price_change_percentage_24h',
         index: 3,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -59,6 +63,7 @@ const data = [
     {
         key: 'price_change_percentage_7d_in_currency',
         index: 4,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -71,11 +76,12 @@ const data = [
     {
         key: 'market_cap',
         index: 5,
+        title:null,
          thStyle: {
             'width':'50px',
             
         },
-        label: 'MC',
+        label: 'Marketcap',
         stickyColumn: false,
         filterColumn:true, canHide:true,
         visible: 1
@@ -83,6 +89,7 @@ const data = [
     {
         key: 'coin_description',
         index: 6,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -96,6 +103,7 @@ const data = [
     {
         key: 'coin_platform',
         index: 7,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -108,11 +116,12 @@ const data = [
     {
         key: 'total_volume',
         index: 8,
+        title:null,
          thStyle: {
             'width':'50px',
             
         },
-        label: 'VOL(24h)',
+        label: 'Volume(24hrs)',
         stickyColumn: false,
         filterColumn:true, canHide:true,
         visible: 1
@@ -120,6 +129,7 @@ const data = [
     {
         key: 'high_24h',
         index: 9,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -132,6 +142,7 @@ const data = [
     {
         key: 'low_24h',
         index: 10,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -145,6 +156,7 @@ const data = [
     {
         key: 'ath',
         index: 11,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -157,6 +169,7 @@ const data = [
     {
         key: 'atl',
         index: 12,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -169,6 +182,7 @@ const data = [
     {
         key: 'roi_times',
         index: 13,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -181,6 +195,7 @@ const data = [
     {
         key: 'coin_category',
         index: 14,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -203,12 +218,14 @@ const data = [
         label: 'ROI %',
         stickyColumn: false,
         filterColumn:false, canHide:true,
-        visible: 1
+        visible: 1,
+        title: 'Return on Investment from TGE (Token Generation Event)'
     },
 
     {
         key: 'total_supply_percent',
         index: 16,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -221,6 +238,7 @@ const data = [
     {
         key: 'circulating_supply',
         index: 17,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -237,10 +255,11 @@ const data = [
             'width':'50px',
             
         },
-        label: 'Seed Price',
+        label: 'Public Price',
         stickyColumn: false,
         filterColumn:false, canHide:true,
-        visible: 1
+        visible: 1,
+        title: 'Earliest investors price'
     },
    
     {
@@ -253,16 +272,18 @@ const data = [
         label: 'ROI Seed',
         stickyColumn: false,
         filterColumn:false,
-        visible: 1
+        visible: 1,
+        title: 'Return on Investment from TGE (Token Generation Event)'
     },
     {
-        key: 'total_locked',
+        key: 'total_locked_percent',
         index: 20,
+        title:null,
          thStyle: {
             'width':'50px',
             
         },
-        label: 'Total Locked',
+        label: 'Total Locked%',
         stickyColumn: false,
         filterColumn:false, canHide:true,
         visible: 2
@@ -270,6 +291,7 @@ const data = [
     {
         key: 'next_unlock_date_text',
         index: 21,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -282,6 +304,7 @@ const data = [
     {
         key: 'next_unlock_status',
         index: 22,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -295,6 +318,7 @@ const data = [
     {
         key: 'next_unlock_number_of_tokens',
         index: 23,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -306,6 +330,7 @@ const data = [
     },{
         key: 'next_unlock_percent_of_tokens',
         index: 24,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -328,6 +353,7 @@ const data = [
     },{
         key: 'first_vc_unlock',
         index: 26,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -339,6 +365,7 @@ const data = [
     },{
         key: 'end_vc_unlock',
         index: 27,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -350,6 +377,7 @@ const data = [
     },{
         key: 'three_months_unlock_number_of_tokens',
         index: 28,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -361,6 +389,7 @@ const data = [
     },{
         key: 'three_months_unlock_percent_of_tokens',
         index: 29,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -372,6 +401,7 @@ const data = [
     },{
         key: 'three_months_unlock_size',
         index: 30,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -384,6 +414,7 @@ const data = [
     {
         key: 'six_months_unlock_number_of_tokens',
         index: 31,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -395,6 +426,7 @@ const data = [
     },{
         key: 'six_months_unlock_percent_of_tokens',
         index: 32,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -406,6 +438,7 @@ const data = [
     },{
         key: 'six_months_unlock_size',
         index: 33,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -422,10 +455,11 @@ const data = [
             'width':'50px',
             
         },
-        label: 'Social Mentions Change',
+        label: 'Social MC',
         stickyColumn: false,
         filterColumn:false, canHide:true,
         visible: 1,
+        title: '24hrs Hashtags on social media (negative or positive)'
     },
     {
         key: 'social_engagement_change',
@@ -434,14 +468,17 @@ const data = [
             'width':'50px',
             
         },
-        label: 'Social Engagement Change',
+        label: 'Social EC',
         stickyColumn: false,
         filterColumn:false, canHide:true,
         visible: 1,
+        title: ' 24hrs Interaction in social posts ',
+
     },
     {
         key: 'average_sentiment',
         index: 36,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -454,6 +491,7 @@ const data = [
     {
         key: 'average_sentiment_change',
         index: 37,
+        title:null,
          thStyle: {
             'width':'50px',
             
@@ -466,6 +504,7 @@ const data = [
     {
         key: 'sparkline_in_7d',
         index: 38,
+        title:null,
         label: '7d chart', 
         stickyColumn: false,
         filterColumn:true,
@@ -474,6 +513,7 @@ const data = [
     {
         key: 'empty',
         index: 39,
+        title:null,
         
         label: '',
         stickyColumn: false,

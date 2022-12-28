@@ -2,15 +2,14 @@
 
 namespace App\Jobs;
 
-use Carbon\Carbon;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class CoinUnlockDataScrapJob implements ShouldQueue
 {
@@ -39,38 +38,38 @@ class CoinUnlockDataScrapJob implements ShouldQueue
         $array = [];
         foreach ($data1->props->pageProps->info->data as $key => $value) {
             $coin = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)->first();
-
-            if (!$coin) {
-                $newCoin = new CoinsList();
-                $newCoin->coin_id = $value->token->coingeckoId;
-                $newCoin->symbol = $value->token->symbol;
-                $newCoin->name = $value->token->name;
-                $newCoin->trading_history_flag = 0;
-                $newCoin->save();
-                $coin = $newCoin;
-            }
-            $coinData = CoinsData::where('coin_id', $coin->coin_id)->where('symbol', $value->token->symbol)->first();
+            if ($value->token->coingeckoId) {
+                if (!$coin) {
+                    $newCoin = new CoinsList();
+                    $newCoin->coin_id = $value->token->coingeckoId;
+                    $newCoin->symbol = $value->token->symbol;
+                    $newCoin->name = $value->token->name;
+                    $newCoin->trading_history_flag = 0;
+                    $newCoin->save();
+                    $coin = $newCoin;
+                }
+                $coinData = CoinsData::where('coin_id', $coin->coin_id)->where('symbol', $value->token->symbol)->first();
                 if ($coinData) {
                     $coinData->current_price = $value->token->price;
                     $coinData->fully_diluted_valuation = $value->token->fullyDiluted;
                     $coinData->market_cap = $value->token->marketCap;
                     $coinData->max_supply = $value->token->maxSupply;
+                    $coinData->total_locked = $value->totalLockedAmount;
+                    if($value->totalLockedPercent !='-Infinity')
+                    {
+                        $coinData->total_locked_percent = $value->totalLockedPercent;
+                        if ($coinData->total_locked_percent >= 0 && $coinData->total_locked_percent <= 8) {
+                            $coinData->next_unlock_size = 'SMALL';
+                        } else if ($coinData->total_locked_percent > 8 && $coinData->total_locked_percent <= 14) {
+                            $coinData->next_unlock_size = 'MEDIUM';
+                        } else if ($coinData->total_locked_percent > 14) {
+                            $coinData->next_unlock_size = 'BIG';
+                        }
+                    }
+                  
                     if ($value->nextEventData != null) {
                         $coinData->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
                         $coinData->next_unlock_number_of_tokens = $value->nextEventData->amount;
-
-                        if ($value->token->maxSupply != 0) {
-                            $tokenPer = $value->nextEventData->amount / $value->token->maxSupply * 100;
-                            if ($tokenPer >= 0 && $tokenPer <= 8) {
-                                $coinData->next_unlock_size = 'SMALL';
-                            } else if ($tokenPer > 8 && $tokenPer <= 14) {
-                                $coinData->next_unlock_size = 'MEDIUM';
-                            } else if ($tokenPer > 14) {
-                                $coinData->next_unlock_size = 'BIG';
-                            }
-                            $coinData->next_unlock_percent_of_tokens = $tokenPer;
-
-                        }
                         $coinData->vesting_status = 0;
 
                     }
@@ -110,8 +109,11 @@ class CoinUnlockDataScrapJob implements ShouldQueue
                     }
                     $coinData2->save();
                 }
-         }
-}
+
+            }
+        }
+        
+    }
     public static function getBetween($content, $start, $end)
     {
         $r = explode($start, $content);
