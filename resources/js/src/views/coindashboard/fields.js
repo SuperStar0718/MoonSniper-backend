@@ -182,7 +182,7 @@ const data = [
     {
         key: 'roi_times',
         index: 13,
-        title:null,
+        title:'Return on Investment from TGE (Token Generation Event)',
          thStyle: {
             'width':'50px',
             
