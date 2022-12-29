@@ -55,18 +55,19 @@ class CoinUnlockDataScrapJob implements ShouldQueue
                     $coinData->market_cap = $value->token->marketCap;
                     $coinData->max_supply = $value->token->maxSupply;
                     $coinData->total_locked = $value->totalLockedAmount;
-                    if($value->totalLockedPercent !='-Infinity')
-                    {
-                        $coinData->total_locked_percent = $value->totalLockedPercent;
-                        if ($coinData->total_locked_percent >= 0 && $coinData->total_locked_percent <= 8) {
+                    $coinData->circulating_supply = $value->token->circulatingSupply;
+                    if ($value->token->maxSupply != 0) {
+                        $tokenPer = ($value->totalLockedAmount / $value->token->maxSupply) * 100;
+                        if ($tokenPer >= 0 && $tokenPer <= 8) {
                             $coinData->next_unlock_size = 'SMALL';
-                        } else if ($coinData->total_locked_percent > 8 && $coinData->total_locked_percent <= 14) {
+                        } else if ($tokenPer > 8 && $tokenPer <= 14) {
                             $coinData->next_unlock_size = 'MEDIUM';
-                        } else if ($coinData->total_locked_percent > 14) {
+                        } else if ($tokenPer > 14) {
                             $coinData->next_unlock_size = 'BIG';
                         }
+                        $coinData->total_locked_percent = $tokenPer;
+
                     }
-                  
                     if ($value->nextEventData != null) {
                         $coinData->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
                         $coinData->next_unlock_number_of_tokens = $value->nextEventData->amount;
@@ -83,36 +84,37 @@ class CoinUnlockDataScrapJob implements ShouldQueue
                     $coinData2->current_price = $value->token->price;
                     $coinData2->fully_diluted_valuation = $value->token->fullyDiluted;
                     $coinData2->market_cap = $value->token->marketCap;
+                    $coinData2->market_cap = $value->token->marketCap;
                     $coinData2->max_supply = $value->token->maxSupply;
-                    $coinData2->historical_sentiment = '[]';
-                    $coinData2->historical_social_mentions = '[]';
-                    $coinData2->historical_social_engagement = '[]';
+                    $coinData2->total_locked = $value->totalLockedAmount;
+                    if ($value->token->maxSupply != 0) {
+                        $tokenPer = ($value->totalLockedAmount / $value->token->maxSupply) * 100;
+                        if ($tokenPer >= 0 && $tokenPer <= 8) {
+                            $coinData2->next_unlock_size = 'SMALL';
+                        } else if ($tokenPer > 8 && $tokenPer <= 14) {
+                            $coinData2->next_unlock_size = 'MEDIUM';
+                        } else if ($tokenPer > 14) {
+                            $coinData2->next_unlock_size = 'BIG';
+                        }
+                        $coinData2->total_locked_percent = $tokenPer;
+
+                    }
                     if ($value->nextEventData != null) {
                         $coinData2->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
                         $coinData2->next_unlock_number_of_tokens = $value->nextEventData->amount;
-                        $coinData2->total_locked = $value->totalLockedAmount;
-                        $coinData2->total_locked_percent = $value->totalLockedPercent;
-                        if ($value->token->maxSupply != 0) {
-                            $tokenPer = $value->nextEventData->amount / $value->token->maxSupply * 100;
-                            if ($tokenPer >= 0 && $tokenPer <= 8) {
-                                $coinData2->next_unlock_size = 'SMALL';
-                            } else if ($tokenPer > 8 && $tokenPer <= 14) {
-                                $coinData2->next_unlock_size = 'MEDIUM';
-                            } else if ($tokenPer > 14) {
-                                $coinData2->next_unlock_size = 'BIG';
-                            }
-                            $coinData2->next_unlock_percent_of_tokens = $tokenPer;
-
-                        }
                         $coinData2->vesting_status = 0;
 
                     }
+                    $coinData2->historical_sentiment = '[]';
+                    $coinData2->historical_social_mentions = '[]';
+                    $coinData2->historical_social_engagement = '[]';
+
                     $coinData2->save();
                 }
 
             }
         }
-        
+
     }
     public static function getBetween($content, $start, $end)
     {

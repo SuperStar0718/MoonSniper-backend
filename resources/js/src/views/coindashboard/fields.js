@@ -468,7 +468,7 @@ const data = [
             'width':'50px',
             
         },
-        label: 'Social EC',
+        label: 'Social EC',
         stickyColumn: false,
         filterColumn:false, canHide:true,
         visible: 1,
