@@ -43,7 +43,7 @@
                                     Price: above {{ data.item.data.min_price}}$
                                 </div>
                                 <div  v-else-if="data.item.data.min_price== null && data.item.data.max_price != null">
-                                    Price: below {{ data.item.data.min_price}}$
+                                    Price: below {{ data.item.data.max_price}}$
                                 </div>
                                 
                                 <div v-if="data.item.data.min_tradingper24h != null && data.item.data.max_tradingper24h!= null">
