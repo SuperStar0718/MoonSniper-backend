@@ -45,7 +45,7 @@ class RolesAndPermissionsController extends Controller
         {
             $clientVals['alpha-member'] = [];
         }
-        $permissions = Permission::whereNotIn('name', [ 'Profile', 'Unautherize'])->pluck('name');
+        $permissions = Permission::whereNotIn('name', [ 'Profile', 'Unautherize'])->orderBy('id','ASC')->pluck('name');
         return response()->json(['rolepermissions' => $ArrayPermission, 'permissions' => $permissions,'clientrolepermissions'=>$clientVals]);
     }
     public function updateRolePermissions(Request $request)
