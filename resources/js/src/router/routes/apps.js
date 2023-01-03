@@ -246,7 +246,7 @@ export default [
     name: 'alerts',
     component: () => import('@/views/Notifications/Alerts.vue'),
     meta: {
-      resource: 'Alerts',
+      resource: 'Alert',
     },
   },
   // Invoice

@@ -248,6 +248,7 @@
     import axios from '@axios'
     import fieldsData from './fields'
     import NotificationRange from './NotificationRange.vue';
+    import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
     export default {
         components: {
             BRow,
@@ -258,7 +259,7 @@
             BDropdownItem,
             BPagination,
             NotificationRange,
-            BFormSelect,BButton
+            BFormSelect,BButton,ToastificationContent
         },
         data() {
             return {
@@ -500,8 +501,18 @@
                 this.alertForm.symbol = this.activeData.symbol;
                 this.alertForm.coin_name = this.activeData.coin_name;
                 this.alertForm.id = this.activeNotify.id;
+                
                 axios.post('api/update-alert',this.alertForm)
+               
                 .then(res => {
+                    this.$toast({
+                                component: ToastificationContent,
+                                props: {
+                                    title: 'An alert updated successfully',
+                                    icon: 'CheckCircleIcon',
+                                    variant: 'success',
+                                },
+                            })
                     this.alertForm.coin_id = null;
                     this.alertForm.symbol = null;
                     this.alertForm.coin_name = null;

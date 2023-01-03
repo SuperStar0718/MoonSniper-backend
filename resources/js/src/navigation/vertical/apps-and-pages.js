@@ -131,8 +131,8 @@ export default [
         title: 'Alert',
         icon: 'BellIcon',
         route: 'alerts',
-        // resource: 'Unlocking',
-        // action: 'read'
+        resource: 'Alert',
+        action: 'read'
     },
    
   

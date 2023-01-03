@@ -6178,6 +6178,14 @@
                 this.alertForm.coin_name = this.activeData.name;
                 axios.post('api/add-coinalert',this.alertForm)
                 .then(res => {
+                    this.$toast({
+                                component: ToastificationContent,
+                                props: {
+                                    title: 'An alert added successfully',
+                                    icon: 'CheckCircleIcon',
+                                    variant: 'success',
+                                },
+                            })
                     this.alertForm.coin_id = null;
                     this.alertForm.symbol = null;
                     this.alertForm.coin_name = null;
