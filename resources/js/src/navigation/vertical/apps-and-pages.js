@@ -86,7 +86,7 @@ export default [
     //     ],
     // },
     {
-        title: 'manageMenu',
+        title: 'Manage menu',
         icon: "MenuIcon",
         route: 'manage-menu',
         resource: 'Managemenu',
@@ -126,6 +126,13 @@ export default [
         ],
         resource: 'Unlocking',
         action: 'read'
+    },
+     {
+        title: 'Alert',
+        icon: 'BellIcon',
+        route: 'alerts',
+        // resource: 'Unlocking',
+        // action: 'read'
     },
    
   

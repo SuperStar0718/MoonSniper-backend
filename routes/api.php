@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlertController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Coingecko;
@@ -89,8 +90,14 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
    
     Route::get('/load-ethgas-values', [Coingecko::class, 'ethGasPrice'])->name('/load-ethgas-values');
     Route::get('/load-marketcap-values', [Coingecko::class, 'marketcapValues'])->name('/load-marketcap-values');
-   
+   //Coin alerts 
 
+   Route::post('/add-coinalert',[AlertController::class, 'addAlert'])->name('/add-coinalert');
+    Route::get('/load-user-alerts', [AlertController::class, 'getUserAlerts'])->name('/load-user-alerts');
+    Route::post('/delete-alert', [AlertController::class, 'deleteAlert'])->name('/delete-alert');
+    Route::post('/update-alert', [AlertController::class, 'updateAlert'])->name('/update-alert');
+    Route::post('/load-alert-coin-data', [AlertController::class, 'loadAlertCoinData'])->name('/load-alert-coin-data');
+    
 });
 Route::post('/extension-coin-data-coingecko', [ExchangesController::class, 'CoinDetailsForCoinGecko'])->name('/extension-coin-data-coingecko');
 Route::post('/get_trading_volume_history-extension', 'App\Http\Controllers\Coingecko@get_trading_volume_history');

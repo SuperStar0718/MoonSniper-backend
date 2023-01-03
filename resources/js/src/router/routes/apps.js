@@ -241,6 +241,14 @@ export default [
       resource: 'Unlocking',
     },
   },
+  {
+    path: '/alerts',
+    name: 'alerts',
+    component: () => import('@/views/Notifications/Alerts.vue'),
+    meta: {
+      resource: 'Alerts',
+    },
+  },
   // Invoice
   {
     path: '/apps/invoice/list',

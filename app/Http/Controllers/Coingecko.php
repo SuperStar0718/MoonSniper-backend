@@ -125,6 +125,7 @@ class Coingecko extends Controller
         $data = CoinsData::where("coin_id", $coinid)->first();
         echo json_encode($data);
     }
+    
 
     public function get_trading_volume_history(Request $request)
     {

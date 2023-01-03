@@ -7,34 +7,34 @@
                         <div class="d-flex mx-auto justify-content-center Topbar-items" style="">
                             <div class="greyLetter" style="margin-right:4px;">MC:</div>
                             <div class="whiteLetter" v-if="loaded">{{todaysMc != null?todaysMc:'-'}}</div>
-                            <div  v-if="todaysMcChange >0" style="" class="TriangleIcon ">
-                                <i   class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
+                            <div v-if="todaysMcChange >0" style="" class="TriangleIcon ">
+                                <i class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
                             </div>
                             <div v-else style="" class="TriangleIcon rotate-180">
-                                <i   class="bi bi-triangle-fill " style="color:#ea5455;"></i>
+                                <i class="bi bi-triangle-fill " style="color:#ea5455;"></i>
                             </div>
                             <div v-if="todaysMcChange >0" style="color:#6BBE83;">
-                               +{{todaysMcChange}}%
+                                +{{todaysMcChange}}%
                             </div>
                             <div v-else style="color:#ea5455;">
                                 {{todaysMcChange}}%
-                             </div>
+                            </div>
                         </div>
                         <div class="d-flex mx-auto justify-content-center Topbar-items" style="">
                             <div class="greyLetter" style="margin-right:4px;">Vol(24h):</div>
                             <div class="whiteLetter" v-if="loaded"> {{todaysVol?todaysVol:'-'}}</div>
-                            <div  v-if="todaysVolChange >0" style="" class="TriangleIcon ">
-                                <i   class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
+                            <div v-if="todaysVolChange >0" style="" class="TriangleIcon ">
+                                <i class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
                             </div>
                             <div v-else style="" class="TriangleIcon rotate-180">
-                                <i   class="bi bi-triangle-fill " style="color:#ea5455;"></i>
+                                <i class="bi bi-triangle-fill " style="color:#ea5455;"></i>
                             </div>
                             <div v-if="todaysVolChange >0" style="color:#6BBE83;">
-                               +{{todaysVolChange}}%
+                                +{{todaysVolChange}}%
                             </div>
                             <div v-else style="color:#ea5455;">
                                 {{todaysVolChange}}%
-                             </div>
+                            </div>
                         </div>
                         <div class="d-flex mx-auto justify-content-center Topbar-items" style="">
                             <div class="greyLetter Dominance" style="margin-right:4px;">Dominance:</div>
@@ -70,7 +70,7 @@
             <b-row class="FGCharts" style="">
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_greed">
                     <div class="mx-auto bmeter-w text-center">
-                        
+
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.fear_greed_index" :separator-step="0" :min="0"
                             :max="100"
@@ -99,13 +99,12 @@
                         </VueSvgGauge>
                         <h5 class="bmeter-w mx-auto margin16_t feerTitle">Fear & Greed
                             <i class="fa-solid fa-circle-info cursor-pointer"
-                            v-b-tooltip.hover.top="'The fear and greed index uses different indicators that measure the aspect of the stock market behavior what influence how much investors are willing to pay for the stocks'"></i>
+                                v-b-tooltip.hover.top="'The fear and greed index uses different indicators that measure the aspect of the stock market behavior what influence how much investors are willing to pay for the stocks'"></i>
                         </h5>
                     </div>
                 </b-col>
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_nft">
                     <div class="mx-auto bmeter-w text-center">
-                       
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.nftindex" :separator-step="0" :min="0" :max="100"
                             :gauge-color="[
@@ -157,15 +156,14 @@
                 </b-col>
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_btc_in_out">
                     <div class="mx-auto bmeter-w text-center">
-                       
+
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.inoutperOval" :separator-step="0" :min="0" :max="200"
                             :gauge-color="[
                                 {offset: 0, color: '#51D868'}, 
                                 { offset: 90, color: '#e53e10'}
                                
-                                ]"
-                            :scale-interval="0" :transition-duration="0">
+                                ]" :scale-interval="0" :transition-duration="0">
                             <div class="rounded-circle" id="marker_2" style="width:8px; height:8px; position: absolute">
                             </div>
                             <div class="inner-text" style="display:block;">
@@ -175,13 +173,13 @@
                                 </div>
                                 <div class="row" style="margin: 0% 0% 0% 0%;">
                                     <span class="col-3 text-info" style="float:left; margin:auto;"><a
-                                            v-b-modal.modal-btcflow
-                                            variant="outline-primary"><i
+                                            v-b-modal.modal-btcflow variant="outline-primary"><i
                                                 class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
-                                    <span class="col-6 btcInoutVal" style="text-align:center;"  :class="{'text-danger':fag.data.inoutper>0,'text-success-green':fag.data.inoutper<=0}">
-                                    1d :  {{roundData2( fag.data.btcflowDif,1) }}
+                                    <span class="col-6 btcInoutVal" style="text-align:center;"
+                                        :class="{'text-danger':fag.data.inoutper>0,'text-success-green':fag.data.inoutper<=0}">
+                                        1d : {{roundData2( fag.data.btcflowDif,1) }}
                                     </span>
                                     <span class="col-3">
 
@@ -193,13 +191,13 @@
                         <h5 class="bmeter-w mx-auto margin16_t feerTitle">BTC in/outflow
 
                             <i class="fa-solid fa-circle-info cursor-pointer"
-                            v-b-tooltip.hover.top.html="btcInOutFlowTooltip"></i>
+                                v-b-tooltip.hover.top.html="btcInOutFlowTooltip"></i>
                         </h5>
                     </div>
                 </b-col>
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_btc_alt">
                     <div class="mx-auto bmeter-w text-center">
-                       
+
                         <VueSvgGauge width="60%" class="bmeter-w mx-auto" :start-angle="-90" :end-angle="90"
                             :inner-radius="96.5" :value="fag.data.coinseason" :separator-step="0" :min="0" :max="100"
                             :gauge-color="
@@ -241,9 +239,9 @@
                             </div>
                         </VueSvgGauge>
                         <h5 class="bmeter-w mx-auto margin16_t feerTitle">Alt/Btc Season <i
-                            class="fa-solid fa-circle-info cursor-pointer"
-                            v-b-tooltip.hover.top="'If 75% of the Top 50 coins performed better than Bitcoin over the last season (90 days) it is Altcoin Season.'"></i>
-                    </h5>
+                                class="fa-solid fa-circle-info cursor-pointer"
+                                v-b-tooltip.hover.top="'If 75% of the Top 50 coins performed better than Bitcoin over the last season (90 days) it is Altcoin Season.'"></i>
+                        </h5>
                     </div>
                 </b-col>
             </b-row>
@@ -258,14 +256,15 @@
                         <b-form-group>
                             <b-input-group class="input-group-merge">
                                 <b-form-input v-model="params.filters2" placeholder="Search"
-                                class="search-product searchdark" style="border-radius: 20px;" />
-                              <b-input-group-append style="z-index: 999;">
-                                <i  v-if="params.filters2 != null && params.filters2.trim() != ''" @click="params.filters2 = ''"  class="fa-solid fa-xmark cursor-pointer" style="font-size: 16px; position: relative;   right: 32px;
+                                    class="search-product searchdark" style="border-radius: 20px;" />
+                                <b-input-group-append style="z-index: 999;">
+                                    <i v-if="params.filters2 != null && params.filters2.trim() != ''"
+                                        @click="params.filters2 = ''" class="fa-solid fa-xmark cursor-pointer" style="font-size: 16px; position: relative;   right: 32px;
                                 margin: auto;"></i>
-                              </b-input-group-append>
+                                </b-input-group-append>
                             </b-input-group>
-                          </b-form-group>
-                       
+                        </b-form-group>
+
                     </b-col>
                     <b-col cols="4" md="2" xl="4">
                     </b-col>
@@ -854,18 +853,19 @@
                         <template #empty="scope">
                             <h4>{{ scope.emptyText }}</h4>
                         </template>
-                      
+
                         <template #head()="scope">
                             <div class="text-nowrap cursor-pointer text-center" style=""
                                 @click="sortingCols(scope.field.key)">
-                                <div  :title="scope.field.title" v-if="scope.label" class="d-flex justify-content-center text-capitalize">
+                                <div :title="scope.field.title" v-if="scope.label"
+                                    class="d-flex justify-content-center text-capitalize">
                                     <span> {{ scope.label }} </span>
                                     <span class="my-auto d-inline">
                                         <feather-icon icon="TriangleIcon" size="8"
                                             style="rotate:180deg;margin-left: 5px; margin-top: -9px; "
                                             :class="{'text-danger':params.sort[1] =='asc'&& params.sort[0] ==scope.field.key}" />
-                                           
-                                            <!-- <i v-if="scope.field.title != null" class="fa-solid fa-circle-info cursor-pointer"
+
+                                        <!-- <i v-if="scope.field.title != null" class="fa-solid fa-circle-info cursor-pointer"
                                             ></i> -->
                                         <!-- <feather-icon icon="ChevronDownIcon" size="8"
                                             :class="{'text-danger':params.sort[1] =='desc'&& params.sort[0] ==scope.field.key}"
@@ -876,7 +876,7 @@
                         </template>
                         <template #cell(sparkline_in_7d)="data">
                             <span v-if="data.item.coingeckoid">
-                                <img :src="'/storage/sparklineicon/sparkline_'+data.item.coingeckoid+'.svg'"/> </span>
+                                <img :src="'/storage/sparklineicon/sparkline_'+data.item.coingeckoid+'.svg'" /> </span>
                         </template>
                         <template #cell(coin_platform)="data">
                             <div class="" v-html="getPlatformTags(data.value)"></div>
@@ -901,7 +901,8 @@
                         </template>
 
                         <template #cell(coin_description)="data">
-                            <div  v-b-tooltip.hover.bottom.html="data.value" class="d-flex text-center" v-if="data.value" v-html="data.value.substring(0,20)">
+                            <div v-b-tooltip.hover.bottom.html="data.value" class="d-flex text-center" v-if="data.value"
+                                v-html="data.value.substring(0,20)">
 
                             </div>
                         </template>
@@ -929,10 +930,11 @@
                                     </div>
                                     <div class="extn-flex">
                                         <div class="text-nowrap text-truncate extn-name"
-                                            
                                             style="float: left; max-width: 100px; font-weight: 600;">
-                                           <b  v-b-tooltip.hover.bottom.html="!fields[6].filterColumn?data.item.coin_description:''">{{ data.value.substring(0,8)}}</b>
-                                            <b style="font-weight: 400;" :title="data.value" v-if="data.value.length >8">...</b>
+                                            <b
+                                                v-b-tooltip.hover.bottom.html="!fields[6].filterColumn?data.item.coin_description:''">{{ data.value.substring(0,8)}}</b>
+                                            <b style="font-weight: 400;" :title="data.value"
+                                                v-if="data.value.length >8">...</b>
 
                                         </div>
 
@@ -986,12 +988,9 @@
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
                                 class="d-flex2 justify-content-start total_locked_progress">
-                                <i class="fa-solid fa-lock  opacity-75" style="margin-right: 4px;" ></i> {{roundData(data.item.total_locked_percent)}}%
-                                <b-progress
-                                :value="data.item.total_locked_percent"
-                                max="100"
-                                height="8px"
-                              />
+                                <i class="fa-solid fa-lock  opacity-75" style="margin-right: 4px;"></i>
+                                {{roundData(data.item.total_locked_percent)}}%
+                                <b-progress :value="data.item.total_locked_percent" max="100" height="8px" />
                             </div>
                         </template>
                         <template #cell(next_unlock_date_text)="data">
@@ -1258,16 +1257,15 @@
                 </b-overlay>
 
             </div>
-            <div class="p
-            ">
+            <div class="p">
                 <b-row>
-                    
+
                     <!-- Pagination -->
-                    <b-col cols="12" 
-                        class="d-flex align-items-center justify-content-center justify-content-around">
-                            <div>
-                               <span class="" v-if="!isBusy"> Showing {{ items.from }} to {{ items.to }} of {{ items.total }}</span>
-                            </div>
+                    <b-col cols="12" class="d-flex align-items-center justify-content-center justify-content-around">
+                        <div>
+                            <span class="" v-if="!isBusy"> Showing {{ items.from }} to {{ items.to }} of
+                                {{ items.total }}</span>
+                        </div>
                         <b-pagination id="pagination" v-model="Cpagpage" :total-rows="items.total"
                             :per-page="items.per_page" first-number last-number class="mb-0 mt-1 mt-sm-0"
                             prev-class="prev-item" next-class="next-item"
@@ -1289,7 +1287,7 @@
                                     </option>
                                 </select>
                             </span>
-                         </div>
+                        </div>
                     </b-col>
 
                 </b-row>
@@ -1308,34 +1306,31 @@
         </b-modal>
         <b-modal id="modal-btcflow" ok-only ok-title="Close" :hide-footer="true" centered size="lg"
             title="Bitcoin In/Out Flow Season History">
-           <div class="p-2">
-            <b-tabs content-class=""
-                                                        class="graph_tab graph_tab-1 float-left w-50"
-                                                        style="
+            <div class="p-2">
+                <b-tabs content-class="" class="graph_tab graph_tab-1 float-left w-50" style="
                                                         font-family: Poppins-Light;
                                                         font-style: normal;
                                                         font-weight: 400;
                                                         position: relative;
                                                         font-size: 10px;
-                                                        z-index: 999 !important;"
-                                                        >
-                                                        <b-tab active title="USD" @click="BtcFlowUSD = true">
-                                                            <div></div>
-                                                        </b-tab>
-                                                        <b-tab title="BTC" @click="BtcFlowUSD = false">
-                                                            <div></div>
-                                                        </b-tab>
-                                                    </b-tabs>
-                                                    <div v-if="BtcFlowUSD">
-                                                        <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line" :options="BtcFlowchartOptions"
-                                                        :series="BtcFlowseries2"></vue-apex-charts>
-                                                    </div> 
-                                                    <div v-else>
-                                                        <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line" :options="BtcFlowchartOptions"
-                                                        :series="BtcFlowseries"></vue-apex-charts>
-                                                    </div>
-           
-           </div>
+                                                        z-index: 999 !important;">
+                    <b-tab active title="USD" @click="BtcFlowUSD = true">
+                        <div></div>
+                    </b-tab>
+                    <b-tab title="BTC" @click="BtcFlowUSD = false">
+                        <div></div>
+                    </b-tab>
+                </b-tabs>
+                <div v-if="BtcFlowUSD">
+                    <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line"
+                        :options="BtcFlowchartOptions" :series="BtcFlowseries2"></vue-apex-charts>
+                </div>
+                <div v-else>
+                    <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line"
+                        :options="BtcFlowchartOptions" :series="BtcFlowseries"></vue-apex-charts>
+                </div>
+
+            </div>
 
         </b-modal>
         <b-modal id="modal-filters" :hide-footer="true" size="lg" title="" style="border-radius: 30px;">
@@ -1484,22 +1479,25 @@
 
                                     </div>
                                     <div class="">
-                                      
-                                        <FilterComp :value="value1" :item="1" @updateSlider="updateSlider($event)" modal="ROI %"  />
+
+                                        <FilterComp :value="value1" :item="1" @updateSlider="updateSlider($event)"
+                                            modal="ROI %" />
                                         <!-- <vue-slider   step="1" v-model="value1" :direction="direction" class="mb-2" /> -->
                                     </div>
                                     <div class="">
-                                       
+
                                         <div>
-                                        <FilterComp :value="value2" :item="2" @updateSlider="updateSlider($event)" modal="Daily Price Change (%)"  />
+                                            <FilterComp :value="value2" :item="2" @updateSlider="updateSlider($event)"
+                                                modal="Daily Price Change (%)" />
                                         </div>
                                         <!-- <vue-slider v-model="value2" :direction="direction" class="mb-2" /> -->
                                     </div>
                                     <div class="">
                                         <div>
-                                            <FilterComp :value="value3" :item="3" @updateSlider="updateSlider($event)" modal="Total Supply (%)"  />
-                                            </div>
-                                       
+                                            <FilterComp :value="value3" :item="3" @updateSlider="updateSlider($event)"
+                                                modal="Total Supply (%)" />
+                                        </div>
+
                                     </div>
                                     <div class="mb-2">
                                         <b-form-group label="Public ROI">
@@ -1670,9 +1668,10 @@
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
                                     <div class="">
                                         <div>
-                                            <FilterComp :value="value4" :item="4" @updateSlider="updateSlider($event)" modal="Total Supply (%)"  />
-                                            </div>
-                                        
+                                            <FilterComp :value="value4" :item="4" @updateSlider="updateSlider($event)"
+                                                modal="Total Supply (%)" />
+                                        </div>
+
                                     </div>
                                 </b-col>
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
@@ -1681,9 +1680,10 @@
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
                                     <div class="">
                                         <div>
-                                            <FilterComp :value="value5" :item="5" @updateSlider="updateSlider($event)" modal="Social Mentions Change %"  />
-                                            </div>
-                                        
+                                            <FilterComp :value="value5" :item="5" @updateSlider="updateSlider($event)"
+                                                modal="Social Mentions Change %" />
+                                        </div>
+
                                     </div>
                                 </b-col>
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
@@ -1691,9 +1691,10 @@
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
                                     <div class="">
                                         <div>
-                                            <FilterComp :value="value6" :item="6" @updateSlider="updateSlider($event)" modal="Social Engagement Change %"  />
-                                            </div>
-                                    
+                                            <FilterComp :value="value6" :item="6" @updateSlider="updateSlider($event)"
+                                                modal="Social Engagement Change %" />
+                                        </div>
+
                                     </div>
                                 </b-col>
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
@@ -1701,9 +1702,10 @@
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
                                     <div class="">
                                         <div>
-                                            <FilterComp :value="value7" :item="7" @updateSlider="updateSlider($event)" modal="Average Sentiment (1-5)"  />
-                                            </div>
-                                     
+                                            <FilterComp :value="value7" :item="7" @updateSlider="updateSlider($event)"
+                                                modal="Average Sentiment (1-5)" />
+                                        </div>
+
                                     </div>
                                 </b-col>
 
@@ -1767,8 +1769,9 @@
                                     </div>
                                     <div class="">
                                         <div>
-                                            <FilterComp :value="value8" :item="8" @updateSlider="updateSlider($event)" modal="3 Months Unlock %"  />
-                                            </div>
+                                            <FilterComp :value="value8" :item="8" @updateSlider="updateSlider($event)"
+                                                modal="3 Months Unlock %" />
+                                        </div>
                                         <!-- <b-form-group label="3 Months Unlock %">
                                             <div class="d-flex">
                                                 <cleave :options="NumberFormaVal" class="form-control"
@@ -1822,9 +1825,10 @@
                                     </div>
                                     <div class="">
                                         <div>
-                                            <FilterComp :value="value9" :item="9" @updateSlider="updateSlider($event)" modal="Next Unlock %"  />
-                                            </div>
-                                       
+                                            <FilterComp :value="value9" :item="9" @updateSlider="updateSlider($event)"
+                                                modal="Next Unlock %" />
+                                        </div>
+
                                     </div>
                                     <div class="mb-2">
                                         <b-form-group label="3 Months Unlock # of Tokens">
@@ -1853,8 +1857,9 @@
                                     </div>
                                     <div class="">
                                         <div>
-                                            <FilterComp :value="value10" :item="10" @updateSlider="updateSlider($event)" modal="6 Months Unlock %"  />
-                                            </div>
+                                            <FilterComp :value="value10" :item="10" @updateSlider="updateSlider($event)"
+                                                modal="6 Months Unlock %" />
+                                        </div>
                                     </div>
                                 </b-col>
 
@@ -1898,15 +1903,14 @@
                                     <div class="d-flex m-auto">
                                         <b-avatar class="bg-light mr-1" v-if="activeData.image" :src="activeData.image">
                                         </b-avatar>
-                                        
-                                        <span class="marginx1 m-auto b darkWhiteText mr-3"
-                                             style="font-family: 'Poppins';
+
+                                        <span class="marginx1 m-auto b darkWhiteText mr-3" style="font-family: 'Poppins';
                                                         font-size: 20px; 
                                                         font-style: normal;
                                                         font-weight: 400;
                                                         text-overflow: ellipsis;
                                                         white-space: nowrap;
-                                                        overflow: hidden;" >
+                                                        overflow: hidden;">
                                             {{activeData.name}}
 
 
@@ -1959,31 +1963,33 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-50 d-inline" style="margin-right:20px;">
-                                <div class="bg-theme rounded d-inline" style="float: right;"
-                                    v-if="activeData.contract_address && activeData.contract_address.length>0">
-
-                                    <div style="margin-top:-2px">
-                                        <div class="my-auto darkWhiteText" style="margin-bottom: 8px !important; margin-right: 4px;padding-left:10px; font-family: 'Poppins-Light';
+                            <div class="d-flex">
+                                <div class="m-auto" style="padding:10px">
+                                    <feather-icon icon="BellIcon" size="20" class="text-white cursor-pointer"
+                                        @click="openNotificationModal()" style="margin-top:18px" />
+                                </div>
+                                <div class=" d-inline" style="margin-right:20px;">
+                                    <div class="bg-theme rounded d-inline" style="float: right;"
+                                        v-if="activeData.contract_address && activeData.contract_address.length>0">
+                                        <div style="margin-top:-2px">
+                                            <div class="my-auto darkWhiteText" style="margin-bottom: 8px !important; margin-right: 4px;padding-left:10px; font-family: 'Poppins-Light';
                                                     font-style: normal;
                                                     font-weight: 300;
                                                     font-size: 12px;
                                                 ">Contract </div>
-
-
-                                        <b-dropdown size="lg" variant="flat-secondary" style="padding:0px !important;"
-                                            id="dropdown-left1" no-caret class="cunningDrop">
-                                            <template #button-content>
-                                                <div class="darkBackgroundBlack"
-                                                    v-for="(address,index) in activeData.contract_address.slice(0, 1)"
-                                                    :key="index"
-                                                    style="display:block; padding: 2px; border-radius: 20px;">
-                                                    <div class="d-flex">
-
-                                                        <b-img v-if="activeData.image" :src="activeData.image" fluid
-                                                            alt="Responsive image" style="margin-right:5px; height:30px;     position: relative;
-                                                                    bottom: 4px;    margin: auto;"  />
-                                                        <div style="font-family: 'Poppins-Light'; display:inline-block;
+                                            <b-dropdown size="lg" variant="flat-secondary"
+                                                style="padding:0px !important;" id="dropdown-left1" no-caret
+                                                class="cunningDrop">
+                                                <template #button-content>
+                                                    <div class="darkBackgroundBlack"
+                                                        v-for="(address,index) in activeData.contract_address.slice(0, 1)"
+                                                        :key="index"
+                                                        style="display:block; padding: 2px; border-radius: 20px;">
+                                                        <div class="d-flex">
+                                                            <b-img v-if="activeData.image" :src="activeData.image" fluid
+                                                                alt="Responsive image" style="margin-right:5px; height:30px;     position: relative;
+                                                                    bottom: 4px;    margin: auto;" />
+                                                            <div style="font-family: 'Poppins-Light'; display:inline-block;
                                                                     font-style: normal;    position: relative;
                                                                     top: 4px;
                                                                     font-weight: 500;
@@ -1992,17 +1998,71 @@
                                                                     text-align: start;
                                                                     overflow: hidden;
                                                                     text-overflow: ellipsis;">
-                                                            <div style="white-space: nowrap; width:90px;  overflow: hidden;
+                                                                <div style="white-space: nowrap; width:90px;  overflow: hidden;
                                                                 text-overflow: ellipsis;"
-                                                                class="darkWhiteText text-capitalize">
-                                                                {{address.platform}}
-                                                            </div>
-                                                            <div style="white-space: nowrap; width:90px;  overflow: hidden;
+                                                                    class="darkWhiteText text-capitalize">
+                                                                    {{address.platform}}
+                                                                </div>
+                                                                <div style="white-space: nowrap; width:90px;  overflow: hidden;
                                                                 text-overflow: ellipsis;" class="text-secondary ">
-                                                                {{address.contract_address}}
+                                                                    {{address.contract_address}}
+                                                                </div>
+                                                            </div>
+                                                            <div
+                                                                style="display:inline-block; float:right; margin-top:-3px">
+
+                                                                <b-button size="sm" class="ml-1"
+                                                                    v-clipboard:copy="address.contract_address"
+                                                                    style="margin-right:13px; cursor:pointer; border: none !important;"
+                                                                    v-clipboard:success="onCopy"
+                                                                    v-clipboard:error="onError"
+                                                                    v-ripple.400="'rgba(113, 12, 240, 0.15)'"
+                                                                    variant="outline-primary" pill>
+                                                                    <i
+                                                                        class="fa-regular fa-copy cursor-pointer darkWhiteText fa-lg m-1"></i>
+                                                                    <!-- <feather-icon icon="CopyIcon"
+                                                                            class="cursor-pointer darkWhiteText" size="20" /> -->
+                                                                </b-button>
+                                                                <img src='/images/static/metamask.png' class="img-fluid"
+                                                                    alt="metamask"
+                                                                    style="cursor:pointer; width:23px; margin-right:13px;"
+                                                                    @click="say('say')">
+                                                                <feather-icon icon="ChevronDownIcon"
+                                                                    class="cursor-pointer darkWhiteText" size="20"
+                                                                    style="margin-right:13px; margin-bottom: 6px;" />
+
                                                             </div>
                                                         </div>
-                                                        <div style="display:inline-block; float:right; margin-top:-3px">
+                                                    </div>
+                                                </template>
+                                                <b-dropdown-form href="#"
+                                                    class="cunningDrop dropdown-mine darkBackgroundBlack"
+                                                    name="dropdownform2" style="z-index:999;">
+                                                    <div class="darkBackgroundBlack"
+                                                        v-for="(address,index) in activeData.contract_address"
+                                                        :key="index" style="display:flex; padding: 4px;">
+                                                        <b-img v-if="activeData.image" :src="activeData.image" fluid
+                                                            alt="Responsive image"
+                                                            style="margin-right:5px; height:30px; " />
+                                                        <div class="" style="font-family: 'Poppins-Light'; display:inline-block; font-style: normal;
+                                                                        font-weight: 500;
+                                                                        font-size: 14px;
+                                                                        line-height: 14px;
+                                                                        ">
+                                                            <div class="darkWhiteText text-capitalize" style="white-space: nowrap; width:90px;
+                                                                        overflow: hidden;
+                                                                        text-overflow: ellipsis;">
+                                                                {{address.platform}}
+                                                            </div>
+                                                            <div class=" text-secondary" style="white-space: nowrap; width:90px;
+                                                                        overflow: hidden;
+                                                                        text-overflow: ellipsis;">
+                                                                {{address.contract_address}}
+                                                            </div>
+
+                                                        </div>
+                                                        <div style="display:flex; float:right;">
+
 
                                                             <b-button size="sm" class="ml-1"
                                                                 v-clipboard:copy="address.contract_address"
@@ -2011,93 +2071,23 @@
                                                                 v-ripple.400="'rgba(113, 12, 240, 0.15)'"
                                                                 variant="outline-primary" pill>
                                                                 <i
-                                                                    class="fa-regular fa-copy cursor-pointer darkWhiteText fa-lg m-1"></i>
-                                                                <!-- <feather-icon icon="CopyIcon"
-                                                                            class="cursor-pointer darkWhiteText" size="20" /> -->
+                                                                    class="fa-regular fa-copy cursor-pointer darkWhiteText fa-xl m-1"></i>
                                                             </b-button>
                                                             <img src='/images/static/metamask.png' class="img-fluid"
                                                                 alt="metamask"
-                                                                style="cursor:pointer; width:23px; margin-right:13px;"
-                                                                @click="say('say')">
-                                                            <feather-icon icon="ChevronDownIcon"
-                                                                class="cursor-pointer darkWhiteText" size="20"
-                                                                style="margin-right:13px; margin-bottom: 6px;" />
+                                                                style="cursor:pointer; width:22px; height:22px; margin:auto;"
+                                                                @click="say('hello')">
 
                                                         </div>
 
-                                                    </div>
-
-
-                                                </div>
-
-                                            </template>
-                                            <b-dropdown-form href="#"
-                                                class="cunningDrop dropdown-mine darkBackgroundBlack"
-                                                name="dropdownform2" style="z-index:999;">
-                                                <div class="darkBackgroundBlack"
-                                                    v-for="(address,index) in activeData.contract_address" :key="index"
-                                                    style="display:flex; padding: 4px;">
-                                                    <b-img v-if="activeData.image" :src="activeData.image" fluid
-                                                        alt="Responsive image" style="margin-right:5px; height:30px; " />
-                                                    <div class="" style="font-family: 'Poppins-Light'; display:inline-block; font-style: normal;
-                                                                        font-weight: 500;
-                                                                        font-size: 14px;
-                                                                        line-height: 14px;
-                                                                        ">
-                                                        <div class="darkWhiteText text-capitalize" style="white-space: nowrap; width:90px;
-                                                                        overflow: hidden;
-                                                                        text-overflow: ellipsis;">
-                                                            {{address.platform}}
-                                                        </div>
-                                                        <div class=" text-secondary" style="white-space: nowrap; width:90px;
-                                                                        overflow: hidden;
-                                                                        text-overflow: ellipsis;">
-                                                            {{address.contract_address}}
-                                                        </div>
 
                                                     </div>
-                                                    <div style="display:flex; float:right;">
+                                                </b-dropdown-form>
 
+                                            </b-dropdown>
 
-                                                        <b-button size="sm" class="ml-1"
-                                                            v-clipboard:copy="address.contract_address"
-                                                            style="margin-right:13px; cursor:pointer; border: none !important;"
-                                                            v-clipboard:success="onCopy" v-clipboard:error="onError"
-                                                            v-ripple.400="'rgba(113, 12, 240, 0.15)'"
-                                                            variant="outline-primary" pill>
-                                                            <i
-                                                                class="fa-regular fa-copy cursor-pointer darkWhiteText fa-xl m-1"></i>
-                                                        </b-button>
-                                                        <img src='/images/static/metamask.png' class="img-fluid"
-                                                            alt="metamask" style="cursor:pointer; width:22px; height:22px; margin:auto;"
-                                                            @click="say('hello')">
-
-                                                    </div>
-
-
-                                                </div>
-                                            </b-dropdown-form>
-
-                                        </b-dropdown>
-                                        <!-- <b-form-select v-model="selectedContract">
-                                                    <b-form-select-option :value="null" selected>Select</b-form-select-option>
-                                                    <b-form-select-option v-for="(address,index) in activeData.contract_address"
-                                                        :key="index" :>
-                                                        {{ address.platform }}
-                                                    </b-form-select-option>
-                                                </b-form-select> -->
+                                        </div>
                                     </div>
-                                    <!-- <div v-if="selectedContract" class="d-flex mt-1 justify-content-end">
-                                                <div class="text-nowrap text-truncate" style="width:200px">{{selectedContract}}
-                                                </div>
-                                                <b-button size="sm" class="ml-1" v-clipboard:copy="selectedContract"
-                                                    v-clipboard:success="onCopy" v-clipboard:error="onError"
-                                                    v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary" pill>Copy!
-                                                </b-button>
-    
-                                            </div> -->
-
-
                                 </div>
                             </div>
                         </div>
@@ -2205,48 +2195,51 @@
                                                             style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.market_cap) }}</span>
                                                     </div>
                                                 </div>
-                                                <div v-if="activeData.fully_diluted_valuation" style="margin-bottom: 10px;">
+                                                <div v-if="activeData.fully_diluted_valuation"
+                                                    style="margin-bottom: 10px;">
                                                     <span
                                                         style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;white-space: nowrap;">
-                                                       Fully Diluted Valuation</span>
+                                                        Fully Diluted Valuation</span>
                                                     <div class="" style="font-size:16px; font-weight: 600;">
                                                         <span
                                                             style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.fully_diluted_valuation) }}</span>
                                                     </div>
                                                 </div>
-                                                 <div v-if="activeData.ath" style="margin-bottom: 10px;">
+                                                <div v-if="activeData.ath" style="margin-bottom: 10px;">
                                                     <span
                                                         style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                       ATH</span>
-                                                       <div class="d-flex" style="font-size:16px; font-weight: 600;" >
+                                                        ATH</span>
+                                                    <div class="d-flex" style="font-size:16px; font-weight: 600;">
                                                         <span
                                                             style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.ath) }}</span>
-                                                            <span
+                                                        <span
                                                             style="font-family: Poppins-Light;
                                                             font-style: normal;
                                                             font-weight: 400;
                                                             font-size: 11px;
                                                             white-space: nowrap;
                                                             margin: auto;
-                                                            margin-left: 6px;">{{ toInterNationalNumber(activeData.ath_change_percentage) }} %</span>
+                                                            margin-left: 6px;">{{ toInterNationalNumber(activeData.ath_change_percentage) }}
+                                                            %</span>
                                                     </div>
                                                 </div>
                                                 <div v-if="activeData.atl" style="margin-bottom: 10px;">
                                                     <span
                                                         style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                       ATL</span>
-                                                       
-                                                    <div class="d-flex" style="font-size:16px; font-weight: 600;" >
+                                                        ATL</span>
+
+                                                    <div class="d-flex" style="font-size:16px; font-weight: 600;">
                                                         <span
                                                             style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.atl) }}</span>
-                                                            <span
+                                                        <span
                                                             style="font-family: Poppins-Light;
                                                             font-style: normal;
                                                             font-weight: 400;
                                                             font-size: 11px;
                                                             white-space: nowrap;
                                                             margin: auto;
-                                                            margin-left: 6px;">{{ toInterNationalNumber(activeData.atl_change_percentage) }} %</span>
+                                                            margin-left: 6px;">{{ toInterNationalNumber(activeData.atl_change_percentage) }}
+                                                            %</span>
                                                     </div>
                                                 </div>
                                                 <div style="margin-bottom: 10px;"
@@ -2983,18 +2976,18 @@
                                                 </div>
                                             </b-col>
                                             <b-col cols="12" md="6" class="mb-1" xl="6"
-                                            v-if="activeData.circulating_supply">
-                                            <div class="">
-                                                <div class="mr-1">  Circulating supply </div>
-                                                <div v-if="checkUserPlan(activeData.circulating_supply)"
-                                                    style="font-weight:600" class="">
-                                                    {{ kFormatter(activeData.circulating_supply)}} 
+                                                v-if="activeData.circulating_supply">
+                                                <div class="">
+                                                    <div class="mr-1"> Circulating supply </div>
+                                                    <div v-if="checkUserPlan(activeData.circulating_supply)"
+                                                        style="font-weight:600" class="">
+                                                        {{ kFormatter(activeData.circulating_supply)}}
+                                                    </div>
+                                                    <div style="font-weight:600" v-else>
+                                                        {{kFormatter(activeData.circulating_supply)}}
+                                                    </div>
                                                 </div>
-                                                <div style="font-weight:600" v-else>
-                                                    {{kFormatter(activeData.circulating_supply)}}
-                                                </div>
-                                            </div>
-                                        </b-col>
+                                            </b-col>
                                             <b-col cols="12" md="6" class="mb-1" xl="6"
                                                 v-if="activeData.total_supply_percent">
                                                 <div class="">
@@ -3009,21 +3002,20 @@
                                                 </div>
                                             </b-col>
 
-                                            
-                                           
-                                        <b-col cols="12" md="6" class="mb-1" xl="6"
-                                            v-if="activeData.max_supply">
-                                            <div class="">
-                                                <div class="mr-1">  Max supply </div>
-                                                <div v-if="checkUserPlan(activeData.max_supply)"
-                                                    style="font-weight:600" class="">
-                                                    {{ kFormatter(activeData.max_supply)}} 
+
+
+                                            <b-col cols="12" md="6" class="mb-1" xl="6" v-if="activeData.max_supply">
+                                                <div class="">
+                                                    <div class="mr-1"> Max supply </div>
+                                                    <div v-if="checkUserPlan(activeData.max_supply)"
+                                                        style="font-weight:600" class="">
+                                                        {{ kFormatter(activeData.max_supply)}}
+                                                    </div>
+                                                    <div style="font-weight:600" v-else>
+                                                        {{kFormatter(activeData.max_supply)}}
+                                                    </div>
                                                 </div>
-                                                <div style="font-weight:600" v-else>
-                                                    {{kFormatter(activeData.max_supply)}}
-                                                </div>
-                                            </div>
-                                        </b-col>
+                                            </b-col>
                                             <b-col cols="12" md="12">
                                                 <span class="mr-1">Supply chart: </span>
                                                 <div>
@@ -3073,7 +3065,6 @@
                 </b-overlay>
             </template>
         </b-modal>
-
         <b-modal id="modal-preset-create" :hide-footer="true" :hide-header="true" v-if="activeData" centered size="md"
             title="" style="background: transparent !important;">
             <div style="border-radius:10px;">
@@ -3105,12 +3096,68 @@
 
 
         </b-modal>
+        <b-modal id="modal-notifications" ok-only ok-title="Close" :hide-footer="true" centered size="lg"
+            :title="'New alert for: '+activeData.name">
+            <div class="">
+                <template>
+                    <b-overlay :show="!NotificationModal" rounded="sm">
+                        <div class="details-modal-container" v-if="NotificationModal">
+                            <div class="d-flex flex-wrap justify-content-around">
+                                <div class="d-flex">
+                                    <label style="white-space: nowrap;margin: auto;">Alert Name: &nbsp;</label>
+                                    <input class="form-control" type="text" v-model="alertForm.name" :class="{ titlereq: titleReq }">
+                                        <small v-if="titleReq" class="text-danger"><i>Name is required</i></small></div>
+                               
+                                <div class="d-flex">
+                                    <label style="white-space: nowrap;margin: auto;">Priority: &nbsp;</label>
+                                    <b-form-select id="" v-model="alertForm.priority" :options="alertPriorities" />
+                                </div>
+
+                            </div>
+                            <div class=" p-2">
+                                <NotificationRange :value="alertData.price" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    modal="Price" :item="1" :valueData="activeData" />
+                                     <NotificationRange :valueData="activeData"  :value="alertData.tradingper24h" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    modal="24H trading percentage" :item="2" />
+                                     <NotificationRange :valueData="activeData" :value="alertData.roipercentage" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    modal="ROI in %" :item="3" />
+                                     <NotificationRange :valueData="activeData" :value="alertData.marketcap" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    modal="Market cap" :item="4" />
+                                    <NotificationRange :valueData="activeData" :value="alertData.nextunlock" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    modal="Next unlock" :item="5" />
+                                    <NotificationRange :valueData="activeData" :value="alertData.socialsentiments" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    modal="Social sentiments %" :item="6" />
+
+                            </div>
+                          <div class="d-flex justify-content-center">
+                          <div>
+                            <b-button class="darkWhiteBackground darkBlackText rounded-lg text-[16px]" size="md" 
+                            v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary" @click="addAlert()" :disabled="AddalertDisable">
+                            Add Alert
+                             </b-button>
+                          </div>
+                            <div style="margin-top:8px;margin-left:8px"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     >
+                                The alert will be sent if all conditions of the filter are met.
+                            </div>
+                          </div>
+                            
+                        </div>
+
+                    </b-overlay>
+                </template>
+
+            </div>
+
+        </b-modal>
+
 
     </div>
 </template>
 
 <script>
-import FilterComp from './FilterComp.vue'
+    import FilterComp from './FilterComp.vue';
+    import NotificationRange from './NotificationRange.vue';
+
     import {
         BTable,
         BTabs,
@@ -3223,30 +3270,58 @@ import FilterComp from './FilterComp.vue'
             ExchangesTable,
             Multiselect,
             FilterComp,
-            BProgress
+            BProgress,
+            NotificationRange
 
         },
+
         data() {
             return {
-                btcInOutFlowTooltip:'<span>Inflows to exchanges fluctuate with changes in market sentiment, for instance, an increase in inflows suggests increased selling pressure in the market. </br> The percentage movement refers to the previous day, for example, if the barometer shows a -20% movement, that means there has been an increase in the withdrawal of BTC from exchanges to decentralized wallets. This suggests that people are selling less Bitcoin and have more confidence in the market.</span>',
-                
-                weeklyMcAndVolume:{
-                   
+                alertData: {
+                    price: [null, null],
+                    tradingper24h: [null, null],
+                    roipercentage: [null, null],
+                    marketcap: [null, null],
+                    nextunlock: [null, null],
+                    socialsentiments: [null, null],
                 },
-                todaysMc:0,
-                todaysMcChange:0,
-                todaysVol:0,
-                todaysVolChange:0,
-                value1:[null,null],
-                value2:[null,null],
-                value3:[null,null],
-                value4:[null,null],
-                value5:[null,null],
-                value6:[null,null],
-                value7:[null,null],
-                value8:[null,null],
-                value9:[null,null],
-                value10:[null,null],
+                titleReq:false,
+                alertForm:{
+                    priority: 'medium',
+                    min_price: null,
+                    max_price: null,
+                    min_tradingper24h: null,
+                    max_tradingper24h: null,
+                    min_roipercentage: null,
+                    max_roipercentage: null,
+                    min_marketcap: null,
+                    max_marketcap: null,
+                    min_nextunlock: null,
+                    max_nextunlock: null,
+                    min_socialsentiments: null,
+                    max_socialsentiments: null,
+                    
+                },
+                AddalertDisable:true,
+                btcInOutFlowTooltip: '<span>Inflows to exchanges fluctuate with changes in market sentiment, for instance, an increase in inflows suggests increased selling pressure in the market. </br> The percentage movement refers to the previous day, for example, if the barometer shows a -20% movement, that means there has been an increase in the withdrawal of BTC from exchanges to decentralized wallets. This suggests that people are selling less Bitcoin and have more confidence in the market.</span>',
+
+                weeklyMcAndVolume: {
+
+                },
+                todaysMc: 0,
+                todaysMcChange: 0,
+                todaysVol: 0,
+                todaysVolChange: 0,
+                value1: [null, null],
+                value2: [null, null],
+                value3: [null, null],
+                value4: [null, null],
+                value5: [null, null],
+                value6: [null, null],
+                value7: [null, null],
+                value8: [null, null],
+                value9: [null, null],
+                value10: [null, null],
                 ExchangeOptions: [],
                 oBarMinValue: 10,
                 oBarMaxValue: 90,
@@ -3437,8 +3512,8 @@ import FilterComp from './FilterComp.vue'
                     name: 'Bicoin In/Out Flow',
                     data: []
                 }],
-                
-                BtcFlowUSD:true,
+
+                BtcFlowUSD: true,
                 chartOptions: {
 
                     fill: {
@@ -3767,7 +3842,7 @@ import FilterComp from './FilterComp.vue'
                     tooltip: {
                         style: {
                             colors: '#78909C',
-                            opacity:0.75,
+                            opacity: 0.75,
 
                         },
                         shared: false,
@@ -4056,96 +4131,7 @@ import FilterComp from './FilterComp.vue'
                 loadedFields: {},
                 all_coins_mode: true,
                 unlocking_mode: false,
-                //slider value
 
-                // filterKey.min_market_cap,
-                // filterKey.max_market_cap,
-                // filterKey.min_current_price,
-                // filterKey.max_current_price,
-                // filterKey.min_circulating_supply,
-                // filterKey.max_circulating_supply,
-                // filterKey.min_total_supply,
-                // filterKey.max_total_supply,
-                // filterKey.min_market_cap_rank,
-                // filterKey.max_market_cap_rank,
-                // filterKey.min_trading_volume,
-                // filterKey.max_trading_volume,
-                // filterKey.min_roi_percentage,
-                // filterKey.max_roi_percentage,
-                // filterKey.min_roi_times,
-                // filterKey.max_roi_times,
-                // filterKey.min_price_change_percentage_24h,
-                // filterKey.max_price_change_percentage_24h,
-                // filterKey.min_genesis_date,
-                // filterKey.max_genesis_date,
-                // filterKey.min_total_supply_percent,
-                // filterKey.max_total_supply_percent,
-                // filterKey.min_seed_price,
-                // filterKey.max_seed_price,
-                // filterKey.min_roi_seed,
-                // filterKey.max_roi_seed,
-                // filterKey.coin_platform,
-                // filterKey.keywords,
-                // filterKey.coin_category,
-                // filterKey.min_average_sentiment_change,
-                // filterKey.max_average_sentiment_change,
-                // filterKey.min_social_mentions_change,
-                // filterKey.max_social_mentions_change,
-                // filterKey.min_social_engagement_change,
-                // filterKey.max_social_engagement_change,
-                // filterKey.min_average_sentiment,
-                // filterKey.max_average_sentiment,
-                // filterKey.min_total_locked,
-                // filterKey.max_total_locked,
-                // filterKey.next_unlock_status,
-                // filterKey.min_next_unlock_number_of_tokens,
-                // filterKey.max_next_unlock_number_of_tokens,
-                // filterKey.min_next_unlock_percent_of_tokens,
-                // filterKey.max_next_unlock_percent_of_tokens,
-                // filterKey.next_unlock_size,
-                // filterKey.min_three_months_unlock_number_of_tokens,
-                // filterKey.max_three_months_unlock_number_of_tokens,
-                // filterKey.min_three_months_unlock_percent_of_tokens,
-                // filterKey.max_three_months_unlock_percent_of_tokens,
-                // filterKey.three_months_unlock_size,
-                // filterKey.min_six_months_unlock_number_of_tokens,
-                // filterKey.max_six_months_unlock_number_of_tokens,
-                // filterKey.min_six_months_unlock_percent_of_tokens,
-                // filterKey.max_six_months_unlock_percent_of_tokens,
-                // filterKey.six_months_unlock_size,
-
-                ldot: 25,
-                rdot: 75,
-
-                ldot1: 25,
-                rdot1: 75,
-
-                ldot2: 25,
-                rdot2: 75,
-
-                ldot3: 25,
-                rdot3: 75,
-
-                ldot4: 25,
-                rdot4: 75,
-
-                ldot5: 25,
-                rdot5: 75,
-
-                ldot6: 25,
-                rdot6: 75,
-
-                ldot7: 1,
-                rdot7: 5,
-
-                ldot8: 25,
-                rdot8: 75,
-
-                ldot9: 25,
-                rdot9: 75,
-
-                ldot10: 25,
-                rdot10: 75,
                 dir: 'ltr',
 
 
@@ -4189,7 +4175,20 @@ import FilterComp from './FilterComp.vue'
                 price_365d: [],
                 price_1y: [],
                 price_all: [],
-
+                NotificationModal: false,
+                alertPriorities: [{
+                        text: 'Low',
+                        value: 'low'
+                    },
+                    {
+                        text: 'Medium',
+                        value: 'medium'
+                    },
+                    {
+                        text: 'High',
+                        value: 'high'
+                    },
+                ]
                 //end
 
             }
@@ -4204,9 +4203,8 @@ import FilterComp from './FilterComp.vue'
 
         },
         methods: {
-            checkToolTipExist(id)
-            {
-                
+            checkToolTipExist(id) {
+
                 return true;
             },
             closeDropDown() {
@@ -4344,9 +4342,9 @@ import FilterComp from './FilterComp.vue'
                 })
 
             },
-            async  loadFag() {
+            async loadFag() {
                 this.fagLoad = true;
-                await  axios.post('api/get_fag').then(res => {
+                await axios.post('api/get_fag').then(res => {
                     if (res.data) {
                         this.fag.data = res.data.data;
                         this.fag.btcflow = JSON.parse(res.data.btcflow);
@@ -4372,11 +4370,13 @@ import FilterComp from './FilterComp.vue'
                         });
 
                         // example
-                        let item1 = this.fag.btcflow.data.main[Object.keys(this.fag.btcflow.data.main)[Object
+                        let item1 = this.fag.btcflow.data.main[Object.keys(this.fag.btcflow.data.main)[
+                            Object
                             .keys(this.fag.btcflow.data.main).length - 1]];
-                        let item2 = this.fag.btcflow.data.main[Object.keys(this.fag.btcflow.data.main)[Object
+                        let item2 = this.fag.btcflow.data.main[Object.keys(this.fag.btcflow.data.main)[
+                            Object
                             .keys(this.fag.btcflow.data.main).length - 2]];
-                         
+
                         this.fag.data.inoutper = this.relDiff(item1[0].values[1], item2[0].values[1]);
                         // this.fag.data.inoutper = 11.3;
                         if (item1[0].values[1] > item2[0].values[1]) {
@@ -4386,23 +4386,23 @@ import FilterComp from './FilterComp.vue'
                             this.fag.data.inoutper = this.fag.data.inoutper.toFixed(1);
                             this.fag.data.inoutper = -parseFloat(this.fag.data.inoutper);
                         }
-                        this.fag.data.btcflowDif = this.kFormatter((item1[0].values[1]-item2[0].values[1]))
-                            if(this.fag.data.inoutper >=0)
-                            {
-                                this.fag.data.inoutperOval =100 + Math.abs(this.fag.data.inoutper);
-                            }else{
-                                this.fag.data.inoutperOval =100-Math.abs(this.fag.data.inoutper); 
-                            }
+                        this.fag.data.btcflowDif = this.kFormatter((item1[0].values[1] - item2[0].values[
+                            1]))
+                        if (this.fag.data.inoutper >= 0) {
+                            this.fag.data.inoutperOval = 100 + Math.abs(this.fag.data.inoutper);
+                        } else {
+                            this.fag.data.inoutperOval = 100 - Math.abs(this.fag.data.inoutper);
+                        }
                         let key = Object.keys(this.fag.btcflow.data.main);
-                       for (let index = 0; index < key.length; index++) {
-                        this.BtcFlowseries[0].data.unshift([new Date(parseInt(key[index])),
-                            parseFloat(this.fag.btcflow.data.main[key[index]][0].values[1])
+                        for (let index = 0; index < key.length; index++) {
+                            this.BtcFlowseries[0].data.unshift([new Date(parseInt(key[index])),
+                                parseFloat(this.fag.btcflow.data.main[key[index]][0].values[1])
                             ])
                             this.BtcFlowseries2[0].data.unshift([new Date(parseInt(key[index])),
-                            parseFloat(this.fag.btcflow.data.main[key[index]][0].values[0])
+                                parseFloat(this.fag.btcflow.data.main[key[index]][0].values[0])
                             ])
-                        
-                       }
+
+                        }
                         coinSeasonH.forEach(element => {
                             // var d = new Date(parseInt(element.timestamp) * 1000);
                             // let date = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
@@ -4425,20 +4425,20 @@ import FilterComp from './FilterComp.vue'
                             ])
 
                         });
-                    
 
-                       
+
+
                     }
-                     
+
 
 
                 })
-                await  axios.get('https://api.nftgo.io/api/v1/data/overview')
-                            .then(res => {
-                                let nftData = res.data;
-                                this.fag.data.nftindex = parseInt(nftData.data.nftIndex.toFixed(0));
-                            })
-                    this.fagLoad = false;
+                await axios.get('https://api.nftgo.io/api/v1/data/overview')
+                    .then(res => {
+                        let nftData = res.data;
+                        this.fag.data.nftindex = parseInt(nftData.data.nftIndex.toFixed(0));
+                    })
+                this.fagLoad = false;
             },
             relDiff(a, b) {
                 return 100 * Math.abs((a - b) / ((a + b) / 2));
@@ -5155,23 +5155,30 @@ import FilterComp from './FilterComp.vue'
                         this.ExchangeOptions = res.data.exchanges;
                     }
                 })
-             
+
                 this.$bvModal.show('modal-filters');
                 this.updateSliders();
             },
 
-            updateSliders()
-            {
-                this.value1 = [this.filterKey.min_roi_percentage,this.filterKey.max_roi_percentage]
-                this.value2 = [this.filterKey.min_price_change_percentage_24h,this.filterKey.max_price_change_percentage_24h]
-                this.value3 = [this.filterKey.min_total_supply_percent,this.filterKey.max_total_supply_percent]
-                this.value4 = [this.filterKey.min_average_sentiment_change,this.filterKey.max_average_sentiment_change]
-                this.value5 = [this.filterKey.min_social_mentions_change,this.filterKey.max_social_mentions_change]
-                this.value6 = [this.filterKey.min_social_engagement_change,this.filterKey.max_social_engagement_change]
-                this.value7 = [this.filterKey.min_average_sentiment,this.filterKey.max_average_sentiment]
-                this.value8 = [this.filterKey.min_three_months_unlock_percent_of_tokens,this.filterKey.max_three_months_unlock_percent_of_tokens]
-                this.value9 = [this.filterKey.min_next_unlock_percent_of_tokens,this.filterKey.max_next_unlock_percent_of_tokens]
-                this.value10 = [this.filterKey.min_six_months_unlock_percent_of_tokens,this.filterKey.max_six_months_unlock_percent_of_tokens]
+            updateSliders() {
+                this.value1 = [this.filterKey.min_roi_percentage, this.filterKey.max_roi_percentage]
+                this.value2 = [this.filterKey.min_price_change_percentage_24h, this.filterKey
+                    .max_price_change_percentage_24h
+                ]
+                this.value3 = [this.filterKey.min_total_supply_percent, this.filterKey.max_total_supply_percent]
+                this.value4 = [this.filterKey.min_average_sentiment_change, this.filterKey.max_average_sentiment_change]
+                this.value5 = [this.filterKey.min_social_mentions_change, this.filterKey.max_social_mentions_change]
+                this.value6 = [this.filterKey.min_social_engagement_change, this.filterKey.max_social_engagement_change]
+                this.value7 = [this.filterKey.min_average_sentiment, this.filterKey.max_average_sentiment]
+                this.value8 = [this.filterKey.min_three_months_unlock_percent_of_tokens, this.filterKey
+                    .max_three_months_unlock_percent_of_tokens
+                ]
+                this.value9 = [this.filterKey.min_next_unlock_percent_of_tokens, this.filterKey
+                    .max_next_unlock_percent_of_tokens
+                ]
+                this.value10 = [this.filterKey.min_six_months_unlock_percent_of_tokens, this.filterKey
+                    .max_six_months_unlock_percent_of_tokens
+                ]
             },
             async detailsModel(item) {
                 this.chartType = 'cp';
@@ -6039,14 +6046,15 @@ import FilterComp from './FilterComp.vue'
                             this.todaysMc = this.toInterNationalNumber(res.data.mcValues.stats[7][1].toFixed(0));
                             let A = res.data.mcValues.stats[7][1];
                             let B = res.data.mcValues.stats[6][1];
-                            this.todaysMcChange =   100 * ( (A - B) / ( (A+B)/2 ) );
-                            this.todaysMcChange  = this.todaysMcChange.toFixed(2);
+                            this.todaysMcChange = 100 * ((A - B) / ((A + B) / 2));
+                            this.todaysMcChange = this.todaysMcChange.toFixed(2);
 
-                            this.todaysVol = this.toInterNationalNumber(res.data.mcValues.total_volumes[7][1].toFixed(0));
+                            this.todaysVol = this.toInterNationalNumber(res.data.mcValues.total_volumes[7][1]
+                                .toFixed(0));
                             let C = res.data.mcValues.total_volumes[7][1];
                             let D = res.data.mcValues.total_volumes[6][1];
-                            this.todaysVolChange =   100 * ( (C - D) / ( (C+D)/2 ) );
-                            this.todaysVolChange  = this.todaysVolChange.toFixed(2);
+                            this.todaysVolChange = 100 * ((C - D) / ((C + D) / 2));
+                            this.todaysVolChange = this.todaysVolChange.toFixed(2);
                         }
                     })
 
@@ -6080,58 +6088,135 @@ import FilterComp from './FilterComp.vue'
                                 </div>
                         </div>`
             },
-            updateSlider(evt)
+            updateSlider(evt) {
+                if (evt[1] == 1) {
+                    this.filterKey.min_roi_percentage = evt[0][0];
+                    this.filterKey.max_roi_percentage = evt[0][1];
+                }
+                if (evt[1] == 2) {
+                    this.filterKey.min_price_change_percentage_24h = evt[0][0];
+                    this.filterKey.max_price_change_percentage_24h = evt[0][1];
+                }
+                if (evt[1] == 3) {
+                    this.filterKey.min_total_supply_percent = evt[0][0];
+                    this.filterKey.max_total_supply_percent = evt[0][1];
+                }
+                if (evt[1] == 4) {
+                    this.filterKey.min_average_sentiment_change = evt[0][0];
+                    this.filterKey.max_average_sentiment_change = evt[0][1];
+                }
+                if (evt[1] == 5) {
+                    this.filterKey.min_social_mentions_change = evt[0][0];
+                    this.filterKey.max_social_mentions_change = evt[0][1];
+                }
+                if (evt[1] == 6) {
+                    this.filterKey.min_social_engagement_change = evt[0][0];
+                    this.filterKey.max_social_engagement_change = evt[0][1];
+                }
+                if (evt[1] == 7) {
+                    this.filterKey.min_average_sentiment = evt[0][0];
+                    this.filterKey.max_average_sentiment = evt[0][1];
+                }
+                if (evt[1] == 8) {
+                    this.filterKey.min_three_months_unlock_percent_of_tokens = evt[0][0];
+                    this.filterKey.max_three_months_unlock_percent_of_tokens = evt[0][1];
+                }
+                if (evt[1] == 9) {
+                    this.filterKey.min_next_unlock_percent_of_tokens = evt[0][0];
+                    this.filterKey.max_next_unlock_percent_of_tokens = evt[0][1];
+                }
+                if (evt[1] == 10) {
+                    this.filterKey.min_six_months_unlock_percent_of_tokens = evt[0][0];
+                    this.filterKey.max_six_months_unlock_percent_of_tokens = evt[0][1];
+                }
+            },
+            openNotificationModal() {
+                // this.activeData;
+                this.AddalertDisable = true;
+                this.$bvModal.show('modal-notifications');
+                this.NotificationModal = true;
+
+            },
+            updateNotificationFilter(evt)
             {
-               if(evt[1] == 1)
-               {
-                this.filterKey.min_roi_percentage = evt[0][0]; 
-                this.filterKey.max_roi_percentage = evt[0][1]; 
-               }
-               if(evt[1] == 2)
-               {
-                    this.filterKey.min_price_change_percentage_24h = evt[0][0]; 
-                    this.filterKey.max_price_change_percentage_24h = evt[0][1]; 
-               }
-               if(evt[1] == 3)
-               {
-                    this.filterKey.min_total_supply_percent = evt[0][0]; 
-                    this.filterKey.max_total_supply_percent = evt[0][1]; 
-               }
-               if(evt[1] == 4)
-               {
-                    this.filterKey.min_average_sentiment_change = evt[0][0]; 
-                    this.filterKey.max_average_sentiment_change = evt[0][1]; 
-               }
-               if(evt[1] == 5)
-               {
-                    this.filterKey.min_social_mentions_change = evt[0][0]; 
-                    this.filterKey.max_social_mentions_change = evt[0][1]; 
-               }
-               if(evt[1] == 6)
-               {
-                    this.filterKey.min_social_engagement_change = evt[0][0]; 
-                    this.filterKey.max_social_engagement_change = evt[0][1]; 
-               }
-               if(evt[1] == 7)
-               {
-                    this.filterKey.min_average_sentiment = evt[0][0]; 
-                    this.filterKey.max_average_sentiment = evt[0][1]; 
-               }
-               if(evt[1] == 8)
-               {
-                    this.filterKey.min_three_months_unlock_percent_of_tokens = evt[0][0]; 
-                    this.filterKey.max_three_months_unlock_percent_of_tokens = evt[0][1]; 
-               }
-               if(evt[1] == 9)
-               {
-                    this.filterKey.min_next_unlock_percent_of_tokens = evt[0][0]; 
-                    this.filterKey.max_next_unlock_percent_of_tokens = evt[0][1]; 
-               }
-               if(evt[1] == 10)
-               {
-                    this.filterKey.min_six_months_unlock_percent_of_tokens = evt[0][0]; 
-                    this.filterKey.max_six_months_unlock_percent_of_tokens = evt[0][1]; 
-               }
+                if(evt[1] == 1)
+                {
+                    this.alertForm.min_price = evt[0][0];
+                    this.alertForm.max_price = evt[0][1];
+                }else if(evt[1] == 2)
+                {
+                    this.alertForm.min_tradingper24h = evt[0][0];
+                    this.alertForm.max_tradingper24h = evt[0][1];
+                }else if(evt[1] == 3)
+                {
+                    this.alertForm.min_roipercentage = evt[0][0];
+                    this.alertForm.max_roipercentage = evt[0][1];
+                }else if(evt[1] == 4)
+                {
+                    this.alertForm.min_marketcap = evt[0][0];
+                    this.alertForm.max_marketcap = evt[0][1];
+                }else if(evt[1] == 5)
+                {
+                    this.alertForm.min_nextunlock = evt[0][0];
+                    this.alertForm.max_nextunlock = evt[0][1];
+                }else if(evt[1] == 6)
+                {
+                    this.alertForm.min_socialsentiments = evt[0][0];
+                    this.alertForm.max_socialsentiments = evt[0][1];
+                }
+                this.updateAddalertDisable();
+            },
+            addAlert()
+            {
+                if(!this.alertForm.name || this.alertForm.name.trim() == '')
+                {
+                    this.titleReq = true;
+                    return 0;
+                }
+                this.alertForm.coin_id = this.activeData.coin_id;
+                this.alertForm.symbol = this.activeData.symbol;
+                this.alertForm.coin_name = this.activeData.name;
+                axios.post('api/add-coinalert',this.alertForm)
+                .then(res => {
+                    this.alertForm.coin_id = null;
+                    this.alertForm.symbol = null;
+                    this.alertForm.coin_name = null;
+                    this.alertForm.priority = 'medium';
+                    this.alertForm.name = '';
+                    this.alertData.price = [null,null];
+                    this.alertData.tradingper24h =[null,null];
+                    this.alertData.roipercentage =[null,null];
+                    this.alertData.marketcap =[null,null];
+                    this.alertData.nextunlock =[null,null];
+                    this.alertData.socialsentiments =[null,null];
+                    this.alertForm.min_price = null;
+                    this.alertForm.max_price = null;
+                    this.alertForm.min_tradingper24h = null;
+                    this.alertForm.max_tradingper24h = null;
+                    this.alertForm.min_roipercentage = null;
+                    this.alertForm.max_roipercentage = null;
+                    this.alertForm.min_marketcap = null;
+                    this.alertForm.max_marketcap = null;
+                    this.alertForm.min_nextunlock = null;
+                    this.alertForm.max_nextunlock = null;
+                    this.alertForm.min_socialsentiments = null;
+                    this.alertForm.max_socialsentiments = null;
+                });
+            },
+            updateAddalertDisable()
+            {
+                if(this.alertForm.min_price != null|| this.alertForm.max_price != null||
+                    this.alertForm.min_tradingper24h != null|| this.alertForm.max_tradingper24h != null||
+                    this.alertForm.min_roipercentage != null|| this.alertForm.max_roipercentage != null||
+                    this.alertForm.min_marketcap != null|| this.alertForm.max_marketcap != null||
+                    this.alertForm.min_nextunlock != null|| this.alertForm.max_nextunlock != null||
+                    this.alertForm.min_socialsentiments != null|| this.alertForm.max_socialsentiments != null 
+                
+                ){
+                   this.AddalertDisable = false;
+                }else{
+                    this.AddalertDisable = true;
+                }
             }
 
 
@@ -6169,111 +6254,7 @@ import FilterComp from './FilterComp.vue'
                     this.rdot = rdot
                 },
             },
-            // value1: {
-            //     get() {
-            //         return [this.filterKey.min_roi_percentage, this.filterKey.max_roi_percentage]
-            //     },
-            //     set([ldot1, rdot1]) {
-            //         this.filterKey.min_roi_percentage = ldot1
-            //         this.filterKey.max_roi_percentage = rdot1
-            //     },
-            // },
-            // value2: {
-            //     get() {
-            //         return [this.filterKey.min_price_change_percentage_24h, this.filterKey
-            //             .max_price_change_percentage_24h
-            //         ]
-            //     },
-            //     set([ldot2, rdot2]) {
-            //         this.filterKey.min_price_change_percentage_24h = ldot2
-            //         this.filterKey.max_price_change_percentage_24h = rdot2
-            //     },
-            // },
-            // value3: {
-            //     get() {
-            //         return [this.filterKey.min_total_supply_percent, this.filterKey.max_total_supply_percent]
-            //     },
-            //     set([ldot3, rdot3]) {
-            //         this.filterKey.min_total_supply_percent = ldot3
-            //         this.filterKey.max_total_supply_percent = rdot3
-            //     },
-            // },
-            // value4: {
-            //     get() {
-            //         return [this.filterKey.min_average_sentiment_change, this.filterKey
-            //             .max_average_sentiment_change
-            //         ]
-            //     },
-            //     set([ldot4, rdot4]) {
-            //         this.filterKey.min_average_sentiment_change = ldot4
-            //         this.filterKey.max_average_sentiment_change = rdot4
-            //     },
-            // },
-            // value5: {
-            //     get() {
-            //         return [this.filterKey.min_social_mentions_change, this.filterKey
-            //             .max_social_mentions_change
-            //         ]
-            //     },
-            //     set([ldot5, rdot5]) {
-            //         this.filterKey.min_social_mentions_change = ldot5
-            //         this.filterKey.max_social_mentions_change = rdot5
-            //     },
-            // },
-            // value6: {
-            //     get() {
-            //         return [this.filterKey.min_social_engagement_change, this.filterKey
-            //             .max_social_engagement_change
-            //         ]
-            //     },
-            //     set([ldot6, rdot6]) {
-            //         this.filterKey.min_social_engagement_change = ldot6
-            //         this.filterKey.max_social_engagement_change = rdot6
-            //     },
-            // },
-            // value7: {
-            //     get() {
-            //         return [this.filterKey.min_average_sentiment, this.filterKey.min_average_sentiment]
-            //     },
-            //     set([ldot7, rdot7]) {
-            //         this.filterKey.min_average_sentiment = ldot7
-            //         this.filterKey.min_average_sentiment = rdot7
-            //     },
-            // },
-            // value8: {
-            //     get() {
-            //         return [this.filterKey.min_three_months_unlock_percent_of_tokens, this.filterKey
-            //             .max_three_months_unlock_percent_of_tokens
-            //         ]
-            //     },
-            //     set([ldot8, rdot8]) {
-            //         this.filterKey.min_three_months_unlock_percent_of_tokens = ldot8
-            //         this.filterKey.max_three_months_unlock_percent_of_tokens = rdot8
-            //     },
-            // },
-            // value9: {
-            //     get() {
-            //         return [this.filterKey.min_next_unlock_percent_of_tokens, this.filterKey
-            //             .max_next_unlock_percent_of_tokens
-            //         ]
-            //     },
-            //     set([ldot9, rdot9]) {
-            //         this.filterKey.min_next_unlock_percent_of_tokens = ldot9
-            //         this.filterKey.max_next_unlock_percent_of_tokens = rdot9
-            //     },
-            // },
-            // value10: {
-            //     get() {
-            //         return [this.filterKey.min_six_months_unlock_percent_of_tokens, this.filterKey
-            //             .max_six_months_unlock_percent_of_tokens
-            //         ]
-            //     },
-            //     set([ldot10, rdot10]) {
-            //         this.filterKey.min_six_months_unlock_percent_of_tokens = ldot10
-            //         this.filterKey.max_six_months_unlock_percent_of_tokens = rdot10
-            //     },
-
-            // },
+            
             presetFiltersapp1() {
                 return this.presetFilters.filter(filter => {
                     return filter.default == 1
@@ -6296,10 +6277,10 @@ import FilterComp from './FilterComp.vue'
                 this.dir = 'ltr'
                 return this.dir
             },
-            refreshEvent()
-            {
+            refreshEvent() {
 
-            }
+            },
+          
 
 
         },
@@ -6314,14 +6295,14 @@ import FilterComp from './FilterComp.vue'
                 document.body.classList.add('AppExtensionMode')
             }
             this.$emitter.listen('refreshEvent', data => {
-                    this.params.filters2 = "";
-                    this.locked = false;
-                    this.favoritised = false;
-                    this.params.favoritesMode = 0;
-                    this.params.api_mode = 1;
-                    this.Cpagpage = 1;
-                    this.all_coins_mode = true;
-                    this.params.sort = ["market_cap_rank", "asc"],
+                this.params.filters2 = "";
+                this.locked = false;
+                this.favoritised = false;
+                this.params.favoritesMode = 0;
+                this.params.api_mode = 1;
+                this.Cpagpage = 1;
+                this.all_coins_mode = true;
+                this.params.sort = ["market_cap_rank", "asc"],
                     this.loadCoins(false)
             })
         },
@@ -6329,6 +6310,11 @@ import FilterComp from './FilterComp.vue'
             this.userData = getUserData()
         },
         watch: {
+            'alertForm.name': function (newVal, oldVal) {
+                if (oldVal && newVal) {
+                        this.titleReq = false;
+                }
+            },
             'Cpagpage': function (newVal, oldVal) {
                 if (oldVal && newVal) {
                     this.loadCoins(false)
@@ -6626,6 +6612,7 @@ import FilterComp from './FilterComp.vue'
         text-align: center;
         color: #6BD863;
     }
+
     .barometerStyle {
         font-family: 'Poppins-Light';
         font-style: normal;
@@ -6643,6 +6630,7 @@ import FilterComp from './FilterComp.vue'
         padding: 0;
         white-space: nowrap;
     }
+
     .btcInoutVal {
         font-family: 'Poppins-Light';
         font-style: normal;
@@ -6899,7 +6887,7 @@ import FilterComp from './FilterComp.vue'
         color: white !important;
     }
 
- 
+
 
     .soicalLable.darkWhiteText.lableText {
         height: 32px;
@@ -7235,47 +7223,59 @@ import FilterComp from './FilterComp.vue'
     .AppExtensionMode .maximizeButton {
         display: block;
     }
-    .AppExtensionMode .extn-flex{
-        display:flex;
+
+    .AppExtensionMode .extn-flex {
+        display: flex;
     }
-    .AppExtensionMode .extn-symb{
-    float: left;
-    max-width: 100px;
-    width: 100px;
-    opacity: 0.8;
-    margin: auto;
-    }
-    .AppExtensionMode .extn-name{
-        display:flex;
+
+    .AppExtensionMode .extn-symb {
         float: left;
-    max-width: 100px;
-    margin-right: 5px;
-    font-weight: 600;
-    margin-top: auto;
-    margin-bottom: auto;
+        max-width: 100px;
+        width: 100px;
+        opacity: 0.8;
+        margin: auto;
     }
-    .AppExtensionMode tbody tr{
-        font-size:14px;
+
+    .AppExtensionMode .extn-name {
+        display: flex;
+        float: left;
+        max-width: 100px;
+        margin-right: 5px;
+        font-weight: 600;
+        margin-top: auto;
+        margin-bottom: auto;
     }
+
+    .AppExtensionMode tbody tr {
+        font-size: 14px;
+    }
+
     .AppExtensionMode #dashboard table td:nth-child(1) {
-        padding: 0.22rem 0rem !important; 
+        padding: 0.22rem 0rem !important;
     }
+
     .AppExtensionMode #dashboard table td {
-        padding: 0.22rem 2rem !important; 
+        padding: 0.22rem 2rem !important;
     }
-   
-    #apexcharts7days-history .apexcharts-tooltip{
-        opacity:0.85;
+
+    #apexcharts7days-history .apexcharts-tooltip {
+        opacity: 0.85;
     }
+
     body.dark-layout #dashboard table th {
         background: #232228 !important;
         color: white;
     }
-    .total_locked_progress .progress{
+
+    .total_locked_progress .progress {
         background: gray !important;
     }
-    .total_locked_progress .progress-bar{
+
+    .total_locked_progress .progress-bar {
         background: #6BD863 !important;
+    }
+    .titlereq{
+        border-color: #ad2020 !important;
     }
 </style>
 
