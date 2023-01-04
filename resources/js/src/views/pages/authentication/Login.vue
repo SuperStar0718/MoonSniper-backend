@@ -5,7 +5,9 @@
       <!-- Brand logo-->
       <b-link class="brand-logo">
         <!-- <vuexy-logo /> -->
-        <img src="/images/moon/icon/fullcolor.png" alt="" style="width:80px">
+        <img src="/images/moon/icon/fullcolor.png" alt="" style="width: 80px;
+        margin-top: auto;
+        margin-bottom: auto">
         <h2 class="brand-text text-primary ml-1 my-auto">
           <img src="/images/moon/text/fullcolor.png" alt="" class="Logo-image" style="height:30px">
       </h2>

@@ -22,7 +22,7 @@
         <div class="w-75" style="padding-left: 22px;
         margin-top: 6px;">
             <div @click="dragSlider">
-                <vue-slider @drag-end="dragSlider" v-model="value2" class="mb-2" />
+                <vue-slider @drag-end="dragSlider"  :tooltip-formatter="formatterRange" v-model="value2" :min="-100" :max="100" class="mb-2" />
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
 </template>
 <script>
     import {
-
+        
         BFormGroup,
 
     } from 'bootstrap-vue'
@@ -56,10 +56,13 @@
         data() {
             return {
                 value1: this.value,
-                value2: this.value,
+                value2: ['',''],
                 Notdragged: true,
+                formatterRange: '{value}%',
                 NumberFormaVal: {
                     numeral: true,
+                    numeralDecimalScale: 1
+
                 },
             }
         },
@@ -89,6 +92,13 @@
                 if (this.value1[0] == null && this.value1[1] == null) {
                     this.value2 = vals;
                 } else if (this.value1[0] == null) {
+                    this.value1[1] = parseFloat(this.value1[1])
+                    if(this.value1[1] < -100) {
+                        this.value1[1] = -100;
+                    }
+                    if(this.value1[1] > 100) {
+                        this.value1[1] = 100;
+                    }
                     if (this.value1[1] > 100) {
                         vals = [null, 100]
                     } else {
@@ -96,6 +106,13 @@
                     }
                     this.value2 = vals;
                 } else if (this.value1[1] == null) {
+                     if(this.value1[0] < -100) {
+                        this.value1[0] = -100;
+                    }
+                    if(this.value1[0] > 100) {
+                        this.value1[0] = 100;
+                    }
+                    this.value1[0] = parseFloat(this.value1[0])
                     if (this.value1[0] > 100) {
                         vals = [100, 100]
                     } else {
@@ -114,7 +131,24 @@
                     }
 
                     this.value1 = vals;
-                } else if (this.value1[0] > this.value1[1]) {
+                } else {
+                        this.value1[0] = parseFloat(this.value1[0])
+                      this.value1[1] = parseFloat(this.value1[1])
+
+                      if(this.value1[0] < -100) {
+                        this.value1[0] = -100;
+                    }
+                    if(this.value1[0] > 100) {
+                        this.value1[0] = 100;
+                    }
+                    if(this.value1[1] < -100) {
+                        this.value1[1] = 100;
+                    }
+                    if(this.value1[1] > 100) {
+                        this.value1[1] = 100;
+                    }
+                    if (this.value1[0] > this.value1[1]) {
+                     
                     if (this.value1[0] <= 100) {
                         if (typeof this.value1[0] != 'string') {
                             this.value1[0] = stringify(this.value1[0]);
@@ -126,6 +160,7 @@
                                 vals = [this.value1[0], 100]
                             } else {
                                 vals = [this.value1[0], this.value1[0] + 0]
+                                vals = [parseFloat(vals[0]), parseFloat(vals[1])];
                             }
                         }
                     } else {
@@ -141,6 +176,7 @@
                     }
 
                 }
+            }
 
                 this.value2 = [vals[0], vals[1]]
                 this.value1 = [this.value2[0], this.value2[1]]
@@ -160,19 +196,19 @@
                         label = 'Current price is : ' + this.valueData.current_price+'$';
                         break;
                     case 2:
-                        label = '24h volume is : ' + (this.valueData.total_volume != null?this.valueData.total_volume:'-');
+                        label = '24h volume is : ' + (this.valueData.price_change_percentage_24h?this.valueData.price_change_percentage_24h:'-')+'%';
                         break;
                     case 3:
-                        label = `Today's ROI% is  : ` + (this.valueData.roi_percentage != null?this.valueData.roi_percentage:'-')+'%';
+                        label = `Today's ROI% is  : ` + (this.valueData.roi_percentage?this.valueData.roi_percentage:'-')+'%';
                         break;
                     case 4:
-                        label =  `Today's market cap is  : ` + (this.valueData.market_cap != null?this.valueData.market_cap:'-');
+                        label =  `Today's market cap is  : ` + (this.valueData.market_cap?this.valueData.market_cap:'-')+'$';
                         break;
                     case 5:
-                        label = 'Next unlock size is: ' + (this.valueData.next_unlock_percent != null?this.valueData.next_unlock_percent:'-');
+                        label = 'Next unlock size is: ' + (this.valueData.next_unlock_percent?this.valueData.next_unlock_percent:'-')+'%';
                         break;
                     case 6:
-                        label = '24H social sentiment is  : ' + (this.valueData.average_sentiment_change != null?this.valueData.average_sentiment_change:'-')+'%';
+                        label = '24H social sentiment is  : ' + (this.valueData.average_sentiment_change?this.valueData.average_sentiment_change:'-')+'%';
                         break;
 
                     default:

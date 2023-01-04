@@ -92,7 +92,7 @@
                     if (this.value1[1] > 100) {
                         vals = [null, 100]
                     } else {
-                        vals = [null, this.value1[1]]
+                        vals = [null, this.value1[1].]
                     }
                     this.value2 = vals;
                 } else if (this.value1[1] == null) {
@@ -160,19 +160,19 @@
                         label = 'Current price is : ' + this.valueData.current_price+'$';
                         break;
                     case 2:
-                        label = '24h volume is : ' + (this.valueData.total_volume != null?this.valueData.total_volume:'-');
+                        label = '24h volume is : ' + (this.valueData.total_volume?this.valueData.total_volume:'-');
                         break;
                     case 3:
-                        label = `Today's ROI% is  : ` + (this.valueData.roi_percentage != null?this.valueData.roi_percentage:'-')+'%';
+                        label = `Today's ROI% is  : ` + (this.valueData.roi_percentage?this.valueData.roi_percentage:'-')+'%';
                         break;
                     case 4:
-                        label =  `Today's market cap is  : ` + (this.valueData.market_cap != null?this.valueData.market_cap:'-');
+                        label =  `Today's market cap is  : ` + (this.valueData.market_cap?this.valueData.market_cap:'-');
                         break;
                     case 5:
-                        label = 'Next unlock size is: ' + (this.valueData.next_unlock_percent != null?this.valueData.next_unlock_percent:'-');
+                        label = 'Next unlock size is: ' + (this.valueData.next_unlock_percent?this.valueData.next_unlock_percent:'-');
                         break;
                     case 6:
-                        label = '24H social sentiment is  : ' + (this.valueData.average_sentiment_change != null?this.valueData.average_sentiment_change:'-')+'%';
+                        label = '24H social sentiment is  : ' + (this.valueData.average_sentiment_change?this.valueData.average_sentiment_change:'-')+'%';
                         break;
 
                     default:

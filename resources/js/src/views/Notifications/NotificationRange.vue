@@ -65,7 +65,8 @@
                 Notdragged: true,
                 NumberFormaVal: {
                     numeral: true,
-                    numeralThousandsGroupStyle: 'thousand',
+                    numeralDecimalMark: ',',
+                    delimiter: '.'
                 },
             }
         },

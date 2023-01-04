@@ -3115,17 +3115,17 @@
 
                             </div>
                             <div class=" p-2">
-                                <NotificationRange :value="alertData.price" @updateNotificationFilter="updateNotificationFilter($event)"
+                                <NotificationRangePrice v-if="activeData.current_price != null" :value="alertData.price" @updateNotificationFilter="updateNotificationFilter($event)"
                                     modal="Price" :item="1" :valueData="activeData" />
-                                     <NotificationRange :valueData="activeData"  :value="alertData.tradingper24h" @updateNotificationFilter="updateNotificationFilter($event)"
+                                     <NotificationRangeROI v-if="activeData.price_change_percentage_24h != null" :valueData="activeData"  :value="alertData.tradingper24h" @updateNotificationFilter="updateNotificationFilter($event)"
                                     modal="24H trading percentage" :item="2" />
-                                     <NotificationRange :valueData="activeData" :value="alertData.roipercentage" @updateNotificationFilter="updateNotificationFilter($event)"
+                                     <NotificationRangeROI v-if="activeData.roi_percentage != null" :valueData="activeData" :value="alertData.roipercentage" @updateNotificationFilter="updateNotificationFilter($event)"
                                     modal="ROI in %" :item="3" />
-                                     <NotificationRange :valueData="activeData" :value="alertData.marketcap" @updateNotificationFilter="updateNotificationFilter($event)"
+                                     <NotificationRangePrice  v-if="activeData.market_cap != null"  :valueData="activeData" :value="alertData.marketcap" @updateNotificationFilter="updateNotificationFilter($event)"
                                     modal="Market cap" :item="4" />
-                                    <NotificationRange :valueData="activeData" :value="alertData.nextunlock" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    <NotificationRangeNextUnlock v-if="activeData.next_unlock_percent_of_tokens != null" :valueData="activeData" :value="alertData.nextunlock" @updateNotificationFilter="updateNotificationFilter($event)"
                                     modal="Next unlock" :item="5" />
-                                    <NotificationRange :valueData="activeData" :value="alertData.socialsentiments" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    <NotificationRange v-if="activeData.average_sentiment_change != null" :valueData="activeData" :value="alertData.socialsentiments" @updateNotificationFilter="updateNotificationFilter($event)"
                                     modal="Social sentiments %" :item="6" />
 
                             </div>
@@ -3157,7 +3157,10 @@
 <script>
     import FilterComp from './FilterComp.vue';
     import NotificationRange from './NotificationRange.vue';
-
+    import NotificationRangePrice from './NotificationRangePrice.vue';
+    import NotificationRangeROI from './NotificationRangeROI.vue';
+    import NotificationRangeNextUnlock from './NotificationRangeNextUnlock.vue';
+    
     import {
         BTable,
         BTabs,
@@ -3271,7 +3274,8 @@
             Multiselect,
             FilterComp,
             BProgress,
-            NotificationRange
+            NotificationRange,
+            NotificationRangePrice,NotificationRangeROI,NotificationRangeNextUnlock
 
         },
 
