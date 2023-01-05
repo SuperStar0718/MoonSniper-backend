@@ -1,18 +1,18 @@
 <template>
-    <div class="d-flex oneToFive">
+    <div class="d-flex">
         <div class="w-100">
             <div class="d-flex">
                 <div class="nm-width" style="margin: auto;">{{ modal }} &nbsp;</div>
                 <div>
                     <div class="d-flex">
                         <cleave :options="NumberFormaVal" @blur="blurUpdate" class="form-control" v-model="value1[0]"
-                            v-numeric-only placeholder="min" />
+                             placeholder="min" />
                         <span>
                             <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                 style="margin:10px 6px 0 0px" />
                         </span>
                         <cleave :options="NumberFormaVal" @blur="blurUpdate" class="form-control" v-model="value1[1]"
-                            v-numeric-only placeholder="max" />
+                             placeholder="max" />
                     </div>
                     <label class="d-flex justify-content-center" style="margin-top: 5px;">{{ getitemLabel() }}</label>
                 </div>
@@ -28,17 +28,13 @@
     </div>
 
 </template>
-<style lang="scss">
-    @import '~@resources/scss/vue/libs/vue-slider.scss';
 
-</style>
 <script>
     import {
 
         BFormGroup,
 
     } from 'bootstrap-vue'
-    
     import Cleave from 'vue-cleave-component'
     // eslint-disable-next-line import/no-extraneous-dependencies
     import 'cleave.js/dist/addons/cleave-phone.us';
@@ -65,8 +61,6 @@
                 Notdragged: true,
                 NumberFormaVal: {
                     numeral: true,
-                    numeralDecimalMark: ',',
-                    delimiter: '.'
                 },
             }
         },
@@ -74,6 +68,7 @@
 
             dragSlider() {
                 this.Notdragged = false;
+                console.log(this.value2);
                 this.value1 = [this.value2[0], this.value2[1]]
                 if (typeof this.value1[0] != 'string' && this.value1[0] == 0) {
                     this.value1[0] = stringify(this.value1[0]);
@@ -166,19 +161,19 @@
                         label = 'Current price is : ' + this.valueData.current_price+'$';
                         break;
                     case 2:
-                        label = '24h volume is : ' + (this.valueData.total_volume?this.valueData.total_volume:'-');
+                        label = '24h volume is : ' + (this.valueData.total_volume != null?this.valueData.total_volume:'-');
                         break;
                     case 3:
-                        label = `Today's ROI% is  : ` + (this.valueData.roi_percentage?this.valueData.roi_percentage:'-')+'%';
+                        label = `Today's ROI% is  : ` + (this.valueData.roi_percentage != null?this.valueData.roi_percentage:'-')+'%';
                         break;
                     case 4:
-                        label =  `Today's market cap is  : ` + (this.valueData.market_cap?this.valueData.market_cap:'-');
+                        label =  `Today's market cap is  : ` + (this.valueData.market_cap != null?this.valueData.market_cap:'-');
                         break;
                     case 5:
-                        label = 'Next unlock size is: ' + (this.valueData.next_unlock_percent?this.valueData.next_unlock_percent:'-');
+                        label = 'Next unlock size is: ' + (this.valueData.next_unlock_percent != null?this.valueData.next_unlock_percent:'-');
                         break;
                     case 6:
-                        label = '24H social sentiment is  : ' + (this.valueData.average_sentiment_change?this.valueData.average_sentiment_change:'-')+'%';
+                        label = '24H social sentiment is  : ' + (this.valueData.average_sentiment_change != null?this.valueData.average_sentiment_change:'-')+'%';
                         break;
 
                     default:
@@ -219,10 +214,5 @@
     .nm-width {
         min-width: 100px;
     }
-    .oneToFive .vue-slider-rail {
-       
-    }
 
-    .oneToFive .vue-slider-process {
-    }
 </style>

@@ -24,6 +24,14 @@ class AlertController extends Controller
             $filterData['max_price'] = $request->max_price;
 
         }
+        if ($request->min_price_percentage != null) {
+            $filterData['min_price_percentage'] = $request->min_price_percentage;
+
+        }
+        if ($request->max_price_percentage != null) {
+            $filterData['max_price_percentage'] = $request->max_price_percentage;
+
+        }
         if ($request->min_tradingper24h != null) {
             $filterData['min_tradingper24h'] = $request->min_tradingper24h;
 
@@ -46,6 +54,14 @@ class AlertController extends Controller
         }
         if ($request->max_marketcap != null) {
             $filterData['max_marketcap'] = $request->max_marketcap;
+
+        }
+        if ($request->min_marketcap_percentage != null) {
+            $filterData['min_marketcap_percentage'] = $request->min_marketcap_percentage;
+
+        }
+        if ($request->max_marketcap_percentage != null) {
+            $filterData['max_marketcap_percentage'] = $request->max_marketcap_percentage;
 
         }
         if ($request->min_nextunlock != null) {
@@ -111,6 +127,14 @@ class AlertController extends Controller
             $filterData['max_price'] = $request->max_price;
 
         }
+        if ($request->min_price_percentage != null) {
+            $filterData['min_price_percentage'] = $request->min_price_percentage;
+
+        }
+        if ($request->max_price_percentage != null) {
+            $filterData['max_price_percentage'] = $request->max_price_percentage;
+
+        }
         if ($request->min_tradingper24h != null) {
             $filterData['min_tradingper24h'] = $request->min_tradingper24h;
 
@@ -133,6 +157,14 @@ class AlertController extends Controller
         }
         if ($request->max_marketcap != null) {
             $filterData['max_marketcap'] = $request->max_marketcap;
+
+        }
+        if ($request->min_marketcap_percentage != null) {
+            $filterData['min_marketcap_percentage'] = $request->min_marketcap_percentage;
+
+        }
+        if ($request->max_marketcap_percentage != null) {
+            $filterData['max_marketcap_percentage'] = $request->max_marketcap_percentage;
 
         }
         if ($request->min_nextunlock != null) {

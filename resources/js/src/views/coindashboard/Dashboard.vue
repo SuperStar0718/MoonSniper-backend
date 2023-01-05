@@ -6145,8 +6145,10 @@
             {
                 if(evt[1] == 1)
                 {
-                    this.alertForm.min_price = evt[0][0];
-                    this.alertForm.max_price = evt[0][1];
+                    this.alertForm.min_price_percentage = evt[0][0];
+                    this.alertForm.max_price_percentage = evt[0][1];
+                    this.alertForm.min_price = evt[2][0];
+                    this.alertForm.max_price = evt[2][1];
                 }else if(evt[1] == 2)
                 {
                     this.alertForm.min_tradingper24h = evt[0][0];
@@ -6157,8 +6159,10 @@
                     this.alertForm.max_roipercentage = evt[0][1];
                 }else if(evt[1] == 4)
                 {
-                    this.alertForm.min_marketcap = evt[0][0];
-                    this.alertForm.max_marketcap = evt[0][1];
+                    this.alertForm.min_marketcap_percentage = evt[0][0];
+                    this.alertForm.max_marketcap_percentage = evt[0][1];
+                    this.alertForm.min_marketcap = evt[2][0];
+                    this.alertForm.max_marketcap = evt[2][1];
                 }else if(evt[1] == 5)
                 {
                     this.alertForm.min_nextunlock = evt[0][0];
@@ -7288,6 +7292,12 @@
     }
     .titlereq{
         border-color: #ad2020 !important;
+    }
+
+    .AppExtensionMode  #modal-notifications  .modal-dialog{
+        max-width: 748px !important;
+    } .AppExtensionMode  #modal-notifications  .modal-body{
+        padding: 0.8rem 0rem;
     }
 </style>
 

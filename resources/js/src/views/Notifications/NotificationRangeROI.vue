@@ -247,7 +247,7 @@
 </script>
 <style>
     .nm-width {
-        min-width: 500px;
+        min-width: 100px;
     }
 
 </style>

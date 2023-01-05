@@ -22,7 +22,7 @@
                 </div>
                 <b-overlay :show="isBusy" rounded="sm">
                     <b-table :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill " show-empty
-                        class="b-table-1" style=" white-space: nowrap;" responsive :items="items.data" :fields="fields">
+                        class="b-table-alerts" style=" white-space: nowrap;" responsive :items="items.data" :fields="fields">
                         <template #cell(alert_name)="data">
                             <div class="" v-html="data.item.data.name"></div>
 
@@ -73,15 +73,15 @@
                                 </div>
                                 
                                 
-                                <div v-if="data.item.data.min_marketcap != null && data.item.data.max_marketcap!= null">
+                                <div style="white-space: initial;"  v-if="data.item.data.min_marketcap != null && data.item.data.max_marketcap!= null">
                                     
                                         Market Cap: {{ data.item.data.min_marketcap }} -
                                         {{ data.item.data.max_marketcap }}%
                                     </div>
-                                    <div v-else-if="data.item.data.min_marketcap!= null && data.item.data.max_marketcap == null">
+                                    <div style="white-space: initial;"  v-else-if="data.item.data.min_marketcap!= null && data.item.data.max_marketcap == null">
                                          Market Cap: above {{ data.item.data.min_marketcap}}$
                                     </div>
-                                    <div  v-else-if="data.item.data.min_marketcap== null && data.item.data.max_marketcap != null">
+                                    <div style="white-space: initial;"  v-else-if="data.item.data.min_marketcap== null && data.item.data.max_marketcap != null">
                                          Market Cap:  below {{ data.item.data.max_marketcap}}$
                                     </div>
                                     <div v-if="data.item.data.min_nextunlock != null && data.item.data.max_nextunlock!= null">
@@ -134,7 +134,6 @@
                 </b-overlay>
                 <div class="p">
                     <b-row>
-
                         <!-- Pagination -->
                         <b-col cols="12"
                             class="d-flex align-items-center justify-content-center justify-content-around">
@@ -168,10 +167,9 @@
 
                     </b-row>
                 </div>
-
             </div>
             <b-modal id="modal-notifications" ok-only ok-title="Close" :hide-footer="true" centered size="lg"
-                :title="'New alert for: '+activeData.coin_name">
+                :title="'Edit alert for: '+activeData.coin_name">
                 <div class="">
                     <template>
                         <b-overlay :show="!NotificationModal" rounded="sm">
@@ -189,24 +187,19 @@
 
                                 </div>
                                 <div class=" p-2">
-                                    <NotificationRange :value="alertData.price"
-                                        @updateNotificationFilter="updateNotificationFilter($event)" modal="Price"
-                                        :item="1" :valueData="coinData" />
-                                    <NotificationRange :valueData="coinData" :value="alertData.tradingper24h"
-                                        @updateNotificationFilter="updateNotificationFilter($event)"
-                                        modal="24H trading percentage" :item="2" />
-                                    <NotificationRange :valueData="coinData" :value="alertData.roipercentage"
-                                        @updateNotificationFilter="updateNotificationFilter($event)" modal="ROI in %"
-                                        :item="3" />
-                                    <NotificationRange :valueData="coinData" :value="alertData.marketcap"
-                                        @updateNotificationFilter="updateNotificationFilter($event)" modal="Market cap"
-                                        :item="4" />
-                                    <NotificationRange :valueData="coinData" :value="alertData.nextunlock"
-                                        @updateNotificationFilter="updateNotificationFilter($event)" modal="Next unlock"
-                                        :item="5" />
-                                    <NotificationRange :valueData="coinData" :value="alertData.socialsentiments"
-                                        @updateNotificationFilter="updateNotificationFilter($event)"
-                                        modal="Social sentiments %" :item="6" />
+                                    <NotificationRangePrice v-if="coinData.current_price != null" :value="alertData.price" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    modal="Price" :item="1" :valueData="coinData" />
+                                     <NotificationRangeROI v-if="coinData.price_change_percentage_24h != null" :valueData="coinData"  :value="alertData.tradingper24h" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    modal="24H trading percentage" :item="2" />
+                                     <NotificationRangeROI v-if="coinData.roi_percentage != null" :valueData="coinData" :value="alertData.roipercentage" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    modal="ROI in %" :item="3" />
+                                     <NotificationRangePrice  v-if="coinData.market_cap != null"  :valueData="coinData" :value="alertData.marketcap" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    modal="Market cap" :item="4" />
+                                    <NotificationRangeNextUnlock v-if="coinData.next_unlock_percent_of_tokens != null" :valueData="coinData" :value="alertData.nextunlock" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    modal="Next unlock" :item="5" />
+                                    <NotificationRange v-if="coinData.average_sentiment_change != null" :valueData="coinData" :value="alertData.socialsentiments" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    modal="Social sentiments %" :item="6" />
+                                    
 
                                 </div>
                                 <div class="d-flex justify-content-center">
@@ -236,6 +229,9 @@
 </template>
 
 <script>
+    import NotificationRangePrice from './NotificationRangePrice.vue';
+    import NotificationRangeROI from './NotificationRangeROI.vue';
+    import NotificationRangeNextUnlock from './NotificationRangeNextUnlock.vue';
     import {
         BRow,
         BCol,
@@ -258,8 +254,12 @@
             BDropdown,
             BDropdownItem,
             BPagination,
+            BFormSelect,BButton,ToastificationContent,
             NotificationRange,
-            BFormSelect,BButton,ToastificationContent
+            NotificationRangePrice,
+            NotificationRangeROI,
+            NotificationRangeNextUnlock
+
         },
         data() {
             return {
@@ -269,10 +269,10 @@
                 titleReq:false,
                 Cpagpage: 1,
                 alertData: {
-                    price: [null, null],
+                    price: [null, null,null,null],
                     tradingper24h: [null, null],
                     roipercentage: [null, null],
-                    marketcap: [null, null],
+                    marketcap: [null, null,null, null],
                     nextunlock: [null, null],
                     socialsentiments: [null, null],
                 },
@@ -280,12 +280,16 @@
                     priority: 'medium',
                     min_price: null,
                     max_price: null,
+                    max_price_percentage: null,
+                    min_price_percentage: null,
                     min_tradingper24h: null,
                     max_tradingper24h: null,
                     min_roipercentage: null,
                     max_roipercentage: null,
                     min_marketcap: null,
                     max_marketcap: null,
+                    min_marketcap_percentage: null,
+                    max_marketcap_percentage: null,
                     min_nextunlock: null,
                     max_nextunlock: null,
                     min_socialsentiments: null,
@@ -352,23 +356,27 @@
             editNotification(item) {
                 this.alertForm.name = null;
                  this.alertForm.priority = null;
-                    this.alertForm.min_price = null;
+                this.alertForm.min_price = null;
                  this.alertForm.max_price = null;
+                 this.alertForm.min_price_percentage = null;
+                 this.alertForm.max_price_percentage = null;
                  this.alertForm.min_tradingper24h = null;
                  this.alertForm.max_tradingper24h = null;
                  this.alertForm.min_roipercentage = null;
                  this.alertForm.max_roipercentage = null;
                  this.alertForm.max_marketcap = null;
                  this.alertForm.min_marketcap = null;
+                 this.alertForm.max_marketcap_roipercentag = null;
+                 this.alertForm.min_marketcap_roipercentag= null;
                  this.alertForm.min_nextunlock = null;
                  this.alertForm.max_nextunlock = null;
                  this.alertForm.min_socialsentiments = null;
                  this.alertForm.max_socialsentiments = null;
                  this.alertData ={
-                    price: [null, null],
+                    price: [null, null,null, null],
                     tradingper24h: [null, null],
                     roipercentage: [null, null],
-                    marketcap: [null, null],
+                    marketcap: [null, null,null, null],
                     nextunlock: [null, null],
                     socialsentiments: [null, null],
                 }
@@ -378,12 +386,16 @@
 
                this.alertData.price[0] = this.activeData.min_price?this.activeData.min_price:null;
                this.alertData.price[1] = this.activeData.max_price?this.activeData.max_price:null;
+               this.alertData.price[2] = this.activeData.min_price_percentage?this.activeData.min_price_percentage:null;
+               this.alertData.price[3] = this.activeData.max_price_percentage?this.activeData.max_price_percentage:null;
                this.alertData.tradingper24h[0] = this.activeData.min_tradingper24h?this.activeData.min_tradingper24h:null;
                this.alertData.tradingper24h[1] = this.activeData.max_tradingper24h?this.activeData.max_tradingper24h:null;
                this.alertData.roipercentage[0] = this.activeData.min_roipercentage?this.activeData.min_roipercentage:null;
                this.alertData.roipercentage[1] = this.activeData.max_roipercentage?this.activeData.max_roipercentage:null;
                this.alertData.marketcap[0] = this.activeData.min_marketcap?this.activeData.min_marketcap:null;
                this.alertData.marketcap[1] = this.activeData.max_marketcap?this.activeData.max_marketcap:null;
+               this.alertData.marketcap[2] = this.activeData.min_marketcap_percentage?this.activeData.min_marketcap_percentage:null;
+               this.alertData.marketcap[3] = this.activeData.max_marketcap_percentage?this.activeData.max_marketcap_percentage:null;
                this.alertData.nextunlock[0] = this.activeData.min_nextunlock?this.activeData.min_nextunlock:null;
                this.alertData.nextunlock[1] = this.activeData.max_nextunlock?this.activeData.max_nextunlock:null;
                this.alertData.socialsentiments[0] = this.activeData.min_socialsentiments?this.activeData.min_socialsentiments:null;
@@ -391,41 +403,7 @@
                this.alertForm.name = this.activeData.name;
                this.alertForm.priority = this.activeData.priority;
                this.loadCoinData();
-            //    if(this.activeData.min_price = null){
-            //     this.alertForm.min_price = this.activeData.min_price;
-            //    }if(this.activeData.max_price = null){
-            //      this.alertForm.max_price = this.activeData.max_price;
-            //    }
-            //    if(this.activeData.min_tradingper24h = null){
-            //      this.alertForm.min_tradingper24h = this.activeData.min_tradingper24h;
-            //    }
-            //    if(this.activeData.max_tradingper24h = null){
-            //      this.alertForm.max_tradingper24h = this.activeData.max_tradingper24h;
-            //    }
-            //    if(this.activeData.min_roipercentage = null){
-            //      this.alertForm.min_roipercentage = this.activeData.min_roipercentage;
-            //    }
-            //    if(this.activeData.max_roipercentage = null){
-            //      this.alertForm.max_roipercentage = this.activeData.max_roipercentage;
-            //    }
-            //    if(this.activeData.max_marketcap = null){
-            //      this.alertForm.max_marketcap = this.activeData.max_marketcap;
-            //    }
-            //    if(this.activeData.min_marketcap = null){
-            //      this.alertForm.min_marketcap = this.activeData.min_marketcap;
-            //    }
-            //     if(this.activeData.min_nextunlock = null){
-            //      this.alertForm.min_nextunlock = this.activeData.min_nextunlock;
-            //    }
-            //    if(this.activeData.max_nextunlock = null){
-            //      this.alertForm.max_nextunlock = this.activeData.max_nextunlock;
-            //    }
-            //    if(this.activeData.min_socialsentiments = null){
-            //      this.alertForm.min_socialsentiments = this.activeData.min_socialsentiments;
-            //    }
-            //    if(this.activeData.max_socialsentiments = null){
-            //      this.alertForm.max_socialsentiments = this.activeData.max_socialsentiments;
-            //    }
+          
              
                this.NotificationModal = true;
                this.$bvModal.show('modal-notifications');
@@ -434,8 +412,10 @@
             {
                 if(evt[1] == 1)
                 {
-                    this.alertForm.min_price = evt[0][0];
-                    this.alertForm.max_price = evt[0][1];
+                    this.alertForm.min_price_percentage = evt[0][0];
+                    this.alertForm.max_price_percentage = evt[0][1];
+                    this.alertForm.min_price = evt[2][0];
+                    this.alertForm.max_price = evt[2][1];
                 }else if(evt[1] == 2)
                 {
                     this.alertForm.min_tradingper24h = evt[0][0];
@@ -446,8 +426,10 @@
                     this.alertForm.max_roipercentage = evt[0][1];
                 }else if(evt[1] == 4)
                 {
-                    this.alertForm.min_marketcap = evt[0][0];
-                    this.alertForm.max_marketcap = evt[0][1];
+                    this.alertForm.min_marketcap_percentage = evt[0][0];
+                    this.alertForm.max_marketcap_percentage = evt[0][1];
+                    this.alertForm.min_marketcap = evt[2][0];
+                    this.alertForm.max_marketcap = evt[2][1];
                 }else if(evt[1] == 5)
                 {
                     this.alertForm.min_nextunlock = evt[0][0];
@@ -518,10 +500,10 @@
                     this.alertForm.coin_name = null;
                     this.alertForm.priority = 'medium';
                     this.alertForm.name = '';
-                    this.alertData.price = [null,null];
+                    this.alertData.price = [null,null,null,null];
                     this.alertData.tradingper24h =[null,null];
                     this.alertData.roipercentage =[null,null];
-                    this.alertData.marketcap =[null,null];
+                    this.alertData.marketcap =[null,null,null,null];
                     this.alertData.nextunlock =[null,null];
                     this.alertData.socialsentiments =[null,null];
                     this.alertForm.min_price = null;
@@ -630,4 +612,17 @@
     .titlereq{
         border-color: #ad2020 !important;
     }
+    .b-table-alerts table{
+    border-spacing: 0px 4px !important;
+    }
+   .AppExtensionMode  #modal-notifications  .modal-dialog{
+        max-width: 748px !important;
+    }
+    .AppExtensionMode  #modal-notifications  .modal-body{
+        padding: 0.8rem 0rem;
+    }
+</style>
+<style lang="scss">
+    @import '~@resources/scss/vue/libs/vue-slider.scss';
+
 </style>

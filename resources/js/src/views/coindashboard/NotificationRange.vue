@@ -6,13 +6,13 @@
                 <div>
                     <div class="d-flex">
                         <cleave :options="NumberFormaVal" @blur="blurUpdate" class="form-control" v-model="value1[0]"
-                             placeholder="min" />
+                             placeholder="Decrease to" />
                         <span>
                             <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                 style="margin:10px 6px 0 0px" />
                         </span>
                         <cleave :options="NumberFormaVal" @blur="blurUpdate" class="form-control" v-model="value1[1]"
-                             placeholder="max" />
+                             placeholder="Increase to" />
                     </div>
                     <label class="d-flex justify-content-center" style="margin-top: 5px;">{{ getitemLabel() }}</label>
                 </div>

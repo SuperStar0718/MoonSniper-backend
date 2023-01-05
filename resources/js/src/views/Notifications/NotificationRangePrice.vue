@@ -57,8 +57,8 @@
         },
         data() {
             return {
-                value1: this.value,
-                value2: ['', ''],
+                value1: [this.value[0], this.value[1]],
+                value2: [this.value[2], this.value[3]],
                 formatterRange: '{value}%',
                 Notdragged: true,
                 NumberFormaVal: {
@@ -72,7 +72,7 @@
             dragSlider() {
                 this.Notdragged = false;
 
-                let vdata = 0.00;
+                let vdata = 2.00;
                 if (this.item == 1) {
                     vdata = this.valueData.current_price;
                 } else if (this.item == 4) {
@@ -237,6 +237,9 @@
 
             }
         },
+        mounted(){
+            this.$emit('updateNotificationFilter', [this.value2, this.item,this.value1])
+        },
         computed: {
             minvalue() {
                 let vdata = 0;
@@ -267,7 +270,6 @@
 
             },
             value: function (newVal, oldVal) {
-
                 this.value1 = [this.value[0], this.value[1]];
                 this.value2 = [this.value[0], this.value[1]];
                 if (typeof this.value2[0] != 'string' && this.value2[0] == 0) {
