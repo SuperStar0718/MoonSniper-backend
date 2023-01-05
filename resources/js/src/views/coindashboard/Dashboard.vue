@@ -3281,7 +3281,9 @@
 
         data() {
             return {
-                request_source : '',
+                searchItems: null,
+        searchText: "some value",
+        cancelSource: null,
                 alertData: {
                     price: [null, null],
                     tradingper24h: [null, null],
@@ -4304,22 +4306,22 @@
             //     filterKey.min_market_cap = e.minValue;
             //     filterKey.max_market_cap = e.maxValue;
             // },
+            cancelSearch () {
+            if (this.cancelSource) {
+                this.cancelSource.cancel('searching...');
+            }
+            },
             loadCoins(filterModalClose) {
-                 const CancelToken = axios.CancelToken;
-                const source = CancelToken.source(); 
-                if(this.request_source != '')
-                 this.request_source.cancel('Operation canceled by the user.');
-
-                 this.request_source = source;
-                  
-                console.log(source);
+                this.cancelSearch();
+              this.cancelSource = axios.CancelToken.source(); 
                 if (!filterModalClose) {
                     this.$bvModal.hide('modal-filters');
                 }
                 this.isBusy = true;
                 this.showEmpty = false;
                 this.loadedCoinData = false;
-                axios.post('api/get_coins?page=' + this.Cpagpage, JSON.stringify(this.params),{CancelToken:this.request_source.token}).then(res => {
+                axios.post('api/get_coins?page=' + this.Cpagpage, JSON.stringify(this.params), {
+                 cancelToken: this.cancelSource.token }).then(res => {
                     if (res.data.status) {
                         if (res.data.tokens.data) {
                             this.items = res.data.tokens;
