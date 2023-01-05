@@ -81,14 +81,14 @@
                             <div class="inner-text" style="display:block;">
                                 <div style="margin-top: 2rem !important;"
                                     :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}">
-                                    <span class="d-block feerGreen">{{fag.data.fear_greed_index}}</span>
+                                    <span class="d-block featTextSize">{{fag.data.fear_greed_index}}</span>
                                 </div>
                                 <div class="row" style="margin: 0% 0% 0% 0%;">
                                     <span class="col-3 text-info my-auto" style="float:left;"><a v-b-modal.modal-chart
                                             variant="outline-primary"><i class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
-                                    <span class="col-6 feerSmallGreen" style="text-align:center;">
+                                    <span class="col-6 feerSmallGreen"  :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}" style="text-align:center;">
                                         {{fag.data.fear_greed_classification}}
                                     </span>
                                     <span class="col-3">
@@ -4354,6 +4354,9 @@
 
 
 
+                }).
+                catch(res=>{
+                   
                 })
 
             },
@@ -6640,6 +6643,13 @@
         text-align: center;
         color: #6BD863;
     }
+    .featTextSize {
+        font-family: 'Poppins-Light';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 35px;
+        text-align: center;
+    }
 
     .barometerStyle {
         font-family: 'Poppins-Light';
@@ -6653,7 +6663,6 @@
         font-family: 'Poppins-Light';
         font-style: normal;
         text-align: center;
-        color: #6BD863;
         font-size: 20px;
         padding: 0;
         white-space: nowrap;
