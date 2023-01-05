@@ -3200,7 +3200,7 @@
         BProgress
     } from 'bootstrap-vue'
     import Ripple from 'vue-ripple-directive'
-    import axios from '@axios'
+    import axios from '../../../axiosInt'
     import {
         VueSvgGauge
     } from 'vue-svg-gauge';
@@ -3281,6 +3281,7 @@
 
         data() {
             return {
+                request_source : '',
                 alertData: {
                     price: [null, null],
                     tradingper24h: [null, null],
@@ -4304,13 +4305,21 @@
             //     filterKey.max_market_cap = e.maxValue;
             // },
             loadCoins(filterModalClose) {
+                 const CancelToken = axios.CancelToken;
+                const source = CancelToken.source(); 
+                if(this.request_source != '')
+                 this.request_source.cancel('Operation canceled by the user.');
+
+                 this.request_source = source;
+                  
+                console.log(source);
                 if (!filterModalClose) {
                     this.$bvModal.hide('modal-filters');
                 }
                 this.isBusy = true;
                 this.showEmpty = false;
                 this.loadedCoinData = false;
-                axios.post('api/get_coins?page=' + this.Cpagpage, JSON.stringify(this.params)).then(res => {
+                axios.post('api/get_coins?page=' + this.Cpagpage, JSON.stringify(this.params),{CancelToken:this.request_source.token}).then(res => {
                     if (res.data.status) {
                         if (res.data.tokens.data) {
                             this.items = res.data.tokens;
@@ -4348,6 +4357,7 @@
             },
             async loadFag() {
                 this.fagLoad = true;
+
                 await axios.post('api/get_fag').then(res => {
                     if (res.data) {
                         this.fag.data = res.data.data;

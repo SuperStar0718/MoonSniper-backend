@@ -2,7 +2,6 @@ import Vue from 'vue'
 
 // axios
 import axios from 'axios'
-console.log(process.env.MIX_APP_URL);
 let token  = localStorage.getItem('accessToken');
 const axiosIns = axios.create({
   // You can add your headers here
