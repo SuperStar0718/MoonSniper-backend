@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CoinsData;
-use Illuminate\Http\Request;
-use App\Models\Notifications;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\CoinsData;
+use App\Models\Notifications;
 use App\Notifications\NotifyCoinAlert;
-use App\Notifications\NotifyTokenUnlockNotification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AlertController extends Controller
 {
@@ -86,8 +85,8 @@ class AlertController extends Controller
         }
         if ($request->max_socialsentiments != null) {
             $filterData['max_socialsentiments'] = $request->max_socialsentiments;
-        }  
-        
+        }
+
         $filterData['coin_id'] = $request->coin_id;
         $filterData['symbol'] = $request->symbol;
         $filterData['name'] = $request->name;
@@ -96,29 +95,41 @@ class AlertController extends Controller
         $user = Auth::user();
         $user->notify((new NotifyCoinAlert($filterData)));
         return response()->json(['status' => true, 'data' => $filterData]);
-       
+
     }
     public function getUserAlerts()
     {
-      $user = Auth::user();
-  
-     $notifications = Notifications::where('type', '=', 'App\Notifications\NotifyCoinAlert')->where('notifiable_id', '=', $user->id)->orderby('created_at', 'DESC')->paginate(10);
-     foreach ($notifications as $key => $value) {
-        $notifications[$key]['data'] = json_decode($value->data);
-           }   
-     return response()->json(['status' => true, 'data' => $notifications]);
-       
+        $user = Auth::user();
 
+        $notifications = Notifications::where('type', '=', 'App\Notifications\NotifyCoinAlert')->where('notifiable_id', '=', $user->id)->orderby('created_at', 'DESC')->paginate(10);
+        foreach ($notifications as $key => $value) {
+            $notifications[$key]['data'] = json_decode($value->data);
+        }
+        return response()->json(['status' => true, 'data' => $notifications]);
+
+    }
+    public function getUserAlertList()
+    {
+        $user = Auth::user();
+        $notifications = Notifications::where('type', '=', 'App\Notifications\NotifyCoinAlert')->where('notifiable_id', '=', $user->id)->orderby('created_at', 'DESC')->get();
+        foreach ($notifications as $key => $value) {
+            $notifications[$key]['data'] = json_decode($value->data);
+            $notifications[$key]['data']->coindata = CoinsData::where('coin_id',$notifications[$key]['data']->coin_id)->where('symbol',$notifications[$key]['data']->symbol)
+            ->select('price_change_percentage_24h','roi_percentage','market_cap','next_unlock_percent_of_tokens','average_sentiment_change','current_price')
+            ->first();
+            
+        }
+        return response()->json(['status' => true, 'data' => $notifications]);
     }
     public function deleteAlert(Request $request)
     {
-        Notifications::where('id', '=',$request->id)->delete();
+        Notifications::where('id', '=', $request->id)->delete();
 
-        return response()->json(['status' => true,'id'=>$request->id]);
+        return response()->json(['status' => true, 'id' => $request->id]);
     }
     public function updateAlert(Request $request)
     {
-        $notification = Notifications::where('id', '=',$request->id)->first();
+        $notification = Notifications::where('id', '=', $request->id)->first();
         if ($request->min_price != null) {
             $filterData['min_price'] = $request->min_price;
 
@@ -189,8 +200,8 @@ class AlertController extends Controller
         }
         if ($request->max_socialsentiments != null) {
             $filterData['max_socialsentiments'] = $request->max_socialsentiments;
-        }  
-        
+        }
+
         $filterData['coin_id'] = $request->coin_id;
         $filterData['symbol'] = $request->symbol;
         $filterData['name'] = $request->name;
@@ -203,8 +214,8 @@ class AlertController extends Controller
     }
     public function loadAlertCoinData(Request $request)
     {
-       
+
         $data = CoinsData::where("coin_id", $request->coinid)->where("symbol", $request->symbol)->first();
-        return response()->json(['status' => true,'data'=>$data]);
+        return response()->json(['status' => true, 'data' => $data]);
     }
 }

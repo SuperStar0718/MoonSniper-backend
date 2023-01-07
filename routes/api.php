@@ -97,7 +97,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/delete-alert', [AlertController::class, 'deleteAlert'])->name('/delete-alert');
     Route::post('/update-alert', [AlertController::class, 'updateAlert'])->name('/update-alert');
     Route::post('/load-alert-coin-data', [AlertController::class, 'loadAlertCoinData'])->name('/load-alert-coin-data');
-    
+    //Chrome Extension APIS
+
+
+    Route::get('/load-user-alert-list', [AlertController::class, 'getUserAlertList'])->name('/load-user-alert-list');
+
 });
 Route::post('/extension-coin-data-coingecko', [ExchangesController::class, 'CoinDetailsForCoinGecko'])->name('/extension-coin-data-coingecko');
 Route::post('/get_trading_volume_history-extension', 'App\Http\Controllers\Coingecko@get_trading_volume_history');

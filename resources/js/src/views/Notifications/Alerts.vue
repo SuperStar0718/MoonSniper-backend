@@ -298,15 +298,15 @@
                 },
                 alertPriorities: [{
                         text: 'Low',
-                        value: 'low'
+                        value: 'Low'
                     },
                     {
                         text: 'Medium',
-                        value: 'medium'
+                        value: 'Medium'
                     },
                     {
                         text: 'High',
-                        value: 'high'
+                        value: 'High'
                     },
                 ],
                 NotificationModal: false,
@@ -498,7 +498,7 @@
                     this.alertForm.coin_id = null;
                     this.alertForm.symbol = null;
                     this.alertForm.coin_name = null;
-                    this.alertForm.priority = 'medium';
+                    this.alertForm.priority = 'Medium';
                     this.alertForm.name = '';
                     this.alertData.price = [null,null,null,null];
                     this.alertData.tradingper24h =[null,null];

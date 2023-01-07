@@ -205,7 +205,7 @@
                         label =  `Today's market cap is  : ` + (this.valueData.market_cap?this.valueData.market_cap:'-')+'$';
                         break;
                     case 5:
-                        label = 'Next unlock size is: ' + (this.valueData.next_unlock_percent?this.valueData.next_unlock_percent:'-')+'%';
+                        label = 'Next unlock size is: ' + (this.valueData.next_unlock_percent_of_tokens?this.valueData.next_unlock_percent_of_tokens:'-')+'%';
                         break;
                     case 6:
                         label = '24H social sentiment is  : ' + (this.valueData.average_sentiment_change?this.valueData.average_sentiment_change:'-')+'%';

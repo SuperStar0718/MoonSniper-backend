@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AlertController;
 use App\Http\Controllers\UnlockingController;
 use App\Http\Controllers\ApplicationController;
 
