@@ -43,6 +43,7 @@ class User extends Authenticatable
         'state',
         'is_email_verified',
         'email_verified_at',
+        'allow_alerts'
     ];
 
     /**

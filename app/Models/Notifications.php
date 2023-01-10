@@ -16,6 +16,8 @@ class Notifications extends Model
         'notifiable_id',
         'data',
         'read_at',
+        'note',
+        'show_date'
     ];
     protected $casts = [
         'id' => 'string'

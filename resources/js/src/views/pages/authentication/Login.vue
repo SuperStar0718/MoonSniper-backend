@@ -327,8 +327,9 @@ export default {
               // this.$store.commit('app-ecommerce/UPDATE_CART_ITEMS_COUNT', userData.extras.eCommerceCartItemsCount)
               // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
               this.$router.replace(getHomeRouteForLoggedInUser(userData.role)).then(() => {
-
-                document.cookie =`token=${response.data.accessToken}`;
+                var expires = new Date();  
+                  expires.setTime(expires.getTime() + 31536000000); //1 year  
+                document.cookie =`token=${response.data.accessToken}` + ';expires=' + expires.toUTCString();;
                 this.$toast({
                   component: ToastificationContent,
                   position: 'top-right',

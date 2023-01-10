@@ -3294,7 +3294,7 @@
                 },
                 titleReq:false,
                 alertForm:{
-                    priority: 'medium',
+                    priority: 'Medium',
                     min_price: null,
                     max_price: null,
                     min_tradingper24h: null,

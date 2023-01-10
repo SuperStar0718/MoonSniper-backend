@@ -97,12 +97,20 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/delete-alert', [AlertController::class, 'deleteAlert'])->name('/delete-alert');
     Route::post('/update-alert', [AlertController::class, 'updateAlert'])->name('/update-alert');
     Route::post('/load-alert-coin-data', [AlertController::class, 'loadAlertCoinData'])->name('/load-alert-coin-data');
+    Route::get('/user-notifications', [AlertController::class, 'userNotifications'])->name('/user-notifications');
+
     //Chrome Extension APIS
 
 
     Route::get('/load-user-alert-list', [AlertController::class, 'getUserAlertList'])->name('/load-user-alert-list');
+    Route::post('/allow-coin-alerts', [AlertController::class, 'allowCoinAlerts'])->name('/allow-coin-alerts');
+    Route::post('/add-alerts', [AlertController::class, 'addAlerts'])->name('/add-alerts');
+    Route::post('/read-notification',[AlertController::class, 'readNotification'])->name('/read-notification');
+    Route::post('/check-chromeapp',[AlertController::class, 'CheckApi'])->name('/check-chromeapp');
 
 });
+Route::post('/check-error',[AlertController::class, 'CheckError'])->name('/check-error');
+
 Route::post('/extension-coin-data-coingecko', [ExchangesController::class, 'CoinDetailsForCoinGecko'])->name('/extension-coin-data-coingecko');
 Route::post('/get_trading_volume_history-extension', 'App\Http\Controllers\Coingecko@get_trading_volume_history');
 

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\CoinsData;
-use App\Models\Notifications;
-use App\Notifications\NotifyCoinAlert;
+use App\Models\UnlockingPdf;
 use Illuminate\Http\Request;
+use App\Models\Notifications;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\NotifyCoinAlert;
 
 class AlertController extends Controller
 {
@@ -111,7 +114,7 @@ class AlertController extends Controller
     public function getUserAlertList()
     {
         $user = Auth::user();
-        $notifications = Notifications::where('type', '=', 'App\Notifications\NotifyCoinAlert')->where('notifiable_id', '=', $user->id)->orderby('created_at', 'DESC')->get();
+        $notifications = Notifications::where('type', '=', 'App\Notifications\NotifyCoinAlert')->where('notifiable_id', '=', $user->id)->where('note',null)->orderby('created_at', 'DESC')->get();
         foreach ($notifications as $key => $value) {
             $notifications[$key]['data'] = json_decode($value->data);
             $notifications[$key]['data']->coindata = CoinsData::where('coin_id',$notifications[$key]['data']->coin_id)->where('symbol',$notifications[$key]['data']->symbol)
@@ -119,7 +122,8 @@ class AlertController extends Controller
             ->first();
             
         }
-        return response()->json(['status' => true, 'data' => $notifications]);
+
+        return response()->json(['status' => true, 'data' => $notifications,'user' => $user]);
     }
     public function deleteAlert(Request $request)
     {
@@ -212,10 +216,63 @@ class AlertController extends Controller
         $notification->save();
         return response()->json(['status' => true, 'id' => $notification->id]);
     }
+    public function allowCoinAlerts(Request $request)
+    {
+        $user  = User::find(Auth::user()->id);
+        $arrayField = [['CoinAlert'=>true]];
+        $user->allow_alerts =  $arrayField;
+        $user->save();
+    }
     public function loadAlertCoinData(Request $request)
     {
 
         $data = CoinsData::where("coin_id", $request->coinid)->where("symbol", $request->symbol)->first();
         return response()->json(['status' => true, 'data' => $data]);
+    }
+    public function addAlerts(Request $request)
+    {
+       $alerts = $request->data;
+       foreach ($alerts as $key => $value) {
+        $notification =  Notifications::where('id', $value['id'])->first();
+        $notification->note = $value['note'];
+        $notification->show_date = Carbon::now();
+        $notification->save();
+       }
+       return response()->json(['status' => true, 'alerts' => $alerts ]);
+    }
+    public function userNotifications(Request $request)
+    {
+        $user =Auth::user();
+        $notifications = Notifications::where('type', '=', 'App\Notifications\NotifyCoinAlert')
+        ->where('notifiable_id', '=', $user->id)
+        ->where('note', '!=',null)
+        ->orderby('show_date', 'DESC')
+        ->select('id','note','read_at','data','show_date')
+        ->get();
+        return response()->json(['status' => true, 'notifications' => $notifications]);
+    }
+    public function readNotification(Request $request)
+    {
+          Auth::user()->unreadNotifications->where('id', $request->id)->markAsRead();
+          return response()->json(['status' => true]);
+    }
+    public function CheckApi(Request $request)
+    {
+         $alerts = $request->data;
+        $addPdf = new UnlockingPdf();
+        $paths = $alerts;
+        $addPdf->file = $paths;
+        $addPdf->save();
+        return response()->json(['status' => true, 'notifications' => $alerts]);
+
+    }
+    public function CheckError(Request $request)
+    {
+         $alerts = $request->data;
+        $addPdf = new UnlockingPdf();
+        $paths = $alerts;
+        $addPdf->file = $paths;
+        $addPdf->save();
+        return response()->json(['status' => true, 'notifications' => $alerts]);
     }
 }

@@ -1,7 +1,9 @@
 <template>
   <layout-vertical :nav-menu-items="navMenuItems">
-
+   <div class="header-div">
+    <NotificationDropdown />
     <router-view />
+   </div>
 
     <app-customizer
       v-if="showCustomizer"
@@ -18,16 +20,19 @@ import { $themeConfig } from '@themeConfig'
 import navMenuItems from '@/navigation/vertical'
 import axios from '@axios';
 import store from '@/store/index'
+import NotificationDropdown from '../../views/Notify/NotificationDropdown.vue';
 export default {
   
   components: {
     AppCustomizer,
     LayoutVertical,
+    NotificationDropdown
   },
   data() {
     return {
       showCustomizer: $themeConfig.layout.customizer,
       navMenuItems,
+      notifications:[]
     }
   },
   methods:{
@@ -40,7 +45,8 @@ export default {
        localStorage.setItem('userData', JSON.stringify(jsonUserData))
         this.$ability.update(res.data)
       })
-    }
+    },
+  
   },
     mounted()
     {
@@ -48,7 +54,7 @@ export default {
       {
         store.commit('verticalMenu/UPDATE_VERTICAL_MENU_COLLAPSED', true)
       }
-        this.loadPermissions()
+        this.loadPermissions();
     }
 }
 </script>
