@@ -1,7 +1,8 @@
 <template>
   <layout-vertical :nav-menu-items="navMenuItems">
    <div class="header-div">
-    <NotificationDropdown />
+    <Topbar/>
+    <NotificationDropdown />  
     <router-view />
    </div>
 
@@ -21,12 +22,14 @@ import navMenuItems from '@/navigation/vertical'
 import axios from '@axios';
 import store from '@/store/index'
 import NotificationDropdown from '../../views/Notify/NotificationDropdown.vue';
+import Topbar from '../../views/Notify/Topbar.vue';
 export default {
   
   components: {
     AppCustomizer,
     LayoutVertical,
-    NotificationDropdown
+    NotificationDropdown,
+    Topbar
   },
   data() {
     return {

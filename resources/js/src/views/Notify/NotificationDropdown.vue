@@ -216,7 +216,7 @@
   }
   .dropdown-notify{
     position: absolute;
-    top: 6px;
+    top: 22px;
     right: -3px;
   }
    .AppExtensionMode .dropdown-notify{

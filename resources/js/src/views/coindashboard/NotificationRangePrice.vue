@@ -70,6 +70,7 @@
         methods: {
 
             dragSlider() {
+                console.log(this.value2)
                 this.Notdragged = false;
 
                 let vdata = 0.00;
@@ -103,12 +104,12 @@
 
                     }
                 }
-                let v1 = null;
-                let v2 = null;
-                if (this.value1[0] != null) {
+                let v1 = '';
+                let v2 = '';
+                if (this.value1[0] != null && this.value1[0] != '') {
                     v1 = this.value1[0].toFixed(1);
                 }
-                if (this.value1[1] != null) {
+                if (this.value1[1] != null && this.value1[1] != '') {
                     v2 = this.value1[1].toFixed(1);
 
                 }

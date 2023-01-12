@@ -104,7 +104,7 @@ class AlertController extends Controller
     {
         $user = Auth::user();
 
-        $notifications = Notifications::where('type', '=', 'App\Notifications\NotifyCoinAlert')->where('notifiable_id', '=', $user->id)->orderby('created_at', 'DESC')->paginate(10);
+        $notifications = Notifications::where('type', '=', 'App\Notifications\NotifyCoinAlert')->where('notifiable_id', '=', $user->id)->where('note',  null)->orderby('created_at', 'DESC')->paginate(10);
         foreach ($notifications as $key => $value) {
             $notifications[$key]['data'] = json_decode($value->data);
         }

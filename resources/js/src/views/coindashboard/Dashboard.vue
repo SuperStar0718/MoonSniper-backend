@@ -1,71 +1,7 @@
 <template>
     <div id="dashboard">
         <b-overlay :show="fagLoad" rounded="sm" class="pt-1 DashboardHeader" style="">
-            <div class="mx-auto topbarDiv" style="">
-                <div class="HeaderTopBar">
-                    <div class="d-flex topHeader-flexing">
-                        <div class="d-flex mx-auto justify-content-center Topbar-items" style="">
-                            <div class="greyLetter" style="margin-right:4px;">MC:</div>
-                            <div class="whiteLetter" v-if="loaded">{{todaysMc != null?todaysMc:'-'}}</div>
-                            <div v-if="todaysMcChange >0" style="" class="TriangleIcon ">
-                                <i class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
-                            </div>
-                            <div v-else style="" class="TriangleIcon rotate-180">
-                                <i class="bi bi-triangle-fill " style="color:#ea5455;"></i>
-                            </div>
-                            <div v-if="todaysMcChange >0" style="color:#6BBE83;">
-                                +{{todaysMcChange}}%
-                            </div>
-                            <div v-else style="color:#ea5455;">
-                                {{todaysMcChange}}%
-                            </div>
-                        </div>
-                        <div class="d-flex mx-auto justify-content-center Topbar-items" style="">
-                            <div class="greyLetter" style="margin-right:4px;">Vol(24h):</div>
-                            <div class="whiteLetter" v-if="loaded"> {{todaysVol?todaysVol:'-'}}</div>
-                            <div v-if="todaysVolChange >0" style="" class="TriangleIcon ">
-                                <i class="bi bi-triangle-fill" style="color:#6BBE83;"></i>
-                            </div>
-                            <div v-else style="" class="TriangleIcon rotate-180">
-                                <i class="bi bi-triangle-fill " style="color:#ea5455;"></i>
-                            </div>
-                            <div v-if="todaysVolChange >0" style="color:#6BBE83;">
-                                +{{todaysVolChange}}%
-                            </div>
-                            <div v-else style="color:#ea5455;">
-                                {{todaysVolChange}}%
-                            </div>
-                        </div>
-                        <div class="d-flex mx-auto justify-content-center Topbar-items" style="">
-                            <div class="greyLetter Dominance" style="margin-right:4px;">Dominance:</div>
-                            <div class="d-flex justify-content-between whiteLetter" v-if="loaded">
-                                <div style="margin:0 4px 0 0px; white-space:nowrap;"> {{fag.data.btc_dom}}
-                                </div>
-                                <div style="margin:0 4px 0 0px; white-space:nowrap;">{{fag.data.eth_dom}}</div>
-                            </div>
-
-                        </div>
-                        <div class="d-flex mx-auto justify-content-center " style="padding-left:5px">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
-                                class="bi bi-fuel-pump-diesel" viewBox="0 0 16 16">
-                                <path
-                                    d="M3.5 2a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5h-5ZM4 14V9h1.796c.5 0 .913.098 1.237.293.325.195.567.479.725.85.161.371.242.82.242 1.344 0 .528-.08.98-.242 1.355a1.805 1.805 0 0 1-.732.861c-.324.198-.734.297-1.23.297H4Zm1.666-4.194h-.692v3.385h.692c.229 0 .427-.035.595-.103a.986.986 0 0 0 .412-.315c.108-.142.188-.318.241-.528.056-.21.083-.456.083-.74 0-.376-.048-.69-.144-.94a1.11 1.11 0 0 0-.436-.569c-.195-.127-.445-.19-.75-.19Z" />
-                                <path
-                                    d="M3 0a2 2 0 0 0-2 2v13H.5a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1H11v-4a1 1 0 0 1 1 1v.5a1.5 1.5 0 0 0 3 0V8h.5a.5.5 0 0 0 .5-.5V4.324c0-.616 0-1.426-.294-2.081a1.969 1.969 0 0 0-.794-.907C14.534 1.111 14.064 1 13.5 1a.5.5 0 0 0 0 1c.436 0 .716.086.9.195a.97.97 0 0 1 .394.458c.147.328.19.746.201 1.222H13.5a.5.5 0 0 0-.5.5V7.5a.5.5 0 0 0 .5.5h.5v4.5a.5.5 0 0 1-1 0V12a2 2 0 0 0-2-2V2a2 2 0 0 0-2-2H3Zm7 2v13H2V2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1Z" />
-                            </svg>
-                            <div class="greyLetter" style="margin-right:8px; margin-left:4px;">ETH Gas:</div>
-                            <div class="d-flex justify-content-between cursor-pointer">
-                                <div style="margin:0 8px 0 4px" class="whiteLetter"
-                                    v-b-tooltip.hover.bottom.html="ethGasPriceTooltip" v-if="loaded">
-                                    {{ethGas.ProposeGasPrice}} GWEI
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+           
             <!-- graph -->
             <b-row class="FGCharts" style="">
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_greed">
@@ -171,7 +107,7 @@
                             <div class="inner-text" style="display:block;">
                                 <div style="margin-top: 2rem !important;"
                                     :class="{'text-danger':fag.data.inoutper>0,'text-success-green':fag.data.inoutper<=0}">
-                                    <span class="d-block barometerStyle">{{fag.data.inoutper}} %</span>
+                                    <span class="d-block barometerStyle">{{fag.data.inoutvalue}}</span>
                                 </div>
                                 <div class="row" style="margin: 0% 0% 0% 0%;">
                                     <span class="col-3 text-info" style="float:left; margin:auto;"><a
@@ -181,7 +117,11 @@
                                     </span>
                                     <span class="col-6 btcInoutVal" style="text-align:center;"
                                         :class="{'text-danger':fag.data.inoutper>0,'text-success-green':fag.data.inoutper<=0}">
-                                        1d : {{roundData2( fag.data.btcflowDif,1) }}
+                                        
+                                        24h <i class="bi bi-triangle-fill" style="font-size:13px;color:#ea5455;" v-if="fag.data.inoutper<=-800000000"></i>
+                                        <i class="bi bi-triangle-fill fag-inout " style="font-size:13px;color:#6BBE83;rotate:-180deg" v-else></i>
+                                        
+                                         {{roundData2( fag.data.btcflowDif,1) }}
                                     </span>
                                     <span class="col-3">
 
@@ -432,7 +372,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[17].filterColumn"
+                                                                            v-model="fields[21].filterColumn"
                                                                             name="cursor-pointer some-checkboxs4">
 
                                                                             Circulating Supply
@@ -453,7 +393,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[16].filterColumn"
+                                                                            v-model="fields[20].filterColumn"
                                                                             name="cursor-pointer some-checkboxs6">
                                                                             Total Supply
                                                                         </b-form-checkbox>
@@ -464,7 +404,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[15].filterColumn"
+                                                                            v-model="fields[19].filterColumn"
                                                                             name="cursor-pointer some-checkboxs7">
                                                                             ROI %
                                                                         </b-form-checkbox>
@@ -475,7 +415,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[13].filterColumn"
+                                                                            v-model="fields[17].filterColumn"
                                                                             name="cursor-pointer some-checkboxs8">
                                                                             ROI in X's
                                                                         </b-form-checkbox>
@@ -486,7 +426,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[14].filterColumn"
+                                                                            v-model="fields[18].filterColumn"
                                                                             name="cursor-pointer some-checkboxs9">
                                                                             Category
                                                                         </b-form-checkbox>
@@ -507,7 +447,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[18].filterColumn"
+                                                                            v-model="fields[22].filterColumn"
                                                                             name="cursor-pointer some-checkboxs11">
 
                                                                             Public Price
@@ -535,6 +475,72 @@
                                                                     </div>
                                                                 </div>
                                                             </b-col>
+                                                            <b-col md="6" xl="6">
+                                                                <div class="margin20">
+                                                                    <div class="">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[11].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs13">
+                                                                            ATH
+                                                                        </b-form-checkbox>
+                                                                    </div>
+                                                                </div>
+                                                            </b-col>
+                                                            <b-col md="6" xl="6">
+                                                                <div class="margin20">
+                                                                    <div class="">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[12].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs13">
+                                                                            ATH Percentage change
+                                                                        </b-form-checkbox>
+                                                                    </div>
+                                                                </div>
+                                                            </b-col>
+                                                            <b-col md="6" xl="6">
+                                                                <div class="margin20">
+                                                                    <div class="">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[13].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs13">
+                                                                            ATH Date
+                                                                        </b-form-checkbox>
+                                                                    </div>
+                                                                </div>
+                                                            </b-col>
+                                                            <b-col md="6" xl="6">
+                                                                <div class="margin20">
+                                                                    <div class="">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[14].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs13">
+                                                                            ATL
+                                                                        </b-form-checkbox>
+                                                                    </div>
+                                                                </div>
+                                                            </b-col>
+                                                            <b-col md="6" xl="6">
+                                                                <div class="margin20">
+                                                                    <div class="">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[15].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs13">
+                                                                            ATL Percentage change
+                                                                        </b-form-checkbox>
+                                                                    </div>
+                                                                </div>
+                                                            </b-col>
+                                                            <b-col md="6" xl="6">
+                                                                <div class="margin20">
+                                                                    <div class="">
+                                                                        <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[16].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs13">
+                                                                            ATL Date
+                                                                        </b-form-checkbox>
+                                                                    </div>
+                                                                </div>
+                                                            </b-col>
 
 
                                                         </b-row>
@@ -552,7 +558,7 @@
                                                             <b-col md="12" xl="12">
                                                                 <div class="margin20">
                                                                     <b-form-checkbox @change="updateFields"
-                                                                        v-model="fields[35].filterColumn"
+                                                                        v-model="fields[39].filterColumn"
                                                                         name="cursor-pointer some-checkboxsaa">
                                                                         Social Engagement Change %
                                                                     </b-form-checkbox>
@@ -562,7 +568,7 @@
                                                             <b-col md="12" xl="12">
                                                                 <div class="margin20">
                                                                     <b-form-checkbox @change="updateFields"
-                                                                        v-model="fields[34].filterColumn"
+                                                                        v-model="fields[38].filterColumn"
                                                                         name="cursor-pointer some-checkboxs1a">
 
                                                                         Social Mentions Change %
@@ -573,7 +579,7 @@
                                                                 <div class="margin20">
 
                                                                     <b-form-checkbox @change="updateFields"
-                                                                        v-model="fields[36].filterColumn"
+                                                                        v-model="fields[40].filterColumn"
                                                                         name="cursor-pointer some-checkboxs2b">
 
                                                                         Average Sentiment (1-5)
@@ -599,7 +605,7 @@
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <b-form-checkbox @change="updateFields"
-                                                                        v-model="fields[20].filterColumn"
+                                                                        v-model="fields[24].filterColumn"
                                                                         name="cursor-pointer some-checkboxsc">
                                                                         Total Locked
                                                                     </b-form-checkbox>
@@ -609,7 +615,7 @@
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
                                                                     <b-form-checkbox @change="updateFields"
-                                                                        v-model="fields[22].filterColumn"
+                                                                        v-model="fields[26].filterColumn"
                                                                         name="cursor-pointer some-checkboxs1c">
                                                                         Unlock Status
                                                                     </b-form-checkbox>
@@ -619,7 +625,7 @@
                                                                 <div class="margin20">
 
                                                                     <b-form-checkbox @change="updateFields"
-                                                                        v-model="fields[25].filterColumn"
+                                                                        v-model="fields[29].filterColumn"
                                                                         name="cursor-pointer some-checkboxs2c">
                                                                         Next Unlock Size
                                                                     </b-form-checkbox>
@@ -630,7 +636,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[24].filterColumn"
+                                                                            v-model="fields[28].filterColumn"
                                                                             name="cursor-pointer some-checkboxs3c">
 
                                                                             Next Unlock %
@@ -642,7 +648,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[33].filterColumn"
+                                                                            v-model="fields[37].filterColumn"
                                                                             name="cursor-pointer some-checkboxs4c">
 
                                                                             6 Months Unlock Size
@@ -654,7 +660,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[30].filterColumn"
+                                                                            v-model="fields[34].filterColumn"
                                                                             name="cursor-pointer some-checkboxs5c">
                                                                             3 Months Unlock Size
                                                                         </b-form-checkbox>
@@ -665,7 +671,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[29].filterColumn"
+                                                                            v-model="fields[33].filterColumn"
                                                                             name="cursor-pointer some-checkboxs6c">
                                                                             3 Months Unlock %
                                                                         </b-form-checkbox>
@@ -676,7 +682,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[32].filterColumn"
+                                                                            v-model="fields[36].filterColumn"
                                                                             name="cursor-pointer some-checkboxs7c">
                                                                             6 Months Unlock %
                                                                         </b-form-checkbox>
@@ -687,7 +693,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[23].filterColumn"
+                                                                            v-model="fields[27].filterColumn"
                                                                             name="cursor-pointer some-checkboxs8c">
 
                                                                             Next Unlock # of Tokens
@@ -699,7 +705,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[21].filterColumn"
+                                                                            v-model="fields[25].filterColumn"
                                                                             name="cursor-pointer some-checkboxs9">
                                                                             Next Unlock Date
                                                                         </b-form-checkbox>
@@ -710,7 +716,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[26].filterColumn"
+                                                                            v-model="fields[30].filterColumn"
                                                                             name="cursor-pointer some-checkboxs9">
                                                                             First VC Unlock
                                                                         </b-form-checkbox>
@@ -721,7 +727,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[27].filterColumn"
+                                                                            v-model="fields[31].filterColumn"
                                                                             name="cursor-pointer some-checkboxs9">
                                                                             End VC Unlock
                                                                         </b-form-checkbox>
@@ -732,7 +738,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[31].filterColumn"
+                                                                            v-model="fields[35].filterColumn"
                                                                             name="cursor-pointer some-checkboxs9">
                                                                             6 Months Unlock # of Tokens
                                                                         </b-form-checkbox>
@@ -743,7 +749,7 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
-                                                                            v-model="fields[28].filterColumn"
+                                                                            v-model="fields[32].filterColumn"
                                                                             name="cursor-pointer some-checkboxs10">
 
                                                                             3 Months Unlock # of Tokens
@@ -1138,7 +1144,7 @@
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
                                 class="d-flex2 justify-content-start">
-                                <span v-if="data.value">$</span>{{twenty4HConversation(data.value)}}
+                                <span v-if="data.value"></span>{{twenty4HConversation(data.value)}}%
                             </div>
                         </template>
                         <template #cell(six_months_unlock_size)="data">
@@ -1174,7 +1180,7 @@
                             <div v-if="data.value">
                                 <span v-if="data.value>= 0" class="text-success-green"
                                     style="">{{ twenty4HConversation(data.value) }}
-                                    <span v-if="data.value"> %</span></span>
+                                    <span v-if="data.value">%</span></span>
                                 <span v-else class="text-danger" style="">{{ twenty4HConversation(data.value) }}
                                     %</span>
                             </div>
@@ -1210,12 +1216,38 @@
                                 </span>
                             </div>
                         </template>
+                        <template #cell(ath_change_percentage)="data">
+                            <div v-if="data.value">
+                                <span style=""><span
+                                        v-if="data.value"></span>{{twenty4HConversation(data.value)}}%</span>
+                            </div>
+                        </template>
+                        <template #cell(ath_date)="data">
+                            <div v-if="data.value">
+                                <span style=""><span
+                                        v-if="data.value"></span>{{dateFormat(data.value)}}%</span>
+                            </div>
+                        </template>
+                        
                         <template #cell(atl)="data">
                             <div v-if="data.value">
                                 <span style=""><span
                                         v-if="data.value">$</span>{{twenty4HConversation(data.value)}}</span>
                             </div>
                         </template>
+                        <template #cell(atl_change_percentage)="data">
+                            <div v-if="data.value">
+                                <span style=""><span
+                                        v-if="data.value"></span>{{twenty4HConversation(data.value)}}%</span>
+                            </div>
+                        </template>
+                        <template #cell(atl_date)="data">
+                            <div v-if="data.value">
+                                <span style=""><span
+                                        v-if="data.value"></span>{{dateFormat(data.value)}}%</span>
+                            </div>
+                        </template>
+                        
                         <template #cell(social_mentions_change)="data">
                             <div v-if="data.value">
                                 <span v-if="data.value>= 0 " class="text-success-green"
@@ -3124,7 +3156,7 @@
                                 <NotificationRangeROI v-if="activeData.price_change_percentage_24h != null"
                                     :valueData="activeData" :value="alertData.tradingper24h"
                                     @updateNotificationFilter="updateNotificationFilter($event)"
-                                    modal="24H trading percentage" :item="2" />
+                                    modal="24h trading %" :item="2" />
                                 <NotificationRangeROI v-if="activeData.roi_percentage != null" :valueData="activeData"
                                     :value="alertData.roipercentage"
                                     @updateNotificationFilter="updateNotificationFilter($event)" modal="ROI in %"
@@ -3386,6 +3418,7 @@
                         fear_greed_classification: '',
                         nftindex: 0,
                         inoutper: 0,
+                        inoutvalue: 0,
                         inoutperOval: 0,
                         btcflowDif: 0,
 
@@ -4491,8 +4524,9 @@
                             Object
                             .keys(this.fag.btcflow.data.main).length - 2]];
 
+                        this.fag.data.inoutvalue =this.kFormatter2(item1[0].values[1]);
                         this.fag.data.inoutper = this.relDiff(item1[0].values[1], item2[0].values[1]);
-                        // this.fag.data.inoutper = 11.3;
+                      
                         if (item1[0].values[1] > item2[0].values[1]) {
                             this.fag.data.inoutper = this.fag.data.inoutper.toFixed(1);
                             this.fag.data.inoutper = parseFloat(1 * (this.fag.data.inoutper));
@@ -4867,9 +4901,8 @@
 
             },
             checkUserPlan(val) {
-                if (this.userData.currentPlan == 'free' && val < 1 || this.userData.currentPlan == 'free' &&
-                    val >=
-                    5) {
+                if (this.userData.currentPlan == 'free' && val < 1 
+                || this.userData.currentPlan == 'free' && val >=5) {
                     return true;
                 } else {
                     return false;
@@ -5760,6 +5793,12 @@
                     .sign(
                         num) * Math.abs(num)
             },
+            kFormatter2(num) {
+                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(2)) + 'k' :
+                    Math
+                    .sign(
+                        num) * Math.abs(num)
+            },
             lockedFilter() {
                 if (this.params.api_mode == 2) {
                     this.params.api_mode = 1;
@@ -6017,12 +6056,15 @@
 
                         if (this.params.api_mode != 1) {
                             this.fields[0].filterColumn = true;
+                            this.fields[11].filterColumn = false;
+                            this.fields[12].filterColumn = false;
+                            this.fields[13].filterColumn = false;
+                            this.fields[14].filterColumn = false;
+                            this.fields[15].filterColumn = false;
+                            this.fields[16].filterColumn = false;
+                            this.fields[19].filterColumn = false;
                             this.fields[20].filterColumn = false;
-                            this.fields[21].filterColumn = false;
-                            this.fields[26].filterColumn = false;
-                            this.fields[27].filterColumn = false;
-                            this.fields[22].filterColumn = false;
-                            this.fields[23].filterColumn = false;
+
                             this.fields[24].filterColumn = false;
                             this.fields[25].filterColumn = false;
                             this.fields[26].filterColumn = false;
@@ -6033,22 +6075,32 @@
                             this.fields[31].filterColumn = false;
                             this.fields[32].filterColumn = false;
                             this.fields[33].filterColumn = false;
+                            this.fields[34].filterColumn = false;
+                            this.fields[35].filterColumn = false;
+                            this.fields[36].filterColumn = false;
+                            this.fields[37].filterColumn = false;
+                            this.fields[38].filterColumn = false;
+                            this.fields[39].filterColumn = false;
+                            
+
 
                         } else {
                             this.fields[0].filterColumn = false;
-                            this.fields[20].filterColumn = true;
-
-                            this.fields[22].filterColumn = true;
-                            this.fields[23].filterColumn = true;
                             this.fields[24].filterColumn = true;
-                            this.fields[25].filterColumn = true;
 
+                            this.fields[26].filterColumn = true;
+                            this.fields[27].filterColumn = true;
                             this.fields[28].filterColumn = true;
                             this.fields[29].filterColumn = true;
-                            this.fields[30].filterColumn = true;
-                            this.fields[31].filterColumn = true;
+
                             this.fields[32].filterColumn = true;
                             this.fields[33].filterColumn = true;
+                            this.fields[34].filterColumn = true;
+                            this.fields[37].filterColumn = true;
+                            this.fields[38].filterColumn = true;
+                            this.fields[39].filterColumn = true;
+                            this.fields[35].filterColumn = true;
+                            this.fields[36].filterColumn = true;
 
                         }
                         this.fields[38].filterColumn = true;
@@ -6092,41 +6144,51 @@
                         if (this.params.api_mode == 1) {
                             this.fields[0].filterColumn = true;
                             this.fields[1].filterColumn = true;
-                            this.fields[20].filterColumn = false;
-                            this.fields[21].filterColumn = false;
-                            this.fields[26].filterColumn = false;
-                            this.fields[27].filterColumn = false;
-                            this.fields[22].filterColumn = false;
-                            this.fields[23].filterColumn = false;
+                            this.fields[11].filterColumn = false;
+                            this.fields[12].filterColumn = false;
+                            this.fields[13].filterColumn = false;
+                            this.fields[14].filterColumn = false;
+                            this.fields[15].filterColumn = false;
+                            this.fields[16].filterColumn = false;
                             this.fields[24].filterColumn = false;
                             this.fields[25].filterColumn = false;
-                            this.fields[28].filterColumn = false;
-                            this.fields[29].filterColumn = false;
                             this.fields[30].filterColumn = false;
                             this.fields[31].filterColumn = false;
+                            this.fields[26].filterColumn = false;
+                            this.fields[27].filterColumn = false;
+                            this.fields[28].filterColumn = false;
+                            this.fields[29].filterColumn = false;
                             this.fields[32].filterColumn = false;
                             this.fields[33].filterColumn = false;
+                            this.fields[34].filterColumn = false;
+                            this.fields[37].filterColumn = false;
+                            this.fields[38].filterColumn = false;
+                            this.fields[39].filterColumn = false;
+                            this.fields[35].filterColumn = false;
+                            this.fields[36].filterColumn = false;
 
                         } else {
                             this.fields[0].filterColumn = true;
                             this.fields[1].filterColumn = true;
-                            this.fields[20].filterColumn = true;
-                            this.fields[21].filterColumn = true;
-                            this.fields[26].filterColumn = true;
-                            this.fields[27].filterColumn = true;
-                            this.fields[22].filterColumn = true;
-                            this.fields[23].filterColumn = true;
                             this.fields[24].filterColumn = true;
                             this.fields[25].filterColumn = true;
-                            this.fields[28].filterColumn = true;
-                            this.fields[29].filterColumn = true;
                             this.fields[30].filterColumn = true;
                             this.fields[31].filterColumn = true;
+                            this.fields[26].filterColumn = true;
+                            this.fields[27].filterColumn = true;
+                            this.fields[28].filterColumn = true;
+                            this.fields[29].filterColumn = true;
                             this.fields[32].filterColumn = true;
                             this.fields[33].filterColumn = true;
+                            this.fields[34].filterColumn = true;
+                            this.fields[35].filterColumn = true;
+                            this.fields[36].filterColumn = true;
+                            this.fields[37].filterColumn = true;
+                            this.fields[38].filterColumn = true;
+                            this.fields[39].filterColumn = true;
 
                         }
-                        this.fields[38].filterColumn = true;
+                        this.fields[42].filterColumn = true;
                     }
                 })
             },
@@ -6139,18 +6201,18 @@
                 }
 
             },
-            loadEthGasValues() {
-                axios.
-                get('/api/load-ethgas-values')
-                    .then(res => {
-                        if (res.data.status) {
-                            this.ethGas.SafeGasPrice = res.data.result.SafeGasPrice;
-                            this.ethGas.ProposeGasPrice = res.data.result.ProposeGasPrice;
-                            this.ethGas.FastGasPrice = res.data.result.FastGasPrice;
-                        }
-                    })
+                loadEthGasValues() {
+                    axios.
+                    get('/api/load-ethgas-values')
+                        .then(res => {
+                            if (res.data.status) {
+                                this.ethGas.SafeGasPrice = res.data.result.SafeGasPrice;
+                                this.ethGas.ProposeGasPrice = res.data.result.ProposeGasPrice;
+                                this.ethGas.FastGasPrice = res.data.result.FastGasPrice;
+                            }
+                        })
 
-            },
+                },
             loadMarketCap() {
                 axios.
                 get('/api/load-marketcap-values')
@@ -6318,6 +6380,8 @@
                         this.alertForm.max_nextunlock = null;
                         this.alertForm.min_socialsentiments = null;
                         this.alertForm.max_socialsentiments = null;
+                        this.NotificationModal = false;
+                        this.$bvModal.hide('modal-notifications');
                     });
             },
             updateAddalertDisable() {
@@ -7094,11 +7158,17 @@
 
     .AppExtensionMode .Topbar-items {
         padding-right: 5px;
-        padding-left: 5px;
-        border-right: 2px solid;
+        padding-left: 7px;
+
+
+    }.AppExtensionMode .Topbar-items2 {
+        padding-right: 5px;
+        padding-left: 7px;
+        border-right: none;
 
 
     }
+
 
     #modal-details___BV_modal_body_ {
         padding: 0;
@@ -7226,8 +7296,8 @@
     .AppExtensionMode .topbarDiv {
         z-index: 999;
         position: absolute;
-        top: -23px;
-        left: -60px
+        top: 15px;
+        left: 0px
     }
 
     .HeaderTopBar {
@@ -7420,6 +7490,9 @@
       
       .search-product::-ms-input-placeholder { /* Microsoft Edge */
        color:  rgb(186, 183, 183) !important;
+      }
+      .fag-inout::before{
+        rotate: 180deg;
       }
 </style>
 

@@ -7,8 +7,15 @@ const data = [
         filterColumn:true,
     },
     {
-        key: 'priority',
+        key: 'coin_name',
         index: 1,
+        label: 'Coin name',
+        sortable: false,
+        filterColumn:true,
+    },
+    {
+        key: 'priority',
+        index: 2,
         label: 'Priority',
         stickyColumn: false,
         filterColumn:true,
@@ -16,14 +23,14 @@ const data = [
     
     {
         key: 'conditions',
-        index: 2,
+        index: 3,
         label: 'Conditions',
         stickyColumn: false,
         filterColumn:true, canHide:true,
     },
     {
         key: 'actionButton',
-        index: 3,
+        index: 4,
         label: 'Action',
         stickyColumn: false,
         filterColumn:true,

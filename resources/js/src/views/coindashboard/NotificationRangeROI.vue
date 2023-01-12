@@ -213,7 +213,7 @@
                         label = 'Current price is : ' + this.valueData.current_price+'$';
                         break;
                     case 2:
-                        label = '24h volume is : ' + (this.valueData.price_change_percentage_24h?this.valueData.price_change_percentage_24h:'-')+'%';
+                        label = '24h trading % is : ' + (this.valueData.price_change_percentage_24h?this.valueData.price_change_percentage_24h:'-')+'%';
                         break;
                     case 3:
                         label = `Today's ROI% is  : ` + (this.valueData.roi_percentage?this.valueData.roi_percentage:'-')+'%';

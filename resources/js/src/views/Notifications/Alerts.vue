@@ -37,6 +37,10 @@
                             <div class="" v-html="data.item.data.name"></div>
 
                         </template>
+                        <template #cell(coin_name)="data">
+                            <div class="" v-html="data.item.data.coin_name"></div>
+
+                        </template>
                         <template #cell(priority)="data">
                             <div class="text-capitalize" v-html="data.item.data.priority"></div>
 
@@ -46,75 +50,75 @@
 
                                 <div v-if="data.item.data.min_price != null && data.item.data.max_price!= null">
                                     <div>
-                                        Price: {{ data.item.data.min_price }} - {{ data.item.data.max_price }}$
+                                        Price: Below {{ data.item.data.min_price }}$ or Above {{ data.item.data.max_price }}$
                                     </div>
                                 </div>
                                 <div v-else-if="data.item.data.min_price!= null && data.item.data.max_price == null">
-                                    Price: above {{ data.item.data.min_price}}$
+                                    Price: Below {{ data.item.data.min_price}}$
                                 </div>
                                 <div  v-else-if="data.item.data.min_price== null && data.item.data.max_price != null">
-                                    Price: below {{ data.item.data.max_price}}$
+                                    Price: Above {{ data.item.data.max_price}}$
                                 </div>
                                 
                                 <div v-if="data.item.data.min_tradingper24h != null && data.item.data.max_tradingper24h!= null">
                                     <div>
-                                        Volume: {{ data.item.data.min_tradingper24h }} -
-                                        {{ data.item.data.max_tradingper24h }} %
+                                        Volume: Below {{ data.item.data.min_tradingper24h }} % or
+                                       Above {{ data.item.data.max_tradingper24h }} %
                                     </div>
                                 </div>
                                 <div v-else-if="data.item.data.min_tradingper24h!= null && data.item.data.max_tradingper24h == null">
-                                    Volume: above {{ data.item.data.min_tradingper24h}}$
+                                    Volume: Below {{ data.item.data.min_tradingper24h}}%
                                 </div>
                                 <div  v-else-if="data.item.data.min_tradingper24h== null && data.item.data.max_tradingper24h != null">
-                                    Volume: below {{ data.item.data.max_tradingper24h}}$
+                                    Volume: Above {{ data.item.data.max_tradingper24h}}%
                                 </div>
                                
                                 <div v-if="data.item.data.min_roipercentage != null && data.item.data.max_roipercentage!= null">
                                     <div>
-                                        ROI%: {{ data.item.data.min_roipercentage }} -
-                                        {{ data.item.data.max_roipercentage }} %
+                                        ROI%: Below {{ data.item.data.min_roipercentage }}% or
+                                        Above {{ data.item.data.max_roipercentage }} %
                                     </div>
                                 </div>
                                 <div v-else-if="data.item.data.min_roipercentage!= null && data.item.data.max_roipercentage == null">
-                                    ROI%: above {{ data.item.data.min_roipercentage}}$
+                                    ROI%: Below {{ data.item.data.min_roipercentage}}%
                                 </div>
                                 <div  v-else-if="data.item.data.min_roipercentage== null && data.item.data.max_roipercentage != null">
-                                    ROI%: below {{ data.item.data.max_roipercentage}}$
+                                    ROI%: Above {{ data.item.data.max_roipercentage}}%
                                 </div>
                                 
                                 
                                 <div style="white-space: initial;"  v-if="data.item.data.min_marketcap != null && data.item.data.max_marketcap!= null">
                                     
-                                        Market Cap: {{ data.item.data.min_marketcap }} -
-                                        {{ data.item.data.max_marketcap }}%
+                                        Market Cap: Below {{ data.item.data.min_marketcap }}$ or
+                                        Above {{ data.item.data.max_marketcap }}$
                                     </div>
                                     <div style="white-space: initial;"  v-else-if="data.item.data.min_marketcap!= null && data.item.data.max_marketcap == null">
-                                         Market Cap: above {{ data.item.data.min_marketcap}}$
+                                         Market Cap: Below {{ data.item.data.min_marketcap}}$
                                     </div>
                                     <div style="white-space: initial;"  v-else-if="data.item.data.min_marketcap== null && data.item.data.max_marketcap != null">
-                                         Market Cap:  below {{ data.item.data.max_marketcap}}$
+                                         Market Cap:  Above {{ data.item.data.max_marketcap}}$
                                     </div>
                                     <div v-if="data.item.data.min_nextunlock != null && data.item.data.max_nextunlock!= null">
                                     
-                                        Next unlock: {{ data.item.data.min_nextunlock }} -
-                                        {{ data.item.data.max_nextunlock }}%
+                                        Next unlock: Below{{ data.item.data.min_nextunlock }}% or
+                                        Above {{ data.item.data.max_nextunlock }}%
                                     </div>
                                     <div v-else-if="data.item.data.min_nextunlock!= null && data.item.data.max_nextunlock == null">
-                                         Next unlock: above {{ data.item.data.min_nextunlock}}$
+                                         Next unlock: Below {{ data.item.data.min_nextunlock}}%
                                     </div>
                                     <div  v-else-if="data.item.data.min_nextunlock== null && data.item.data.max_nextunlock != null">
-                                         Next unlock:  below {{ data.item.data.max_nextunlock}}$
+                                         Next unlock:  Above {{ data.item.data.max_nextunlock}}%
                                     </div>
                                     <div v-if="data.item.data.min_socialsentiments != null && data.item.data.max_socialsentiments!= null">
                                     
-                                        24H Social Sentiment: {{ data.item.data.min_socialsentiments }} -
-                                        {{ data.item.data.max_socialsentiments }}%
+                                        24H Social Sentiment:Below {{ data.item.data.min_socialsentiments }}% or
+                                       Above {{ data.item.data.max_socialsentiments }}%
                                     </div>
                                     <div v-else-if="data.item.data.min_socialsentiments!= null && data.item.data.max_socialsentiments == null">
-                                         24H Social Sentiment: above {{ data.item.data.min_socialsentiments}}$
+                                         24H Social Sentiment: Below {{ data.item.data.min_socialsentiments}}%
                                     </div>
                                     <div  v-else-if="data.item.data.min_socialsentiments== null && data.item.data.max_socialsentiments != null">
-                                         24H Social Sentiment:  below {{ data.item.data.max_socialsentiments}}$
+                                         24H Social Sentiment:  Above {{ data.item.data.max_socialsentiments}}%
                                     </div>
                                     
                                
@@ -200,7 +204,7 @@
                                     <NotificationRangePrice v-if="coinData.current_price != null" :value="alertData.price" @updateNotificationFilter="updateNotificationFilter($event)"
                                     modal="Price" :item="1" :valueData="coinData" />
                                      <NotificationRangeROI v-if="coinData.price_change_percentage_24h != null" :valueData="coinData"  :value="alertData.tradingper24h" @updateNotificationFilter="updateNotificationFilter($event)"
-                                    modal="24H trading percentage" :item="2" />
+                                    modal="24H trading %" :item="2" />
                                      <NotificationRangeROI v-if="coinData.roi_percentage != null" :valueData="coinData" :value="alertData.roipercentage" @updateNotificationFilter="updateNotificationFilter($event)"
                                     modal="ROI in %" :item="3" />
                                      <NotificationRangePrice  v-if="coinData.market_cap != null"  :valueData="coinData" :value="alertData.marketcap" @updateNotificationFilter="updateNotificationFilter($event)"
