@@ -383,7 +383,6 @@ class UnlockingController extends Controller
                         ->update(['flag' => 1]);
                 } catch (Exception $er) {
                     
-                    sleep(6000);
                   try {
                     $tickerData = $client->exchanges()->getExchange($back_Value->exchangeid);
                     $deleteDickers = ExchangeTicker::where('exchange_id', $back_Value->exchangeid)->delete();
