@@ -1,5 +1,15 @@
 <template>
     <div id="alerts">
+        <div class="darkWhiteText" style="font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 24px;
+        margin-top: 26px;
+        margin-bottom: 26px;
+        text-align: center;
+        ">
+        Alerts
+    </div>
         <div class="body-content-overlay" />
         <!-- search bar and table -->
         <div class="cardBack" style="
@@ -269,12 +279,12 @@
                 titleReq:false,
                 Cpagpage: 1,
                 alertData: {
-                    price: [null, null,null,null],
-                    tradingper24h: [null, null],
-                    roipercentage: [null, null],
-                    marketcap: [null, null,null, null],
-                    nextunlock: [null, null],
-                    socialsentiments: [null, null],
+                    price: ['', '','',''],
+                    tradingper24h: ['', ''],
+                    roipercentage: ['', ''],
+                    marketcap: ['', '','', ''],
+                    nextunlock: ['', ''],
+                    socialsentiments: ['', ''],
                 },
                 alertForm: {
                     priority: 'medium',
@@ -373,33 +383,33 @@
                  this.alertForm.min_socialsentiments = null;
                  this.alertForm.max_socialsentiments = null;
                  this.alertData ={
-                    price: [null, null,null, null],
-                    tradingper24h: [null, null],
-                    roipercentage: [null, null],
-                    marketcap: [null, null,null, null],
-                    nextunlock: [null, null],
-                    socialsentiments: [null, null],
+                    price: ['', '','', ''],
+                    tradingper24h: ['', ''],
+                    roipercentage: ['', ''],
+                    marketcap: ['', '','', ''],
+                    nextunlock: ['', ''],
+                    socialsentiments: ['', ''],
                 }
 
                 this.activeData = item.data;
                this.activeNotify = item;
 
-               this.alertData.price[0] = this.activeData.min_price?this.activeData.min_price:null;
-               this.alertData.price[1] = this.activeData.max_price?this.activeData.max_price:null;
-               this.alertData.price[2] = this.activeData.min_price_percentage?this.activeData.min_price_percentage:null;
-               this.alertData.price[3] = this.activeData.max_price_percentage?this.activeData.max_price_percentage:null;
-               this.alertData.tradingper24h[0] = this.activeData.min_tradingper24h?this.activeData.min_tradingper24h:null;
-               this.alertData.tradingper24h[1] = this.activeData.max_tradingper24h?this.activeData.max_tradingper24h:null;
-               this.alertData.roipercentage[0] = this.activeData.min_roipercentage?this.activeData.min_roipercentage:null;
-               this.alertData.roipercentage[1] = this.activeData.max_roipercentage?this.activeData.max_roipercentage:null;
-               this.alertData.marketcap[0] = this.activeData.min_marketcap?this.activeData.min_marketcap:null;
-               this.alertData.marketcap[1] = this.activeData.max_marketcap?this.activeData.max_marketcap:null;
-               this.alertData.marketcap[2] = this.activeData.min_marketcap_percentage?this.activeData.min_marketcap_percentage:null;
-               this.alertData.marketcap[3] = this.activeData.max_marketcap_percentage?this.activeData.max_marketcap_percentage:null;
-               this.alertData.nextunlock[0] = this.activeData.min_nextunlock?this.activeData.min_nextunlock:null;
-               this.alertData.nextunlock[1] = this.activeData.max_nextunlock?this.activeData.max_nextunlock:null;
-               this.alertData.socialsentiments[0] = this.activeData.min_socialsentiments?this.activeData.min_socialsentiments:null;
-               this.alertData.socialsentiments[1] = this.activeData.max_socialsentiments?this.activeData.max_socialsentiments:null;
+               this.alertData.price[0] = this.activeData.min_price?this.activeData.min_price:'';
+               this.alertData.price[1] = this.activeData.max_price?this.activeData.max_price:'';
+               this.alertData.price[2] = this.activeData.min_price_percentage?this.activeData.min_price_percentage:'';
+               this.alertData.price[3] = this.activeData.max_price_percentage?this.activeData.max_price_percentage:'';
+               this.alertData.tradingper24h[0] = this.activeData.min_tradingper24h?this.activeData.min_tradingper24h:'';
+               this.alertData.tradingper24h[1] = this.activeData.max_tradingper24h?this.activeData.max_tradingper24h:'';
+               this.alertData.roipercentage[0] = this.activeData.min_roipercentage?this.activeData.min_roipercentage:'';
+               this.alertData.roipercentage[1] = this.activeData.max_roipercentage?this.activeData.max_roipercentage:'';
+               this.alertData.marketcap[0] = this.activeData.min_marketcap?this.activeData.min_marketcap:'';
+               this.alertData.marketcap[1] = this.activeData.max_marketcap?this.activeData.max_marketcap:'';
+               this.alertData.marketcap[2] = this.activeData.min_marketcap_percentage?this.activeData.min_marketcap_percentage:'';
+               this.alertData.marketcap[3] = this.activeData.max_marketcap_percentage?this.activeData.max_marketcap_percentage:'';
+               this.alertData.nextunlock[0] = this.activeData.min_nextunlock?this.activeData.min_nextunlock:'';
+               this.alertData.nextunlock[1] = this.activeData.max_nextunlock?this.activeData.max_nextunlock:'';
+               this.alertData.socialsentiments[0] = this.activeData.min_socialsentiments?this.activeData.min_socialsentiments:'';
+               this.alertData.socialsentiments[1] = this.activeData.max_socialsentiments?this.activeData.max_socialsentiments:'';
                this.alertForm.name = this.activeData.name;
                this.alertForm.priority = this.activeData.priority;
                this.loadCoinData();

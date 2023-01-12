@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\SparklineSaveJob;
+use App\Libraries\CoinGecko\CoinGeckoClient;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
+use App\Models\Exchange;
+use App\Models\ExchangeTicker;
 use App\Models\UnlockingPdf;
 use App\Notifications\NotifyTokenUnlockNotification;
 use Carbon\Carbon;
 use DateTime;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -329,109 +332,92 @@ class UnlockingController extends Controller
 
     public function dataFromUrl($c)
     {
-        $jsonData = file_get_contents('https://token.unlocks.app/');
-        $data = $this->getBetween($jsonData, 'type="application/json">', '</script>');
-         $data1 = json_decode($data);
-        $array = [];
-        foreach ($data1->props->pageProps->info->data as $key => $value) {
-            $coin = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)->first();
-            if ($value->token->coingeckoId) {
-                if (!$coin) {
-                    $newCoin = new CoinsList();
-                    $newCoin->coin_id = $value->token->coingeckoId;
-                    $newCoin->symbol = $value->token->symbol;
-                    $newCoin->name = $value->token->name;
-                    $newCoin->trading_history_flag = 0;
-                    $newCoin->save();
-                    $coin = $newCoin;
-                }
-                $coinData = CoinsData::where('coin_id', $coin->coin_id)->where('symbol', $value->token->symbol)->first();
-                if ($coinData) {
-                    $coinData->current_price = $value->token->price;
-                    $coinData->fully_diluted_valuation = $value->token->fullyDiluted;
-                    $coinData->market_cap = $value->token->marketCap;
-                    $coinData->max_supply = $value->token->maxSupply;
-                    $coinData->total_locked = $value->totalLockedAmount;
-                    if ($value->token->maxSupply != 0) {
-                        $tokenPer = ($value->totalLockedAmount / $value->token->maxSupply) * 100;
-                        if ($tokenPer >= 0 && $tokenPer <= 8) {
-                            $coinData->next_unlock_size = 'SMALL';
-                        } else if ($tokenPer > 8 && $tokenPer <= 14) {
-                            $coinData->next_unlock_size = 'MEDIUM';
-                        } else if ($tokenPer > 14) {
-                            $coinData->next_unlock_size = 'BIG';
+        $client = new CoinGeckoClient(false);
+        // $exchanges =  $client->exchanges()->getList();
+        $newExchanges = array();
+
+        // foreach ($exchanges as $key => $value) {
+        // //
+        // if(!Exchange::where('exchangeid',$value['id'])->exists()){
+        //     $exchange = new Exchange();
+        //      $exchange->exchangeid =  $value['id'];
+        //      $exchange->name =  $value['name'];
+        //      $exchange->flag = 0;
+        //      $exchange->save();
+        //      $newExchanges[] = $exchange;
+        // }
+
+        // }
+
+        $tickers = Exchange::where('flag', 0)->limit(10)->get();
+        if (count($tickers) > 0) {
+            foreach ($tickers as $key => $value) {
+                $back_Value = $value;
+                try {
+                    $tickerData = $client->exchanges()->getExchange($value->exchangeid);
+                    $deleteDickers = ExchangeTicker::where('exchange_id', $value->exchangeid)->delete();
+                    foreach ($tickerData['tickers'] as $key => $valueTicker) {
+                        if ($valueTicker['trust_score'] == 'green') {
+                            $exchnageTicker = new ExchangeTicker();
+                            //Check
+                            $variable = [];
+                            $str = $valueTicker['trade_url'];
+                            if ($str) {
+                                $str = stripslashes($str);
+                                $variable = $ar = explode("?", $str);
+                            } else {
+                                $variable[0] = '';
+                            }
+                            $exchnageTicker->exchange = $value->name;
+                            $exchnageTicker->exchange_id = $value->exchangeid;
+                            $exchnageTicker->base = $valueTicker['base'];
+                            $exchnageTicker->target = $valueTicker['target'];
+                            $exchnageTicker->volume = $valueTicker['volume'];
+                            $exchnageTicker->trade_url = $variable[0];
+                            $exchnageTicker->save();
                         }
-                        $coinData->total_locked_percent = $tokenPer;
 
                     }
-                    if ($value->nextEventData != null) {
-                        $coinData->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
-                        $coinData->next_unlock_number_of_tokens = $value->nextEventData->amount;
-                        $coinData->vesting_status = 0;
-
-                    }
-                    $coinData->save();
-                } else {
-                    $coinData2 = new CoinsData();
-                    $coinData2->coin_id = $value->token->coingeckoId;
-                    $coinData2->image = $value->token->icon;
-                    $coinData2->symbol = $value->token->symbol;
-                    $coinData2->circulating_supply = $value->token->circulatingSupply;
-                    $coinData2->current_price = $value->token->price;
-                    $coinData2->fully_diluted_valuation = $value->token->fullyDiluted;
-                    $coinData2->market_cap = $value->token->marketCap;
-                    $coinData2->market_cap = $value->token->marketCap;
-                    $coinData2->max_supply = $value->token->maxSupply;
-                    $coinData2->total_locked = $value->totalLockedAmount;
-                    if ($value->token->maxSupply != 0) {
-                        $tokenPer = ($value->totalLockedAmount / $value->token->maxSupply) * 100;
-                        if ($tokenPer >= 0 && $tokenPer <= 8) {
-                            $coinData2->next_unlock_size = 'SMALL';
-                        } else if ($tokenPer > 8 && $tokenPer <= 14) {
-                            $coinData2->next_unlock_size = 'MEDIUM';
-                        } else if ($tokenPer > 14) {
-                            $coinData2->next_unlock_size = 'BIG';
+                    DB::table('exchanges')
+                        ->where('exchangeid', $value->exchangeid)
+                        ->update(['flag' => 1]);
+                } catch (Exception $er) {
+                    
+                    sleep(6000);
+                  try {
+                    $tickerData = $client->exchanges()->getExchange($back_Value->exchangeid);
+                    $deleteDickers = ExchangeTicker::where('exchange_id', $back_Value->exchangeid)->delete();
+                    foreach ($tickerData['tickers'] as $key => $valueTicker) {
+                        if ($valueTicker['trust_score'] == 'green') {
+                            $exchnageTicker = new ExchangeTicker();
+                            //Check
+                            $variable = [];
+                            $str = $valueTicker['trade_url'];
+                            if ($str) {
+                                $str = stripslashes($str);
+                                $variable = $ar = explode("?", $str);
+                            } else {
+                                $variable[0] = '';
+                            }
+                            $exchnageTicker->exchange = $back_Value->name;
+                            $exchnageTicker->exchange_id = $back_Value->exchangeid;
+                            $exchnageTicker->base = $valueTicker['base'];
+                            $exchnageTicker->target = $valueTicker['target'];
+                            $exchnageTicker->volume = $valueTicker['volume'];
+                            $exchnageTicker->trade_url = $variable[0];
+                            $exchnageTicker->save();
                         }
-                        $coinData2->total_locked_percent = $tokenPer;
 
                     }
-                    if ($value->nextEventData != null) {
-                        $coinData2->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
-                        $coinData2->next_unlock_number_of_tokens = $value->nextEventData->amount;
-                        $coinData2->vesting_status = 0;
-
-                    }
-                    $coinData2->historical_sentiment = '[]';
-                    $coinData2->historical_social_mentions = '[]';
-                    $coinData2->historical_social_engagement = '[]';
-
-                    $coinData2->save();
+                    DB::table('exchanges')
+                        ->where('exchangeid', $value->exchangeid)
+                        ->update(['flag' => 1]);
+                  } catch (\Throwable $th) {
+                    //throw $th;
+                  }
                 }
 
             }
-        }
-
-        return $array;
-        return $coins = CoinsData::where('coingeckoid', '!=', null)->orderBy('market_cap_rank', 'ASC')->select('coingeckoid')->paginate(100, ['*'], 'page', 2)->toArray();
-        $t = 0;
-        $coinsData = CoinsData::where('coingeckoid', '!=', null)->paginate(100, ['*'], 'page', 1);
-        $page = $coinsData->lastPage();
-        $p = 0;
-        for ($i = 1; $i <= $page; $i++) {
-            $coins = CoinsData::where('coingeckoid', '!=', null)->select('coingeckoid')->paginate(100, ['*'], 'page', $i)->toArray();
-            $box = [];
-            foreach ($coins['data'] as $key => $value) {
-                $box[] = $value['coingeckoid'];
-            }
-            $chunks = array_chunk($box, 10);
-
-            foreach ($chunks as $key => $chunkVal) {
-                $job = (new SparklineSaveJob($chunkVal))->onQueue('moon-sniper-worker-long')->delay($t);
-                $t + 60;
-            }
-
-            sleep(60);
-
         }
 
     }

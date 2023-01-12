@@ -128,20 +128,19 @@
                 min = min.toFixed(1);
 
                 if (this.value1[0] != null && this.value1[0] != '') {
-                    if (this.value1[0] < min) {
+                    if (parseFloat(this.value1[0]) < min || parseFloat(this.value1[0]) > max) {
                         this.value1[0] = min;
-                    } else if (this.value1[0] > max) {
-                        this.value1[0] = min;
-                    }
-                    if (this.value1[1] == null  || this.value1[1] == ''  || this.value1[1] < this.value1[0]) {
+                    } 
+                    if (this.value1[1] == null  || this.value1[1] == '') {
                         this.value1[1] = max;
+                    }else if(parseFloat(this.value1[1]) < parseFloat(this.value1[0])){
+                        this.value1[1] = null;
+                        
                     }
 
                 }else{
-                    if (this.value1[1] != null  && this.value1[1] != '') {
-                        this.value1[0] = min;
-                    }
-                }
+                this.value1[0] != null;
+            }
               
                 this.blurValue2();
             },
@@ -157,13 +156,11 @@
                 max = max.toFixed(1);
                 min = min.toFixed(1);
                 if (this.value1[1] != null && this.value1[1] != '') {
-                    if (this.value1[1] < min) {
+                    if (parseFloat(this.value1[1]) < min || parseFloat(this.value1[1]) > max) {
                         this.value1[1] = max;
-                    } else if (this.value1[1] > max) {
-                        this.value1[1] = max;
-                    }
+                    }  
                     if (this.value1[0] == null  || this.value1[0] == '') {
-                        this.value1[0] = min;
+                        this.value1[0] = null;
                     }
                 } else {
                     if (this.value1[0] != null && this.value1[0] != '') {
@@ -183,8 +180,8 @@
                     vdata = this.valueData.market_cap;
                 }
 
-                let v1 = null;
-                let v2 = null;
+                let v1 = '';
+                let v2 = '';
 
                 if (this.value1[0] != null && this.value1[0] != '') {
                     v1 = -(100 - (parseFloat(this.value1[0]) / parseFloat(vdata)) * 100);
@@ -193,10 +190,10 @@
                 if (this.value1[1] != null && this.value1[1] != '') {
                     v2 = -(100 - (parseFloat(this.value1[1]) / parseFloat(vdata)) * 100);
                 }
-                if (v1 != null) {
+                if (v1 != '') {
                     v1 = v1.toFixed(1);
                 }
-                if (v2 != null) {
+                if (v2 != '') {
                     v2 = v2.toFixed(1);
                 }
 

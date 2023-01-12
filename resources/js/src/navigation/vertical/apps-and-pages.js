@@ -128,7 +128,7 @@ export default [
         action: 'read'
     },
      {
-        title: 'Alert',
+        title: 'Alerts',
         icon: 'BellIcon',
         route: 'alerts',
         resource: 'Alert',

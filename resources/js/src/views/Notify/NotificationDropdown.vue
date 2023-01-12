@@ -1,7 +1,5 @@
 <template>
-    <b-nav-item-dropdown class="dropdown-notification mr-25" style="    position: absolute;
-    top: 0;
-    right: 0;" menu-class="dropdown-menu-media" right>
+    <b-nav-item-dropdown class="dropdown-notification mr-25 dropdown-notify"  menu-class="dropdown-menu-media" right>
 
         <template #button-content>
             <feather-icon :badge="unreadCount()" badge-classes="bg-danger" class="text-body" icon="BellIcon"
@@ -216,5 +214,14 @@
     .text-success-green-2 {
       color: #97c194;
   }
-
+  .dropdown-notify{
+    position: absolute;
+    top: 6px;
+    right: -3px;
+  }
+   .AppExtensionMode .dropdown-notify{
+        position: absolute !important;
+        top: 9px !important;
+        right: -5px !important;
+    }
 </style>

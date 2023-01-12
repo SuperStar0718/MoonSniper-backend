@@ -88,7 +88,9 @@
                                             variant="outline-primary"><i class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
-                                    <span class="col-6 feerSmallGreen"  :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}" style="text-align:center;">
+                                    <span class="col-6 feerSmallGreen"
+                                        :class="{'text-danger':fag.data.fear_greed_index<50,'text-success-green':fag.data.fear_greed_index>=50}"
+                                        style="text-align:center;">
                                         {{fag.data.fear_greed_classification}}
                                     </span>
                                     <span class="col-3">
@@ -1327,7 +1329,7 @@
                 </div>
                 <div v-else>
                     <vue-apex-charts class="full" width="100%" :dataLabels="true" type="line"
-                        :options="BtcFlowchartOptions" :series="BtcFlowseries"></vue-apex-charts>
+                        :options="BtcFlowchartOptions2" :series="BtcFlowseries"></vue-apex-charts>
                 </div>
 
             </div>
@@ -3105,9 +3107,10 @@
                             <div class="d-flex flex-wrap justify-content-around">
                                 <div class="d-flex">
                                     <label style="white-space: nowrap;margin: auto;">Alert Name: &nbsp;</label>
-                                    <input class="form-control" type="text" v-model="alertForm.name" :class="{ titlereq: titleReq }">
-                                        <small v-if="titleReq" class="text-danger"><i>Name is required</i></small></div>
-                               
+                                    <input class="form-control" type="text" v-model="alertForm.name"
+                                        :class="{ titlereq: titleReq }">
+                                    <small v-if="titleReq" class="text-danger"><i>Name is required</i></small></div>
+
                                 <div class="d-flex">
                                     <label style="white-space: nowrap;margin: auto;">Priority: &nbsp;</label>
                                     <b-form-select id="" v-model="alertForm.priority" :options="alertPriorities" />
@@ -3115,32 +3118,44 @@
 
                             </div>
                             <div class=" p-2">
-                                <NotificationRangePrice v-if="activeData.current_price != null" :value="alertData.price" @updateNotificationFilter="updateNotificationFilter($event)"
-                                    modal="Price" :item="1" :valueData="activeData" />
-                                     <NotificationRangeROI v-if="activeData.price_change_percentage_24h != null" :valueData="activeData"  :value="alertData.tradingper24h" @updateNotificationFilter="updateNotificationFilter($event)"
+                                <NotificationRangePrice v-if="activeData.current_price != null" :value="alertData.price"
+                                    @updateNotificationFilter="updateNotificationFilter($event)" modal="Price" :item="1"
+                                    :valueData="activeData" />
+                                <NotificationRangeROI v-if="activeData.price_change_percentage_24h != null"
+                                    :valueData="activeData" :value="alertData.tradingper24h"
+                                    @updateNotificationFilter="updateNotificationFilter($event)"
                                     modal="24H trading percentage" :item="2" />
-                                     <NotificationRangeROI v-if="activeData.roi_percentage != null" :valueData="activeData" :value="alertData.roipercentage" @updateNotificationFilter="updateNotificationFilter($event)"
-                                    modal="ROI in %" :item="3" />
-                                     <NotificationRangePrice  v-if="activeData.market_cap != null"  :valueData="activeData" :value="alertData.marketcap" @updateNotificationFilter="updateNotificationFilter($event)"
-                                    modal="Market cap" :item="4" />
-                                    <NotificationRangeNextUnlock v-if="activeData.next_unlock_percent_of_tokens != null" :valueData="activeData" :value="alertData.nextunlock" @updateNotificationFilter="updateNotificationFilter($event)"
-                                    modal="Next unlock" :item="5" />
-                                    <NotificationRange v-if="activeData.average_sentiment_change != null" :valueData="activeData" :value="alertData.socialsentiments" @updateNotificationFilter="updateNotificationFilter($event)"
+                                <NotificationRangeROI v-if="activeData.roi_percentage != null" :valueData="activeData"
+                                    :value="alertData.roipercentage"
+                                    @updateNotificationFilter="updateNotificationFilter($event)" modal="ROI in %"
+                                    :item="3" />
+                                <NotificationRangePrice v-if="activeData.market_cap != null" :valueData="activeData"
+                                    :value="alertData.marketcap"
+                                    @updateNotificationFilter="updateNotificationFilter($event)" modal="Market cap"
+                                    :item="4" />
+                                <NotificationRangeNextUnlock v-if="activeData.next_unlock_percent_of_tokens != null"
+                                    :valueData="activeData" :value="alertData.nextunlock"
+                                    @updateNotificationFilter="updateNotificationFilter($event)" modal="Next unlock"
+                                    :item="5" />
+                                <NotificationRange v-if="activeData.average_sentiment_change != null"
+                                    :valueData="activeData" :value="alertData.socialsentiments"
+                                    @updateNotificationFilter="updateNotificationFilter($event)"
                                     modal="Social sentiments %" :item="6" />
 
                             </div>
-                          <div class="d-flex justify-content-center">
-                          <div>
-                            <b-button class="darkWhiteBackground darkBlackText rounded-lg text-[16px]" size="md" 
-                            v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary" @click="addAlert()" :disabled="AddalertDisable">
-                            Add Alert
-                             </b-button>
-                          </div>
-                            <div style="margin-top:8px;margin-left:8px"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     >
-                                The alert will be sent if all conditions of the filter are met.
+                            <div class="d-flex justify-content-center">
+                                <div>
+                                    <b-button class="darkWhiteBackground darkBlackText rounded-lg text-[16px]" size="md"
+                                        v-ripple.400="'rgba(113, 12, 240, 0.15)'" variant="outline-primary"
+                                        @click="addAlert()" :disabled="AddalertDisable">
+                                        Add Alert
+                                    </b-button>
+                                </div>
+                                <div style="margin-top:8px;margin-left:8px">
+                                    The alert will be sent if all conditions of the filter are met.
+                                </div>
                             </div>
-                          </div>
-                            
+
                         </div>
 
                     </b-overlay>
@@ -3160,7 +3175,7 @@
     import NotificationRangePrice from './NotificationRangePrice.vue';
     import NotificationRangeROI from './NotificationRangeROI.vue';
     import NotificationRangeNextUnlock from './NotificationRangeNextUnlock.vue';
-    
+
     import {
         BTable,
         BTabs,
@@ -3275,25 +3290,27 @@
             FilterComp,
             BProgress,
             NotificationRange,
-            NotificationRangePrice,NotificationRangeROI,NotificationRangeNextUnlock
+            NotificationRangePrice,
+            NotificationRangeROI,
+            NotificationRangeNextUnlock
 
         },
 
         data() {
             return {
                 searchItems: null,
-        searchText: "some value",
-        cancelSource: null,
+                searchText: "some value",
+                cancelSource: null,
                 alertData: {
-                    price: [null, null],
-                    tradingper24h: [null, null],
-                    roipercentage: [null, null],
-                    marketcap: [null, null],
-                    nextunlock: [null, null],
-                    socialsentiments: [null, null],
+                    price: ['', '','', ''],
+                    tradingper24h: ['', ''],
+                    roipercentage: ['', ''],
+                    marketcap: ['', '','', ''],
+                    nextunlock: ['', ''],
+                    socialsentiments: ['', ''],
                 },
-                titleReq:false,
-                alertForm:{
+                titleReq: false,
+                alertForm: {
                     priority: 'Medium',
                     min_price: null,
                     max_price: null,
@@ -3307,9 +3324,9 @@
                     max_nextunlock: null,
                     min_socialsentiments: null,
                     max_socialsentiments: null,
-                    
+
                 },
-                AddalertDisable:true,
+                AddalertDisable: true,
                 btcInOutFlowTooltip: '<span>Inflows to exchanges fluctuate with changes in market sentiment, for instance, an increase in inflows suggests increased selling pressure in the market. </br> The percentage movement refers to the previous day, for example, if the barometer shows a -20% movement, that means there has been an increase in the withdrawal of BTC from exchanges to decentralized wallets. This suggests that people are selling less Bitcoin and have more confidence in the market.</span>',
 
                 weeklyMcAndVolume: {
@@ -3461,6 +3478,82 @@
                         labels: {
                             style: {
                                 colors: '#78909C',
+                            },
+                            formatter: function (value) {
+                                let val = new Intl.NumberFormat('en-US', {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 15,
+                                }).format(value);
+                                return val + '$'
+                            }
+                        },
+
+                    },
+
+                    xaxis: {
+                        categories: [],
+                        type: 'datetime',
+                        tickPlacement: 'between',
+                        labels: {
+                            show: true,
+                            rotateAlways: false,
+                            maxHeight: 120,
+                            style: {
+                                colors: '#78909C',
+                                fontSize: '12px',
+                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                fontWeight: 400,
+                                cssClass: 'apexcharts-xaxis-label',
+                            },
+                            offsetX: 0,
+                            offsetY: 0,
+
+                        },
+                    },
+                    tooltip: {
+                        style: {
+                            colors: '#78909C',
+
+                        },
+                        shared: false,
+                        x: {
+                            format: "dd.MM.yyyy"
+                        }
+                    },
+                    colors: ['#fca503'],
+                    stroke: {
+                        show: true,
+                        curve: 'smooth',
+                        lineCap: 'butt',
+                        width: 1,
+                        dashArray: 0,
+                        labels: {
+                            show: true,
+                            hideOverlappingLabels: true,
+                        }
+                    },
+
+                },
+                BtcFlowchartOptions2: {
+
+                    fill: {
+                        colors: ['#F44336', '#E91E63', '#9C27B0']
+                    },
+
+                    chart: {
+                        id: 'btc-flow-chart2'
+                    },
+                    yaxis: {
+                        labels: {
+                            style: {
+                                colors: '#78909C',
+                            },
+                            formatter: function (value) {
+                                let val = new Intl.NumberFormat('en-US', {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 15,
+                                }).format(value);
+                                return val 
                             }
                         },
 
@@ -3536,6 +3629,7 @@
                                 colors: '#78909C',
                             }
                         },
+
 
                     },
 
@@ -4306,14 +4400,14 @@
             //     filterKey.min_market_cap = e.minValue;
             //     filterKey.max_market_cap = e.maxValue;
             // },
-            cancelSearch () {
-            if (this.cancelSource) {
-                this.cancelSource.cancel('searching...');
-            }
+            cancelSearch() {
+                if (this.cancelSource) {
+                    this.cancelSource.cancel('searching...');
+                }
             },
             loadCoins(filterModalClose) {
                 this.cancelSearch();
-              this.cancelSource = axios.CancelToken.source(); 
+                this.cancelSource = axios.CancelToken.source();
                 if (!filterModalClose) {
                     this.$bvModal.hide('modal-filters');
                 }
@@ -4321,7 +4415,8 @@
                 this.showEmpty = false;
                 this.loadedCoinData = false;
                 axios.post('api/get_coins?page=' + this.Cpagpage, JSON.stringify(this.params), {
-                 cancelToken: this.cancelSource.token }).then(res => {
+                    cancelToken: this.cancelSource.token
+                }).then(res => {
                     if (res.data.status) {
                         if (res.data.tokens.data) {
                             this.items = res.data.tokens;
@@ -4355,8 +4450,8 @@
 
 
                 }).
-                catch(res=>{
-                   
+                catch(res => {
+
                 })
 
             },
@@ -6156,96 +6251,86 @@
                 this.NotificationModal = true;
 
             },
-            updateNotificationFilter(evt)
-            {
-                if(evt[1] == 1)
-                {
+            updateNotificationFilter(evt) {
+                if (evt[1] == 1) {
                     this.alertForm.min_price_percentage = evt[0][0];
                     this.alertForm.max_price_percentage = evt[0][1];
                     this.alertForm.min_price = evt[2][0];
                     this.alertForm.max_price = evt[2][1];
-                }else if(evt[1] == 2)
-                {
+                } else if (evt[1] == 2) {
                     this.alertForm.min_tradingper24h = evt[0][0];
                     this.alertForm.max_tradingper24h = evt[0][1];
-                }else if(evt[1] == 3)
-                {
+                } else if (evt[1] == 3) {
                     this.alertForm.min_roipercentage = evt[0][0];
                     this.alertForm.max_roipercentage = evt[0][1];
-                }else if(evt[1] == 4)
-                {
+                } else if (evt[1] == 4) {
                     this.alertForm.min_marketcap_percentage = evt[0][0];
                     this.alertForm.max_marketcap_percentage = evt[0][1];
                     this.alertForm.min_marketcap = evt[2][0];
                     this.alertForm.max_marketcap = evt[2][1];
-                }else if(evt[1] == 5)
-                {
+                } else if (evt[1] == 5) {
                     this.alertForm.min_nextunlock = evt[0][0];
                     this.alertForm.max_nextunlock = evt[0][1];
-                }else if(evt[1] == 6)
-                {
+                } else if (evt[1] == 6) {
                     this.alertForm.min_socialsentiments = evt[0][0];
                     this.alertForm.max_socialsentiments = evt[0][1];
                 }
                 this.updateAddalertDisable();
             },
-            addAlert()
-            {
-                if(!this.alertForm.name || this.alertForm.name.trim() == '')
-                {
+            addAlert() {
+                if (!this.alertForm.name || this.alertForm.name.trim() == '') {
                     this.titleReq = true;
                     return 0;
                 }
                 this.alertForm.coin_id = this.activeData.coin_id;
                 this.alertForm.symbol = this.activeData.symbol;
                 this.alertForm.coin_name = this.activeData.name;
-                axios.post('api/add-coinalert',this.alertForm)
-                .then(res => {
-                    this.$toast({
-                                component: ToastificationContent,
-                                props: {
-                                    title: 'An alert added successfully',
-                                    icon: 'CheckCircleIcon',
-                                    variant: 'success',
-                                },
-                            })
-                    this.alertForm.coin_id = null;
-                    this.alertForm.symbol = null;
-                    this.alertForm.coin_name = null;
-                    this.alertForm.priority = 'Medium';
-                    this.alertForm.name = '';
-                    this.alertData.price = [null,null];
-                    this.alertData.tradingper24h =[null,null];
-                    this.alertData.roipercentage =[null,null];
-                    this.alertData.marketcap =[null,null];
-                    this.alertData.nextunlock =[null,null];
-                    this.alertData.socialsentiments =[null,null];
-                    this.alertForm.min_price = null;
-                    this.alertForm.max_price = null;
-                    this.alertForm.min_tradingper24h = null;
-                    this.alertForm.max_tradingper24h = null;
-                    this.alertForm.min_roipercentage = null;
-                    this.alertForm.max_roipercentage = null;
-                    this.alertForm.min_marketcap = null;
-                    this.alertForm.max_marketcap = null;
-                    this.alertForm.min_nextunlock = null;
-                    this.alertForm.max_nextunlock = null;
-                    this.alertForm.min_socialsentiments = null;
-                    this.alertForm.max_socialsentiments = null;
-                });
+                axios.post('api/add-coinalert', this.alertForm)
+                    .then(res => {
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: 'An alert added successfully',
+                                icon: 'CheckCircleIcon',
+                                variant: 'success',
+                            },
+                        })
+                        this.alertForm.coin_id = null;
+                        this.alertForm.symbol = null;
+                        this.alertForm.coin_name = null;
+                        this.alertForm.priority = 'Medium';
+                        this.alertForm.name = '';
+                        this.alertData.price = ['', '','', ''];
+                        this.alertData.tradingper24h = ['', ''];
+                        this.alertData.roipercentage = ['', ''];
+                        this.alertData.marketcap = ['', '','', ''];
+                        this.alertData.nextunlock = ['', ''];
+                        this.alertData.socialsentiments = ['', ''];
+                        this.alertForm.min_price = null;
+                        this.alertForm.max_price = null;
+                        this.alertForm.min_tradingper24h = null;
+                        this.alertForm.max_tradingper24h = null;
+                        this.alertForm.min_roipercentage = null;
+                        this.alertForm.max_roipercentage = null;
+                        this.alertForm.min_marketcap = null;
+                        this.alertForm.max_marketcap = null;
+                        this.alertForm.min_nextunlock = null;
+                        this.alertForm.max_nextunlock = null;
+                        this.alertForm.min_socialsentiments = null;
+                        this.alertForm.max_socialsentiments = null;
+                    });
             },
-            updateAddalertDisable()
-            {
-                if(this.alertForm.min_price != null|| this.alertForm.max_price != null||
-                    this.alertForm.min_tradingper24h != null|| this.alertForm.max_tradingper24h != null||
-                    this.alertForm.min_roipercentage != null|| this.alertForm.max_roipercentage != null||
-                    this.alertForm.min_marketcap != null|| this.alertForm.max_marketcap != null||
-                    this.alertForm.min_nextunlock != null|| this.alertForm.max_nextunlock != null||
-                    this.alertForm.min_socialsentiments != null|| this.alertForm.max_socialsentiments != null 
-                
-                ){
-                   this.AddalertDisable = false;
-                }else{
+            updateAddalertDisable() {
+                if (this.alertForm.min_price != null || this.alertForm.max_price != null ||
+                    this.alertForm.min_tradingper24h != null || this.alertForm.max_tradingper24h != null ||
+                    this.alertForm.min_roipercentage != null || this.alertForm.max_roipercentage != null ||
+                    this.alertForm.min_marketcap != null || this.alertForm.max_marketcap != null ||
+                    this.alertForm.min_nextunlock != null || this.alertForm.max_nextunlock != null ||
+                    this.alertForm.min_socialsentiments != null || this.alertForm.max_socialsentiments != null
+
+                ) {
+                    this.AddalertDisable = false;
+                } else {
                     this.AddalertDisable = true;
                 }
             }
@@ -6285,7 +6370,7 @@
                     this.rdot = rdot
                 },
             },
-            
+
             presetFiltersapp1() {
                 return this.presetFilters.filter(filter => {
                     return filter.default == 1
@@ -6311,7 +6396,7 @@
             refreshEvent() {
 
             },
-          
+
 
 
         },
@@ -6343,7 +6428,7 @@
         watch: {
             'alertForm.name': function (newVal, oldVal) {
                 if (oldVal && newVal) {
-                        this.titleReq = false;
+                    this.titleReq = false;
                 }
             },
             'Cpagpage': function (newVal, oldVal) {
@@ -6643,6 +6728,7 @@
         text-align: center;
         color: #6BD863;
     }
+
     .featTextSize {
         font-family: 'Poppins-Light';
         font-style: normal;
@@ -7311,15 +7397,30 @@
     .total_locked_progress .progress-bar {
         background: #6BD863 !important;
     }
-    .titlereq{
+
+    .titlereq {
         border-color: #ad2020 !important;
     }
 
-    .AppExtensionMode  #modal-notifications  .modal-dialog{
+    .AppExtensionMode #modal-notifications .modal-dialog {
         max-width: 748px !important;
-    } .AppExtensionMode  #modal-notifications  .modal-body{
+    }
+
+    .AppExtensionMode #modal-notifications .modal-body {
         padding: 0.8rem 0rem;
     }
+    .search-product::placeholder {
+        color: rgb(186, 183, 183) !important;
+        opacity: 1 !important; /* Firefox */
+      }
+      
+      .search-product:-ms-input-placeholder { /* Internet Explorer 10-11 */
+       color:  rgb(186, 183, 183) !important;
+      }
+      
+      .search-product::-ms-input-placeholder { /* Microsoft Edge */
+       color:  rgb(186, 183, 183) !important;
+      }
 </style>
 
 <style lang="scss">

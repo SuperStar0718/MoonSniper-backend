@@ -78,6 +78,14 @@
                 if (typeof this.value1[1] != 'string' && this.value1[1] == 0) {
                     this.value1[1] = stringify(this.value1[1]);
                 }
+                if(this.value2[0] == null)
+                {
+                    this.value2[0] = ''
+                }
+                if(this.value2[1] == null)
+                {
+                    this.value2[1] = ''
+                }
                 this.$emit('updateNotificationFilter', [this.value1, this.item])
             },
             blurUpdate() {
@@ -187,6 +195,14 @@
                 if (typeof this.value2[1] != 'string' && this.value2[1] == 0) {
                     this.value2[1] = stringify(this.value2[1]);
                 }
+                if(this.value2[0] == null)
+                {
+                    this.value2[0] = ''
+                }
+                if(this.value2[1] == null)
+                {
+                    this.value2[1] = ''
+                }
                 this.$emit('updateNotificationFilter', [this.value2, this.item])
             },
             getitemLabel() {
@@ -234,6 +250,14 @@
                 }
                 if (typeof this.value2[1] != 'string' && this.value2[1] == 0) {
                     this.value2[1] = stringify(this.value2[1]);
+                }
+                if(this.value2[0] == null)
+                {
+                    this.value2[0] = ''
+                }
+                if(this.value2[1] == null)
+                {
+                    this.value2[1] = ''
                 }
                 this.$emit('updateNotificationFilter', [this.value2, this.item])
                 //    this.value3 = newVal[0]
