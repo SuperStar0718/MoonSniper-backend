@@ -5,13 +5,13 @@
                 <div class="nm-width" style="margin: auto;">{{ modal }} &nbsp;</div>
                 <div>
                     <div class="d-flex">
-                        <cleave :options="NumberFormaVal" @blur="blurUpdate" class="form-control" v-model="value1[0]"
+                        <b-form-input :options="NumberFormaVal" @blur="blurUpdate" type="number" :step="sliderInterVal" class="form-control" v-model="value1[0]"
                              placeholder="Decrease to" />
                         <span>
                             <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                 style="margin:10px 6px 0 0px" />
                         </span>
-                        <cleave :options="NumberFormaVal" @blur="blurUpdate" class="form-control" v-model="value1[1]"
+                        <b-form-input type="number" :step="sliderInterVal" :options="NumberFormaVal" @blur="blurUpdate" class="form-control" v-model="value1[1]"
                              placeholder="Increase to" />
                     </div>
                     <label class="d-flex justify-content-center" style="margin-top: 5px;">{{ getitemLabel() }}</label>
@@ -22,7 +22,7 @@
         <div class="w-75" style="padding-left: 22px;
         margin-top: 6px;">
             <div @click="dragSlider">
-                <vue-slider @drag-end="dragSlider"  :tooltip-formatter="formatterRange" v-model="value2" :min="-500" :max="500" class="mb-2" />
+                <vue-slider :interval="sliderInterVal" @drag-end="dragSlider"  :tooltip-formatter="formatterRange" v-model="value2" :min="-500" :max="500" class="mb-2" />
             </div>
         </div>
     </div>
@@ -30,10 +30,10 @@
 </template>
 <script>
     import {
-        
-        BFormGroup,
 
-    } from 'bootstrap-vue'
+BFormGroup,
+BFormInput
+} from 'bootstrap-vue'
     import Cleave from 'vue-cleave-component'
     // eslint-disable-next-line import/no-extraneous-dependencies
     import 'cleave.js/dist/addons/cleave-phone.us';
@@ -51,7 +51,8 @@
         components: {
             VueSlider,
             BFormGroup,
-            Cleave
+            Cleave,
+            BFormInput
         },
         data() {
             return {
@@ -86,7 +87,16 @@
                 {
                     this.value2[1] = ''
                 }
-                console.log('hellp',this.value2)
+                if(this.value2[0] == 0)
+                {
+                    this.value1 = ['',this.value1[1]];
+                    this.value2[0] = '';
+                }
+                if(this.value2[1] == 0)
+                {
+                    this.value1 = [this.value1[0],''];
+                    this.value2 = [this.value2[0],'']
+                }
                 this.$emit('updateNotificationFilter', [this.value1, this.item])
             },
             blurUpdate() {
@@ -233,6 +243,66 @@
                 }
                 return label;
 
+            }
+        },
+        computed:{
+            sliderInterVal()
+            {
+                let vdata = 0;
+                if (this.item == 2) {
+                    vdata = this.valueData.price_change_percentage_24h;
+                }else if (this.item == 3) {
+                    vdata = this.valueData.roi_percentage;
+                }
+                let interval = 1;
+                if(vdata  < 0 )
+                {
+                    interval = 0.0001
+                }
+                if(vdata  >= 0 && vdata <0.5)
+                {
+                    interval = 0.0001
+                }
+                if(vdata  >= 0.5 && vdata <1.1)
+                {
+                    interval = 0.001
+                }
+                if(vdata  >= 1.1 && vdata <100)
+                {
+                    interval = 0.01
+                }
+                if(vdata  >= 100)
+                {
+                    interval = 0.1
+                }
+                return interval ;
+            },
+            sliderInterVal2()
+            {
+                let vdata = 0;
+                if (this.item == 2) {
+                    vdata = this.valueData.price_change_percentage_24h;
+                }else if (this.item == 3) {
+                    vdata = this.valueData.roi_percentage;
+                }
+                let interval = 1;
+                if(vdata  >= 0 && vdata <0.5)
+                {
+                    interval = 4;
+                }
+                if(vdata  >= 0.5 && vdata <1.1)
+                {
+                    interval = 3;
+                }
+                if(vdata  >= 1.1 && vdata <100)
+                {
+                    interval = 2
+                }
+                if(vdata  >= 100)
+                {
+                    interval = 1
+                }
+                return interval ;
             }
         },
         watch: {

@@ -186,6 +186,8 @@
         box-shadow: inset 1px 1px 1px 0px rgb(52 215 80);
         background-color: #333237 !important;
         width: 311px !important;
+        max-height: 501px;
+    overflow: auto;
 
     }
 

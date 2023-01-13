@@ -1001,10 +1001,24 @@
                                 <b-progress :value="data.item.total_locked_percent" max="100" height="8px" />
                             </div>
                         </template>
-                        <template #cell(next_unlock_date_text)="data">
-                            <div v-if="data.value" style="text-align: center;" class="d-flex2 justify-content-start"
+                        <template #cell(next_unlock_date)="data">
+                            <div  v-if="data.item.next_unlock_date_text == null" style="text-align: center;"
+                            class="d-flex2 justify-content-start"
+                            :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
+                            {{dateFormat2(data.value)}}
+                            <br />
+                            <vac :end-time="getTimeStamp(data.value)">
+                                <template v-slot:process="{ timeObj }">
+                                    <span>{{ `${timeObj.d}d - ${timeObj.h} : ${timeObj.m} : ${timeObj.s}` }}</span>
+                                </template>
+                                <template v-slot:finish>
+                                    <span></span>
+                                </template>
+                            </vac>
+                        </div>
+                            <div v-if="data.item.next_unlock_date_text" style="text-align: center;" class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
-                                {{data.value}}
+                                {{data.item.next_unlock_date_text}}
                                 <!-- <div v-if="data.item.next_unlock_date">
                                     <vac :end-time="getTimeStamp(data.item.next_unlock_date)">
                                         <template v-slot:process="{ timeObj }">
@@ -1016,20 +1030,7 @@
                                     </vac>
                                 </div> -->
                             </div>
-                            <div v-else-if="data.item.next_unlock_date" style="text-align: center;"
-                                class="d-flex2 justify-content-start"
-                                :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
-                                {{dateFormat2(data.item.next_unlock_date)}}
-                                <br />
-                                <vac :end-time="getTimeStamp(data.item.next_unlock_date)">
-                                    <template v-slot:process="{ timeObj }">
-                                        <span>{{ `${timeObj.d}d - ${timeObj.h} : ${timeObj.m} : ${timeObj.s}` }}</span>
-                                    </template>
-                                    <template v-slot:finish>
-                                        <span></span>
-                                    </template>
-                                </vac>
-                            </div>
+                          
                         </template>
                         <template #cell(next_unlock_status)="data">
                             <div style="text-align: center;" class="d-flex2 justify-content-start"
@@ -5413,20 +5414,21 @@
                             this.activeData.three_months_unlock_number_of_tokens != null && this
                             .activeData
                             .six_months_unlock_number_of_tokens != null) {
+                                var total_locked =parseFloat(this.activeData.total_locked != null ?this.activeData.total_locked:0 );
                             var ms = parseFloat(this.activeData.max_supply);
                             if (isNaN(ms))
                                 ms = 0.0;
                             var cs = parseFloat(this.activeData.circulating_supply);
                             if (isNaN(cs))
                                 cs = 0.0;
-
-                            var nt = parseFloat(this.activeData.next_unlock_number_of_tokens);
+                            var nt = parseFloat(this.activeData.next_unlock_number_of_tokens != null ?this.activeData.next_unlock_number_of_tokens:0 );
                             if (isNaN(nt))
                                 nt = 0.0;
-                            var val1 = Math.max(ms - cs - nt, 0.0);
+                            var val1 = Math.max(ms - (total_locked), 0.0);
                             var val2 = cs;
                             var val3 = nt;
-                            this.supplyChart.series = [val1, val2, val3];
+                            console.log([total_locked, val1, val3]);
+                            this.supplyChart.series = [total_locked, val1, val3];
 
                         }
 
@@ -6308,6 +6310,29 @@
             },
             openNotificationModal() {
                 // this.activeData;
+                this.alertForm.coin_id = null;
+                        this.alertForm.symbol = null;
+                        this.alertForm.coin_name = null;
+                        this.alertForm.priority = 'Medium';
+                        this.alertForm.name = '';
+                        this.alertData.price = ['', '','', ''];
+                        this.alertData.tradingper24h = ['', ''];
+                        this.alertData.roipercentage = ['', ''];
+                        this.alertData.marketcap = ['', '','', ''];
+                        this.alertData.nextunlock = ['', ''];
+                        this.alertData.socialsentiments = ['', ''];
+                        this.alertForm.min_price = null;
+                        this.alertForm.max_price = null;
+                        this.alertForm.min_tradingper24h = null;
+                        this.alertForm.max_tradingper24h = null;
+                        this.alertForm.min_roipercentage = null;
+                        this.alertForm.max_roipercentage = null;
+                        this.alertForm.min_marketcap = null;
+                        this.alertForm.max_marketcap = null;
+                        this.alertForm.min_nextunlock = null;
+                        this.alertForm.max_nextunlock = null;
+                        this.alertForm.min_socialsentiments = null;
+                        this.alertForm.max_socialsentiments = null;
                 this.AddalertDisable = true;
                 this.$bvModal.show('modal-notifications');
                 this.NotificationModal = true;

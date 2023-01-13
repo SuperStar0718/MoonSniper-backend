@@ -5,13 +5,13 @@
                 <div class="nm-width" style="margin: auto;">{{ modal }} &nbsp;</div>
                 <div>
                     <div class="d-flex">
-                        <b-form-input :options="NumberFormaVal" type="number" step="0.1" @blur="blurValue1"
+                        <b-form-input :options="NumberFormaVal" type="number" :step="sliderInterVal" @blur="blurValue1"
                             class="form-control" v-model="value1[0]" placeholder="Decrease to" />
                         <span>
                             <feather-icon icon="MinusIcon" size="16" class="align-middle"
                                 style="margin:10px 6px 0 0px" />
                         </span>
-                        <b-form-input type="number" step="0.1" :options="NumberFormaVal" @blur="blurValue2"
+                        <b-form-input type="number" :step="sliderInterVal" :options="NumberFormaVal" @blur="blurValue2"
                             class="form-control" v-model="value1[1]" placeholder="Increase to" />
                     </div>
                     <label class="d-flex justify-content-center" style="margin-top: 5px;">{{ getitemLabel() }}</label>
@@ -22,7 +22,7 @@
         <div class="w-75" style="padding-left: 22px;
         margin-top: 6px;">
             <div @click="dragSlider">
-                <vue-slider :tooltip-formatter="formatterRange" @drag-end="dragSlider" :min="-30" :max="30"
+                <vue-slider  :interval="sliderInterVal"  :tooltip-formatter="formatterRange"  @drag-end="dragSlider" :min="-30" :max="30"
                     v-model="value2" class="mb-2" />
             </div>
         </div>
@@ -106,12 +106,23 @@
                 let v1 = null;
                 let v2 = null;
                 if (this.value1[0] != null) {
-                    v1 = this.value1[0].toFixed(1);
+                    v1 = this.value1[0].toFixed(this.sliderInterVal2);
                 }
                 if (this.value1[1] != null) {
-                    v2 = this.value1[1].toFixed(1);
+                    v2 = this.value1[1].toFixed(this.sliderInterVal2);
 
                 }
+                if(this.value2[0] == 0)
+                {
+                    v1 = '';
+                    this.value2[0] = '';
+                }
+                if(this.value2[1] == 0)
+                {
+                    v2 = '';
+                    this.value2[1] = '';
+                }
+                
                 this.value1 = [v1, v2]
                 this.$emit('updateNotificationFilter', [this.value2, this.item,this.value1])
             },
@@ -124,8 +135,8 @@
                 }
                 let min = parseFloat(vdata) - (parseFloat(vdata) * 30 / 100)
                 let max = parseFloat(vdata) + (parseFloat(vdata) * 30 / 100)
-                max = max.toFixed(1);
-                min = min.toFixed(1);
+                max = max.toFixed(this.sliderInterVal2);
+                min = min.toFixed(this.sliderInterVal2);
 
                 if (this.value1[0] != null && this.value1[0] != '') {
                     if (parseFloat(this.value1[0]) < min || parseFloat(this.value1[0]) > max) {
@@ -153,8 +164,8 @@
                 }
                 let min = parseFloat(vdata) - (parseFloat(vdata) * 30 / 100)
                 let max = parseFloat(vdata) + (parseFloat(vdata) * 30 / 100)
-                max = max.toFixed(1);
-                min = min.toFixed(1);
+                max = max.toFixed(this.sliderInterVal2);
+                min = min.toFixed(this.sliderInterVal2);
                 if (this.value1[1] != null && this.value1[1] != '') {
                     if (parseFloat(this.value1[1]) < min || parseFloat(this.value1[1]) > max) {
                         this.value1[1] = max;
@@ -191,10 +202,10 @@
                     v2 = -(100 - (parseFloat(this.value1[1]) / parseFloat(vdata)) * 100);
                 }
                 if (v1 != '') {
-                    v1 = v1.toFixed(1);
+                    v1 = v1.toFixed(this.sliderInterVal2);
                 }
                 if (v2 != '') {
-                    v2 = v2.toFixed(1);
+                    v2 = v2.toFixed(this.sliderInterVal2);
                 }
 
                 this.value2 = [v1, v2];
@@ -258,6 +269,60 @@
                 return (30 / parseFloat(vdata)) * 100
 
             },
+            sliderInterVal()
+            {
+                let vdata = 0;
+                if (this.item == 1) {
+                    vdata = this.valueData.current_price;
+                }else if (this.item == 4) {
+                    vdata = this.valueData.market_cap;
+                }
+                let interval = 1;
+                if(vdata  >= 0 && vdata <0.5)
+                {
+                    interval = 0.0001
+                }
+                if(vdata  >= 0.5 && vdata <1.1)
+                {
+                    interval = 0.001
+                }
+                if(vdata  >= 1.1 && vdata <100)
+                {
+                    interval = 0.01
+                }
+                if(vdata  >= 100)
+                {
+                    interval = 0.1
+                }
+                return interval ;
+            },
+            sliderInterVal2()
+            {
+                let vdata = 0;
+                if (this.item == 1) {
+                    vdata = this.valueData.current_price;
+                }else if (this.item == 4) {
+                    vdata = this.valueData.market_cap;
+                }
+                let interval = 1;
+                if(vdata  >= 0 && vdata <0.5)
+                {
+                    interval = 4;
+                }
+                if(vdata  >= 0.5 && vdata <1.1)
+                {
+                    interval = 3;
+                }
+                if(vdata  >= 1.1 && vdata <100)
+                {
+                    interval = 2
+                }
+                if(vdata  >= 100)
+                {
+                    interval = 1
+                }
+                return interval ;
+            }
         },
         watch: {
             value2: function (newVal, oldVal) {

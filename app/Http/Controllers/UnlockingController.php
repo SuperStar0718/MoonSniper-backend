@@ -335,6 +335,7 @@ class UnlockingController extends Controller
 
         $client = new CoinGeckoClient(false);
 
+       return $coin_array = $client->coins()->getMarkets('usd', ["sparkline"=>"true","price_change_percentage"=>"1h,24h,7d,14d,30d,200d,1y","per_page"=>"250","page"=>1]);
         $coin_array = $client->coins()->getMarkets('usd', ["sparkline"=>"true","price_change_percentage"=>"1h,24h,7d,14d,30d,200d,1y","per_page"=>"250","page"=>1]);
       return  $coin_array = collect($coin_array);
         $client = new CoinGeckoClient(false);

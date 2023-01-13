@@ -361,7 +361,7 @@ const data = [{
         visible: 2
     },
     {
-        key: 'next_unlock_date_text',
+        key: 'next_unlock_date',
         index: 25,
         title: null,
         thStyle: {
