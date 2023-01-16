@@ -131,11 +131,6 @@ class GetCoinsDataJob implements ShouldQueue
                     'price_change_percentage_30d_in_currency' => $item["price_change_percentage_30d_in_currency"],
                     'price_change_percentage_7d_in_currency' => $item["price_change_percentage_7d_in_currency"],
                     'sparkline_in_7d' => $spark_string,
-                    'description' => "",
-                    'platform' => "",
-                    'historical_sentiment' => "[]",
-                    'historical_social_mentions' => "[]",
-                    'historical_social_engagement' => "[]",
                     'created_at' => now(),
                     'updated_at' => now()
                 );
@@ -144,7 +139,15 @@ class GetCoinsDataJob implements ShouldQueue
 /*
                 'roi_times' => !empty($roi_times) ? $roi_times : NULL,
                     'roi_currency' => $roi_currency,
-                    'roi_percentage' => !empty($roi_percentage) ? $roi_percentage : NULL,*/
+                    'roi_percentage' => !empty($roi_percentage) ? $roi_percentage : NULL,
+
+                    Also, I removed these (it overwrite the social fields!!)
+                    'description' => "",
+                    'platform' => "",
+                    'historical_sentiment' => "[]",
+                    'historical_social_mentions' => "[]",
+                    'historical_social_engagement' => "[]",
+*/
 
                 if(in_array($item["id"],$insertable_ids)) {
                     $newCoinsArray[] = $coin;

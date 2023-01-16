@@ -105,9 +105,11 @@ class CoinUnlockDataScrapJob implements ShouldQueue
                         $coinData2->vesting_status = 0;
 
                     }
-                    $coinData2->historical_sentiment = '[]';
+                    /*
+                     * Removed (Automatically overwrite the fields!)
+                     * $coinData2->historical_sentiment = '[]';
                     $coinData2->historical_social_mentions = '[]';
-                    $coinData2->historical_social_engagement = '[]';
+                    $coinData2->historical_social_engagement = '[]';*/
 
                     $coinData2->save();
                 }
