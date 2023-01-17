@@ -1,7 +1,7 @@
 <template>
     <div id="dashboard">
         <b-overlay :show="fagLoad" rounded="sm" class="pt-1 DashboardHeader" style="">
-           
+
             <!-- graph -->
             <b-row class="FGCharts" style="">
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_greed">
@@ -110,18 +110,21 @@
                                     <span class="d-block barometerStyle">{{fag.data.inoutvalue}}</span>
                                 </div>
                                 <div class="row" style="margin: 0% 0% 0% 0%;">
-                                    <span class="col-3 text-info" style="float:left; margin:auto;"><a
+                                    <span class="col-2 text-info"
+                                        style="float:left; margin-top:auto;margin-bottom:auto;"><a
                                             v-b-modal.modal-btcflow variant="outline-primary"><i
                                                 class="bi bi-clock-history darkWhiteText"
                                                 style="color:#28c76f;"></i></a>
                                     </span>
                                     <span class="col-6 btcInoutVal" style="text-align:center;"
                                         :class="{'text-danger':fag.data.inoutper>0,'text-success-green':fag.data.inoutper<=0}">
-                                        
-                                        24h <i class="bi bi-triangle-fill" style="font-size:13px;color:#ea5455;" v-if="fag.data.inoutper<=-800000000"></i>
-                                        <i class="bi bi-triangle-fill fag-inout " style="font-size:13px;color:#6BBE83;rotate:-180deg" v-else></i>
-                                        
-                                         {{roundData2( fag.data.btcflowDif,1) }}
+
+                                        24h <i class="bi bi-triangle-fill" style="font-size:13px;color:#ea5455;"
+                                            v-if="fag.data.inoutper<=-800000000"></i>
+                                        <i class="bi bi-triangle-fill fag-inout "
+                                            style="font-size:13px;color:#6BBE83;rotate:-180deg" v-else></i>
+
+                                        {{roundData2( fag.data.btcflowDif,1) }}k BTC
                                     </span>
                                     <span class="col-3">
 
@@ -232,13 +235,18 @@
                             </div>
 
 
-                            <div @click="openFilterModal">
+                            <div  class="position-relative">
+                                <b-badge v-if="filtered"  class="filter-cancel cursor-pointer" @click="clearFilters(true)">
+                                    x
+                                  </b-badge>
                                 <b-button style="padding:5px; color:white;" :class="{'bg-danger text-danger':filtered}"
                                     v-ripple.400="'rgba(255, 255, 255,1)'" title="Filter" variant="flat-success"
-                                    class="btn-icon mr-1">
+                                    class="btn-icon mr-1" @click="openFilterModal">
+                                 
                                     <feather-icon icon="FilterIcon" size="20"
                                         class="text-black cursor-pointer darkWhiteText" style="color:#28c76f; " />
                                 </b-button>
+                          
                             </div>
                             <div>
                                 <b-button v-if="!locked" @click="lockedFilter"
@@ -612,15 +620,7 @@
                                                                 </div>
 
                                                             </b-col>
-                                                            <b-col md="6" xl="6">
-                                                                <div class="margin20">
-                                                                    <b-form-checkbox @change="updateFields"
-                                                                        v-model="fields[26].filterColumn"
-                                                                        name="cursor-pointer some-checkboxs1c">
-                                                                        Unlock Status
-                                                                    </b-form-checkbox>
-                                                                </div>
-                                                            </b-col>
+
                                                             <b-col md="6" xl="6">
                                                                 <div class="margin20">
 
@@ -861,7 +861,6 @@
                         <template #empty="scope">
                             <h4>{{ scope.emptyText }}</h4>
                         </template>
-
                         <template #head()="scope">
                             <div class="text-nowrap cursor-pointer text-center" style=""
                                 @click="sortingCols(scope.field.key)">
@@ -882,6 +881,7 @@
                                 </div>
                             </div>
                         </template>
+
                         <template #cell(sparkline_in_7d)="data">
                             <span v-if="data.item.coingeckoid">
                                 <img :src="'/storage/sparklineicon/sparkline_'+data.item.coingeckoid+'.svg'" /> </span>
@@ -976,7 +976,7 @@
                             </div>
                             <div v-else-if="data.value" style="text-align: center;" class="">
 
-                                {{twenty4HConversation(data.value)}} <span v-if="data.value">$</span>
+                                {{twenty4HConversation(data.value)}} $
                             </div>
                         </template>
                         <template #cell(roi_seed)="data">
@@ -1002,21 +1002,22 @@
                             </div>
                         </template>
                         <template #cell(next_unlock_date)="data">
-                            <div  v-if="data.item.next_unlock_date_text == null" style="text-align: center;"
-                            class="d-flex2 justify-content-start"
-                            :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
-                            {{dateFormat2(data.value)}}
-                            <br />
-                            <vac :end-time="getTimeStamp(data.value)">
-                                <template v-slot:process="{ timeObj }">
-                                    <span>{{ `${timeObj.d}d - ${timeObj.h} : ${timeObj.m} : ${timeObj.s}` }}</span>
-                                </template>
-                                <template v-slot:finish>
-                                    <span></span>
-                                </template>
-                            </vac>
-                        </div>
-                            <div v-if="data.item.next_unlock_date_text" style="text-align: center;" class="d-flex2 justify-content-start"
+                            <div v-if="data.item.next_unlock_date_text == null" style="text-align: center;"
+                                class="d-flex2 justify-content-start"
+                                :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
+                                {{dateFormat2(data.value)}}
+                                <br />
+                                <vac :end-time="getTimeStamp(data.value)">
+                                    <template v-slot:process="{ timeObj }">
+                                        <span>{{ `${timeObj.d}d - ${timeObj.h} : ${timeObj.m} : ${timeObj.s}` }}</span>
+                                    </template>
+                                    <template v-slot:finish>
+                                        <span></span>
+                                    </template>
+                                </vac>
+                            </div>
+                            <div v-if="data.item.next_unlock_date_text" style="text-align: center;"
+                                class="d-flex2 justify-content-start"
                                 :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
                                 {{data.item.next_unlock_date_text}}
                                 <!-- <div v-if="data.item.next_unlock_date">
@@ -1030,14 +1031,9 @@
                                     </vac>
                                 </div> -->
                             </div>
-                          
+
                         </template>
-                        <template #cell(next_unlock_status)="data">
-                            <div style="text-align: center;" class="d-flex2 justify-content-start"
-                                :class="{'blurry-text' : checkUserPlan(data.item.market_cap_rank)}">
-                                {{ data.value }}
-                            </div>
-                        </template>
+
                         <template #cell(next_unlock_number_of_tokens)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
                                 class="d-flex2 justify-content-start blurry-text">
@@ -1068,7 +1064,7 @@
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
                                 class="d-flex2 justify-content-start">
-                                {{twenty4HConversation(data.value)}} <span v-if="data.value"> %</span>
+                                {{twenty4HConversation(data.value)}}%
                             </div>
                         </template>
                         <template #cell(next_unlock_size)="data">
@@ -1118,7 +1114,7 @@
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
                                 class="d-flex2 justify-content-start">
-                                {{twenty4HConversation(data.value)}}<span v-if="data.value">%</span>
+                                {{twenty4HConversation(data.value)}}%
                             </div>
                         </template>
                         <template #cell(three_months_unlock_size)="data">
@@ -1135,7 +1131,7 @@
                             </div>
                             <div v-else-if="data.value" style="text-align: center;"
                                 class="d-flex2 justify-content-start">
-                                <span v-if="data.value">$</span>{{twenty4HConversation(data.value)}}
+                                <span v-if="data.value"></span>{{twenty4HConversation(data.value)}}
                             </div>
                         </template>
                         <template #cell(six_months_unlock_percent_of_tokens)="data">
@@ -1180,40 +1176,32 @@
                         <template #cell(price_change_percentage_24h)="data">
                             <div v-if="data.value">
                                 <span v-if="data.value>= 0" class="text-success-green"
-                                    style="">{{ twenty4HConversation(data.value) }}
-                                    <span v-if="data.value">%</span></span>
-                                <span v-else class="text-danger" style="">{{ twenty4HConversation(data.value) }}
-                                    %</span>
+                                    style="">{{ twenty4HConversation(data.value) }}%</span>
+                                <span v-else class="text-danger" style="">{{ twenty4HConversation(data.value) }}%</span>
                             </div>
                         </template>
                         <template #cell(price_change_percentage_7d_in_currency)="data">
                             <div v-if="data.value">
                                 <span v-if="data.value>= 0" class="text-success-green"
-                                    style="">{{ twenty4HConversation(data.value) }}
-                                    <span v-if="data.value"> %</span></span>
-                                <span v-else class="text-danger" style="">{{ twenty4HConversation(data.value) }}
-                                    %</span>
+                                    style="">{{ twenty4HConversation(data.value) }}%</span>
+                                <span v-else class="text-danger" style="">{{ twenty4HConversation(data.value) }}%</span>
                             </div>
                         </template>
                         <template #cell(roi_percentage)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    style="">{{ twenty4HConversation(data.value) }}
-                                    <span v-if="data.value"> %</span></span>
+                                    style="">{{ twenty4HConversation(data.value) }}%</span>
                                 <span v-else-if="data.value" class="text-danger"
-                                    style="">{{ twenty4HConversation(data.value) }}
-                                    <span v-if="data.value"> %</span></span></div>
+                                    style="">{{ twenty4HConversation(data.value) }}%</span></div>
                         </template>
                         <template #cell(total_supply_percent)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    style="">{{ twenty4HConversation(data.value) }}
-                                    <span v-if="data.value"> %</span></span>
+                                    style="">{{ twenty4HConversation(data.value) }}%</span>
                                 <span v-else-if="data.value" class="text-danger"
-                                    style="">{{ twenty4HConversation(data.value) }}
-                                    <span v-if="data.value"> %</span></span></div>
+                                    style="">{{ twenty4HConversation(data.value) }}%</span></div>
                         </template>
                         <template #cell(ath)="data">
                             <div v-if="data.value">
-                                <span style=""><span v-if="data.value">$</span>{{twenty4HConversation(data.value)}}
+                                <span style="">${{twenty4HConversation(data.value)}}
                                 </span>
                             </div>
                         </template>
@@ -1225,11 +1213,11 @@
                         </template>
                         <template #cell(ath_date)="data">
                             <div v-if="data.value">
-                                <span style=""><span
-                                        v-if="data.value"></span>{{dateFormat(data.value)}}%</span>
+                                <span style="">
+                                    {{dateFormat(data.value)}}</span>
                             </div>
                         </template>
-                        
+
                         <template #cell(atl)="data">
                             <div v-if="data.value">
                                 <span style=""><span
@@ -1244,41 +1232,38 @@
                         </template>
                         <template #cell(atl_date)="data">
                             <div v-if="data.value">
-                                <span style=""><span
-                                        v-if="data.value"></span>{{dateFormat(data.value)}}%</span>
+                                <span style="">{{dateFormat(data.value)}}</span>
                             </div>
                         </template>
-                        
+
                         <template #cell(social_mentions_change)="data">
                             <div v-if="data.value">
                                 <span v-if="data.value>= 0 " class="text-success-green"
                                     style="">{{ twenty4HConversation(data.value) }}
-                                    <span> %</span></span>
+                                    <span>%</span></span>
                                 <span v-else-if="data.value!=null" class="text-danger"
                                     style="">{{ twenty4HConversation(data.value) }}
-                                    <span> %</span></span>
+                                    <span>%</span></span>
                             </div>
                             <div></div>
                         </template>
                         <template #cell(social_engagement_change)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    style="">{{ twenty4HConversation(data.value) }}
-                                    <span v-if="data.value"> %</span></span>
+                                    style="">{{ twenty4HConversation(data.value) }}%</span>
                                 <span v-else-if="data.value!=null" class="text-danger"
-                                    style="">{{ twenty4HConversation(data.value) }}
-                                    <span v-if="data.value"> %</span></span></div>
+                                    style="">{{ twenty4HConversation(data.value) }}%</span></div>
                         </template>
                         <template #cell(average_sentiment_change)="data">
                             <div v-if="data.value"> <span v-if="data.value>= 0 " class="text-success-green"
-                                    style="">{{ twenty4HConversation(data.value) }}
-                                    <span v-if="data.value"> %</span></span>
+                                    style="">{{ twenty4HConversation(data.value) }}%</span>
                                 <span v-else-if="data.value!=null" class="text-danger"
-                                    style="">{{ twenty4HConversation(data.value) }}
-                                    <span v-if="data.value"> %</span></span></div>
+                                    style="">{{ twenty4HConversation(data.value) }}%</span></div>
                         </template>
                         <template #cell(average_sentiment)="data">
-                            <div v-if="data.value"> <span v-if="data.value>= 0 " class=""
-                                    style="">{{ twenty4HConversation(data.value) }}
+                            <div v-if="data.value">
+                                <span v-if="data.value>= 0 "
+                                    :class="{'text-danger':data.value>= 1 && data.value <= 2.49,'text-success-green' : data.value>= 2.51 && data.value <= 5 }">
+                                    {{ data.value }}
                                 </span>
                             </div>
                         </template>
@@ -1850,21 +1835,7 @@
                                     </div>
                                 </b-col>
                                 <b-col md="6" xl="6" style="padding:0px 32px 0px 32px;">
-                                    <div class="mb-2">
-                                        <b-form-group label="Unlock Status">
-                                            <div class="d-flex">
-                                                <b-form-select id="" v-model="filterKey.next_unlock_status"
-                                                    :options="unlockStatusCoins" />
-                                            </div>
-                                        </b-form-group>
-                                    </div>
-                                    <div class="">
-                                        <div>
-                                            <FilterComp :value="value9" :item="9" @updateSlider="updateSlider($event)"
-                                                modal="Next Unlock %" />
-                                        </div>
 
-                                    </div>
                                     <div class="mb-2">
                                         <b-form-group label="3 Months Unlock # of Tokens">
                                             <div class="d-flex">
@@ -2831,15 +2802,7 @@
                                                                 {{activeData.next_unlock_date_text}}</div>
                                                         </div>
                                                     </b-col> -->
-                                            <b-col cols="12" md="6" class="mb-1" xl="6"
-                                                v-if="activeData.next_unlock_status">
-                                                <div class="">
-                                                    <div class="mr-1">Next Unlock Status: </div>
-                                                    <div style="font-weight:600" class=""
-                                                        :class="{'blurry-text' :checkUserPlan(activeData.market_cap_rank)}">
-                                                        {{activeData.next_unlock_status}}</div>
-                                                </div>
-                                            </b-col>
+
 
                                             <b-col cols="12" md="6" class="mb-1" xl="6"
                                                 v-if="activeData.first_vc_unlock">
@@ -3156,8 +3119,8 @@
                                     :valueData="activeData" />
                                 <NotificationRangeROI v-if="activeData.price_change_percentage_24h != null"
                                     :valueData="activeData" :value="alertData.tradingper24h"
-                                    @updateNotificationFilter="updateNotificationFilter($event)"
-                                    modal="24h trading %" :item="2" />
+                                    @updateNotificationFilter="updateNotificationFilter($event)" modal="24h trading %"
+                                    :item="2" />
                                 <NotificationRangeROI v-if="activeData.roi_percentage != null" :valueData="activeData"
                                     :value="alertData.roipercentage"
                                     @updateNotificationFilter="updateNotificationFilter($event)" modal="ROI in %"
@@ -3208,7 +3171,7 @@
     import NotificationRangePrice from './NotificationRangePrice.vue';
     import NotificationRangeROI from './NotificationRangeROI.vue';
     import NotificationRangeNextUnlock from './NotificationRangeNextUnlock.vue';
-
+    import draggable from 'vuedraggable'
     import {
         BTable,
         BTabs,
@@ -3245,7 +3208,7 @@
         BOverlay,
         VBPopover,
         VBTooltip,
-        BProgress
+        BProgress,
     } from 'bootstrap-vue'
     import Ripple from 'vue-ripple-directive'
     import axios from '../../../axiosInt'
@@ -3274,9 +3237,9 @@
     import 'bootstrap-icons/font/bootstrap-icons.css';
     import flatPickr from 'vue-flatpickr-component'
     import ExchangesTable from '../exchanges/ExchangesTable.vue'
-
     export default {
         components: {
+            draggable,
             BTable,
             BTabs,
             BFormCheckbox,
@@ -3325,7 +3288,8 @@
             NotificationRange,
             NotificationRangePrice,
             NotificationRangeROI,
-            NotificationRangeNextUnlock
+            NotificationRangeNextUnlock,
+            draggable,
 
         },
 
@@ -3335,10 +3299,10 @@
                 searchText: "some value",
                 cancelSource: null,
                 alertData: {
-                    price: ['', '','', ''],
+                    price: ['', '', '', ''],
                     tradingper24h: ['', ''],
                     roipercentage: ['', ''],
-                    marketcap: ['', '','', ''],
+                    marketcap: ['', '', '', ''],
                     nextunlock: ['', ''],
                     socialsentiments: ['', ''],
                 },
@@ -3587,7 +3551,7 @@
                                     minimumFractionDigits: 0,
                                     maximumFractionDigits: 15,
                                 }).format(value);
-                                return val 
+                                return val
                             }
                         },
 
@@ -4150,8 +4114,7 @@
                                     total += x;
                                 }
                                 let selected = series[seriesIndex]
-                                return w.config.labels[seriesIndex] + ": " + selected + "(" + (selected / total *
-                                    100).toFixed(2) + "%)";
+                                return w.config.labels[seriesIndex] + ": " + selected.toFixed(2) + '%'
                             }
                         },
                         chart: {
@@ -4338,6 +4301,9 @@
 
         },
         methods: {
+            drag(evt) {
+                console.log(evt);
+            },
             checkToolTipExist(id) {
 
                 return true;
@@ -4525,9 +4491,9 @@
                             Object
                             .keys(this.fag.btcflow.data.main).length - 2]];
 
-                        this.fag.data.inoutvalue =this.kFormatter2(item1[0].values[1]);
+                        this.fag.data.inoutvalue = this.kFormatter2(item1[0].values[1]);
                         this.fag.data.inoutper = this.relDiff(item1[0].values[1], item2[0].values[1]);
-                      
+
                         if (item1[0].values[1] > item2[0].values[1]) {
                             this.fag.data.inoutper = this.fag.data.inoutper.toFixed(1);
                             this.fag.data.inoutper = parseFloat(1 * (this.fag.data.inoutper));
@@ -4902,8 +4868,8 @@
 
             },
             checkUserPlan(val) {
-                if (this.userData.currentPlan == 'free' && val < 1 
-                || this.userData.currentPlan == 'free' && val >=5) {
+                if (this.userData.currentPlan == 'free' && val < 1 ||
+                    this.userData.currentPlan == 'free' && val >= 5) {
                     return true;
                 } else {
                     return false;
@@ -5407,28 +5373,32 @@
 
 
                         }
-                        if (this.activeData.max_supply != null || this.activeData.circulating_supply !=
-                            null ||
-                            this
-                            .activeData.next_unlock_number_of_tokens != null ||
-                            this.activeData.three_months_unlock_number_of_tokens != null && this
-                            .activeData
-                            .six_months_unlock_number_of_tokens != null) {
-                                var total_locked =parseFloat(this.activeData.total_locked != null ?this.activeData.total_locked:0 );
-                            var ms = parseFloat(this.activeData.max_supply);
+                        if (this.activeData.max_supply != null ||
+                            this.activeData.circulating_supply != null ||
+                            this.activeData.next_unlock_number_of_tokens != null ||
+                            this.activeData.three_months_unlock_number_of_tokens != null &&
+                            this.activeData.six_months_unlock_number_of_tokens != null) {
+
+                            var total_locked = parseFloat(this.activeData.total_locked != null ? this.activeData
+                                .total_locked : 0);
+                            var ms = parseFloat(this.activeData.max_supply ? this.activeData.max_supply : this
+                                .activeData.total_supply);
                             if (isNaN(ms))
                                 ms = 0.0;
                             var cs = parseFloat(this.activeData.circulating_supply);
                             if (isNaN(cs))
                                 cs = 0.0;
-                            var nt = parseFloat(this.activeData.next_unlock_number_of_tokens != null ?this.activeData.next_unlock_number_of_tokens:0 );
-                            if (isNaN(nt))
+                            var nt = parseFloat(this.activeData.next_unlock_number_of_tokens != null ? this
+                                .activeData.next_unlock_number_of_tokens : 0);
+                            if (isNaN(nt)) {
                                 nt = 0.0;
-                            var val1 = Math.max(ms - (total_locked), 0.0);
-                            var val2 = cs;
-                            var val3 = nt;
-                            console.log([total_locked, val1, val3]);
-                            this.supplyChart.series = [total_locked, val1, val3];
+                            }
+                            console.log(ms, nt, total_locked);
+                            var val1 = Math.max(((total_locked / ms) * 100), 0.0);
+                            var val2 = nt / ms * 100;
+                            var val3 = Math.max((100 - val1 - val2), 0.0);
+
+                            this.supplyChart.series = [val1, val2, val3];
 
                         }
 
@@ -6083,7 +6053,7 @@
                             this.fields[37].filterColumn = false;
                             this.fields[38].filterColumn = false;
                             this.fields[39].filterColumn = false;
-                            
+
 
 
                         } else {
@@ -6203,18 +6173,18 @@
                 }
 
             },
-                loadEthGasValues() {
-                    axios.
-                    get('/api/load-ethgas-values')
-                        .then(res => {
-                            if (res.data.status) {
-                                this.ethGas.SafeGasPrice = res.data.result.SafeGasPrice;
-                                this.ethGas.ProposeGasPrice = res.data.result.ProposeGasPrice;
-                                this.ethGas.FastGasPrice = res.data.result.FastGasPrice;
-                            }
-                        })
+            loadEthGasValues() {
+                axios.
+                get('/api/load-ethgas-values')
+                    .then(res => {
+                        if (res.data.status) {
+                            this.ethGas.SafeGasPrice = res.data.result.SafeGasPrice;
+                            this.ethGas.ProposeGasPrice = res.data.result.ProposeGasPrice;
+                            this.ethGas.FastGasPrice = res.data.result.FastGasPrice;
+                        }
+                    })
 
-                },
+            },
             loadMarketCap() {
                 axios.
                 get('/api/load-marketcap-values')
@@ -6311,28 +6281,28 @@
             openNotificationModal() {
                 // this.activeData;
                 this.alertForm.coin_id = null;
-                        this.alertForm.symbol = null;
-                        this.alertForm.coin_name = null;
-                        this.alertForm.priority = 'Medium';
-                        this.alertForm.name = '';
-                        this.alertData.price = ['', '','', ''];
-                        this.alertData.tradingper24h = ['', ''];
-                        this.alertData.roipercentage = ['', ''];
-                        this.alertData.marketcap = ['', '','', ''];
-                        this.alertData.nextunlock = ['', ''];
-                        this.alertData.socialsentiments = ['', ''];
-                        this.alertForm.min_price = null;
-                        this.alertForm.max_price = null;
-                        this.alertForm.min_tradingper24h = null;
-                        this.alertForm.max_tradingper24h = null;
-                        this.alertForm.min_roipercentage = null;
-                        this.alertForm.max_roipercentage = null;
-                        this.alertForm.min_marketcap = null;
-                        this.alertForm.max_marketcap = null;
-                        this.alertForm.min_nextunlock = null;
-                        this.alertForm.max_nextunlock = null;
-                        this.alertForm.min_socialsentiments = null;
-                        this.alertForm.max_socialsentiments = null;
+                this.alertForm.symbol = null;
+                this.alertForm.coin_name = null;
+                this.alertForm.priority = 'Medium';
+                this.alertForm.name = '';
+                this.alertData.price = ['', '', '', ''];
+                this.alertData.tradingper24h = ['', ''];
+                this.alertData.roipercentage = ['', ''];
+                this.alertData.marketcap = ['', '', '', ''];
+                this.alertData.nextunlock = ['', ''];
+                this.alertData.socialsentiments = ['', ''];
+                this.alertForm.min_price = null;
+                this.alertForm.max_price = null;
+                this.alertForm.min_tradingper24h = null;
+                this.alertForm.max_tradingper24h = null;
+                this.alertForm.min_roipercentage = null;
+                this.alertForm.max_roipercentage = null;
+                this.alertForm.min_marketcap = null;
+                this.alertForm.max_marketcap = null;
+                this.alertForm.min_nextunlock = null;
+                this.alertForm.max_nextunlock = null;
+                this.alertForm.min_socialsentiments = null;
+                this.alertForm.max_socialsentiments = null;
                 this.AddalertDisable = true;
                 this.$bvModal.show('modal-notifications');
                 this.NotificationModal = true;
@@ -6387,10 +6357,10 @@
                         this.alertForm.coin_name = null;
                         this.alertForm.priority = 'Medium';
                         this.alertForm.name = '';
-                        this.alertData.price = ['', '','', ''];
+                        this.alertData.price = ['', '', '', ''];
                         this.alertData.tradingper24h = ['', ''];
                         this.alertData.roipercentage = ['', ''];
-                        this.alertData.marketcap = ['', '','', ''];
+                        this.alertData.marketcap = ['', '', '', ''];
                         this.alertData.nextunlock = ['', ''];
                         this.alertData.socialsentiments = ['', ''];
                         this.alertForm.min_price = null;
@@ -6449,6 +6419,35 @@
                             .filterColumn == true && field.key != 'market_cap_rank';
                     })
                 }
+            },
+            visibleFields2: {
+
+                get: function () {
+                    if (this.params.api_mode == 1) {
+                        let fieldsVisible = this.fields.filter(field => {
+                            return field.visible == 1 && field.filterColumn == true && field.key !=
+                                'market_cap_rank' && field.key != 'next_unlock_status' ||
+                                field.visible == 2 && field.filterColumn == true && field.key !=
+                                'market_cap_rank' && field.key != 'next_unlock_status' ||
+                                field.visible == 3 && field.filterColumn == true && field.key !=
+                                'market_cap_rank' && field.key != 'next_unlock_status'
+                        });
+                        return fieldsVisible.filter(field => field.index >= 0)
+                            .sort((a, b) => a.index - b.index);
+                    } else {
+                        return  this.fields.filter(field => {
+                            field.visible == 2 && field.filterColumn == true && field.key !=
+                                'market_cap_rank' || field.visible ==3 
+                                &&
+                                field .filterColumn == true && field.key != 'market_cap_rank' ;
+                        })
+                    }
+                },
+                // setter
+                set: function (newValue) {
+                    console.log(newValue);
+                }
+
             },
             value: {
                 get() {
@@ -7186,7 +7185,9 @@
         padding-left: 7px;
 
 
-    }.AppExtensionMode .Topbar-items2 {
+    }
+
+    .AppExtensionMode .Topbar-items2 {
         padding-right: 5px;
         padding-left: 7px;
         border-right: none;
@@ -7504,21 +7505,35 @@
     .AppExtensionMode #modal-notifications .modal-body {
         padding: 0.8rem 0rem;
     }
+
     .search-product::placeholder {
         color: rgb(186, 183, 183) !important;
-        opacity: 1 !important; /* Firefox */
-      }
-      
-      .search-product:-ms-input-placeholder { /* Internet Explorer 10-11 */
-       color:  rgb(186, 183, 183) !important;
-      }
-      
-      .search-product::-ms-input-placeholder { /* Microsoft Edge */
-       color:  rgb(186, 183, 183) !important;
-      }
-      .fag-inout::before{
+        opacity: 1 !important;
+        /* Firefox */
+    }
+
+    .search-product:-ms-input-placeholder {
+        /* Internet Explorer 10-11 */
+        color: rgb(186, 183, 183) !important;
+    }
+
+    .search-product::-ms-input-placeholder {
+        /* Microsoft Edge */
+        color: rgb(186, 183, 183) !important;
+    }
+
+    .fag-inout::before {
         rotate: 180deg;
-      }
+    }
+    .filter-cancel{
+        position: absolute;
+    top: -8px;
+    left: 22px;
+    padding: 4px;
+    z-index: 999;
+ background-color: #4b4b4b !important;
+    }
+
 </style>
 
 <style lang="scss">

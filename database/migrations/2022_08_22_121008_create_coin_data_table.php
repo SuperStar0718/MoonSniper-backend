@@ -84,7 +84,7 @@ return new class extends Migration
             $table->integer('social_engagement')->unsigned()->nullable()->default(0);
             $table->float('average_sentiment')->unsigned()->nullable()->default(0);
             $table->json('historical_sentiment');
-            $table->text('next_unlock_status')->nullable();
+            // $table->text('next_unlock_status')->nullable();
             $table->json('historical_social_mentions');
             $table->json('historical_social_engagement');
             $table->float('average_sentiment_change')->signed()->nullable()->default(0);

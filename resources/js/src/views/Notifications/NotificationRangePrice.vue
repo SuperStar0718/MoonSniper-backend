@@ -7,10 +7,9 @@
                     <div class="d-flex">
                         <b-form-input :options="NumberFormaVal" type="number" :step="sliderInterVal" @blur="blurValue1"
                             class="form-control" v-model="value1[0]" placeholder="Decrease to" />
-                        <span>
-                            <feather-icon icon="MinusIcon" size="16" class="align-middle"
-                                style="margin:10px 6px 0 0px" />
-                        </span>
+                            <span class="my-auto mx-1">
+                                OR
+                             </span>
                         <b-form-input type="number" :step="sliderInterVal" :options="NumberFormaVal" @blur="blurValue2"
                             class="form-control" v-model="value1[1]" placeholder="Increase to" />
                     </div>

@@ -39,7 +39,7 @@ const data ={
     'max_average_sentiment' : null,
     'min_total_locked' : null,
     'max_total_locked' : null,
-    'next_unlock_status' : null,
+    // 'next_unlock_status' : null,
     'min_next_unlock_number_of_tokens' : null,
     'max_next_unlock_number_of_tokens' : null,
     'min_next_unlock_percent_of_tokens' : null,

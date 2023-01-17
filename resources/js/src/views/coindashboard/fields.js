@@ -380,7 +380,6 @@ const data = [{
         title: null,
         thStyle: {
             'width': '50px',
-
         },
         label: 'Next Unlock Status',
         stickyColumn: false,
@@ -540,7 +539,7 @@ const data = [{
             'width': '50px',
 
         },
-        label: 'Social MC',
+        label: 'Social Mentions 24h%',
         stickyColumn: false,
         filterColumn: false,
         canHide: true,
@@ -554,7 +553,7 @@ const data = [{
             'width': '50px',
 
         },
-        label: 'Social EC',
+        label: 'Social Engagements 24h%',
         stickyColumn: false,
         filterColumn: false,
         canHide: true,
@@ -565,7 +564,6 @@ const data = [{
     {
         key: 'average_sentiment',
         index: 40, //36,
-        title: null,
         thStyle: {
             'width': '50px',
 
@@ -575,6 +573,7 @@ const data = [{
         canHide: true,
         filterColumn: false,
         visible: 1,
+        title: 'Social media sentiment: Determining whether or not the sentiment is positive or negative. A score of 2.5 is average, 5 is Bullish, and 1 is Bearish',
     },
     {
         key: 'average_sentiment_change',
