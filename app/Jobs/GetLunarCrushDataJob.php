@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Models\CoinsData;
 use Dotenv\Dotenv;
-use function PHPUnit\Framework\isEmpty;
 
 class GetLunarCrushDataJob implements ShouldQueue
 {
@@ -83,17 +82,19 @@ class GetLunarCrushDataJob implements ShouldQueue
                 $historical_social_engagement = $existing_symbols[$symbol]['historical_social_engagement'];
                 $current_hour = intval(date('H'));
 
-                if(isEmpty($historical_sentiment)) {
+                if(empty($historical_sentiment) || $historical_sentiment == '[]') {
                     $historical_sentiment = json_encode([ "values" => [$average_sentiment]]);
                 }
-                if(isEmpty($historical_social_mentions)) {
+                if(empty($historical_social_mentions) || $historical_social_mentions == '[]') {
                     $historical_social_mentions = json_encode([ "values" => [$social_mentions]]);
                 }
-                if(isEmpty($historical_social_engagement)) {
+                if(empty($historical_social_engagement) || $historical_social_engagement == '[]') {
                     $historical_social_engagement = json_encode([ "values" => [$social_engagement]]);
                 }
 
-                //if($current_hour < 12) {
+                $coin = CoinsData::where('symbol', $symbol)->orderBy('market_cap', 'desc')->first();
+
+                if($current_hour < 12) {
                 // historical sentiment
                 $decoded_historical_sentiment = json_decode($historical_sentiment);
                 if(!$decoded_historical_sentiment) {
@@ -154,31 +155,23 @@ class GetLunarCrushDataJob implements ShouldQueue
                     }
                 }
                 $historical_social_mentions = json_encode($decoded_historical_social_mentions);
-                //}
-                $new_coins_array[] = [
-                    "coin_id" => $coin_data->n,
-                    "symbol" => $symbol,
-                    "average_sentiment" => $average_sentiment,
-                    "social_mentions" => $social_mentions,
-                    "social_engagement" => $social_engagement,
-                    "average_sentiment_change" => $average_sentiment_change,
-                    "social_mentions_change" => $social_mentions_change,
-                    "social_engagement_change" => $social_engagement_change,
-                    "historical_sentiment" => $historical_sentiment,
-                    "historical_social_mentions" => $historical_social_mentions,
-                    "historical_social_engagement" => $historical_social_engagement
-                ];
+
+                //update historical values:
+                $coin->average_sentiment_change=$average_sentiment_change;
+                $coin->social_mentions_change=$social_mentions_change;
+                $coin->social_engagement_change=$social_engagement_change;
+                $coin->historical_sentiment=$historical_sentiment;
+                $coin->historical_social_mentions=$historical_social_mentions;
+                $coin->historical_social_engagement=$historical_social_engagement;
+                }
+
+                $coin->average_sentiment=$average_sentiment;
+                $coin->social_mentions=$social_mentions;
+                $coin->social_engagement=$social_engagement;
+                $coin->save();
             }
         }
 
-        Try {
-            CoinsData::massUpdate(
-                values: $new_coins_array,
-                uniqueBy: ['symbol','coin_id']
-            );
-        }catch (\Exception $exception){
-            Log::error("Something went wrong at : ".$exception);
-        }
         Log::debug("Lunarcrush Job ended at: ".date("Y-m-d H:i:s"));
     }
 }
