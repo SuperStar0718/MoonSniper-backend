@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { ToastPlugin, ModalPlugin } from 'bootstrap-vue'
+import { ToastPlugin, ModalPlugin,BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import VueCompositionAPI from '@vue/composition-api'
 import VueInputRestrictionDirectives from 'vue-input-restriction-directives';
 
@@ -33,6 +33,9 @@ Vue.use(vueNumeralFilterInstaller, { locale: 'en-gb' });
 Vue.use(ToastPlugin)
 Vue.use(ModalPlugin)
 Vue.use(Sparkline)
+Vue.use(BootstrapVue)
+Vue.use(BootstrapVueIcons)
+
 // Composition API
 Vue.use(VueCompositionAPI)
 Vue.use(VueGlobalEmitter)

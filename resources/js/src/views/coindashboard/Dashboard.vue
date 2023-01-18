@@ -235,18 +235,19 @@
                             </div>
 
 
-                            <div  class="position-relative">
-                                <b-badge v-if="filtered"  class="filter-cancel cursor-pointer" @click="clearFilters(true)">
+                            <div class="position-relative">
+                                <b-badge v-if="filtered" class="filter-cancel cursor-pointer"
+                                    @click="clearFilters(true)">
                                     x
-                                  </b-badge>
+                                </b-badge>
                                 <b-button style="padding:5px; color:white;" :class="{'bg-danger text-danger':filtered}"
                                     v-ripple.400="'rgba(255, 255, 255,1)'" title="Filter" variant="flat-success"
                                     class="btn-icon mr-1" @click="openFilterModal">
-                                 
+
                                     <feather-icon icon="FilterIcon" size="20"
                                         class="text-black cursor-pointer darkWhiteText" style="color:#28c76f; " />
                                 </b-button>
-                          
+
                             </div>
                             <div>
                                 <b-button v-if="!locked" @click="lockedFilter"
@@ -841,6 +842,7 @@
 
             </div>
             <div id="ctable" style="position: relative;">
+
                 <div class="opacityGradient" style="position: absolute;right: 4px; top: 0px;height: 100%;width: 61px;z-index: 3;
                         background: linear-gradient(90deg, rgba(248,248,248, 0) 0%, rgba(248,248,248, 1) 100%);">
 
@@ -857,7 +859,31 @@
                               <strong>Loading...</strong>
                             </div> -->
                         </template>
+                        <template #thead-top="">
+                            <draggable tag="b-tr" v-model="visibleFields">
+                                <b-th v-for="(field, i) in visibleFields" :key="i"
+                                    class="draggable text-center draggable-columns" style="">
+                                    <div class="text-nowrap cursor-pointer text-center" style=""
+                                        @click="sortingCols(field.key)">
+                                        <div :title="field.title" v-if="field.label"
+                                            class="d-flex justify-content-center text-capitalize">
+                                            <span> {{ field.label }} </span>
+                                            <span class="my-auto d-inline">
+                                                <feather-icon icon="TriangleIcon" size="8"
+                                                    style="rotate:180deg;margin-left: 5px; margin-top: -9px; "
+                                                    :class="{'text-danger':params.sort[1] =='asc'&& params.sort[0] ==field.key}" />
 
+                                                <!-- <i v-if="scope.field.title != null" class="fa-solid fa-circle-info cursor-pointer"
+                                            ></i> -->
+                                                <!-- <feather-icon icon="ChevronDownIcon" size="8"
+                                            :class="{'text-danger':params.sort[1] =='desc'&& params.sort[0] ==scope.field.key}"
+                                            class="align-middle d-block" />  -->
+                                            </span>
+                                        </div>
+                                    </div>
+                                </b-th>
+                            </draggable>
+                        </template>
                         <template #empty="scope">
                             <h4>{{ scope.emptyText }}</h4>
                         </template>
@@ -2441,10 +2467,9 @@
                                         <div
                                             class="text-center mt-1 mb-1 justify-content-start d-flex flex-wrap socialData">
 
-
                                             <div class="radius_gradient cursor-pointer"
-                                                v-b-tooltip.hover.bottom="'Social Score'" style="width:110px;"
-                                                v-if="activeData.average_sentiment">
+                                                v-b-tooltip.hover.bottom="'MoonSniper formula to calculate the coin Social score following the number of social apps, followers, etc..'"
+                                                style="width:110px;" v-if="activeData.average_sentiment">
                                                 <b-card title=""
                                                     class="mx-auto  innerCard text-center str_grey_gradient"
                                                     style="max-width:120px;">
@@ -2459,27 +2484,7 @@
                                                 </b-card>
                                             </div>
                                             <div class="radius_gradient cursor-pointer" style="width:110px;"
-                                                v-b-tooltip.hover.bottom="'Social Mentions'"
-                                                v-if="activeData.social_mentions_change">
-                                                <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                    style="max-width:200px;">
-                                                    <div class="justify-content-center text-nowrap socialText2 text-success-green "
-                                                        style="margin-top: 10px; margin-bottom: 12px;"
-                                                        v-if="activeData.social_mentions_change>=0">
-                                                        +{{roundData(activeData.social_mentions_change)}} %
-                                                    </div>
-                                                    <div class="justify-content-center text-nowrap socialText2 text-danger "
-                                                        style="margin-top: 10px; margin-bottom: 12px;" v-else>
-                                                        {{roundData(activeData.social_mentions_change)}} %
-                                                    </div>
-                                                    <div class="soicalLable sl2 darkWhiteText lableText">Social Mentions
-                                                    </div>
-
-                                                </b-card>
-                                            </div>
-
-                                            <div class="radius_gradient cursor-pointer" style="width:110px;"
-                                                v-b-tooltip.hover.bottom="'Average Sentiment'"
+                                                v-b-tooltip.hover.bottom="'Determining whether or not the sentiment is positive or negative, a score of 2.5 is average, 5 is bullish, 1 is bearish'"
                                                 v-if="activeData.average_sentiment">
                                                 <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                                     style="max-width:200px;">
@@ -2492,15 +2497,53 @@
                                                         style="margin-top: 10px; margin-bottom: 12px;">
                                                         {{roundData(activeData.average_sentiment)}}</div>
 
-                                                    <div class="soicalLable sl2 darkWhiteText lableText">Average
-                                                        Sentiment
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">
+                                                        Average  Sentiment
+                                                    </div>
+
+                                                </b-card>
+                                            </div>
+                                            <div class="radius_gradient cursor-pointer" style="width:110px;"
+                                                v-b-tooltip.hover.bottom="'Similar to Average Sentiment in regards to our library of terms, however Bearish Sentiment is specifically looking at Posts that are marked Bearish, 2.5 and below, and showing that over time.'">
+                                                <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                    style="max-width:200px;">
+                                                    <div class="justify-content-center text-nowrap socialText2 "
+                                                        style="margin-top: 10px; margin-bottom: 12px;"
+                                                        v-if="userData.currentPlan == 'free'">
+                                                        <feather-icon icon="LockIcon" size="30" style="" />
+                                                    </div>
+                                                    <div class="justify-content-center text-nowrap socialText2"
+                                                        style="margin-top: 10px; margin-bottom: 12px;" v-else>2</div>
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">
+                                                        Bearish Sentiment
                                                     </div>
 
                                                 </b-card>
                                             </div>
 
                                             <div class="radius_gradient cursor-pointer" style="width:110px;"
-                                                v-b-tooltip.hover.bottom="'Social Engagement'"
+                                                v-b-tooltip.hover.bottom="'The 24 hours hashtags on social media'"
+                                                v-if="activeData.social_mentions_change">
+                                                <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
+                                                    style="max-width:200px;">
+                                                    <div class="justify-content-center text-nowrap socialText2 text-success-green "
+                                                        style="margin-top: 10px; margin-bottom: 12px;"
+                                                        v-if="activeData.social_mentions_change>=0">
+                                                        +{{roundData2(activeData.social_mentions_change,1)}}%
+                                                    </div>
+                                                    <div class="justify-content-center text-nowrap socialText2 text-danger "
+                                                        style="margin-top: 10px; margin-bottom: 12px;" v-else>
+                                                        {{roundData2(activeData.social_mentions_change,1)}}%
+                                                    </div>
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">
+                                                        Social Mentions 24h%
+                                                    </div>
+
+                                                </b-card>
+                                            </div>
+
+                                            <div class="radius_gradient cursor-pointer" style="width:110px;"
+                                                v-b-tooltip.hover.bottom="'The 24 hours of interactions in social posts'"
                                                 v-if="activeData.social_engagement_change">
                                                 <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                                     style="max-width:200px;">
@@ -2512,51 +2555,34 @@
                                                     <div class="justify-content-center text-nowrap socialText2 text-success-green"
                                                         style="margin-top: 10px; margin-bottom: 12px;"
                                                         v-else-if="activeData.social_engagement_change>=0">
-                                                        +{{roundData(activeData.social_engagement_change)}} %</div>
+                                                        +{{roundData2(activeData.social_engagement_change,1)}}%</div>
                                                     <div class="justify-content-center text-nowrap socialText2  text-danger"
                                                         style="margin-top: 10px; margin-bottom: 12px;" v-else>
-                                                        {{roundData(activeData.social_engagement_change)}} %</div>
-                                                    <div class="soicalLable sl2 darkWhiteText lableText">Social
-                                                        Engagement
-                                                    </div>
-
-                                                </b-card>
-                                            </div>
-                                            <div class="radius_gradient cursor-pointer" style="width:110px;"
-                                                v-b-tooltip.hover.bottom="'Bearish Sentiment'">
-                                                <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
-                                                    style="max-width:200px;">
-                                                    <div class="justify-content-center text-nowrap socialText2 "
-                                                        style="margin-top: 10px; margin-bottom: 12px;"
-                                                        v-if="userData.currentPlan == 'free'">
-                                                        <feather-icon icon="LockIcon" size="30" style="" />
-                                                    </div>
-                                                    <div class="justify-content-center text-nowrap socialText2"
-                                                        style="margin-top: 10px; margin-bottom: 12px;" v-else>2</div>
-                                                    <div class="soicalLable sl2 darkWhiteText lableText">Bearish
-                                                        Sentiment
+                                                        {{roundData2(activeData.social_engagement_change,1)}}%</div>
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">
+                                                        Social Engagement 24h% 
                                                     </div>
 
                                                 </b-card>
                                             </div>
 
+
                                             <div class="radius_gradient cursor-pointer" style="width:110px;"
-                                                v-b-tooltip.hover.bottom="'Average Sentiment change  '"
+                                                v-b-tooltip.hover.bottom="'The average sentiment change in the last 24 hours'"
                                                 v-if="activeData.average_sentiment_change">
                                                 <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                                     style="max-width:200px;">
                                                     <div class="justify-content-center text-nowrap socialText2 "
                                                         style="margin-top: 10px; margin-bottom: 12px;"
                                                         v-if="roundData(activeData.average_sentiment_change)>=0">
-                                                        +{{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
-                                                        %</div>
+                                                        +{{roundData2(activeData.average_sentiment_change,1)?roundData2(activeData.average_sentiment_change,1):0}}%
+                                                    </div>
                                                     <div class="justify-content-center text-nowrap socialText2 text-danger"
                                                         style="margin-top: 10px; margin-bottom: 12px;" v-else>
-                                                        {{roundData(activeData.average_sentiment_change)?roundData(activeData.average_sentiment_change):0}}
-                                                        %</div>
-                                                    <div class="soicalLable sl2 darkWhiteText lableText">Average
-                                                        Sentiment
-                                                        change
+                                                        {{roundData2(activeData.average_sentiment_change,1)?roundData2(activeData.average_sentiment_change,1):0}}%
+                                                    </div>
+                                                    <div class="soicalLable sl2 darkWhiteText lableText">
+                                                        Average Sentiment change 24h% 
                                                     </div>
 
                                                 </b-card>
@@ -3173,6 +3199,9 @@
     import NotificationRangeNextUnlock from './NotificationRangeNextUnlock.vue';
     import draggable from 'vuedraggable'
     import {
+        BTh,
+        BTr,
+        BIconGripHorizontal,
         BTable,
         BTabs,
         BTab,
@@ -3290,6 +3319,9 @@
             NotificationRangeROI,
             NotificationRangeNextUnlock,
             draggable,
+            BTh,
+            BTr,
+            BIconGripHorizontal,
 
         },
 
@@ -5398,7 +5430,7 @@
                             var val2 = nt / ms * 100;
                             var val3 = Math.max((100 - val1 - val2), 0.0);
 
-                            this.supplyChart.series = [val1, val2, val3];
+                            this.supplyChart.series = [val1, val3, val2];
 
                         }
 
@@ -5967,7 +5999,6 @@
                 if (this.params.api_mode != 1) {
                     mode = 'unlock';
                 }
-
                 this.column_form.table_fields = [];
                 this.column_form.market_indicators = [];
                 if (this.params.api_mode == 1) {
@@ -6012,8 +6043,6 @@
                         this.loadedFields = res.data.fields
                     }
                 })
-
-
             },
             loadFileds() {
                 let mode = 'all';
@@ -6036,7 +6065,6 @@
                             this.fields[16].filterColumn = false;
                             this.fields[19].filterColumn = false;
                             this.fields[20].filterColumn = false;
-
                             this.fields[24].filterColumn = false;
                             this.fields[25].filterColumn = false;
                             this.fields[26].filterColumn = false;
@@ -6109,6 +6137,13 @@
                             this.mi_fear_btc_alt = true;
                         } else {
                             this.mi_fear_btc_alt = false;
+                        }
+                        if (res.data.orderColumns) {
+                            let orderedItems = JSON.parse(res.data.orderColumns['columns']);
+
+                            this.fields.forEach(element => {
+                                element.index = orderedItems[0][element.key];
+                            });
                         }
 
                     } else {
@@ -6392,7 +6427,21 @@
                 } else {
                     this.AddalertDisable = true;
                 }
-            }
+            },
+            updateDraggedFields(evt) {
+                let keyArray = [];
+                var obj = {};
+                evt.forEach(element => {
+                    obj[element.key] = element.index;
+                });
+                keyArray.push(obj)
+                axios.post('api/update-column-order', {
+                        keyArray: keyArray
+                    })
+                    .then(res => {
+                        console.log(res);
+                    })
+            },
 
 
         },
@@ -6404,24 +6453,45 @@
                     return true;
                 }
             },
-            visibleFields() {
-                if (this.params.api_mode == 1) {
-                    return this.fields.filter(field => {
-                        return field.visible == 1 && field.filterColumn == true && field.key !=
-                            'market_cap_rank' || field.visible == 2 && field
-                            .filterColumn == true && field.key != 'market_cap_rank' || field.visible == 3 &&
-                            field.filterColumn == true && field.key != 'market_cap_rank';
-                    })
-                } else {
-                    return this.fields.filter(field => {
-                        return field.visible == 2 && field.filterColumn == true && field.key !=
-                            'market_cap_rank' || field.visible == 3 && field
-                            .filterColumn == true && field.key != 'market_cap_rank';
-                    })
+            visibleFields: {
+                get() {
+                    let itemList;
+                    if (this.params.api_mode == 1) {
+                        itemList = this.fields.filter(field => {
+                            return field.visible == 1 && field.filterColumn == true && field.key !=
+                                'market_cap_rank' || field.visible == 2 && field
+                                .filterColumn == true && field.key != 'market_cap_rank' || field.visible ==
+                                3 &&
+                                field.filterColumn == true && field.key != 'market_cap_rank';
+                        })
+                    } else {
+                        itemList = this.fields.filter(field => {
+                            return field.visible == 2 && field.filterColumn == true && field.key !=
+                                'market_cap_rank' || field.visible == 3 && field
+                                .filterColumn == true && field.key != 'market_cap_rank';
+                        })
+                    }
+                    return itemList.filter(field => field.index >= 0)
+                        .sort((a, b) => a.index - b.index);
+                },
+                set(newValue) {
+                    let k = 0;
+                    for (let j = 0; j < this.fields.length; j++) {
+                        let index = newValue.findIndex((item) => {
+                            return item.key == this.fields[j].key;
+                        });
+                        if (index >= 0) {
+                            this.fields[j].index = index;
+                        } else {
+                            this.fields[j].index = newValue.length + k;
+                            k++;
+                        }
+                    }
+                    this.updateDraggedFields(this.fields);
+
                 }
             },
             visibleFields2: {
-
                 get: function () {
                     if (this.params.api_mode == 1) {
                         let fieldsVisible = this.fields.filter(field => {
@@ -6435,11 +6505,10 @@
                         return fieldsVisible.filter(field => field.index >= 0)
                             .sort((a, b) => a.index - b.index);
                     } else {
-                        return  this.fields.filter(field => {
+                        return this.fields.filter(field => {
                             field.visible == 2 && field.filterColumn == true && field.key !=
-                                'market_cap_rank' || field.visible ==3 
-                                &&
-                                field .filterColumn == true && field.key != 'market_cap_rank' ;
+                                'market_cap_rank' || field.visible == 3 &&
+                                field.filterColumn == true && field.key != 'market_cap_rank';
                         })
                     }
                 },
@@ -6447,7 +6516,6 @@
                 set: function (newValue) {
                     console.log(newValue);
                 }
-
             },
             value: {
                 get() {
@@ -6469,8 +6537,6 @@
                     return filter.default != 1
                 })
             },
-
-
             direction() {
                 if (store.state.appConfig.isRTL) {
                     // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -6481,12 +6547,7 @@
                 this.dir = 'ltr'
                 return this.dir
             },
-            refreshEvent() {
-
-            },
-
-
-
+            refreshEvent() {},
         },
         mounted() {
             this.loadFileds();
@@ -6546,7 +6607,6 @@
                 this.loadCoins(false)
             }
         },
-
         updated() {
             var meter_array = document.querySelectorAll('g path:not(:first-child)');
             for (let index = 0; index < meter_array.length; index++) {
@@ -7011,13 +7071,12 @@
     }
 
     .socialText2 {
-        text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
         font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 600;
-        font-size: 30px;
+        font-size: 25px;
         height: 34px;
     }
 
@@ -7101,7 +7160,8 @@
 
 
     .soicalLable.darkWhiteText.lableText {
-        height: 32px;
+        height: 42px;
+        line-height: 1.1;
     }
 
     .preset-button-style {
@@ -7525,13 +7585,18 @@
     .fag-inout::before {
         rotate: 180deg;
     }
-    .filter-cancel{
+
+    .filter-cancel {
         position: absolute;
-    top: -8px;
-    left: 22px;
-    padding: 4px;
-    z-index: 999;
- background-color: #4b4b4b !important;
+        top: -8px;
+        left: 22px;
+        padding: 4px;
+        z-index: 999;
+        background-color: #4b4b4b !important;
+    }
+
+    thead tr:nth-child(2) {
+        display: none !important;
     }
 
 </style>

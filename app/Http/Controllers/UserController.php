@@ -348,4 +348,5 @@ class UserController extends Controller
         $user->save();
         return response()->json(['status'=>'success','notifications'=>$request->notifications]);
     }
+   
 }

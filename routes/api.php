@@ -68,6 +68,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/user/updatenotofications', [UserController::class, 'updateUserNotifications'])->name('/user/updatenotofications');
     Route::post('/update-visible-fields', 'App\Http\Controllers\Coingecko@updateVisibleFields')->name('update-visible-fields');
     Route::post('/load-visible-fileds', 'App\Http\Controllers\Coingecko@loadVisibleFileds')->name('load-visible-fileds');
+    Route::post('/update-column-order',[Coingecko::class, 'updateUserFields'])->name('/update-column-order');
+
 
     //Profit Calc
     Route::post('/gettopfive', 'App\Http\Controllers\Coingecko@topFiveAverage');

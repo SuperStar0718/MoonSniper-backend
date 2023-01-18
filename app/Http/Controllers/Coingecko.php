@@ -13,6 +13,7 @@ use App\Models\UserFavorites;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class Coingecko extends Controller
 {
@@ -160,11 +161,12 @@ class Coingecko extends Controller
     public function loadVisibleFileds(Request $request)
     {
         $Columns = UserColumn::where('user_id', '=', Auth::user()->id)->where('mode', '=', $request->mode)->first();
+        $OrderColumns = UserColumn::where('user_id', '=', Auth::user()->id)->where('mode', '=', 'order')->first();
         if ($Columns) {
             $columnsObject = json_decode($Columns->columns);
-            return response()->json(['status' => true, 'fields' => $columnsObject, 'mode' => $Columns->mode]);
+            return response()->json(['status' => true, 'fields' => $columnsObject, 'mode' => $Columns->mode,'orderColumns'=>$OrderColumns]);
         } else {
-            return response()->json(['status' => false, 'fields' => null]);
+            return response()->json(['status' => false, 'fields' => null,'orderColumns'=>$OrderColumns]);
         }
     }
     public function manageFavorites(Request $request)
@@ -359,5 +361,22 @@ class Coingecko extends Controller
                 break;
         }
         return response()->json(['status'=>true,'chart'=>$typeData]);
+    }
+    public function updateUserFields(Request $request)
+    {
+        $Columns = UserColumn::where('user_id', '=', Auth::user()->id)->where('mode', '=', 'order')->first();
+        if ($Columns) {
+            $Columns->columns = json_encode($request->keyArray);
+            $Columns->save();
+        } else {
+            $Columns = new UserColumn();
+            $Columns->columns =  json_encode($request->keyArray);
+            $Columns->mode = 'order';
+            $Columns->user_id = Auth::user()->id;
+            $Columns->save();
+        }
+        
+        $columnsObject = json_decode($Columns->columns);
+        return response()->json(['status' => true, 'fields' => $columnsObject]);
     }
 }
