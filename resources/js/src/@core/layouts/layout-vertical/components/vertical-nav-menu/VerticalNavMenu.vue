@@ -236,7 +236,12 @@
 
 <style lang="scss">
     @import "~@resources/scss/base/core/menu/menu-types/vertical-menu.scss";
-
+ .AppExtensionMode .user_logout
+    {
+        position: relative;
+        bottom: 20px !important;
+    
+    }
     .navbar-nav a.nav-link:has(svg) {
         padding: 1px;
         color: black;

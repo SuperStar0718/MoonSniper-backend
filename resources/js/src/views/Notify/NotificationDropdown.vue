@@ -225,5 +225,8 @@
         position: absolute !important;
         top: 9px !important;
         right: -10px !important;
+        z-index: 999 !important; 
     }
+
+    
 </style>

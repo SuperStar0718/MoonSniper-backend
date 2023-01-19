@@ -117,14 +117,14 @@ const data = [{
         visible: 1
     },
     {
-        key: 'total_volume',
+        key: 'volume_history',
         index: 8,
         title: null,
         thStyle: {
             'width': '50px',
 
         },
-        label: 'Volume(24hrs)',
+        label: 'Volume(24hrs%)',
         stickyColumn: false,
         filterColumn: true,
         canHide: true,

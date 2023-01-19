@@ -1027,6 +1027,7 @@
                                 <b-progress :value="data.item.total_locked_percent" max="100" height="8px" />
                             </div>
                         </template>
+                        
                         <template #cell(next_unlock_date)="data">
                             <div v-if="data.item.next_unlock_date_text == null" style="text-align: center;"
                                 class="d-flex2 justify-content-start"
@@ -1113,7 +1114,13 @@
                                 {{dateFormat2(data.value)}}
                             </div>
                         </template>
-
+                        <template #cell(volume_history)="data">
+                           
+                            <div style="text-align: center;" v-if="data.value" class="d-flex2 justify-content-start" 
+                            :class="{'text-success-green':volumePerCentage(data.value)&& volumePerCentage(data.value) >=0 ,'text-danger':volumePerCentage(data.value)&& volumePerCentage(data.value) <0 }">
+                                {{volumePerCentage(data.value)}}%
+                            </div>
+                        </template>
                         <template #cell(end_vc_unlock)="data">
                             <div v-if="checkUserPlan(data.item.market_cap_rank)" style="text-align: center;"
                                 class="d-flex2 justify-content-start blurry-text">
@@ -4653,6 +4660,17 @@
                     return d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
                 }
             },
+            volumePerCentage(data)
+            {
+                if(data){
+                    var str_array = data.split(',');
+                    if(str_array.length >1){
+                        let per =  (str_array[0] - str_array[1])/str_array[0];
+                       return this.twenty4HConversation(per);
+                    }   
+
+                }
+            },
             dateFormat3(val) {
                 if (val != null) {
                     let d = new Date(val)
@@ -6138,13 +6156,7 @@
                         } else {
                             this.mi_fear_btc_alt = false;
                         }
-                        if (res.data.orderColumns) {
-                            let orderedItems = JSON.parse(res.data.orderColumns['columns']);
-
-                            this.fields.forEach(element => {
-                                element.index = orderedItems[0][element.key];
-                            });
-                        }
+                        
 
                     } else {
 
@@ -6197,6 +6209,13 @@
                         }
                         this.fields[42].filterColumn = true;
                     }
+                    if (res.data.orderColumns) {
+                            let orderedItems = JSON.parse(res.data.orderColumns['columns']);
+
+                            this.fields.forEach(element => {
+                                element.index = orderedItems[0][element.key];
+                            });
+                        }
                 })
             },
             htmlToText(html) {
@@ -6439,7 +6458,6 @@
                         keyArray: keyArray
                     })
                     .then(res => {
-                        console.log(res);
                     })
             },
 
@@ -6491,32 +6509,7 @@
 
                 }
             },
-            visibleFields2: {
-                get: function () {
-                    if (this.params.api_mode == 1) {
-                        let fieldsVisible = this.fields.filter(field => {
-                            return field.visible == 1 && field.filterColumn == true && field.key !=
-                                'market_cap_rank' && field.key != 'next_unlock_status' ||
-                                field.visible == 2 && field.filterColumn == true && field.key !=
-                                'market_cap_rank' && field.key != 'next_unlock_status' ||
-                                field.visible == 3 && field.filterColumn == true && field.key !=
-                                'market_cap_rank' && field.key != 'next_unlock_status'
-                        });
-                        return fieldsVisible.filter(field => field.index >= 0)
-                            .sort((a, b) => a.index - b.index);
-                    } else {
-                        return this.fields.filter(field => {
-                            field.visible == 2 && field.filterColumn == true && field.key !=
-                                'market_cap_rank' || field.visible == 3 &&
-                                field.filterColumn == true && field.key != 'market_cap_rank';
-                        })
-                    }
-                },
-                // setter
-                set: function (newValue) {
-                    console.log(newValue);
-                }
-            },
+          
             value: {
                 get() {
                     return [this.ldot, this.rdot]
@@ -7598,7 +7591,7 @@
     thead tr:nth-child(2) {
         display: none !important;
     }
-
+   
 </style>
 
 <style lang="scss">

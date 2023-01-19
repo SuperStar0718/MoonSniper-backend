@@ -2,18 +2,16 @@
 
 namespace App\Jobs;
 
-use App\Models\CoinsData;
 use App\Libraries\CoinGecko\CoinGeckoClient;
+use App\Models\CoinsData;
 use App\Models\CoinsList;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use function Amp\File\exists;
 
 class GetCoinsDataJob implements ShouldQueue
 {
@@ -40,7 +38,7 @@ class GetCoinsDataJob implements ShouldQueue
 
         $client = new CoinGeckoClient(false);
 
-        $coin_array = $client->coins()->getMarkets('usd', ["sparkline"=>"true","price_change_percentage"=>"1h,24h,7d,14d,30d,200d,1y","per_page"=>"250","page"=>$this->pageno]);
+        $coin_array = $client->coins()->getMarkets('usd', ["sparkline" => "true", "price_change_percentage" => "1h,24h,7d,14d,30d,200d,1y", "per_page" => "250", "page" => $this->pageno]);
         $coin_array = collect($coin_array);
 
         $newCoinsArray = array();
@@ -48,8 +46,8 @@ class GetCoinsDataJob implements ShouldQueue
         $newCoinsIds = array();
 
         //First, lets get ID only to check what is new:
-        foreach ($coin_array as $item){
-            if(!empty($item['id'])) {
+        foreach ($coin_array as $item) {
+            if (!empty($item['id'])) {
                 $newCoinsIds[] = $item['id'];
             }
         }
@@ -66,8 +64,8 @@ class GetCoinsDataJob implements ShouldQueue
         $purge_ids = array_filter(array_values(array_diff($exist_ids, $exist_list_ids)));
 
         //get all coins (to make sure we can update them):
-        foreach ($coin_array as $item){
-            if(!empty($item['id'])) {
+        foreach ($coin_array as $item) {
+            if (!empty($item['id'])) {
 
                 $ath_datetime = new \DateTime($item["ath_date"]);
                 $ath_datetime_string = $ath_datetime->format('Y-m-d H:i:s');
@@ -77,27 +75,51 @@ class GetCoinsDataJob implements ShouldQueue
 
                 $spark_string = "";
                 try {
-                    for ($sparkline_index = 0; $sparkline_index < sizeof($item["sparkline_in_7d"]["price"]); $sparkline_index++)
+                    for ($sparkline_index = 0; $sparkline_index < sizeof($item["sparkline_in_7d"]["price"]); $sparkline_index++) {
                         $spark_string .= $item["sparkline_in_7d"]["price"][$sparkline_index] . "|";
-                } catch (\Exception $e) {
+                    }
+
+                } catch (\Exception$e) {
                 }
 
                 /*if ($item["roi"] != null) {
-                    $roi_times = $item["roi"]["times"];
-                    $roi_currency = $item["roi"]["currency"];
-                    $roi_percentage = $item["roi"]["percentage"];
+                $roi_times = $item["roi"]["times"];
+                $roi_currency = $item["roi"]["currency"];
+                $roi_percentage = $item["roi"]["percentage"];
                 } else {
-                    $roi_times = "";
-                    $roi_currency = "";
-                    $roi_percentage = "";
+                $roi_times = "";
+                $roi_currency = "";
+                $roi_percentage = "";
                 }*/
-
+                
                 $total_supply_percent = null;
-                if($item["max_supply"] != null && $item["circulating_supply"] != null)
-                {
+                if ($item["max_supply"] != null && $item["circulating_supply"] != null) {
                     $total_supply_percent = (floatval($item["circulating_supply"]) * 100) / floatval($item["max_supply"]);
                 }
+                $volume = null;
+                $volume_date = Carbon::now();
+                $coinPreview = CoinsData::where('coin_id', $item["id"])->first();
+                if ($coinPreview && !Carbon::parse($coinPreview->last_volume_date)->isToday() || $coinPreview && $coinPreview->volume_history == null) {
+                    if ($coinPreview->volume_history == null) {
+                        $volume = $item["total_volume"];
+                    } else {
+                        $volumeList = preg_split("/\,/", $coinPreview->volume_history);
+                        if (count($volumeList) > 1) {
+                            $volume = $volumeList[1] . ',' . $item["total_volume"];
+                        } else {
+                            $volume = $volumeList[0] . ',' . $item["total_volume"];
+                        }
 
+                    }
+                    $volume_date = Carbon::now();
+                
+                }else{
+                    if($coinPreview)
+                    {
+                        $volume = $coinPreview->volume_history;
+                    $volume_date = $coinPreview->last_volume_date;
+                    }
+                }
                 $coin = array(
                     'coin_id' => $item["id"],
                     'symbol' => strtoupper($item["symbol"]),
@@ -107,6 +129,8 @@ class GetCoinsDataJob implements ShouldQueue
                     'market_cap_rank' => $item["market_cap_rank"],
                     'fully_diluted_valuation' => $item["fully_diluted_valuation"],
                     'total_volume' => $item["total_volume"],
+                    'volume_history' => $volume,
+                    'last_volume_date' => $volume_date,
                     'high_24h' => $item["high_24h"],
                     'low_24h' => $item["low_24h"],
                     'price_change_24h' => $item["price_change_24h"],
@@ -132,31 +156,30 @@ class GetCoinsDataJob implements ShouldQueue
                     'price_change_percentage_7d_in_currency' => $item["price_change_percentage_7d_in_currency"],
                     'sparkline_in_7d' => $spark_string,
                     'created_at' => now(),
-                    'updated_at' => now()
+                    'updated_at' => now(),
                 );
-
+               
                 //Removed these lines (we are taking the xs from cryptorank today):
 /*
-                'roi_times' => !empty($roi_times) ? $roi_times : NULL,
-                    'roi_currency' => $roi_currency,
-                    'roi_percentage' => !empty($roi_percentage) ? $roi_percentage : NULL,
+'roi_times' => !empty($roi_times) ? $roi_times : NULL,
+'roi_currency' => $roi_currency,
+'roi_percentage' => !empty($roi_percentage) ? $roi_percentage : NULL,
 
-                    Also, I removed these (it overwrite the social fields!!)
-                    'description' => "",
-                    'platform' => "",
-                    'historical_sentiment' => "[]",
-                    'historical_social_mentions' => "[]",
-                    'historical_social_engagement' => "[]",
-*/
+Also, I removed these (it overwrite the social fields!!)
+'description' => "",
+'platform' => "",
+'historical_sentiment' => "[]",
+'historical_social_mentions' => "[]",
+'historical_social_engagement' => "[]",
+ */
 
-                if(in_array($item["id"],$insertable_ids)) {
+                if (in_array($item["id"], $insertable_ids)) {
                     $newCoinsArray[] = $coin;
-                }else{
+                } else {
                     $updateCoinsArray[] = $coin;
                 }
             }
         }
-
 
         // prepare data for insert
         //$data = collect();
@@ -164,17 +187,17 @@ class GetCoinsDataJob implements ShouldQueue
         //first add all needed new items to db:
         $this->tryPushingToDB($newCoinsArray);
 
-        Try {
+        try {
             CoinsData::massUpdate(
-                values: $updateCoinsArray,
-                uniqueBy: 'coin_id'
+                values:$updateCoinsArray,
+                uniqueBy:'coin_id'
             );
-        }catch (\Exception $exception){
-            Log::info("The Problem here is: ".$exception);
+        } catch (\Exception$exception) {
+            Log::info("The Problem here is: " . $exception);
         }
 
         //Delete unneeded and dead tokens:
-        foreach ($purge_ids as $to_delete){
+        foreach ($purge_ids as $to_delete) {
             CoinsData::where('coin_id', $to_delete)->delete();
         }
 
@@ -182,15 +205,15 @@ class GetCoinsDataJob implements ShouldQueue
 
     }
 
-    private function tryPushingToDB($arr,$iterates=0){
+    private function tryPushingToDB($arr, $iterates = 0)
+    {
         //if its too many records, lets split it...
-        foreach (array_chunk($arr,1000) as $t) {
+        foreach (array_chunk($arr, 1000) as $t) {
             try {
                 //if there is a duplication order id from any reason, continue...
                 CoinsData::insert($t);
                 //Log::info("Finance Data has Pushed");
-            } catch
-            (\Exception $e) {
+            } catch (\Exception$e) {
                 //Log should be added here
                 Log::info('PROBLEM:' . $e);
 
@@ -201,7 +224,7 @@ class GetCoinsDataJob implements ShouldQueue
 
                     $iterates++;
                     //Call again:
-                    $this->tryPushingToDB($t,$iterates);
+                    $this->tryPushingToDB($t, $iterates);
                 } else {
                     Log::info('Im giving up :(');
                 }
