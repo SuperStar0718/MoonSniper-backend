@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('moon:coins_data')->everyFiveMinutes();
+        $schedule->command('moon:coins_list')->daily();
+        $schedule->command('moon:coins_data')->everyTenMinutes();
         $schedule->command('moon:fear-greed')->dailyAt('05:00');
         $schedule->command('moon:twitter')->daily();
         $schedule->command('moon:telegram')->daily();
@@ -26,7 +27,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('coin:scrape_unlock_data')->daily();
         $schedule->command('coin:scrape_vestintg_data')->everyThirtyMinutes();
         $schedule->command('moon:exchanges')->daily();
-        $schedule->command('moon:exchangestickers')->twiceDaily(4,22);
+        // $schedule->command('moon:exchangestickers')->twiceDaily(4,22);
         $schedule->command('moon:scrapecoinid')->twiceDaily(1,13);
         $schedule->command('moon:coinseasondata')->daily();
         $schedule->command('moon:getcryptoROI')->daily();

@@ -10,11 +10,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Libraries\CoinGecko\CoinGeckoClient;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Support\Facades\DB;
 
 class ExchangeDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     /**
      * Create a new job instance.
      *
@@ -24,7 +24,6 @@ class ExchangeDataJob implements ShouldQueue
     {
         //
     }
-
     /**
      * Execute the job.
      *
@@ -36,26 +35,20 @@ class ExchangeDataJob implements ShouldQueue
 
         $exchanges =  $client->exchanges()->getList();
         $newExchanges = array();
-       
         foreach ($exchanges as $key => $value) {
-        //    
-        if(!Exchange::where('exchangeid',$value['id'])->exists()){
-            $exchange = new Exchange();
-             $exchange->exchangeid =  $value['id'];
-             $exchange->name =  $value['name'];
-             $exchange->flag = 0;
-             $exchange->save();
-             $newExchanges[] = $exchange;
-        }
-           
-        }
-
-    //    $chunkedData = array_chunk($newExchanges,5);
-    //    $time  = 0;
-    //    foreach ($chunkedData as $key => $valueChunck) {
-    //         ExchangeTickersJob::dispatch($valueChunck)->onQueue('moon-sniper-worker')->delay($time);
-    //         $time = $time+60;
-    //     }
+            if(!Exchange::where('exchangeid',$value['id'])->exists()){
+                $exchange = new Exchange();
+                $exchange->exchangeid =  $value['id'];
+                $exchange->name =  $value['name'];
+                $exchange->flag = 0;
+                $exchange->save();
+                $newExchanges[] = $exchange;
+            }
+            }
+        DB::table('exchanges')
+        ->update(['flag' => 0]);
+            ExchangeTickersJob::dispatch()->onQueue('moon-sniper-worker-long')->delay(60);
+          
 
     }
 }
