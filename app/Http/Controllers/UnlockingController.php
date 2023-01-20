@@ -332,98 +332,47 @@ class UnlockingController extends Controller
 
     public function dataFromUrl($c)
     {
+        // $query = DB::table('coin_data');
 
-        $client = new CoinGeckoClient(false);
+        // return $query->whereRaw("(
+        //     coin_data.`next_unlock_date`
+        //      IS NOT NULL OR coin_data.`next_unlock_date_text`
+        //       IS NOT NULL OR coin_data.`total_locked_percent` 
+        //       IS NOT NULL OR coin_data.`next_unlock_percent` 
+        //       IS NOT NULL  OR coin_data.`next_unlock_number_of_tokens`
+        //        IS NOT NULL OR coin_data.`next_unlock_percent_of_tokens` 
+        //        IS NOT NULL OR coin_data.`next_unlock_size` 
+        //        IS NOT NULL OR coin_data.`first_vc_unlock`
+        //         IS NOT NULL OR coin_data.`end_vc_unlock` 
+        //         IS NOT NULL OR coin_data.`first_vc_unlock_text` 
+        //         IS NOT NULL OR coin_data.`end_vc_unlock_text`
+        //          IS NOT NULL OR coin_data.`three_months_unlock_number_of_tokens`
+        //           IS NOT NULL OR coin_data.`three_months_unlock_percent_of_tokens`
+        //            IS NOT NULL OR coin_data.`three_months_unlock_size` 
+        //            IS NOT NULL OR coin_data.`six_months_unlock_number_of_tokens`
+        //             IS NOT NULL OR coin_data.`six_months_unlock_percent_of_tokens`
+        //              IS NOT NULL OR coin_data.`six_months_unlock_size` IS NOT NULL)")->get();
 
-       return $coin_array = $client->coins()->getMarkets('usd', ["sparkline"=>"true","price_change_percentage"=>"1h,24h,7d,14d,30d,200d,1y","per_page"=>"250","page"=>1]);
-        $coin_array = $client->coins()->getMarkets('usd', ["sparkline"=>"true","price_change_percentage"=>"1h,24h,7d,14d,30d,200d,1y","per_page"=>"250","page"=>1]);
-      return  $coin_array = collect($coin_array);
-        $client = new CoinGeckoClient(false);
-        // $exchanges =  $client->exchanges()->getList();
-        $newExchanges = array();
-
-        // foreach ($exchanges as $key => $value) {
-        // //
-        // if(!Exchange::where('exchangeid',$value['id'])->exists()){
-        //     $exchange = new Exchange();
-        //      $exchange->exchangeid =  $value['id'];
-        //      $exchange->name =  $value['name'];
-        //      $exchange->flag = 0;
-        //      $exchange->save();
-        //      $newExchanges[] = $exchange;
-        // }
-
-        // }
-
-        $tickers = Exchange::where('flag', 0)->limit(10)->get();
-        if (count($tickers) > 0) {
-            foreach ($tickers as $key => $value) {
-                $back_Value = $value;
-                try {
-                    $tickerData = $client->exchanges()->getExchange($value->exchangeid);
-                    $deleteDickers = ExchangeTicker::where('exchange_id', $value->exchangeid)->delete();
-                    foreach ($tickerData['tickers'] as $key => $valueTicker) {
-                        if ($valueTicker['trust_score'] == 'green') {
-                            $exchnageTicker = new ExchangeTicker();
-                            //Check
-                            $variable = [];
-                            $str = $valueTicker['trade_url'];
-                            if ($str) {
-                                $str = stripslashes($str);
-                                $variable = $ar = explode("?", $str);
-                            } else {
-                                $variable[0] = '';
-                            }
-                            $exchnageTicker->exchange = $value->name;
-                            $exchnageTicker->exchange_id = $value->exchangeid;
-                            $exchnageTicker->base = $valueTicker['base'];
-                            $exchnageTicker->target = $valueTicker['target'];
-                            $exchnageTicker->volume = $valueTicker['volume'];
-                            $exchnageTicker->trade_url = $variable[0];
-                            $exchnageTicker->save();
-                        }
-
-                    }
-                    DB::table('exchanges')
-                        ->where('exchangeid', $value->exchangeid)
-                        ->update(['flag' => 1]);
-                } catch (Exception $er) {
-                    
-                  try {
-                    $tickerData = $client->exchanges()->getExchange($back_Value->exchangeid);
-                    $deleteDickers = ExchangeTicker::where('exchange_id', $back_Value->exchangeid)->delete();
-                    foreach ($tickerData['tickers'] as $key => $valueTicker) {
-                        if ($valueTicker['trust_score'] == 'green') {
-                            $exchnageTicker = new ExchangeTicker();
-                            //Check
-                            $variable = [];
-                            $str = $valueTicker['trade_url'];
-                            if ($str) {
-                                $str = stripslashes($str);
-                                $variable = $ar = explode("?", $str);
-                            } else {
-                                $variable[0] = '';
-                            }
-                            $exchnageTicker->exchange = $back_Value->name;
-                            $exchnageTicker->exchange_id = $back_Value->exchangeid;
-                            $exchnageTicker->base = $valueTicker['base'];
-                            $exchnageTicker->target = $valueTicker['target'];
-                            $exchnageTicker->volume = $valueTicker['volume'];
-                            $exchnageTicker->trade_url = $variable[0];
-                            $exchnageTicker->save();
-                        }
-
-                    }
-                    DB::table('exchanges')
-                        ->where('exchangeid', $value->exchangeid)
-                        ->update(['flag' => 1]);
-                  } catch (\Throwable $th) {
-                    //throw $th;
-                  }
-                }
-
-            }
-        }
+          $clearUnlock =  CoinsData::where('next_unlock_date', '<', Carbon::now())->get();
+     return   $clearUnlock =  CoinsData::where('next_unlock_date', '<', Carbon::now())
+        ->update([
+            'next_unlock_date' => null,
+            'next_unlock_date_text' => null,
+            'total_locked_percent' => null,
+            'next_unlock_percent' => null,
+            'next_unlock_number_of_tokens' => null,
+            'next_unlock_percent_of_tokens' => null,
+            'next_unlock_size' => null,
+            'end_vc_unlock' => null,
+            'first_vc_unlock_text' => null,
+            'end_vc_unlock_text' => null,
+            'three_months_unlock_number_of_tokens' => null,
+            'three_months_unlock_percent_of_tokens' => null,
+            'three_months_unlock_size' => null,
+            'six_months_unlock_number_of_tokens' => null,
+            'six_months_unlock_percent_of_tokens' => null,
+            'six_months_unlock_size' => null,
+            ]);
 
     }
     public static function getBetween2($content, $start, $end)

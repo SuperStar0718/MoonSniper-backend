@@ -1,6 +1,7 @@
 const data = [{
         key: 'market_cap_rank',
         index: 0,
+        no: 0,
         title: null,
         thStyle: {
             'width': '50px',
@@ -18,6 +19,7 @@ const data = [{
     {
         key: 'name',
         index: 1,
+        no: 1,
         title: null,
         thStyle: {
             'width': '50px',
@@ -35,6 +37,7 @@ const data = [{
     {
         key: 'current_price',
         index: 2,
+        no: 2,
         title: null,
         thStyle: {
             'width': '50px',
@@ -49,6 +52,7 @@ const data = [{
     {
         key: 'price_change_percentage_24h',
         index: 3,
+        no: 3,
         title: null,
         thStyle: {
             'width': '50px',
@@ -63,6 +67,7 @@ const data = [{
     {
         key: 'price_change_percentage_7d_in_currency',
         index: 4,
+        no: 4,
         title: null,
         thStyle: {
             'width': '50px',
@@ -77,6 +82,7 @@ const data = [{
     {
         key: 'market_cap',
         index: 5,
+        no: 5,
         title: null,
         thStyle: {
             'width': '50px',
@@ -91,6 +97,7 @@ const data = [{
     {
         key: 'coin_description',
         index: 6,
+        no: 6,
         title: null,
         thStyle: {
             'width': '50px',
@@ -106,6 +113,7 @@ const data = [{
     {
         key: 'coin_platform',
         index: 7,
+        no: 7,
         title: null,
         thStyle: {
             'width': '50px',
@@ -119,6 +127,7 @@ const data = [{
     {
         key: 'volume_history',
         index: 8,
+        no: 8,
         title: null,
         thStyle: {
             'width': '50px',
@@ -132,7 +141,8 @@ const data = [{
     },
     {
         key: 'high_24h',
-        index: 9,
+        index: 10,
+        no: 9,
         title: null,
         thStyle: {
             'width': '50px',
@@ -145,7 +155,8 @@ const data = [{
     },
     {
         key: 'low_24h',
-        index: 10,
+        index: 11,
+        no: 10,
         title: null,
         thStyle: {
             'width': '50px',
@@ -160,7 +171,8 @@ const data = [{
 
     {
         key: 'ath',
-        index: 11,
+        index: 12,
+        no: 11,
         title: null,
 
         label: 'ATH($)',
@@ -175,7 +187,8 @@ const data = [{
     },
     {
         key: 'ath_change_percentage',
-        index: 12,
+        index: 13,
+        no: 12,
         title: null,
         label: 'ATH change %',
         thStyle: {
@@ -189,7 +202,8 @@ const data = [{
     },
     {
         key: 'ath_date',
-        index: 13,
+        index: 14,
+        no: 13,
         title: null,
         thStyle: {
             'width': '50px',
@@ -204,7 +218,8 @@ const data = [{
 
     {
         key: 'atl',
-        index: 14,
+        index: 15,
+        no: 14,
         title: null,
         thStyle: {
             'width': '50px',
@@ -218,7 +233,8 @@ const data = [{
     },
     {
         key: 'atl_change_percentage',
-        index: 15,
+        index: 16,
+        no: 15,
         title: null,
         label: 'ATL change %',
         thStyle: {
@@ -232,7 +248,8 @@ const data = [{
     },
     {
         key: 'atl_date',
-        index: 16,
+        index: 17,
+        no: 16,
         title: null,
         label: 'ATL Date',
         thStyle: {
@@ -246,7 +263,8 @@ const data = [{
     },
     {
         key: 'roi_times',
-        index: 17, //13
+        index: 18, //13
+        no: 17, //13
         title: 'Return on Investment from TGE (Token Generation Event)',
         thStyle: {
             'width': '50px',
@@ -260,7 +278,8 @@ const data = [{
     },
     {
         key: 'coin_category',
-        index: 18, //14
+        index: 19, //14
+        no: 18, //14
         title: null,
         thStyle: {
             'width': '50px',
@@ -277,7 +296,8 @@ const data = [{
 
     {
         key: 'roi_percentage',
-        index: 19, //15
+        index: 20, //15
+        no: 19, //15
         thStyle: {
             'width': '50px',
 
@@ -292,7 +312,8 @@ const data = [{
 
     {
         key: 'total_supply_percent',
-        index: 20, // 16
+        index: 21, // 16
+        no: 20, // 16
         title: null,
         thStyle: {
             'width': '50px',
@@ -306,7 +327,8 @@ const data = [{
     },
     {
         key: 'circulating_supply',
-        index: 21, // 17
+        index: 22, // 17
+        no: 21, // 17
         title: null,
         thStyle: {
             'width': '50px',
@@ -320,7 +342,8 @@ const data = [{
     },
     {
         key: 'seed_price',
-        index: 22, // 18
+        index: 23, // 18
+        no: 22, // 18
         thStyle: {
             'width': '50px',
 
@@ -335,7 +358,8 @@ const data = [{
 
     {
         key: 'roi_seed',
-        index: 23, //19
+        index: 24, //19
+        no: 23, //19
         thStyle: {
             'width': '50px',
 
@@ -348,7 +372,8 @@ const data = [{
     },
     {
         key: 'total_locked_percent',
-        index: 24,
+        index: 25,
+        no: 24,
         thStyle: {
             'width': '50px',
 
@@ -362,7 +387,8 @@ const data = [{
     },
     {
         key: 'next_unlock_date',
-        index: 25,
+        index: 26,
+        no: 25,
         title: null,
         thStyle: {
             'width': '50px',
@@ -376,7 +402,8 @@ const data = [{
     },
     {
         key: 'next_unlock_status',
-        index: 26, //22
+        index: 27, //22
+        no: 26, //22
         title: null,
         thStyle: {
             'width': '50px',
@@ -390,7 +417,8 @@ const data = [{
 
     {
         key: 'next_unlock_number_of_tokens',
-        index: 27, //23,
+        index: 28, //23,
+        no: 27, //23,
         title: null,
         thStyle: {
             'width': '50px',
@@ -403,7 +431,8 @@ const data = [{
         visible: 2
     }, {
         key: 'next_unlock_percent_of_tokens',
-        index: 28, //24,
+        index: 29, //24,
+        no: 28, //24,
         title: null,
         thStyle: {
             'width': '50px',
@@ -416,7 +445,8 @@ const data = [{
         visible: 2
     }, {
         key: 'next_unlock_size',
-        index: 29, //25,
+        index: 30, //25,
+        no: 29, //25,
         thStyle: {
             'width': '50px',
 
@@ -428,7 +458,8 @@ const data = [{
         visible: 2
     }, {
         key: 'first_vc_unlock',
-        index: 30, //26,
+        index: 31, //26,
+        no: 30, //26,
         title: null,
         thStyle: {
             'width': '50px',
@@ -441,7 +472,8 @@ const data = [{
         visible: 2
     }, {
         key: 'end_vc_unlock',
-        index: 31, //27,
+        index: 32, //27,
+        no: 31, //27,
         title: null,
         thStyle: {
             'width': '50px',
@@ -454,7 +486,8 @@ const data = [{
         visible: 2
     }, {
         key: 'three_months_unlock_number_of_tokens',
-        index: 32, //,
+        index: 33, //,
+        no: 32, //,
         title: null,
         thStyle: {
             'width': '50px',
@@ -467,7 +500,8 @@ const data = [{
         visible: 2
     }, {
         key: 'three_months_unlock_percent_of_tokens',
-        index: 33, //29,
+        index: 34, //29,
+        no: 33, //29,
         title: null,
         thStyle: {
             'width': '50px',
@@ -480,7 +514,8 @@ const data = [{
         visible: 2
     }, {
         key: 'three_months_unlock_size',
-        index: 34, //30,
+        index: 35, //30,
+        no: 34, //30,
         title: null,
         thStyle: {
             'width': '50px',
@@ -494,7 +529,8 @@ const data = [{
     },
     {
         key: 'six_months_unlock_number_of_tokens',
-        index: 35, //31,
+        index: 36, //31,
+        no: 35, //31,
         title: null,
         thStyle: {
             'width': '50px',
@@ -507,7 +543,8 @@ const data = [{
         visible: 2
     }, {
         key: 'six_months_unlock_percent_of_tokens',
-        index: 36, //32,
+        index: 37, //32,
+        no: 36, //32,
         title: null,
         thStyle: {
             'width': '50px',
@@ -520,7 +557,8 @@ const data = [{
         visible: 2
     }, {
         key: 'six_months_unlock_size',
-        index: 37, //33,
+        index: 38, //33,
+        no: 37, //33,
         title: null,
         thStyle: {
             'width': '50px',
@@ -534,7 +572,8 @@ const data = [{
     },
     {
         key: 'social_mentions_change',
-        index: 38, //34,
+        index: 39, //34,
+        no: 38, //34,
         thStyle: {
             'width': '50px',
 
@@ -548,7 +587,8 @@ const data = [{
     },
     {
         key: 'social_engagement_change',
-        index: 39, //35,
+        index: 40, //35,
+        no: 39, //35,
         thStyle: {
             'width': '50px',
 
@@ -563,7 +603,8 @@ const data = [{
     },
     {
         key: 'average_sentiment',
-        index: 40, //36,
+        index: 41, //36,
+        no: 40, //36,
         thStyle: {
             'width': '50px',
 
@@ -577,7 +618,8 @@ const data = [{
     },
     {
         key: 'average_sentiment_change',
-        index: 41, //37,
+        index: 42, //37,
+        no: 41, //37,
         title: null,
         thStyle: {
             'width': '50px',
@@ -590,7 +632,8 @@ const data = [{
     },
     {
         key: 'sparkline_in_7d',
-        index: 42, //38,
+        index: 43, //38,
+        no: 42, //38,
         title: null,
         thStyle: {
             'width': '60px',
@@ -603,14 +646,30 @@ const data = [{
     },
     {
         key: 'empty',
-        index: 43, //39,
+        index: 44, //39,
+        no: 43, //39,
         title: null,
 
         label: '',
         stickyColumn: false,
         filterColumn: true,
         visible: 3
-    }
+    },
+    {
+        key: 'total_volume',
+        index: 9,
+        no: 44,
+        title: null,
+        thStyle: {
+            'width': '50px',
+
+        },
+        label: 'Volume',
+        stickyColumn: false,
+        filterColumn: false,
+        canHide: true,
+        visible: 1
+    },
 
 
 ]

@@ -381,6 +381,17 @@
                                                                 <div class="margin20">
                                                                     <div class="">
                                                                         <b-form-checkbox @change="updateFields"
+                                                                            v-model="fields[44].filterColumn"
+                                                                            name="cursor-pointer some-checkboxs3">
+                                                                            Volume
+                                                                        </b-form-checkbox>
+                                                                    </div>
+                                                                </div>
+                                                            </b-col>
+                                                            <b-col md="6" xl="6">
+                                                                <div class="margin20">
+                                                                    <div class="">
+                                                                        <b-form-checkbox @change="updateFields"
                                                                             v-model="fields[21].filterColumn"
                                                                             name="cursor-pointer some-checkboxs4">
 
@@ -6099,6 +6110,7 @@
                             this.fields[37].filterColumn = false;
                             this.fields[38].filterColumn = false;
                             this.fields[39].filterColumn = false;
+                            this.fields[44].filterColumn = false;
 
 
 
