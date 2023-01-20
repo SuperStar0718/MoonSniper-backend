@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\ClearUnlockDataJob;
 use Illuminate\Console\Command;
 
 class ClearUnlockData extends Command
@@ -27,7 +28,7 @@ class ClearUnlockData extends Command
      */
     public function handle()
     {
-        ClearUnlockData::dispatch()->onQueue('moon-sniper-worker');
+        ClearUnlockDataJob::dispatch()->onQueue('moon-sniper-worker');
         return Command::SUCCESS;
     }
 }
