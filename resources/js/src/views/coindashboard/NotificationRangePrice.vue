@@ -146,7 +146,7 @@
                         this.value1[0] = min;
                     } 
                     if (this.value1[1] == null  || this.value1[1] == '') {
-                        this.value1[1] = max;
+                        this.value1[1] = null;
                     }else if(parseFloat(this.value1[1]) < parseFloat(this.value1[0])){
                         this.value1[1] = null;
                         
@@ -182,7 +182,7 @@
                     }
                 } else {
                     if (this.value1[0] != null && this.value1[0] != '') {
-                        this.value1[1] = max;
+                        this.value1[1] = null;
                     }
 
                 }

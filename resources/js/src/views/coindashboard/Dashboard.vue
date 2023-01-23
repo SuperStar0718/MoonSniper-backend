@@ -1038,7 +1038,7 @@
                                 <b-progress :value="data.item.total_locked_percent" max="100" height="8px" />
                             </div>
                         </template>
-                        
+
                         <template #cell(next_unlock_date)="data">
                             <div v-if="data.item.next_unlock_date_text == null" style="text-align: center;"
                                 class="d-flex2 justify-content-start"
@@ -1126,9 +1126,9 @@
                             </div>
                         </template>
                         <template #cell(volume_history)="data">
-                           
-                            <div style="text-align: center;" v-if="data.value" class="d-flex2 justify-content-start" 
-                            :class="{'text-success-green':volumePerCentage(data.value)&& volumePerCentage(data.value) >=0 ,'text-danger':volumePerCentage(data.value)&& volumePerCentage(data.value) <0 }">
+
+                            <div style="text-align: center;" v-if="data.value" class="d-flex2 justify-content-start"
+                                :class="{'text-success-green':volumePerCentage(data.value)&& volumePerCentage(data.value) >=0 ,'text-danger':volumePerCentage(data.value)&& volumePerCentage(data.value) <0 }">
                                 {{volumePerCentage(data.value)}}%
                             </div>
                         </template>
@@ -2516,7 +2516,7 @@
                                                         {{roundData(activeData.average_sentiment)}}</div>
 
                                                     <div class="soicalLable sl2 darkWhiteText lableText">
-                                                        Average  Sentiment
+                                                        Average Sentiment
                                                     </div>
 
                                                 </b-card>
@@ -2578,7 +2578,7 @@
                                                         style="margin-top: 10px; margin-bottom: 12px;" v-else>
                                                         {{roundData2(activeData.social_engagement_change,1)}}%</div>
                                                     <div class="soicalLable sl2 darkWhiteText lableText">
-                                                        Social Engagement 24h% 
+                                                        Social Engagement 24h%
                                                     </div>
 
                                                 </b-card>
@@ -2600,7 +2600,7 @@
                                                         {{roundData2(activeData.average_sentiment_change,1)?roundData2(activeData.average_sentiment_change,1):0}}%
                                                     </div>
                                                     <div class="soicalLable sl2 darkWhiteText lableText">
-                                                        Average Sentiment change 24h% 
+                                                        Average Sentiment change 24h%
                                                     </div>
 
                                                 </b-card>
@@ -3058,7 +3058,7 @@
                                                     </div>
                                                 </div>
                                             </b-col>
-                                            <b-col cols="12" md="12">
+                                            <b-col cols="12" md="12" v-if="showSupplychart">
                                                 <span class="mr-1">Supply chart: </span>
                                                 <div>
 
@@ -4146,7 +4146,7 @@
                     },
 
                 },
-
+                showSupplychart:true,
                 supplyChart: {
                     series: [],
 
@@ -4671,14 +4671,13 @@
                     return d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
                 }
             },
-            volumePerCentage(data)
-            {
-                if(data){
+            volumePerCentage(data) {
+                if (data) {
                     var str_array = data.split(',');
-                    if(str_array.length >1){
-                        let per =  (str_array[0] - str_array[1])/str_array[0];
-                       return this.twenty4HConversation(per);
-                    }   
+                    if (str_array.length > 1) {
+                        let per = (str_array[0] - str_array[1]) / str_array[0];
+                        return this.twenty4HConversation(per);
+                    }
 
                 }
             },
@@ -5434,23 +5433,28 @@
 
 
                         }
-                        if (this.activeData.max_supply != null ||
-                            this.activeData.circulating_supply != null ||
-                            this.activeData.next_unlock_number_of_tokens != null ||
-                            this.activeData.three_months_unlock_number_of_tokens != null &&
-                            this.activeData.six_months_unlock_number_of_tokens != null) {
-
+                        if (this.activeData.max_supply != null &&this.activeData.circulating_supply != null) {
+                            let MSdiff = 0;
+                            if (this.activeData.max_supply!= null || this.activeData.total_supply!= null && this.activeData
+                                .circulating_supply!= null) {
+                                MSdiff = (this.activeData.max_supply!= null ? this.activeData.max_supply : this
+                                    .activeData.total_supply) - this.activeData.circulating_supply;
+                            }
                             var total_locked = parseFloat(this.activeData.total_locked != null ? this.activeData
-                                .total_locked : 0);
+                                .total_locked : MSdiff);
+                                
                             var ms = parseFloat(this.activeData.max_supply ? this.activeData.max_supply : this
                                 .activeData.total_supply);
                             if (isNaN(ms))
                                 ms = 0.0;
+
+
                             var cs = parseFloat(this.activeData.circulating_supply);
                             if (isNaN(cs))
                                 cs = 0.0;
-                            var nt = parseFloat(this.activeData.next_unlock_number_of_tokens != null ? this
-                                .activeData.next_unlock_number_of_tokens : 0);
+
+
+                            var nt = parseFloat(this.activeData.next_unlock_number_of_tokens != null ? this.activeData.next_unlock_number_of_tokens : 0);
                             if (isNaN(nt)) {
                                 nt = 0.0;
                             }
@@ -5460,7 +5464,11 @@
                             var val3 = Math.max((100 - val1 - val2), 0.0);
 
                             this.supplyChart.series = [val1, val3, val2];
+                            this.showSupplychart = true;
 
+
+                        }else{
+                            this.showSupplychart = false;
                         }
 
 
@@ -6168,7 +6176,7 @@
                         } else {
                             this.mi_fear_btc_alt = false;
                         }
-                        
+
 
                     } else {
 
@@ -6222,12 +6230,12 @@
                         this.fields[42].filterColumn = true;
                     }
                     if (res.data.orderColumns) {
-                            let orderedItems = JSON.parse(res.data.orderColumns['columns']);
+                        let orderedItems = JSON.parse(res.data.orderColumns['columns']);
 
-                            this.fields.forEach(element => {
-                                element.index = orderedItems[0][element.key];
-                            });
-                        }
+                        this.fields.forEach(element => {
+                            element.index = orderedItems[0][element.key];
+                        });
+                    }
                 })
             },
             htmlToText(html) {
@@ -6469,8 +6477,7 @@
                 axios.post('api/update-column-order', {
                         keyArray: keyArray
                     })
-                    .then(res => {
-                    })
+                    .then(res => {})
             },
 
 
@@ -6521,7 +6528,7 @@
 
                 }
             },
-          
+
             value: {
                 get() {
                     return [this.ldot, this.rdot]
@@ -7603,10 +7610,11 @@
     thead tr:nth-child(2) {
         display: none !important;
     }
+
     .AppExtensionMode #modal-filters .modal-dialog {
         max-width: 769px;
     }
-   
+
 </style>
 
 <style lang="scss">
