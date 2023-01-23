@@ -7603,6 +7603,9 @@
     thead tr:nth-child(2) {
         display: none !important;
     }
+    .AppExtensionMode #modal-filters .modal-dialog {
+        max-width: 769px;
+    }
    
 </style>
 

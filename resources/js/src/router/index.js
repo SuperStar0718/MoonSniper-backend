@@ -37,10 +37,19 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, _, next) => {
+  let url = location.href;
+  let type = '';
+  if (url.includes("extension")) {
+    type = "extension"
+  } 
   const isLoggedIn = isUserLoggedIn()
   if (!canNavigate(to)) {
     // Redirect to login if not logged in
-    if (!isLoggedIn) return next({ name: 'auth-login' })
+    if (!isLoggedIn && type == 'extension'){
+      return next({ path: '/login?type=extension' })
+    }else if(!isLoggedIn){
+      return next({ name: 'auth-login' })
+    }
     // If logged in => not authorized
     return next({ name: 'misc-not-authorized' })
   }

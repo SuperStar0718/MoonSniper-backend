@@ -20,6 +20,15 @@ export default [
     },
   },
   {
+    path: '/login?type=extension',
+    name: 'auth-login-extension',
+    component: () => import('@/views/pages/authentication/Login.vue'),
+    meta: {
+      layout: 'full',
+      redirectIfLoggedIn: true,
+    },
+  },
+  {
     path: '/pages/authentication/login-v1',
     name: 'auth-login-v1',
     component: () => import('@/views/pages/authentication/Login-v1.vue'),
