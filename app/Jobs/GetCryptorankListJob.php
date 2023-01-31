@@ -34,90 +34,49 @@ class GetCryptorankListJob implements ShouldQueue
      */
     public function handle()
     {
-        $coinsList = Cryptorank::getAllAssets(["offset"=>$this->offset,"limit" => 1000]);
-        $coinsList = collect($coinsList);
+        $coinsList = Cryptorank::getAllAssets(["offset"=>$this->offset,"limit" => 1000, "optionalFields" => "links"]);
+        $coinsList = $coinsList['data'];
 
-        $newCoinsArray = array();
-        $newCoinsIds = array();
-        //get all coins (to make sure we can update them):
-        foreach ($coinsList['data'] as $item){
-            if(!empty($item['id'])) {
-                $newCoinsArray[] = array(
-                    'symbol' => strtoupper($item['symbol']),
-                    'coin_category' => $item['category'] ?? NULL
-                );
-                //$newCoinsIds[] = $item['symbol'];
+        foreach($coinsList as $coin_data) {
+            $match = ['symbol' => $coin_data['symbol'], 'name' => $coin_data['name']];
+
+            $existing_links = CoinsList::where($match)->get()->first();
+
+
+            if(!is_null($existing_links)){
+            if($existing_links->count()) {
+                foreach ($coin_data['links'] as $link) {
+                    switch ($link['type']) {
+                        case 'telegram':
+                            $existing_links->telegram = $link['value'];
+                            break;
+                        case 'web':
+                            $existing_links->website = $link['value'];
+                            break;
+                        case 'twitter':
+                            $existing_links->twitter = $link['value'];
+                            break;
+                        case 'reddit':
+                            $existing_links->reddit = $link['value'];
+                            break;
+                        case 'whitepaper':
+                            $existing_links->whitepaper = $link['value'];
+                            break;
+                        case 'medium':
+                            $existing_links->medium = $link['value'];
+                            break;
+                        case 'github':
+                            $existing_links->github = $link['value'];
+                            break;
+                        case 'discord':
+                            $existing_links->discord = $link['value'];
+                            break;
+                    }
+                }
+                $existing_links->save();
+            }
             }
         }
 
-
-        // first get symbol ids from table
-        //$exist_ids = CoinsList::all('symbol')->pluck('symbol')->toArray();
-
-        // get updatable ids//$updatable_ids = array_values(array_intersect($exist_ids, $newCoinsIds));
-
-        // get insertable ids
-        //$insertable_ids = array_filter(array_values(array_diff($newCoinsIds, $exist_ids)));
-        // prepare data for insert
-        //$data = collect();
-
-        //check for symbol duplications, if we do, lets get rid of the lower rank:
-        /*$duplicates = array();
-        foreach(array_count_values($newCoinsIds) as $val => $c)
-            if($c > 1) $duplicates[] = $val;
-
-        $skip=[];*/
-        //Push new coins (if any):
-        /*foreach ($insertable_ids as $key => $coinId) {
-            if(!in_array(strtoupper($coinsList['data'][$key]['symbol']),$skip)) {
-                $data->push([
-                    'coin_id' => $coinsList['data'][$key]['slug'],
-                    'symbol' => strtoupper($coinsList['data'][$key]['symbol']),
-                    'name' => $coinsList['data'][$key]['name'],
-                    'coin_category' => $coinsList['data'][$key]['category'] ?? NULL,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]);
-            }
-
-            if(in_array(strtoupper($coinsList['data'][$key]['symbol']),$duplicates)){
-                $skip[] = strtoupper($coinsList['data'][$key]['symbol']);
-            }
-        }*/
-
-        //first add all needed new items to db:
-        //$this->tryPushingToDB($data->toArray());
-
-        CoinsList::massUpdate(
-            values : $newCoinsArray,
-            uniqueBy : 'symbol'
-        );
-
-    }
-
-
-    private function tryPushingToDB($arr,$iterates=0){
-            try {
-                //if there is a duplication order id from any reason, continue...
-                CoinsList::insert($arr);
-                //Log::info("Finance Data has Pushed");
-            } catch
-            (\Exception $e) {
-                //Log should be added here
-                Log::info('PROBLEM:' . $e);
-
-                Log::info('Trying Again!');
-
-                if ($iterates < 20) {
-                    //Check what is happening?
-
-                    $iterates++;
-                    //Call again:
-                    $this->tryPushingToDB($arr,$iterates);
-                } else {
-                    Log::info('Im giving up :(');
-                }
-
-            }
     }
 }

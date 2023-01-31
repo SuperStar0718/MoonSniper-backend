@@ -118,12 +118,12 @@ class GetCoinsLinksJob implements ShouldQueue
 
 
                     // Contract Address
-                    if(isset($coin["contract_addresses"]))
+                    /*if(isset($coin["contract_addresses"]))
                     {
 
                         $coinInfoToPush['contract_address'] = json_encode($coin["contract_addresses"]);
 
-                    }
+                    }*/
 
 
 

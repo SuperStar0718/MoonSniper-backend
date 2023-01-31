@@ -31,9 +31,11 @@ class GetCryptorankList extends Command
     {
             $coinsList = Cryptorank::getAllAssets(["offset"=>0,"limit" => 100000]);
             $countCoins= count($coinsList['data']);
+            $i=0;
 
             for($offset = 0; $offset < $countCoins; $offset +=1000) {
-                    $job = (new GetCryptorankListJob($offset))->onQueue('moon-sniper-worker');
+                    $job = (new GetCryptorankListJob($offset))->onQueue('moon-sniper-worker')->delay(now()->addseconds($i));
+                    $i=$i+1200; //delay in 20 mins each call
                     dispatch($job);
             }
 
