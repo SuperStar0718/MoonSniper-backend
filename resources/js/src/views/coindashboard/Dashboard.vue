@@ -1199,7 +1199,7 @@
                         <template #cell(current_price)="data">
                             <div v-if="data.value" class="text-center m-auto"
                                 :class="{'greenFlash':data.item.flash == 1,'redFlash ':data.item.flash ==2,'whiteFlash':data.item.flash ==3  }"
-                                style="width: 100px;">
+                                style="min-width: 100px;">
                                 ${{priceConversation(data.value)}}</div>
                         </template>
                         <template #cell(market_cap)="data">

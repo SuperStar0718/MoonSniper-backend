@@ -5,8 +5,6 @@ const data = [{
         title: null,
         thStyle: {
             'width': '50px',
-
-
         },
         label: '',
         stickyColumn: false,
