@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Libraries\CoinGecko\CoinGeckoClient;
-use App\Models\CoinsData;
-use App\Models\CoinsList;
-use App\Models\Exchange;
-use App\Models\ExchangeTicker;
-use App\Models\UnlockingPdf;
-use App\Notifications\NotifyTokenUnlockNotification;
-use Carbon\Carbon;
 use DateTime;
 use Exception;
+use Carbon\Carbon;
+use GuzzleHttp\Client;
+use App\Models\Exchange;
+use App\Models\CoinsData;
+use App\Models\CoinsList;
+use App\Models\UnlockingPdf;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\ExchangeTicker;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Libraries\CoinGecko\CoinGeckoClient;
+use App\Notifications\NotifyTokenUnlockNotification;
 
 class UnlockingController extends Controller
 {
@@ -332,6 +333,10 @@ class UnlockingController extends Controller
 
     public function dataFromUrl($c)
     {
+        $client = new Client();
+                $response = $client->get('https://www.coingecko.com/market_cap/total_charts_data?duration=7&locale=en&vs_currency=usd');
+               return $result = $response->getBody();
+              return$html = file_get_contents('https://www.coingecko.com/coins/1/sparkline');
         // $query = DB::table('coin_data');
 
         // return $query->whereRaw("(

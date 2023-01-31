@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use stdClass;
+use App\Models\User;
+use GuzzleHttp\Client;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
 use App\Models\Dashboard;
-use App\Models\ExchangeTicker;
-use App\Models\TradingVolumeHistory;
-use App\Models\User;
 use App\Models\UserColumn;
-use App\Models\UserFavorites;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\UserFavorites;
+use App\Models\ExchangeTicker;
 use Illuminate\Support\Facades\DB;
-use stdClass;
+use App\Models\TradingVolumeHistory;
+use Illuminate\Support\Facades\Auth;
 
 class Coingecko extends Controller
 {
@@ -204,15 +205,9 @@ class Coingecko extends Controller
     public function marketcapValues()
     {
         $url = 'https://www.coingecko.com/market_cap/total_charts_data?duration=7&locale=en&vs_currency=usd';
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15"));
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $result = curl_exec($ch);
-        curl_close($ch);
+        $client = new Client();
+        $response = $client->get($url );
+        $result = $response->getBody();
         $mcValues = json_decode($result, true);
         return response()->json(['status'=>true, 'mcValues'=>$mcValues]);
     }
@@ -249,15 +244,11 @@ class Coingecko extends Controller
                 break;
         }
         $url = 'https://www.coingecko.com/price_charts/' . $request->coingickoid . '/usd/' . $value . '';
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15"));
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $result = curl_exec($ch);
-        curl_close($ch);
+        
+          $client = new Client();
+                $response = $client->get($url );
+                $result = $response->getBody();
+    
         $data = json_decode($result, true);
         $apisData[$value] = $data;
         switch ($type) {
@@ -322,15 +313,9 @@ class Coingecko extends Controller
                 break;
         }
         $url = 'https://www.coingecko.com/market_cap/' . $request->coingickoid . '/usd/' . $value . '';
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15"));
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $result = curl_exec($ch);
-        curl_close($ch);
+        $client = new Client();
+                $response = $client->get($url );
+                $result = $response->getBody();
         $data = json_decode($result, true);
         $apisData[$value] = $data;
         switch ($type) {

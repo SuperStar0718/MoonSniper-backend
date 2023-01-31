@@ -133,7 +133,7 @@ const data = [{
             'width': '50px',
 
         },
-        label: 'Volume(24hrs%)',
+        label: 'Volume 24h%',
         stickyColumn: false,
         filterColumn: true,
         canHide: true,

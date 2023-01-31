@@ -119,12 +119,13 @@
                                     <span class="col-6 btcInoutVal" style="text-align:center;"
                                         :class="{'text-danger':fag.data.inoutper>0,'text-success-green':fag.data.inoutper<=0}">
 
-                                        24h <i class="bi bi-triangle-fill" style="font-size:13px;color:#ea5455;"
-                                            v-if="fag.data.inoutper<=-800000000"></i>
+                                        24h <i class="bi bi-triangle-fill" style="font-size:13px;color:#6BBE83;"
+                                            v-if="fag.data.inoutper<0"></i>
+                                            <!-- -800000000 -->
                                         <i class="bi bi-triangle-fill fag-inout "
-                                            style="font-size:13px;color:#6BBE83;rotate:-180deg" v-else></i>
+                                            style="font-size:13px;color:#ea5455;rotate:-180deg" v-else></i>
 
-                                        {{roundData2( fag.data.btcflowDif,1) }}k BTC
+                                        {{roundData3( fag.data.btcflowDif,1) }}k BTC
                                     </span>
                                     <span class="col-3">
 
@@ -250,20 +251,20 @@
 
                             </div>
                             <div>
-                                <b-button v-if="!locked" @click="lockedFilter"
+                                <b-button  @click="lockedFilter" :class="{'bg-danger text-danger':locked}"
                                     style="color:white; padding:5px; width:33px" variant="flat-success"
                                     title="Unlocking" v-ripple.400="'rgba(255, 255, 255,1)'" class="btn-icon -1 ">
                                     <feather-icon icon="UnlockIcon" size="20"
-                                        class="text-black cursor-pointer darkWhiteText" style="color:#28c76f; " />
+                                        class="text-black cursor-pointer darkWhiteText" style="color:#28c76f; " :class="{'bg-danger text-danger':locked}"/>
 
                                 </b-button>
-                                <b-button v-else @click="lockedFilter" style="color:white; padding:5px; width:33px"
+                                <!-- <b-button v-else @click="lockedFilter" style="color:white; padding:5px; width:33px"
                                     title="All Tokens" variant="flat-success" v-ripple.400="'rgba(255, 255, 255,1)'"
                                     class="btn-icon m1 ">
 
                                     <b-img class=" cursor-pointer rounded-full" width="25px" height="25px" fluid
                                         src="/images/static/noun-cryptocurrency-3262833.svg" />
-                                </b-button>
+                                </b-button> -->
 
                             </div>
 
@@ -1307,7 +1308,7 @@
                             <div v-if="data.value">
                                 <span v-if="data.value>= 0 "
                                     :class="{'text-danger':data.value>= 1 && data.value <= 2.49,'text-success-green' : data.value>= 2.51 && data.value <= 5 }">
-                                    {{ data.value }}
+                              {{twenty4HConversation(data.value)}}
                                 </span>
                             </div>
                         </template>
@@ -1982,7 +1983,7 @@
                                             <span class=""
                                                 :class="{'greenFlash':activeData.flash == 1,'redFlash':activeData.flash ==2,'whiteFlash':activeData.flash ==3}"
                                                 style="font-family: 'Poppins-Light'; font-style: normal;font-weight: 400; font-size: 20px;"
-                                                v-if="activeData.current_price && activeData.current_price>= 0">${{ roundData(activeData.current_price) }}
+                                                v-if="activeData.current_price && activeData.current_price>= 0">${{ priceConversation(activeData.current_price) }}
                                             </span>
                                         </div>
                                         <div class="d-flex m-auto">
@@ -1995,7 +1996,7 @@
                                                 </div>
                                                 <span
                                                     style=" display: inline-flex;
-                                                align-items: center;">{{ roundData(activeData.price_change_percentage_24h) }}%</span>
+                                                align-items: center;">{{ twenty4HConversation(activeData.price_change_percentage_24h) }}%</span>
 
                                             </span>
                                             <span v-else-if="activeData.price_change_percentage_24h"
@@ -2521,7 +2522,7 @@
 
                                                 </b-card>
                                             </div>
-                                            <div class="radius_gradient cursor-pointer" style="width:110px;"
+                                            <!-- <div class="radius_gradient cursor-pointer" style="width:110px;"
                                                 v-b-tooltip.hover.bottom="'Similar to Average Sentiment in regards to our library of terms, however Bearish Sentiment is specifically looking at Posts that are marked Bearish, 2.5 and below, and showing that over time.'">
                                                 <b-card title="" class="mx-auto innerCard text-center str_grey_gradient"
                                                     style="max-width:200px;">
@@ -2537,7 +2538,7 @@
                                                     </div>
 
                                                 </b-card>
-                                            </div>
+                                            </div> -->
 
                                             <div class="radius_gradient cursor-pointer" style="width:110px;"
                                                 v-b-tooltip.hover.bottom="'The 24 hours hashtags on social media'"
@@ -4665,6 +4666,11 @@
                     return parseFloat(val).toFixed(len);
                 }
             },
+            roundData3(val, len) {
+                if (val) {
+                    return Math.abs(parseFloat(val).toFixed(len))
+                }
+            },
             dateFormat2(val) {
                 let d = new Date(val)
                 if (!isNaN(d)) {
@@ -4885,16 +4891,27 @@
                     }).format(val);
             },
             priceConversation(val) {
-
-                if (1 > parseInt(val)) {
-                    return parseFloat(val).toFixed(6);
-                } else {
-                    val = parseFloat(val).toFixed(2);
+                let nval = 0.00;
+                if(parseFloat(val) >100)
+                {
+                    nval= parseFloat(val).toFixed(2);
+                }else if(parseFloat(val) >1.1 && parseFloat(val) <=100)
+                {
+                    nval= parseFloat(val).toFixed(2);
+                }else if(parseFloat(val) >0.5 && parseFloat(val) <=1.1)
+                {
+                    console.log(val)
+                    nval= parseFloat(val).toFixed(3);
+                }else if(parseFloat(val) >0.05 && parseFloat(val) <=0.5)
+                {
+                    nval= parseFloat(val).toFixed(4);
+                }else{
+                    nval= val;
+                }
                     return new Intl.NumberFormat('en-US', {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 15,
-                    }).format(val);
-                }
+                    }).format(nval);
 
             },
             twenty4HConversation(value) {
@@ -6126,7 +6143,7 @@
                             this.fields[0].filterColumn = false;
                             this.fields[24].filterColumn = true;
 
-                            this.fields[26].filterColumn = true;
+                            // this.fields[26].filterColumn = true;
                             this.fields[27].filterColumn = true;
                             this.fields[28].filterColumn = true;
                             this.fields[29].filterColumn = true;
@@ -6213,7 +6230,6 @@
                             this.fields[25].filterColumn = true;
                             this.fields[30].filterColumn = true;
                             this.fields[31].filterColumn = true;
-                            this.fields[26].filterColumn = true;
                             this.fields[27].filterColumn = true;
                             this.fields[28].filterColumn = true;
                             this.fields[29].filterColumn = true;

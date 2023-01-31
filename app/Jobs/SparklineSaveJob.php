@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use GuzzleHttp\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
@@ -34,13 +35,17 @@ class SparklineSaveJob implements ShouldQueue
     public function handle()
     {
         foreach ($this->coins as $key => $coin) {
+            $client = new Client();
+
             try {
-                $html = file_get_contents('https://www.coingecko.com/coins/'.$coin.'/sparkline');
+                $response = $client->get('https://www.coingecko.com/coins/'.$coin.'/sparkline');
+                $html  = $response->getBody();
                 Storage::put('public/sparklineicon/sparkline_'.$coin.'.svg', $html);
             } catch (\Throwable $th) {
                  sleep(20);
                  Log::info("Chart Data: $th");
-                 $html = file_get_contents('https://www.coingecko.com/coins/'.$coin.'/sparkline');
+                 $response = $client->get('https://www.coingecko.com/coins/'.$coin.'/sparkline');
+                 $html  = $response->getBody();
                  Storage::put('public/sparklineicon/sparkline_'.$coin.'.svg', $html);
                  
             }
