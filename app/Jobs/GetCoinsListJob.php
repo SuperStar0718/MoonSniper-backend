@@ -45,11 +45,20 @@ class GetCoinsListJob implements ShouldQueue
         //get all coins (to make sure we can update them):
         foreach ($coinsList as $item){
             if(!empty($item['id'])) {
+                if(!empty($item['platforms'])){
+                    $contracts = [];
+                    foreach ($item['platforms'] as $platform => $contract){
+                        $contracts[]=["platform"=>$platform, "contract_address" => $contract];
+                    }
+                    $contracts = json_encode($contracts);
+                }
+
                 $newCoinsArray[] = array(
                     'coin_id' => $item['id'],
                     'symbol' => strtoupper($item['symbol']),
                     'name' => $item['name'],
-                    'coin_platform' => implode("|", array_keys($item['platforms']))
+                    'coin_platform' => implode("|", array_keys($item['platforms'])),
+                    'contract_address' => $contracts ?? NULL
                 );
                 $newCoinsIds[] = $item['id'];
             }
@@ -90,10 +99,10 @@ class GetCoinsListJob implements ShouldQueue
         }
 
         //if needed to update?
-        /*CoinsList::massUpdate(
+        CoinsList::massUpdate(
             values : $newCoinsArray,
             uniqueBy : 'coin_id'
-        );*/
+        );
 
     }
 
