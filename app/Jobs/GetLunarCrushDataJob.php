@@ -55,10 +55,15 @@ class GetLunarCrushDataJob implements ShouldQueue
             'social_engagement',
             'average_sentiment',
             'historical_sentiment'
-        )->get();
+        )->orderBy('market_cap', 'desc')->get();
         $existing_symbols = [];
+        $symbol_added = [];
         foreach ($existing_symbols_list as $row) {
-            $existing_symbols[$row->symbol] = $row;
+            if(!in_array($row->symbol,$symbol_added)) {
+                $existing_symbols[$row->symbol] = $row;
+            }
+            //To make sure we add only once (ordered by the rank)
+            $symbol_added[] = $row->symbol;
         }
 
         // $existing_symbols = CoinsData::all()->pluck('historical_sentiment', 'symbol')->toArray();
@@ -94,7 +99,7 @@ class GetLunarCrushDataJob implements ShouldQueue
 
                 $coin = CoinsData::where('symbol', $symbol)->orderBy('market_cap', 'desc')->first();
 
-                if($current_hour < 12) {
+                //if($current_hour < 12) {
                 // historical sentiment
                 $decoded_historical_sentiment = json_decode($historical_sentiment);
                 if(!$decoded_historical_sentiment) {
@@ -163,7 +168,7 @@ class GetLunarCrushDataJob implements ShouldQueue
                 $coin->historical_sentiment=$historical_sentiment;
                 $coin->historical_social_mentions=$historical_social_mentions;
                 $coin->historical_social_engagement=$historical_social_engagement;
-                }
+                //}
 
                 $coin->average_sentiment=$average_sentiment;
                 $coin->social_mentions=$social_mentions;
