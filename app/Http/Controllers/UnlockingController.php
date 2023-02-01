@@ -3,20 +3,20 @@
 namespace App\Http\Controllers;
 
 use DateTime;
-use Exception;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
-use App\Models\Exchange;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
+use App\Models\ContractIcon;
 use App\Models\UnlockingPdf;
 use Illuminate\Http\Request;
-use App\Models\ExchangeTicker;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Jobs\StoreIconImageForContractIconJob;
 use Illuminate\Support\Facades\Auth;
-use App\Libraries\CoinGecko\CoinGeckoClient;
+use Illuminate\Support\Facades\Storage;
 use App\Notifications\NotifyTokenUnlockNotification;
+use Exception;
 
 class UnlockingController extends Controller
 {
@@ -333,51 +333,24 @@ class UnlockingController extends Controller
 
     public function dataFromUrl($c)
     {
-        $client = new Client();
-                $response = $client->get('https://www.coingecko.com/market_cap/total_charts_data?duration=7&locale=en&vs_currency=usd');
-               return $result = $response->getBody();
-              return$html = file_get_contents('https://www.coingecko.com/coins/1/sparkline');
-        // $query = DB::table('coin_data');
-
-        // return $query->whereRaw("(
-        //     coin_data.`next_unlock_date`
-        //      IS NOT NULL OR coin_data.`next_unlock_date_text`
-        //       IS NOT NULL OR coin_data.`total_locked_percent` 
-        //       IS NOT NULL OR coin_data.`next_unlock_percent` 
-        //       IS NOT NULL  OR coin_data.`next_unlock_number_of_tokens`
-        //        IS NOT NULL OR coin_data.`next_unlock_percent_of_tokens` 
-        //        IS NOT NULL OR coin_data.`next_unlock_size` 
-        //        IS NOT NULL OR coin_data.`first_vc_unlock`
-        //         IS NOT NULL OR coin_data.`end_vc_unlock` 
-        //         IS NOT NULL OR coin_data.`first_vc_unlock_text` 
-        //         IS NOT NULL OR coin_data.`end_vc_unlock_text`
-        //          IS NOT NULL OR coin_data.`three_months_unlock_number_of_tokens`
-        //           IS NOT NULL OR coin_data.`three_months_unlock_percent_of_tokens`
-        //            IS NOT NULL OR coin_data.`three_months_unlock_size` 
-        //            IS NOT NULL OR coin_data.`six_months_unlock_number_of_tokens`
-        //             IS NOT NULL OR coin_data.`six_months_unlock_percent_of_tokens`
-        //              IS NOT NULL OR coin_data.`six_months_unlock_size` IS NOT NULL)")->get();
-
-          $clearUnlock =  CoinsData::where('next_unlock_date', '<', Carbon::now())->get();
-     return   $clearUnlock =  CoinsData::where('next_unlock_date', '<', Carbon::now())
-        ->update([
-            'next_unlock_date' => null,
-            'next_unlock_date_text' => null,
-            'total_locked_percent' => null,
-            'next_unlock_percent' => null,
-            'next_unlock_number_of_tokens' => null,
-            'next_unlock_percent_of_tokens' => null,
-            'next_unlock_size' => null,
-            'end_vc_unlock' => null,
-            'first_vc_unlock_text' => null,
-            'end_vc_unlock_text' => null,
-            'three_months_unlock_number_of_tokens' => null,
-            'three_months_unlock_percent_of_tokens' => null,
-            'three_months_unlock_size' => null,
-            'six_months_unlock_number_of_tokens' => null,
-            'six_months_unlock_percent_of_tokens' => null,
-            'six_months_unlock_size' => null,
-            ]);
+        $coins = CoinsList::select('contract_address')->get();
+        $ContractArray = array();
+        foreach ($coins as $key => $value) {
+            if ($value->contract_address) {
+                $newArray = json_decode($value->contract_address);
+                $ContractArray = array_merge($ContractArray, $newArray);
+            }
+        }
+        $filtered = array_intersect_key($ContractArray, array_unique(array_column($ContractArray, 'platform')));
+        $inertbleArray = array();
+        $chunks =  array_chunk($filtered,10);
+        $t = 0;
+        foreach ($chunks as $key => $chunk) {
+            $job = (new StoreIconImageForContractIconJob($chunk))->onQueue('moon-sniper-worker')->delay(now()->addseconds($t));
+            $t = $t+60;
+            dispatch($job);
+        }
+        
 
     }
     public static function getBetween2($content, $start, $end)
