@@ -2037,7 +2037,7 @@
                                                         :key="index"
                                                         style="display:block; padding: 2px; border-radius: 20px;">
                                                         <div class="d-flex">
-                                                            <b-avatar v-if="activeData.image" :src="'/storage/contract/'+address.platform+'.png'" fluid
+                                                            <b-avatar v-if="activeData.image" :src="'/storage/contracts/'+address.platform+'.png'" fluid
                                                                 alt="" style="margin-right:5px; height:30px;     position: relative;
                                                                     bottom: 4px;    margin: auto;" />
                                                             <div style="font-family: 'Poppins-Light'; display:inline-block;
@@ -2092,7 +2092,7 @@
                                                     <div class="darkBackgroundBlack"
                                                         v-for="(address,index) in activeData.contract_address"
                                                         :key="index" style="display:flex; padding: 4px;">
-                                                        <b-avatar v-if="activeData.image" :src="'/storage/contract/'+address.platform+'.png'" fluid
+                                                        <b-avatar v-if="activeData.image" :src="'/storage/contracts/'+address.platform+'.png'" fluid
                                                             :alt="address.platform" :text="address.platform.charAt(0)"
                                                             style="margin-right:5px; height:30px; " />
                                                         <div class="" style="font-family: 'Poppins-Light'; display:inline-block; font-style: normal;
