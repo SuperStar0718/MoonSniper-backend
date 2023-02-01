@@ -48,7 +48,7 @@ class StoreIconImageForContractIconJob implements ShouldQueue
                try{
                 $response = $client->get($coinImage->image);
                 $html = $response->getBody();
-                $iconname = $value->platform . '.' . $extension;
+                $iconname = $value->platform . '.png';
                 Storage::put('public/contracts/' . $iconname, $html);
                }catch(Exception $e){
                }
