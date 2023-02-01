@@ -12,7 +12,6 @@ use App\Models\UnlockingPdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Jobs\StoreIconImageForContractIconJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Notifications\NotifyTokenUnlockNotification;
@@ -344,11 +343,40 @@ class UnlockingController extends Controller
         $filtered = array_intersect_key($ContractArray, array_unique(array_column($ContractArray, 'platform')));
         $inertbleArray = array();
         $chunks =  array_chunk($filtered,10);
-        $t = 0;
+
         foreach ($chunks as $key => $chunk) {
-            $job = (new StoreIconImageForContractIconJob($chunk))->onQueue('moon-sniper-worker')->delay(now()->addseconds($t));
-            $t = $t+60;
-            dispatch($job);
+            foreach ($chunk as $key => $value) {
+                $coinImage = CoinsList::leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
+                    ->Where('coins.coin_id', 'like', '%' . $value->platform . '%')
+                    ->select('coin_data.image')->first();
+                $iconname = '';
+                if ($coinImage) {
+                    $coinImage->image;
+                    $extension = pathinfo(parse_url($coinImage->image, PHP_URL_PATH), PATHINFO_EXTENSION);
+                    $client = new Client();
+                   try{
+                    $response = $client->get($coinImage->image);
+                    $html = $response->getBody();
+                    $iconname = $value->platform . '.' . $extension;
+                    Storage::put('public/contract/' . $iconname, $html);
+                   }catch(Exception $e){
+                   }
+                }
+                $inertArray = array(
+                    'platform' => $value->platform,
+                    'icon' => $iconname,
+                );
+                    $inertbleArray[] = $inertArray;
+
+            }
+            try {
+                ContractIcon::insert(
+                    $inertbleArray
+                );
+            } catch (\Exception$exception) {
+              return $exception;
+            }
+          
         }
         
 
