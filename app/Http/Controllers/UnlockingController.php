@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DateTime;
+use Exception;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\CoinsData;
@@ -11,11 +12,12 @@ use App\Models\ContractIcon;
 use App\Models\UnlockingPdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Libraries\CoinGecko\CoinGeckoClient;
 use App\Notifications\NotifyTokenUnlockNotification;
-use Exception;
 
 class UnlockingController extends Controller
 {
@@ -329,9 +331,222 @@ class UnlockingController extends Controller
             $this->strposX($haystack, $needle, $number - 1) + strlen($needle) : 0
         );
     }
+    private function tryPushingToDB($arr,$iterates=0){
+        //if its too many records, lets split it...
+        foreach (array_chunk($arr,1000) as $t) {
+            try {
+                //if there is a duplication order id from any reason, continue...
+                CoinsList::insert($t);
+                //Log::info("Finance Data has Pushed");
+            } catch
+            (\Exception $e) {
+                //Log should be added here
+                Log::info('PROBLEM:' . $e);
 
+                Log::info('Trying Again!');
+
+                if ($iterates < 20) {
+                    //Check what is happening?
+
+                    $iterates++;
+                    //Call again:
+                    $this->tryPushingToDB($t,$iterates);
+                } else {
+                    Log::info('Im giving up :(');
+                }
+
+            }
+        }
+    }
     public function dataFromUrl($c)
     {
+        $client = new CoinGeckoClient(false);
+        $coinsList = $client->coins()->getList();
+        $coinsList = collect($coinsList);
+
+        $newCoinsArray = array();
+        $newCoinsIds = array();
+
+        //get all coins (to make sure we can update them):
+        foreach ($coinsList as $item){
+            if(!empty($item['id'])) {
+                if(!empty($item['platforms'])){
+                    $contracts = [];
+                    foreach ($item['platforms'] as $platform => $contract){
+                        $contracts[]=["platform"=>$platform, "contract_address" => $contract];
+                    }
+                    $contracts = json_encode($contracts);
+                }
+
+                $newCoinsArray[] = array(
+                    'coin_id' => $item['id'],
+                    'symbol' => strtoupper($item['symbol']),
+                    'name' => $item['name'],
+                    'coin_platform' => implode("|", array_keys($item['platforms'])),
+                    'contract_address' => $contracts ?? NULL
+                );
+                $newCoinsIds[] = $item['id'];
+            }
+        }
+
+
+        // first get ids from table
+        $exist_ids = CoinsList::all('coin_id')->pluck('coin_id')->toArray();
+
+        // get updatable ids//$updatable_ids = array_values(array_intersect($exist_ids, $newCoinsIds));
+
+        // get insertable ids
+         $insertable_ids = array_filter(array_values(array_diff($newCoinsIds, $exist_ids)));
+
+        $purge_ids = array_filter(array_values(array_diff($exist_ids, $newCoinsIds)));
+
+        // prepare data for insert
+        $data = collect();
+
+        //Push new coins (if any):
+            
+             $collection = collect($coinsList);
+        foreach ($insertable_ids as $key => $coinId) {
+             $filteredArray = $collection->filter(function ($item) use ($coinId)  {
+                return $item['id'] === $coinId;
+            })->toArray();
+            $filteredArray = array_values($filteredArray);
+            $result = isset($filteredArray[0]) ? $filteredArray[0] : null;
+            if($result){
+                $data->push([
+                    'coin_id' => $result['id'],
+                    'symbol' => strtoupper($result['symbol']),
+                    'name' => $result['name'],
+                    'coin_platform' => implode("|", array_keys($result['platforms'])),
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+                
+        }
+
+        //first add all needed new items to db:
+        $this->tryPushingToDB($data->toArray());
+
+        //Then, lets get rid the old dead tokens:
+        foreach ($purge_ids as $to_delete){
+            CoinsList::where('coin_id', $to_delete)->delete();
+        }
+
+        //if needed to update?
+        CoinsList::massUpdate(
+            values : $newCoinsArray,
+            uniqueBy : 'coin_id'
+        );
+
+
+        return $newCoinsArray;
+
+        $jsonData = file_get_contents('https://token.unlocks.app/');
+        $data = $this->getBetween($jsonData, 'type="application/json">', '</script>');
+        $data1 = json_decode($data);
+       foreach ($data1->props->pageProps->info->data as $key => $value) {
+        if($value->token->name == '1inch')
+        {
+           return $coin = CoinsList::where('name', $value->token->name)->where('coins.symbol', $value->token->symbol)->first();
+            if ($value->token->coingeckoId) {
+                if (!$coin) {
+                    $newCoin = new CoinsList();
+                    $newCoin->coin_id = $value->token->coingeckoId;
+                    $newCoin->symbol = $value->token->symbol;
+                    $newCoin->name = $value->token->name;
+                    $newCoin->trading_history_flag = 0;
+                    $newCoin->save();
+                    $coin = $newCoin;
+                }
+                $coinData = CoinsData::where('coin_id', $coin->coin_id)->where('symbol', $value->token->symbol)->first();
+                if ($coinData) {
+                    $coinData->current_price = $value->token->price;
+                    $coinData->fully_diluted_valuation = $value->token->fullyDiluted;
+                    $coinData->market_cap = $value->token->marketCap;
+                    $coinData->max_supply = $value->token->maxSupply;
+                    $coinData->total_locked = $value->totalLockedAmount;
+                    $coinData->circulating_supply = $value->token->circulatingSupply;
+                    if ($value->token->maxSupply != 0) {
+                        $tokenPer = ($value->totalLockedAmount / $value->token->maxSupply) * 100;
+                        if ($tokenPer >= 0 && $tokenPer <= 8) {
+                            $coinData->next_unlock_size = 'SMALL';
+                        } else if ($tokenPer > 8 && $tokenPer <= 14) {
+                            $coinData->next_unlock_size = 'MEDIUM';
+                        } else if ($tokenPer > 14) {
+                            $coinData->next_unlock_size = 'BIG';
+                        }
+                        $coinData->total_locked_percent = $tokenPer;
+
+                    }
+                    if ($value->nextEventData != null) {
+                        $coinData->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
+                        $coinData->next_unlock_number_of_tokens = $value->nextEventData->amount;
+                        if($value->token->maxSupply != 0 || $coinData->circulating_supply !=0)
+                        {
+                            $nextUnlockPer = $coinData->next_unlock_number_of_tokens  / ($value->token->maxSupply?$value->token->maxSupply:$coinData->circulating_supply) * 100;
+                            $coinData->next_unlock_percent_of_tokens = $nextUnlockPer;
+                        }
+                        $coinData->vesting_status = 0;
+
+                    }
+                   
+                    $coinData->save();
+                } else {
+                    $coinData = new CoinsData();
+                    $coinData->coin_id = $value->token->coingeckoId;
+                    $coinData->image = $value->token->icon;
+                    $coinData->symbol = $value->token->symbol;
+                    $coinData->circulating_supply = $value->token->circulatingSupply;
+                    $coinData->current_price = $value->token->price;
+                    $coinData->fully_diluted_valuation = $value->token->fullyDiluted;
+                    $coinData->market_cap = $value->token->marketCap;
+                    $coinData->market_cap = $value->token->marketCap;
+                    $coinData->max_supply = $value->token->maxSupply;
+                    $coinData->total_locked = $value->totalLockedAmount;
+                    if ($value->token->maxSupply != 0) {
+                        $tokenPer = ($value->totalLockedAmount / $value->token->maxSupply) * 100;
+                        if ($tokenPer >= 0 && $tokenPer <= 8) {
+                            $coinData->next_unlock_size = 'SMALL';
+                        } else if ($tokenPer > 8 && $tokenPer <= 14) {
+                            $coinData->next_unlock_size = 'MEDIUM';
+                        } else if ($tokenPer > 14) {
+                            $coinData->next_unlock_size = 'BIG';
+                        }
+                        $coinData->total_locked_percent = $tokenPer;
+
+                    }
+                    if ($value->nextEventData != null) {
+                        $coinData->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
+                        $coinData->next_unlock_number_of_tokens = $value->nextEventData->amount;
+                        $coinData->vesting_status = 0;
+
+                    }
+                    
+                    if ($value->nextEventData != null) {
+                        $coinData->next_unlock_date = Carbon::parse($value->nextEventData->beginDate);
+                        $coinData->next_unlock_number_of_tokens = $value->nextEventData->amount;
+                        if($value->token->maxSupply != 0 || $coinData->circulating_supply != 0)
+                        {
+                            $nextUnlockPer = $coinData->next_unlock_number_of_tokens  / ($value->token->maxSupply?$value->token->maxSupply:$coinData->circulating_supply) * 100;
+                            $coinData->next_unlock_percent_of_tokens = $nextUnlockPer;
+                        }
+                        $coinData->vesting_status = 0;
+
+                    }
+                    /*
+                     * Removed (Automatically overwrite the fields!)
+                     * $coinData2->historical_sentiment = '[]';
+                    $coinData2->historical_social_mentions = '[]';
+                    $coinData2->historical_social_engagement = '[]';*/
+
+                    $coinData->save();
+                }
+
+            }
+        }
+       
+    }
         $coins = CoinsList::select('contract_address')->get();
         $ContractArray = array();
         foreach ($coins as $key => $value) {

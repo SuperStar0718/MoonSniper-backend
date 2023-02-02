@@ -74,25 +74,30 @@ class GetCoinsListJob implements ShouldQueue
         $insertable_ids = array_filter(array_values(array_diff($newCoinsIds, $exist_ids)));
 
         $purge_ids = array_filter(array_values(array_diff($exist_ids, $newCoinsIds)));
-
         // prepare data for insert
         $data = collect();
-
         //Push new coins (if any):
-        foreach ($insertable_ids as $key => $coinId) {
-                $data->push([
-                    'coin_id' => $coinsList[$key]['id'],
-                    'symbol' => strtoupper($coinsList[$key]['symbol']),
-                    'name' => $coinsList[$key]['name'],
-                    'coin_platform' => implode("|", array_keys($coinsList[$key]['platforms'])),
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]);
-        }
-
+            $collection = collect($coinsList);
+            foreach ($insertable_ids as $key => $coinId) {
+                 $filteredArray = $collection->filter(function ($item) use ($coinId)  {
+                    return $item['id'] === $coinId;
+                })->toArray();
+                $filteredArray = array_values($filteredArray);
+                $result = isset($filteredArray[0]) ? $filteredArray[0] : null;
+                if($result){
+                    $data->push([
+                        'coin_id' => $result['id'],
+                        'symbol' => strtoupper($result['symbol']),
+                        'name' => $result['name'],
+                        'coin_platform' => implode("|", array_keys($result['platforms'])),
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+                    
+            }
         //first add all needed new items to db:
         $this->tryPushingToDB($data->toArray());
-
         //Then, lets get rid the old dead tokens:
         foreach ($purge_ids as $to_delete){
             CoinsList::where('coin_id', $to_delete)->delete();
