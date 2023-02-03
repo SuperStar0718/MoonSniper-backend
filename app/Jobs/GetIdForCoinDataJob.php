@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use DOMXPath;
 use DOMDocument;
+use GuzzleHttp\Client;
 use App\Models\CoinsData;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -34,7 +35,9 @@ class GetIdForCoinDataJob implements ShouldQueue
      */
     public function handle()
     {
-        $html = file_get_contents('https://www.coingecko.com/?page=1');
+        $client = new Client();
+        $response = $client->get('https://www.coingecko.com/?page=1');
+        $html  = $response->getBody();
         $pagination = $this->getBetween($html, '<ul class="pagination">', '</ul>');
         $docPage = new DOMDocument();
         $docPage->loadHTML($pagination);
@@ -46,7 +49,8 @@ class GetIdForCoinDataJob implements ShouldQueue
         $updated =[];
 
         for ($j=1; $j <= $totalPages ; $j++) { 
-            $html = file_get_contents('https://www.coingecko.com/?page='.$j.'');
+            $response = $client->get('https://www.coingecko.com/?page='.$j.'');
+            $html  = $response->getBody();
             $data = $this->getBetween($html, '<tbody', '</tbody>');
             $doc = new DOMDocument();
             $doc->loadHTML($data);

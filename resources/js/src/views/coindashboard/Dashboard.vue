@@ -4353,7 +4353,6 @@
         },
         methods: {
             drag(evt) {
-                console.log(evt);
             },
             checkToolTipExist(id) {
 
@@ -4900,7 +4899,6 @@
                     nval= parseFloat(val).toFixed(2);
                 }else if(parseFloat(val) >0.5 && parseFloat(val) <=1.1)
                 {
-                    console.log(val)
                     nval= parseFloat(val).toFixed(3);
                 }else if(parseFloat(val) >0.05 && parseFloat(val) <=0.5)
                 {
@@ -5475,7 +5473,6 @@
                             if (isNaN(nt)) {
                                 nt = 0.0;
                             }
-                            console.log(ms, nt, total_locked);
                             var val1 = Math.max(((total_locked / ms) * 100), 0.0);
                             var val2 = nt / ms * 100;
                             var val3 = Math.max((100 - val1 - val2), 0.0);
@@ -6696,7 +6693,7 @@
     }
 
     #dashboard .b-table-1 tr {
-        height: 60px;
+        height: 30px;
     }
 
     .AppExtensionMode #dashboard .b-table-1 tbody tr {
@@ -6951,7 +6948,8 @@
         font-style: normal;
         font-weight: 400;
         font-size: 15px;
-        background: linear-gradient(172deg, rgba(43, 255, 77, 0.3) 3.11%, rgba(0, 0, 0, 0) 20.06%), rgba(255, 255, 255, 0.07);
+       /* background: linear-gradient(172deg, rgba(43, 255, 77, 0.3) 3.11%, rgba(0, 0, 0, 0) 20.06%), rgba(255, 255, 255, 0.07); */
+        background: linear-gradient(163deg, rgba(43, 255, 76, 0.3) 1.11%, rgba(0, 0, 0, 0) 6.06%), rgba(255, 255, 255, 0.07);
         position: relative;
     }
 
@@ -6998,7 +6996,11 @@
         border-top-left-radius: 50em;
         border-bottom-left-radius: 50em;
     }
-
+    #dashboard .table td {
+        padding: 0.72rem 2rem;
+        border-top: 2px solid #ebe9f1;
+        padding: 2px 0 ;
+    }
     tr td:last-child {
         border-top-right-radius: 50em;
         border-bottom-right-radius: 50em;
@@ -7630,7 +7632,7 @@
     .AppExtensionMode #modal-filters .modal-dialog {
         max-width: 769px;
     }
-
+        
 </style>
 
 <style lang="scss">
