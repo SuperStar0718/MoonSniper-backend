@@ -188,7 +188,7 @@ const data = [{
         index: 13,
         no: 12,
         title: null,
-        label: 'ATH change %',
+        label: 'ATH %',
         thStyle: {
             'width': '50px',
 
@@ -196,7 +196,8 @@ const data = [{
         stickyColumn: false,
         filterColumn: false,
         canHide: true,
-        visible: 1
+        visible: 1,
+        title:'All Time High %'
     },
     {
         key: 'ath_date',
@@ -211,7 +212,8 @@ const data = [{
         stickyColumn: false,
         filterColumn: false,
         canHide: true,
-        visible: 1
+        visible: 1,
+        title:'All Time High Date'
     },
 
     {
@@ -234,7 +236,7 @@ const data = [{
         index: 16,
         no: 15,
         title: null,
-        label: 'ATL change %',
+        label: 'ATL %',
         thStyle: {
             'width': '50px',
 
@@ -242,7 +244,8 @@ const data = [{
         stickyColumn: false,
         filterColumn: false,
         canHide: true,
-        visible: 1
+        visible: 1,
+        title:'All Time Low %'
     },
     {
         key: 'atl_date',
@@ -257,7 +260,8 @@ const data = [{
         stickyColumn: false,
         filterColumn: false,
         canHide: true,
-        visible: 1
+        visible: 1,
+        title:'All Time Low Date'
     },
     {
         key: 'roi_times',

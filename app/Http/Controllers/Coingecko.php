@@ -97,7 +97,7 @@ class Coingecko extends Controller
                 if (!(intval($data[$data_index]->market_cap_rank) >= 1 && intval($data[$data_index]->market_cap_rank) <= 5)) {
                     $data[$data_index]->seed_price = "********";
                     $data[$data_index]->roi_seed = "********";
-                    $data[$data_index]->total_locked = "********";
+                    // $data[$data_index]->total_locked = "********";
                     $data[$data_index]->next_unlock_date = "********";
                     $data[$data_index]->next_unlock_date_text = "********";
                     $data[$data_index]->next_unlock_number_of_tokens = "********";

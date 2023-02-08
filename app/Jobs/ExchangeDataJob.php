@@ -47,14 +47,6 @@ class ExchangeDataJob implements ShouldQueue
             }
         DB::table('exchanges')
         ->update(['flag' => 0]);
-        $tickers = Exchange::where('flag', 0)->get()->toArray();
-        $time = 0;
-        foreach (array_chunk($tickers,5) as $tick) {
-            $job = new ExchangeTickersJob($tick);
-            dispatch($job)->onQueue('moon-sniper-worker')->delay($time);
-            $time = $time + 60;
-        }
-          
-
+            ExchangeTickersJob::dispatch()->onQueue('moon-sniper-worker-long');
     }
 }

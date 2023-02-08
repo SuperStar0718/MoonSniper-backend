@@ -1,6 +1,6 @@
 <template>
     <div id="dashboard">
-        <b-overlay :show="fagLoad" rounded="sm" class="pt-1 DashboardHeader" style="">
+        <b-overlay :show="fagLoad" rounded="sm" class="pt-1 DashboardHeader" variant="dark" style="">
 
             <!-- graph -->
             <b-row class="FGCharts" style="">
@@ -859,7 +859,7 @@
                         background: linear-gradient(90deg, rgba(248,248,248, 0) 0%, rgba(248,248,248, 1) 100%);">
 
                 </div>
-                <b-overlay :show="isBusy" rounded="sm">
+                <b-overlay variant="dark" :show="isBusy" rounded="sm">
 
                     <b-table sticky-header :no-border-collapse="true" tbody-tr-class="cursor-pointer box rounded-pill "
                         :show-empty="showEmpty" :busy="isBusy" :empty-text="emptyText" class="b-table-1"
@@ -947,7 +947,7 @@
                         </template>
 
                         <template #cell(coin_description)="data">
-                            <div v-b-tooltip.hover.bottom.html="data.value" class="d-flex text-center" v-if="data.value"
+                            <div v-b-tooltip.hover.bottom.html="removeAnchorTags(data.value)"  class="d-flex text-center" v-if="data.value"
                                 v-html="data.value.substring(0,20)">
 
                             </div>
@@ -977,8 +977,7 @@
                                     <div class="extn-flex">
                                         <div class="text-nowrap text-truncate extn-name"
                                             style="float: left; max-width: 100px; font-weight: 600;">
-                                            <b
-                                                v-b-tooltip.hover.bottom.html="!fields[6].filterColumn?data.item.coin_description:''">{{ data.value.substring(0,8)}}</b>
+                                            <b>{{ data.value.substring(0,8)}}</b>
                                             <b style="font-weight: 400;" :title="data.value"
                                                 v-if="data.value.length >8">...</b>
 
@@ -1941,7 +1940,7 @@
 
                 </div>
                 <!-- <app-collapse accordion> -->
-                <b-overlay :show="!detailsModalLoaded" rounded="sm">
+                <b-overlay variant="dark" :show="!detailsModalLoaded" rounded="sm">
                     <div class="details-modal-container" v-if="detailsModalLoaded">
                         <div class="w-full justify-content-between d-flex" style="margin-top: 10px; margin-left: 10px;">
                             <div class="d-inline">
@@ -3143,7 +3142,7 @@
             :title="'New alert for: '+activeData.name">
             <div class="">
                 <template>
-                    <b-overlay :show="!NotificationModal" rounded="sm">
+                    <b-overlay  variant="dark" :show="!NotificationModal" rounded="sm">
                         <div class="details-modal-container" v-if="NotificationModal">
                             <div class="d-flex flex-wrap justify-content-around">
                                 <div class="d-flex">
@@ -5455,8 +5454,11 @@
                                 MSdiff = (this.activeData.max_supply!= null ? this.activeData.max_supply : this
                                     .activeData.total_supply) - this.activeData.circulating_supply;
                             }
+                            console.log(this.activeData.total_locked)
                             var total_locked = parseFloat(this.activeData.total_locked != null ? this.activeData
                                 .total_locked : MSdiff);
+                            console.log(total_locked)
+
                                 
                             var ms = parseFloat(this.activeData.max_supply ? this.activeData.max_supply : this
                                 .activeData.total_supply);
@@ -5476,7 +5478,7 @@
                             var val1 = Math.max(((total_locked / ms) * 100), 0.0);
                             var val2 = nt / ms * 100;
                             var val3 = Math.max((100 - val1 - val2), 0.0);
-
+                            console.log([val1, val3, val2])
                             this.supplyChart.series = [val1, val3, val2];
                             this.showSupplychart = true;
 
@@ -6259,6 +6261,17 @@
                     return text = htmlDoc.body.innerText;
                 }
 
+            },
+            removeAnchorTags(html)
+            {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+                const links = doc.querySelectorAll("a");
+                let text = html;
+                links.forEach(link => {
+                text = text.replace(link.outerHTML, link.textContent);
+                });
+                return  text;
             },
             loadEthGasValues() {
                 axios.

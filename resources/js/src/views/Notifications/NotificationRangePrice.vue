@@ -21,7 +21,7 @@
         <div class="w-75" style="padding-left: 22px;
         margin-top: 6px;">
             <div @click="dragSlider">
-                <vue-slider  :interval="sliderInterVal"  :tooltip-formatter="formatterRange"  @drag-end="dragSlider" :min="-30" :max="30"
+                <vue-slider  :interval="sliderInterVal"  :tooltip-formatter="formatterRange"  @drag-end="dragSlider" :min="-100" :max="100"
                     v-model="value2" class="mb-2" />
             </div>
         </div>
@@ -132,8 +132,8 @@
                 } else if (this.item == 4) {
                     vdata = this.valueData.market_cap;
                 }
-                let min = parseFloat(vdata) - (parseFloat(vdata) * 30 / 100)
-                let max = parseFloat(vdata) + (parseFloat(vdata) * 30 / 100)
+                let min = parseFloat(vdata) - (parseFloat(vdata) * 100 / 100)
+                let max = parseFloat(vdata) + (parseFloat(vdata) * 100 / 100)
                 max = max.toFixed(this.sliderInterVal2);
                 min = min.toFixed(this.sliderInterVal2);
 
@@ -161,8 +161,8 @@
                 } else if (this.item == 4) {
                     vdata = this.valueData.market_cap;
                 }
-                let min = parseFloat(vdata) - (parseFloat(vdata) * 30 / 100)
-                let max = parseFloat(vdata) + (parseFloat(vdata) * 30 / 100)
+                let min = parseFloat(vdata) - (parseFloat(vdata) * 100 / 100)
+                let max = parseFloat(vdata) + (parseFloat(vdata) * 100 / 100)
                 max = max.toFixed(this.sliderInterVal2);
                 min = min.toFixed(this.sliderInterVal2);
                 if (this.value1[1] != null && this.value1[1] != '') {
@@ -255,7 +255,7 @@
                 } else if (this.item == 4) {
                     vdata = this.valueData.market_cap;
                 }
-                return (-30 / parseFloat(vdata)) * 100
+                return (-100 / parseFloat(vdata)) * 100
 
             },
             maxvalue() {
@@ -265,7 +265,7 @@
                 } else if (this.item == 4) {
                     vdata = this.valueData.market_cap;
                 }
-                return (30 / parseFloat(vdata)) * 100
+                return (100 / parseFloat(vdata)) * 100
 
             },
             sliderInterVal()
