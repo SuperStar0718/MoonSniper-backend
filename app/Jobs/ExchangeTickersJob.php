@@ -16,13 +16,16 @@ use Illuminate\Support\Facades\Log;
 class ExchangeTickersJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    private $tickers;
+    
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($tickers)
     {
+        $this->tickers = $tickers;
     }
     /**
      * Execute the job.
@@ -32,11 +35,10 @@ class ExchangeTickersJob implements ShouldQueue
     public function handle()
     {
         $client = new CoinGeckoClient(false);
-        $tickers = Exchange::where('flag', 0)->limit(10)->get();
-        if (count($tickers) > 0) {
+        if (count($this->tickers) > 0) {
             try {
-                foreach ($tickers as $key => $value) {
-                        $tickerData = $client->exchanges()->getExchange($value->exchangeid);
+                foreach ($this->tickers as $key => $value) {
+                        $tickerData = $client->exchanges()->getTickers($value->exchangeid,['page'=>1]);
                         $deleteDickers = ExchangeTicker::where('exchange_id',$value->exchangeid)->delete();
                         foreach ($tickerData['tickers'] as $key => $valueTicker) {
                             if ($valueTicker['trust_score'] == 'green') {

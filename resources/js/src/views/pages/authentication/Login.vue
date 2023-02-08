@@ -287,7 +287,7 @@
                                     var expires = new Date();
                                     expires.setTime(expires.getTime() + 31536000000); //1 year  
                                     document.cookie = `token=${response.data.accessToken}` +
-                                        ';expires=' + expires.toUTCString();;
+                                        ';expires=' + expires.toUTCString();
                                     this.$toast({
                                         component: ToastificationContent,
                                         position: 'top-right',
