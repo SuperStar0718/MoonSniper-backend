@@ -44,7 +44,7 @@ class GetCoinsListJob implements ShouldQueue
 
         //get all coins (to make sure we can update them):
         foreach ($coinsList as $item){
-            $contracts = [];
+            $contracts = NULL;
             if(!empty($item['id'])) {
                 if(!empty($item['platforms'])){
                     foreach ($item['platforms'] as $platform => $contract){
