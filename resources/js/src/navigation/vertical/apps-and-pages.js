@@ -127,6 +127,29 @@ export default [
         resource: 'Unlocking',
         action: 'read'
     },
+    {
+        title: 'Launchpad',
+        icon: 'DatabaseIcon',
+        children: [
+
+            {
+                title: 'Launchpad list',
+                route: 'launchpad-list',
+                resource: 'Launchpad',
+                action: 'read'
+            },
+      
+            {
+                title: 'Edit Launchpad Data',
+                route: 'edit-launchpad-coin',
+                resource: 'LaunchpadListEdit',
+                action: 'read'
+            },
+
+        ],
+        resource: 'Launchpad',
+        action: 'read'
+    },
      {
         title: 'Alerts',
         icon: 'BellIcon',

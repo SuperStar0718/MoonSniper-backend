@@ -162,7 +162,7 @@ class Coingecko extends Controller
     public function loadVisibleFileds(Request $request)
     {
         $Columns = UserColumn::where('user_id', '=', Auth::user()->id)->where('mode', '=', $request->mode)->first();
-        $OrderColumns = UserColumn::where('user_id', '=', Auth::user()->id)->where('mode', '=', 'order')->first();
+        $OrderColumns = UserColumn::where('user_id', '=', Auth::user()->id)->where('mode', '=',  $request->orderMode)->first();
         if ($Columns) {
             $columnsObject = json_decode($Columns->columns);
             return response()->json(['status' => true, 'fields' => $columnsObject, 'mode' => $Columns->mode,'orderColumns'=>$OrderColumns]);
@@ -356,7 +356,7 @@ class Coingecko extends Controller
         } else {
             $Columns = new UserColumn();
             $Columns->columns =  json_encode($request->keyArray);
-            $Columns->mode = 'order';
+            $Columns->mode =$request->mode;
             $Columns->user_id = Auth::user()->id;
             $Columns->save();
         }

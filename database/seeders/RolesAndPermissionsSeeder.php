@@ -20,12 +20,17 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // create permissions
         $dashboard = json_encode(["action" => "read", "subject" => "Dashboard"]);
+        $dashboard = json_encode(["action" => "read", "subject" => "Dashboard"]);
         $profile = json_encode(["action" => "read", "subject" => "Profile"]);
         $unauth = json_encode(["action" => "read", "subject" => "Unautherize"]);
         $unlocking = json_encode(["action" => "read", "subject" => "Unlocking"]);
         $calculator = json_encode(["action" => "read", "subject" => "Calculator"]);
         $users = json_encode(["action" => "read", "subject" => "Users"]);
         $managemenu = json_encode(["action" => "read", "subject" => "Managemenu"]);
+        $userprofile = json_encode(["action" => "read", "subject" => "User-Profile"]);
+        $alert = json_encode(["action" => "read", "subject" => "Alert"]);
+        $launchpad = json_encode(["action" => "read", "subject" => "Launchpad"]);
+        $launchpadListEdit = json_encode(["action" => "read", "subject" => "LaunchpadListEdit"]);
         $all = json_encode(["action" => "manage", "subject" => "all"]);
         // $permission = new  Permission;
         // $permission->name = 'Dashboard';
@@ -58,6 +63,7 @@ class RolesAndPermissionsSeeder extends Seeder
         // $permission->name = 'All';
         // $permission->permission_string = $all;
         // $permission->save();
+        $permission = Permission::create(['name' => 'All', 'permission_string' => $all]);
         $permission = Permission::create(['name' => 'Dashboard', 'permission_string' => $dashboard]);
         $permission = Permission::create(['name' => 'Profile', 'permission_string' => $profile]);
         $permission = Permission::create(['name' => 'Unautherize', 'permission_string' => $unauth]);
@@ -65,7 +71,10 @@ class RolesAndPermissionsSeeder extends Seeder
         $permission = Permission::create(['name' => 'Calculator', 'permission_string' => $calculator]);
         $permission = Permission::create(['name' => 'Users', 'permission_string' => $users]);
         $permission = Permission::create(['name' => 'Managemenu', 'permission_string' => $managemenu]);
-        $permission = Permission::create(['name' => 'All', 'permission_string' => $all]);
+        $permission = Permission::create(['name' => 'User-Profile', 'permission_string' => $userprofile]);
+        $permission = Permission::create(['name' => 'Alert', 'permission_string' => $alert]);
+        $permission = Permission::create(['name' => 'Launchpad', 'permission_string' => $launchpad]);
+        $permission = Permission::create(['name' => 'LaunchpadListEdit', 'permission_string' => $launchpadListEdit]);
         // create roles and assign created permissions
         // this can be done as separate statements
         $admin = Role::create(['name' => 'Admin']);
@@ -73,14 +82,14 @@ class RolesAndPermissionsSeeder extends Seeder
         $editor = Role::create(['name' => 'Editor']);
         $manager = Role::create(['name' => 'Manager']);
         $admin->givePermissionTo('All');
-        $users = User::get();
-        foreach ($users as $key => $user) {
-            $user->assignRole($user->role);
-        }
-        User::where('role', 'admin')->update(['role' => 'Admin']);
-        User::where('role', 'editor')->update(['role' => 'Editor']);
-        User::where('role', 'client')->update(['role' => 'Client']);
-        User::where('role', 'author')->update(['role' => 'Manager']);
-        User::where('role', 'maintainer')->update(['role' => 'Manager']);
+        // $users = User::get();
+        // foreach ($users as $key => $user) {
+        //     $user->assignRole($user->role);
+        // }
+        // User::where('role', 'admin')->update(['role' => 'Admin']);
+        // User::where('role', 'editor')->update(['role' => 'Editor']);
+        // User::where('role', 'client')->update(['role' => 'Client']);
+        // User::where('role', 'author')->update(['role' => 'Manager']);
+        // User::where('role', 'maintainer')->update(['role' => 'Manager']);
     }
 }

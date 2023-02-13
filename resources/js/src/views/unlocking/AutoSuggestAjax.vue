@@ -5,7 +5,7 @@
             :render-suggestion="renderSuggestion"
             :should-render-suggestions="(size, loading) => (size >= 0 && !loading) || isFocused"
             :get-suggestion-value="getSuggestionValue" @input="fetchResults" />
-        <b-card class="border" no-body v-if="selected">
+        <b-card class="border mt-2" no-body v-if="selected">
 
             <b-card title="Update Coin's Details">
                 <validation-observer ref="UpdateForm" #default="{invalid}">
@@ -211,7 +211,7 @@
             <!-- <pre>{{ JSON.stringify(selected, null, 4) }}</pre> -->
         </b-card>
         <b-card v-else>
-            <b-card-text class="mt-1">
+            <b-card-text class="mt-1 text-center">
                 No coin selected
             </b-card-text>
         </b-card>
@@ -305,6 +305,7 @@
                                 coinid: selected.item.coin_id
                             }).then(res => {
                                 this.selected = res.data.coin;
+                                console.log( res.data.coin)
                             })
                             // this.selected = selected.item
 

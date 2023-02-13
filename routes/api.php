@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Coingecko;
 use App\Http\Controllers\ExchangesController;
+use App\Http\Controllers\LaunchpadController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlansController;
 use App\Http\Controllers\UnlockingController;
@@ -100,7 +101,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/update-alert', [AlertController::class, 'updateAlert'])->name('/update-alert');
     Route::post('/load-alert-coin-data', [AlertController::class, 'loadAlertCoinData'])->name('/load-alert-coin-data');
     Route::get('/user-notifications', [AlertController::class, 'userNotifications'])->name('/user-notifications');
-
+  //Launchpad
+  Route::post('/launchpad-list', [LaunchpadController::class, 'LaunchpadList'])->name('/launchpad-list');
+  Route::post('/fetch-launchpad-coins-as', [LaunchpadController::class, 'fetchLaunchoadCoinAS'])->name('/fetch-launchpad-coins-as');
+  Route::post('/update-launchpad-coin', [LaunchpadController::class, 'updateLaunchpadCoin'])->name('/update-launchpad-coin');
+  Route::post('/add-launchpad-coin', [LaunchpadController::class, 'addLaunchpadCoin'])->name('/add-launchpad-coin');
+  
     //Chrome Extension APIS
 
 

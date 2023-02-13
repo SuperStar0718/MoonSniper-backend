@@ -704,5 +704,9 @@ class UnlockingController extends Controller
 
         }
     }
+    public function GeneratePermissions()
+    {
+        # code...
+    }
 
 }

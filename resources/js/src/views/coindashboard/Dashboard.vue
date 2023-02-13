@@ -6103,7 +6103,8 @@
                     mode = 'unlock';
                 }
                 axios.post('api/load-visible-fileds', {
-                    mode: mode
+                    mode: mode,
+                    mode:'order'
                 }).then(res => {
                     if (res.data.status == true) {
                         this.loadedFields = res.data.fields;
@@ -6501,7 +6502,8 @@
                 });
                 keyArray.push(obj)
                 axios.post('api/update-column-order', {
-                        keyArray: keyArray
+                        keyArray: keyArray,
+                        mode:'order'
                     })
                     .then(res => {})
             },

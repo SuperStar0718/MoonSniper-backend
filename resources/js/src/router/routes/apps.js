@@ -242,6 +242,22 @@ export default [
     },
   },
   {
+    path: '/launchpad',
+    name: 'launchpad-list',
+    component: () => import('@/views/launchpad/LaunchPad.vue'),
+    meta: {
+      resource: 'Launchpad',
+    },
+  },
+  {
+    path: '/edit-launchpad-coin',
+    name: 'edit-launchpad-coin',
+    component: () => import('@/views/launchpad/AddEditLaunchpad.vue'),
+    meta: {
+      resource: 'LaunchpadListEdit',
+    },
+  },
+  {
     path: '/alerts',
     name: 'alerts',
     component: () => import('@/views/Notifications/Alerts.vue'),
