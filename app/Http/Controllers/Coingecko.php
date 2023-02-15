@@ -349,7 +349,7 @@ class Coingecko extends Controller
     }
     public function updateUserFields(Request $request)
     {
-        $Columns = UserColumn::where('user_id', '=', Auth::user()->id)->where('mode', '=', 'order')->first();
+        $Columns = UserColumn::where('user_id', '=', Auth::user()->id)->where('mode', '=', $request->mode)->first();
         if ($Columns) {
             $Columns->columns = json_encode($request->keyArray);
             $Columns->save();

@@ -71,9 +71,11 @@ class GetCryptorankRIOJob implements ShouldQueue
                             $price_today = $id_price[$token_name];
                             $ROI = round($price_today / $init_price, 2);
                             $roi_percentage = $ROI * 100 - 100;
+                            $type = $token_data[count($token_data) - $rounds]['type'];
                             $newCoinsArray[] = array(
                                 'coin_id' => $token_name,
                                 'roi_times' => $ROI,
+                                'type' => $type,
                                 'roi_currency' => 'usd',
                                 'roi_percentage' => $roi_percentage
                             );

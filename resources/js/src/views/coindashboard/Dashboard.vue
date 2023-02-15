@@ -2295,8 +2295,8 @@
                                                 <div style="margin-bottom: 10px;"
                                                     v-if="activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0">
                                                     <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                        X's from launch</span>
+                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5; white-space: nowrap;">
+                                                        X's from launch {{ activeData.type ? ' ('+activeData.type+')':'' }}</span>
                                                     <div class="" style="font-size:16px; font-weight: 600;">
                                                         <span
                                                             style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;"
@@ -5454,8 +5454,7 @@
                                 MSdiff = (this.activeData.max_supply!= null ? this.activeData.max_supply : this
                                     .activeData.total_supply) - this.activeData.circulating_supply;
                             }
-                            console.log(this.activeData.total_locked)
-                            var total_locked = parseFloat(this.activeData.total_locked != null ? this.activeData
+                            var total_locked = parseFloat(this.activeData.total_locked != null && this.activeData.total_locked >=0 ? this.activeData
                                 .total_locked : MSdiff);
                             console.log(total_locked)
 
@@ -6104,7 +6103,7 @@
                 }
                 axios.post('api/load-visible-fileds', {
                     mode: mode,
-                    mode:'order'
+                    orderMode:'order'
                 }).then(res => {
                     if (res.data.status == true) {
                         this.loadedFields = res.data.fields;

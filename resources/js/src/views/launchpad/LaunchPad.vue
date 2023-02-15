@@ -156,7 +156,6 @@
                                                                             <b-form-checkbox @change="updateFields"
                                                                                 v-model="fields[7].filterColumn"
                                                                                 name="cursor-pointer some-checkboxs4">
-
                                                                                 First unlock time
                                                                             </b-form-checkbox>
                                                                         </div>
@@ -532,10 +531,8 @@
                 this.LoadList(false);
             },
             updateFields() {
-                let mode = 'Launchpad';
-
+            let mode = 'Launchpad';
                 this.column_form.table_fields = [];
-                this.column_form.market_indicators = [];
                 this.fields.forEach(element => {
                     if (element.canHide == true) {
                         if (element.filterColumn == true) {
