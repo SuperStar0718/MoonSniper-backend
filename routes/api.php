@@ -101,6 +101,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/update-alert', [AlertController::class, 'updateAlert'])->name('/update-alert');
     Route::post('/load-alert-coin-data', [AlertController::class, 'loadAlertCoinData'])->name('/load-alert-coin-data');
     Route::get('/user-notifications', [AlertController::class, 'userNotifications'])->name('/user-notifications');
+
   //Launchpad
   Route::post('/launchpad-list', [LaunchpadController::class, 'LaunchpadList'])->name('/launchpad-list');
   Route::post('/fetch-launchpad-coins-as', [LaunchpadController::class, 'fetchLaunchoadCoinAS'])->name('/fetch-launchpad-coins-as');
@@ -112,11 +113,14 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::get('/load-user-alert-list', [AlertController::class, 'getUserAlertList'])->name('/load-user-alert-list');
     Route::post('/allow-coin-alerts', [AlertController::class, 'allowCoinAlerts'])->name('/allow-coin-alerts');
-    Route::post('/add-alerts', [AlertController::class, 'addAlerts'])->name('/add-alerts');
+    Route::post('/mark-alerts', [AlertController::class, 'markAlerts'])->name('/mark-alerts');
     Route::post('/read-notification',[AlertController::class, 'readNotification'])->name('/read-notification');
     Route::post('/check-chromeapp',[AlertController::class, 'CheckApi'])->name('/check-chromeapp');
 
 });
+Route::post('/trigger-notification',[AlertController::class, 'triggerNotification'])->name('/trigger-notification');
+Route::post('/fetch-comparable-data',[AlertController::class, 'fetchComparableData'])->name('/fetch-comparable-data');
+
 Route::post('/check-error',[AlertController::class, 'CheckError'])->name('/check-error');
 
 Route::post('/extension-coin-data-coingecko', [ExchangesController::class, 'CoinDetailsForCoinGecko'])->name('/extension-coin-data-coingecko');

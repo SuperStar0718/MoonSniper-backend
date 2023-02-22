@@ -104,7 +104,7 @@ class AlertController extends Controller
     {
         $user = Auth::user();
 
-        $notifications = Notifications::where('type', '=', 'App\Notifications\NotifyCoinAlert')->where('notifiable_id', '=', $user->id)->where('note',  null)->orderby('created_at', 'DESC')->paginate(10);
+        $notifications = Notifications::where('notifiable_id', '=', $user->id)->where('note',  null)->orderby('created_at', 'DESC')->paginate(10);
         foreach ($notifications as $key => $value) {
             $notifications[$key]['data'] = json_decode($value->data);
         }
@@ -114,16 +114,16 @@ class AlertController extends Controller
     public function getUserAlertList()
     {
         $user = Auth::user();
-        $notifications = Notifications::where('type', '=', 'App\Notifications\NotifyCoinAlert')->where('notifiable_id', '=', $user->id)->where('note',null)->orderby('created_at', 'DESC')->get();
+        $notifications = Notifications::where('notifiable_id', '=', $user->id)->where('note' ,'!=',  null)->where('show_date' ,  null)->orderby('created_at', 'DESC')->get();
         foreach ($notifications as $key => $value) {
             $notifications[$key]['data'] = json_decode($value->data);
-            $notifications[$key]['data']->coindata = CoinsData::where('coin_id',$notifications[$key]['data']->coin_id)->where('symbol',$notifications[$key]['data']->symbol)
-            ->select('price_change_percentage_24h','roi_percentage','market_cap','next_unlock_percent_of_tokens','average_sentiment_change','current_price')
-            ->first();
+            // $notifications[$key]['data']->coindata = CoinsData::where('coin_id',$notifications[$key]['data']->coin_id)->where('symbol',$notifications[$key]['data']->symbol)
+            // ->select('price_change_percentage_24h','roi_percentage','market_cap','next_unlock_percent_of_tokens','average_sentiment_change','current_price')
+            // ->first();
             
         }
+                    return response()->json(['status' => true, 'data' => $notifications,'user' => $user]);
 
-        return response()->json(['status' => true, 'data' => $notifications,'user' => $user]);
     }
     public function deleteAlert(Request $request)
     {
@@ -229,12 +229,11 @@ class AlertController extends Controller
         $data = CoinsData::where("coin_id", $request->coinid)->where("symbol", $request->symbol)->first();
         return response()->json(['status' => true, 'data' => $data]);
     }
-    public function addAlerts(Request $request)
+    public function markAlerts(Request $request)
     {
        $alerts = $request->data;
        foreach ($alerts as $key => $value) {
         $notification =  Notifications::where('id', $value['id'])->first();
-        $notification->note = $value['note'];
         $notification->show_date = Carbon::now();
         $notification->save();
        }
@@ -246,6 +245,7 @@ class AlertController extends Controller
         $notifications = Notifications::where('type', '=', 'App\Notifications\NotifyCoinAlert')
         ->where('notifiable_id', '=', $user->id)
         ->where('note', '!=',null)
+        ->where('show_date', '!=',null)
         ->orderby('show_date', 'DESC')
         ->select('id','note','read_at','data','show_date')
         ->get();
@@ -274,5 +274,17 @@ class AlertController extends Controller
         $addPdf->file = $paths;
         $addPdf->save();
         return response()->json(['status' => true, 'notifications' => $alerts]);
+    }
+    public function triggerNotification(Request $request)
+    {
+        $arrayToUpdate = array();
+       
+        Notifications::massUpdate(
+            values: $request->all(),
+            uniqueBy: 'id'
+        );
+       return response()->json(['status' => true]);
+    
+     
     }
 }

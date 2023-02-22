@@ -4701,9 +4701,16 @@
 
             },
             getTimeStamp(data) {
+              
+                var utcDate = new Date(data);
+                // console.log(utcDate); 
+                // console.log('1'); 
+                var timezoneOffset = new Date().getTimezoneOffset();
+                var localDate = new Date(utcDate.getTime() - timezoneOffset * 60 * 1000);
+                // console.log(localDate.toString()); 
                 let d = new Date(data);
-                if (data != null && !isNaN(d)) {
-                    return d.getTime();
+                if (data != null && !isNaN(localDate)) {
+                    return localDate.getTime();
                 } else {
                     return new Date().getTime();;
                 }
@@ -4756,8 +4763,10 @@
                 }
             },
             checkdateinertval(date, date_text, type) {
+                var now = new Date();
                 let realDate;
-                var d1 = new Date();
+              
+                var d1 = now;
 
                 if (date) {
                     realDate = date;
@@ -4766,7 +4775,14 @@
                     let reaStrDate = textMonth + " 1, " + d1.getFullYear() + " 00:00:00";
                     realDate = new Date(reaStrDate);
                 }
-                var d2 = new Date(realDate);
+
+                // console.log(utcDate); 
+                // console.log('1'); 
+                 realDate = new Date(realDate);
+                var timezoneOffset = new Date().getTimezoneOffset();
+                var RdateUTC = new Date(realDate.getTime() - timezoneOffset * 60 * 1000);
+                // console.log(localDate.toString()); 
+                var d2 = RdateUTC;
                 var Difference_In_Time = d2.getTime() - d1.getTime();
                 var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
                 var diff = (Difference_In_Time) / 1000;
@@ -4826,6 +4842,7 @@
                 var d1 = new Date();
                 if (date != null) {
                     realDate = date;
+                    
                 } else if (date_text != null) {
                     let textMonth = date_text.slice(date_text.lastIndexOf(' ') + 1);
                     let reaStrDate = textMonth + " 1, " + d1.getFullYear() + " 00:00:00";
@@ -4834,7 +4851,13 @@
                 } else {
                     return false
                 }
-                var d2 = new Date(realDate);
+                var utcDate = new Date(realDate);
+                // console.log(utcDate); 
+                // console.log('1'); 
+                var timezoneOffset = new Date().getTimezoneOffset();
+                var localDate = new Date(utcDate.getTime() - timezoneOffset * 60 * 1000);
+                // console.log(localDate.toString()); 
+                var d2 = new Date(localDate);
                 if (d2.getTime() > d1.getTime()) {
                     return true;
                 } else {

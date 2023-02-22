@@ -37,16 +37,17 @@
                             <div class="" v-html="data.item.data.name"></div>
 
                         </template>
-                        <template #cell(coin_name)="data">
-                            <div class="" v-html="data.item.data.coin_name"></div>
+                        <template #cell(coin_name)="data" >
+                            <div v-if="data.item.type == 'App\\Notifications\\NotifyCoinAlert'" class="" v-html="data.item.data.coin_name"></div>
+                            <div v-else class="" v-html="data.item.data.name"></div>
 
                         </template>
                         <template #cell(priority)="data">
-                            <div class="text-capitalize" v-html="data.item.data.priority"></div>
-
+                            <div v-if="data.item.type == 'App\\Notifications\\NotifyCoinAlert'" class="text-capitalize" v-html="data.item.data.priority"></div>
+                            <div v-else class="" >High</div>
                         </template>
                         <template #cell(conditions)="data">
-                            <div class="">
+                            <div v-if="data.item.type == 'App\\Notifications\\NotifyCoinAlert'"  class="">
 
                                 <div v-if="data.item.data.min_price != null && data.item.data.max_price!= null">
                                     <div>
@@ -126,14 +127,16 @@
 
 
                             </div>
+                            <div v-else class="" >
+                            {{ formatStr(data.item.data.type) }} unlock
+                            </div>
 
                         </template>
                         <template #cell(actionButton)="data">
                             <div class="actionButton">
                                 <b-dropdown bottom text="..." ref="dropdown">
-                                    <div class="p-1" style="background: white;
-                            border-radius: 20px; color:#000">
-                                        <b-dropdown-item class="" style="" @click="editNotification(data.item)">
+                                    <div class="p-1" style="background: white;border-radius: 20px; color:#000">
+                                        <b-dropdown-item class="" v-if="data.item.type == 'App\\Notifications\\NotifyCoinAlert'" style="" @click="editNotification(data.item)">
                                             Edit
                                         </b-dropdown-item>
                                         <b-dropdown-item class="" style="" @click="deleteNotification(data.item.id)">
@@ -366,6 +369,10 @@
                         }
                     })
 
+            },
+            formatStr(str){
+                const convertedStr = str.replace(/-/g, ' ');
+                return convertedStr;
             },
             editNotification(item) {
                 this.alertForm.name = null;
