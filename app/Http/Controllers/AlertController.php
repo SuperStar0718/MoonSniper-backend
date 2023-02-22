@@ -242,8 +242,8 @@ class AlertController extends Controller
     public function userNotifications(Request $request)
     {
         $user =Auth::user();
-        $notifications = Notifications::where('type', '=', 'App\Notifications\NotifyCoinAlert')
-        ->where('notifiable_id', '=', $user->id)
+        $notifications = Notifications::
+        where('notifiable_id', '=', $user->id)
         ->where('note', '!=',null)
         ->where('show_date', '!=',null)
         ->orderby('show_date', 'DESC')
