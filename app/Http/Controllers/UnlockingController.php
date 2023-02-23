@@ -496,13 +496,17 @@ class UnlockingController extends Controller
         $user = Auth::user();
 
         $checkNotification = $user->notifications()
-            ->whereJsonContains('data', ['symbol' => $request->symbol])
+            ->whereJsonContains('data', ['symbol' => $request->symbol,'coin_id' => $request->coin_id])
             ->first();
         if (!$checkNotification) {
             $token = DB::table('coins')
                 ->select('coins.coin_id', 'coins.name', 'coins.symbol', 'coin_data.image', 'coin_data.current_price', 'coin_data.market_cap_rank', 'coin_data.next_unlock_date', 'coin_data.next_unlock_date', 'coin_data.next_unlock_date_text', 'coin_data.next_unlock_number_of_tokens')
-                ->leftJoin('coin_data', 'coins.symbol', '=', 'coin_data.symbol')
+                ->leftJoin('coin_data', function($join) {
+                    $join->on('coins.symbol', '=', 'coin_data.symbol')
+                        ->orWhere('coins.coin_id', '=', 'coin_data.coin_id');
+                })
                 ->where('coins.symbol', $request->symbol)
+                ->where('coins.coin_id', $request->coin_id)
                 ->first();
             if ($token) {
                 $token->notifytype = $request->type;

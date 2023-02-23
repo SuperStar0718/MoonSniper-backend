@@ -2764,7 +2764,7 @@
                                     <div v-if="activeData.next_unlock_date_text || activeData.next_unlock_date"
                                         class="d-inline ml-2 mt-1" style="border-radius: 10px; margin-left: 45px;">
 
-                                        <button v-if="notified == true" @click="notifyMe(activeData.symbol,'none')"
+                                        <button v-if="notified == true" @click="notifyMe(activeData.coin_id,activeData.symbol,'none')"
                                             class="rounded-pill px-2 " style=" padding: 8px; font-size: 14px;">
                                             <feather-icon size="15" icon="BellIcon" /> Remove Notification</button>
                                         <div v-if="notified == true" style="font-size:12px">Will be notified:
@@ -2785,32 +2785,32 @@
                                                 name="dropdownform2" style="z-index:999;">
                                                 <b-dropdown-item href="#"
                                                     v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'1-month-before',)"
-                                                    @click="notifyMe(activeData.symbol,'1-month-before')">1 Month before
+                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'1-month-before')">1 Month before
                                                 </b-dropdown-item>
                                                 <b-dropdown-item href="#"
                                                     v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'2-weeks-before')"
-                                                    @click="notifyMe(activeData.symbol,'2-weeks-before')">2 weeks before
+                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'2-weeks-before')">2 weeks before
                                                 </b-dropdown-item>
                                                 <b-dropdown-item href="#"
                                                     v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'1-week-before')"
-                                                    @click="notifyMe(activeData.symbol,'1-week-before')">1 week before
+                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'1-week-before')">1 week before
                                                 </b-dropdown-item>
                                                 <b-dropdown-item href="#"
                                                     v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'2-days-before')"
-                                                    @click="notifyMe(activeData.symbol,'2-days-before')">2 days before
+                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'2-days-before')">2 days before
                                                 </b-dropdown-item>
                                                 <b-dropdown-item href="#"
                                                     v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'12-hours-before')"
-                                                    @click="notifyMe(activeData.symbol,'12-hours-before')">12 hours
+                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'12-hours-before')">12 hours
                                                     before
                                                 </b-dropdown-item>
                                                 <b-dropdown-item href="#"
                                                     v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'10-min-before')"
-                                                    @click="notifyMe(activeData.symbol,'10-min-before')">10
+                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'10-min-before')">10
                                                     minutes before
                                                 </b-dropdown-item>
                                                 <b-dropdown-item href="#"
-                                                    @click="notifyMe(activeData.symbol,'on-time')">
+                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'on-time')">
                                                     On-time</b-dropdown-item>
                                             </b-dropdown-form>
 
@@ -4715,11 +4715,12 @@
                     return new Date().getTime();;
                 }
             },
-            notifyMe(symbol, type) {
+            notifyMe(coinid,symbol, type) {
 
                 axios.post('api/notify-unlock-token', {
                     symbol: symbol,
-                    type: type
+                    coin_id: coinid,
+                    type: type,
                 }).then(res => {
 
                     if (res.data.status == true) {
