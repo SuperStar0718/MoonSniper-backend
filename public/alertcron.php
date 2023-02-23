@@ -1,11 +1,11 @@
 <?php
 // echo date_default_timezone_get();
 date_default_timezone_set("UTC");
-$baseURL = 'http://localhost:8000';
-$servername = "localhost";
+$baseURL = 'https://moonsniper.co';
+$servername = "127.0.0.1";
 $username = "root";
-$password = "";
-$dbname = "moonsniper";
+$password = "Sn!per0123";
+$dbname = "moon_sniper_v2";
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
@@ -32,7 +32,7 @@ if (mysqli_num_rows($result) > 0) {
                 $dataArray[] = $row;
                 if ($row['type'] == 'App\Notifications\NotifyCoinAlert') {
                     if(!strpos($coinid_string, $data['coin_id'])){
-                    $coinid_string .= $data['coin_id'] . ',';
+                     $coinid_string .= $data['coin_id'] . ',';
                     $coinid_string2 .= $data['coin_id'] . ',';
 
                     }
@@ -46,16 +46,15 @@ if (mysqli_num_rows($result) > 0) {
   
     if($coinid_string != ''){
         $ids_array = array_unique(explode(',', $coinid_string)); // Convert the string to an array
-        $coinid_string = "'" . implode("', '", $ids_array) . "'"; 
-        $coinDatasql = "SELECT coin_id,symbol,price_change_percentage_24h,current_price,roi_percentage,market_cap,next_unlock_percent_of_tokens,average_sentiment_change FROM " . $coinsDataTable . " WHERE  `coin_id` IN ($coinid_string) ";
+         $coinid_string = "'" . implode("', '", $ids_array) . "'"; 
+          $coinDatasql = "SELECT coin_id,symbol,price_change_percentage_24h,current_price,roi_percentage,market_cap,next_unlock_percent_of_tokens,average_sentiment_change FROM " . $coinsDataTable . " WHERE  `coin_id` IN ($coinid_string) ";
         // echo $coinid_string .'</br>';
         // echo $coinDatasql;
-        
         $coinsData = mysqli_query($conn, $coinDatasql);
-       
     }
+    // print_r(json_encode($coinsData));die();  
+
     mysqli_close($conn);
-    // print_r(json_encode($coinsData));die();
     // Print the resulting JSON string
     $url = "https://api.coingecko.com/api/v3/simple/price?ids=" . $coinid_string2 . "&vs_currencies=USD"; 
 
@@ -78,6 +77,7 @@ if (mysqli_num_rows($result) > 0) {
 
 // Process the response data
     $data = $response;
+    print_r($data);
     $arrayData = [];
 
     $notify =  false;
@@ -108,16 +108,14 @@ if (mysqli_num_rows($result) > 0) {
         $Message = '';
         if ($value['type'] == 'App\Notifications\NotifyCoinAlert') {
             $priceData = json_decode($data);
-            $activeCoin =getcoinById($value['data']['coin_id'],$coinsData);
+            $activeCoin = getcoinById($value['data']['coin_id'],$coinsData);
             //price data checking
             if (isset($value['data']['min_price']) || isset($value['data']['max_price'])) {
                 if (isset($value['data']['min_price']) && floatval($value['data']['min_price']) > floatval($priceData->{$value['data']['coin_id']}->usd)) {
-                    $result = floatval($value['data']['min_price']) > floatval($priceData->{$value['data']['coin_id']}->usd);
                     $Message = 'Price is: ' . formatNumber($priceData->{$value['data']['coin_id']}->usd) . '$';
                     $notify = true;
                     $notifyPrice = true;
                 } else if (isset($value['data']['max_price']) && floatval($value['data']['max_price']) < floatval($priceData->{$value['data']['coin_id']}->usd)) {
-                    $result = floatval($value['data']['max_price']) < floatval($priceData->{$value['data']['coin_id']}->usd);
                     $Message = 'Price is: ' . formatNumber($priceData->{$value['data']['coin_id']}->usd) . '$';
                     
                     $notify = true;
@@ -134,17 +132,19 @@ if (mysqli_num_rows($result) > 0) {
                         $Message .= ',';
                         $notify = false;
                       }
-                      
                     if (isset($value['data']['min_tradingper24h'])) {
                         if($activeCoin['price_change_percentage_24h'] != null && floatval($value['data']['min_tradingper24h']) > $activeCoin['price_change_percentage_24h']){
-                            $Message .= '24h trading %: ' . formatNumber($activeCoin['price_change_percentage_24h']);
+                         $Message .= '24h trading %: ' . formatNumber($activeCoin['price_change_percentage_24h']);
                             $notify = true;
                             $notifyVolume = true;
                         }
                        
 
                     }  if (isset($value['data']['max_tradingper24h'])) {
+
                         if($activeCoin['price_change_percentage_24h'] != null && floatval($value['data']['max_tradingper24h']) < $activeCoin['price_change_percentage_24h']){
+                      
+                         
                             $result = floatval($value['data']['max_tradingper24h']) < $activeCoin['price_change_percentage_24h'];
                             $Message .= '24h trading %: ' . formatNumber($activeCoin['price_change_percentage_24h']);
                           
@@ -314,7 +314,7 @@ if (mysqli_num_rows($result) > 0) {
                         $current_timestamp = time();
                         $time_difference = $future_timestamp - $current_timestamp;
                         $time_difference_in_hours = $time_difference / 3600;
-                        if ($time_difference_in_hours <= 12) {
+                        if ($time_difference_in_hours <= 48) {
                             $arrayData[] = array(
                                             'id' => $value['id'],
                                             'note' => $value['data']['name'] . '  will be unlocked after 2 days',
@@ -410,6 +410,7 @@ if (mysqli_num_rows($result) > 0) {
     // Close the connection
 }
 function formatNumber($value) {
+    echo $value;
     $formatted_number = number_format($value, 2);
     return $formatted_number; // Output: 10.26
 }
