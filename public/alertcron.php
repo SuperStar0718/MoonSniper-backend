@@ -56,7 +56,7 @@ if (mysqli_num_rows($result) > 0) {
 
     mysqli_close($conn);
     // Print the resulting JSON string
-    $url = "https://api.coingecko.com/api/v3/simple/price?ids=" . $coinid_string2 . "&vs_currencies=USD"; 
+    $url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=USD"; 
 
 // Create a new cURL resource
     $curl = curl_init($url);
@@ -76,8 +76,8 @@ if (mysqli_num_rows($result) > 0) {
     curl_close($curl);
 
 // Process the response data
-    $data = $response;
-    print_r($data);
+    $Pricedata = $response;
+ 
     $arrayData = [];
 
     $notify =  false;
@@ -107,20 +107,26 @@ if (mysqli_num_rows($result) > 0) {
         $notifyVolume =  false;
         $Message = '';
         if ($value['type'] == 'App\Notifications\NotifyCoinAlert') {
-            $priceData = json_decode($data);
+            $priceData = json_decode($Pricedata);
             $activeCoin = getcoinById($value['data']['coin_id'],$coinsData);
             //price data checking
             if (isset($value['data']['min_price']) || isset($value['data']['max_price'])) {
-                if (isset($value['data']['min_price']) && floatval($value['data']['min_price']) > floatval($priceData->{$value['data']['coin_id']}->usd)) {
-                    $Message = 'Price is: ' . formatNumber($priceData->{$value['data']['coin_id']}->usd) . '$';
-                    $notify = true;
-                    $notifyPrice = true;
-                } else if (isset($value['data']['max_price']) && floatval($value['data']['max_price']) < floatval($priceData->{$value['data']['coin_id']}->usd)) {
-                    $Message = 'Price is: ' . formatNumber($priceData->{$value['data']['coin_id']}->usd) . '$';
-                    
-                    $notify = true;
-                    $notifyPrice = true;
+                if(!isset($priceData->status->error_code)){
+                    if (isset($value['data']['min_price']) && floatval($value['data']['min_price']) > floatval($priceData->{$value['data']['coin_id']}->usd)) {
+                        $Message = 'Price is: ' . formatNumber($priceData->{$value['data']['coin_id']}->usd) . '$';
+                        $notify = true;
+                        $notifyPrice = true;
+                    } else if (isset($value['data']['max_price']) && floatval($value['data']['max_price']) < floatval($priceData->{$value['data']['coin_id']}->usd)) {
+                        $Message = 'Price is: ' . formatNumber($priceData->{$value['data']['coin_id']}->usd) . '$';
+                        
+                        $notify = true;
+                        $notifyPrice = true;
+                    }
+                }else{
+                print_r($Pricedata);
+                    $notifyPrice = false;
                 }
+               
 
             }else{
                 $notifyPrice = true;
@@ -402,7 +408,8 @@ if (mysqli_num_rows($result) > 0) {
         // Close the cURL resource
         curl_close($curl);
         // Process the response data
-        $data = $response;
+    
+        echo 'alerts added successfully';
     } else {
         // echo "no data available";
     }
@@ -410,7 +417,6 @@ if (mysqli_num_rows($result) > 0) {
     // Close the connection
 }
 function formatNumber($value) {
-    echo $value;
     $formatted_number = number_format($value, 2);
     return $formatted_number; // Output: 10.26
 }
