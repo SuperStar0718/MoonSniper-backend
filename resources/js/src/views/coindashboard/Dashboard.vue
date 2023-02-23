@@ -5439,6 +5439,7 @@
                 this.loadPriceHistoryChart('24');
                 await axios.post('api/check-coin-notified', {
                         symbol: item.symbol,
+                        coin_id: item.coin_id,
                     })
                     .then(res => {
                         if (res.data.notification == 'sent') {

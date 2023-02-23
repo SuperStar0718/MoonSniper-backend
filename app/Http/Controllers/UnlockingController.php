@@ -494,16 +494,16 @@ class UnlockingController extends Controller
     public function notifyTokenUnlock(Request $request)
     {
         $user = Auth::user();
-
         $checkNotification = $user->notifications()
             ->whereJsonContains('data', ['symbol' => $request->symbol,'coin_id' => $request->coin_id])
+             ->where('note',null)
             ->first();
         if (!$checkNotification) {
             $token = DB::table('coins')
                 ->select('coins.coin_id', 'coins.name', 'coins.symbol', 'coin_data.image', 'coin_data.current_price', 'coin_data.market_cap_rank', 'coin_data.next_unlock_date', 'coin_data.next_unlock_date', 'coin_data.next_unlock_date_text', 'coin_data.next_unlock_number_of_tokens')
                 ->leftJoin('coin_data', function($join) {
                     $join->on('coins.symbol', '=', 'coin_data.symbol')
-                        ->orWhere('coins.coin_id', '=', 'coin_data.coin_id');
+                    ->whereRaw('coins.coin_id = coin_data.coin_id');
                 })
                 ->where('coins.symbol', $request->symbol)
                 ->where('coins.coin_id', $request->coin_id)
@@ -526,7 +526,8 @@ class UnlockingController extends Controller
     {
         $user = Auth::user();
         $checkNotification = $user->notifications()
-            ->whereJsonContains('data', ['symbol' => $request->symbol])
+            ->whereJsonContains('data', ['symbol' => $request->symbol,'coin_id' => $request->coin_id])
+            ->where('note',null)
             ->first();
         if ($checkNotification) {
             return response()->json(['status' => true, 'notification' => 'sent', 'item' => $checkNotification]);
