@@ -57,11 +57,21 @@ class Coingecko extends Controller
         if (intval($input_array["api_mode"]) == 2) {
             $query->whereRaw("(coin_data.`next_unlock_date` IS NOT NULL OR coin_data.`next_unlock_date_text` IS NOT NULL OR coin_data.`total_locked_percent` IS NOT NULL OR coin_data.`next_unlock_percent` IS NOT NULL  OR coin_data.`next_unlock_number_of_tokens` IS NOT NULL OR coin_data.`next_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`next_unlock_size` IS NOT NULL OR coin_data.`first_vc_unlock` IS NOT NULL OR coin_data.`end_vc_unlock` IS NOT NULL OR coin_data.`first_vc_unlock_text` IS NOT NULL OR coin_data.`end_vc_unlock_text` IS NOT NULL OR coin_data.`three_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`three_months_unlock_size` IS NOT NULL OR coin_data.`six_months_unlock_number_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_percent_of_tokens` IS NOT NULL OR coin_data.`six_months_unlock_size` IS NOT NULL)");
         }
-        if ($input_array["sort"][1] == "asc" || $input_array["sort"][1] == "desc") {
+        if ($input_array["filters2"] == "" &&( $input_array["sort"][1] == "asc" || $input_array["sort"][1] == "desc")) {
             $query->orderBy(DB::raw("ISNULL(" . $input_array["sort"][0] . "), " . $input_array["sort"][0]), $input_array["sort"][1]);
         }
         if ($input_array["filters2"] != "") {
-            $query->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%" . $input_array["filters2"] . "%");
+            // $query->where(DB::raw("CONCAT(coins.`name`, ' ', coins.`symbol`)"), 'LIKE', "%" . $input_array["filters2"] . "%");
+            $query->where(function($q) use ($input_array) {
+                $q->where('coins.symbol', '=', $input_array["filters2"])
+                  ->orWhere(DB::raw("CONCAT(coins.`symbol`, ' ', coins.`name`)"), 'LIKE', $input_array["filters2"] . '%')
+                  ->orWhere(DB::raw("CONCAT(coins.`symbol`, ' ', coins.`name`)"), 'LIKE', '%' . $input_array["filters2"] . '%')
+                  ->orWhere('coins.name', 'LIKE', '%' . $input_array["filters2"] . '%');
+            })
+            ->orderByRaw("CASE WHEN coins.symbol = '" . $input_array["filters2"] . "' THEN 1 
+                                WHEN coins.symbol LIKE '" . $input_array["filters2"] . "%' THEN 2 
+                                WHEN coins.symbol LIKE '%" . $input_array["filters2"] . "%' THEN 3 
+                                ELSE 4 END");
         }else{
             $query->where('coin_data.market_cap', '!=', null)->where('coin_data.market_cap', '!=', '');
         }

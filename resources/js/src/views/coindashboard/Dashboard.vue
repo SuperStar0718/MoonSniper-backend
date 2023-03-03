@@ -1,7 +1,6 @@
 <template>
     <div id="dashboard">
         <b-overlay :show="fagLoad" rounded="sm" class="pt-1 DashboardHeader" variant="dark" style="">
-
             <!-- graph -->
             <b-row class="FGCharts" style="">
                 <b-col sm="3" md="3" cols="6" v-if="mi_fear_greed">
@@ -121,7 +120,7 @@
 
                                         24h <i class="bi bi-triangle-fill" style="font-size:13px;color:#6BBE83;"
                                             v-if="fag.data.inoutper<0"></i>
-                                            <!-- -800000000 -->
+                                        <!-- -800000000 -->
                                         <i class="bi bi-triangle-fill fag-inout "
                                             style="font-size:13px;color:#ea5455;rotate:-180deg" v-else></i>
 
@@ -193,7 +192,7 @@
             </b-row>
             <!-- end- graph -->
         </b-overlay>
-        <div class="body-content-overlay" />
+        <div class="body-content-overlay"></div>
         <!-- search bar and table -->
         <div class="cardBack" style="">
             <div class="searchbar ">
@@ -205,8 +204,8 @@
                                     class="search-product searchdark" style="border-radius: 20px;" />
                                 <b-input-group-append style="z-index: 999;">
                                     <i v-if="params.filters2 != null && params.filters2.trim() != ''"
-                                        @click="params.filters2 = ''" class="fa-solid fa-xmark cursor-pointer" style="font-size: 16px; position: relative;   right: 32px;
-                                margin: auto;"></i>
+                                        @click="params.filters2 = ''" class="fa-solid fa-xmark cursor-pointer"
+                                        style="font-size: 16px; position: relative;   right: 32px; margin: auto;"></i>
                                 </b-input-group-append>
                             </b-input-group>
                         </b-form-group>
@@ -251,11 +250,12 @@
 
                             </div>
                             <div>
-                                <b-button  @click="lockedFilter" :class="{'bg-danger text-danger':locked}"
+                                <b-button @click="lockedFilter" :class="{'bg-danger text-danger':locked}"
                                     style="color:white; padding:5px; width:33px" variant="flat-success"
                                     title="Unlocking" v-ripple.400="'rgba(255, 255, 255,1)'" class="btn-icon -1 ">
                                     <feather-icon icon="UnlockIcon" size="20"
-                                        class="text-black cursor-pointer darkWhiteText" style="color:#28c76f; " :class="{'bg-danger text-danger':locked}"/>
+                                        class="text-black cursor-pointer darkWhiteText" style="color:#28c76f; "
+                                        :class="{'bg-danger text-danger':locked}" />
 
                                 </b-button>
                                 <!-- <b-button v-else @click="lockedFilter" style="color:white; padding:5px; width:33px"
@@ -947,8 +947,8 @@
                         </template>
 
                         <template #cell(coin_description)="data">
-                            <div v-b-tooltip.hover.bottom.html="removeAnchorTags(data.value)"  class="d-flex text-center" v-if="data.value"
-                                v-html="data.value.substring(0,20)">
+                            <div v-b-tooltip.hover.bottom.html="removeAnchorTags(data.value)" class="d-flex text-center"
+                                v-if="data.value" v-html="data.value.substring(0,20)">
 
                             </div>
                         </template>
@@ -1206,6 +1206,11 @@
                                 ${{twenty4HConversation(data.value)}}
                             </div>
                         </template>
+                        <template #cell(total_volume)="data">
+                            <div v-if="data.value" class="text-center mx-2" style="">
+                                ${{twenty4HConversation(data.value)}}
+                            </div>
+                        </template>
                         <template #cell(high_24h)="data">
                             <div v-if="data.value && data.value !=''" class="text-center" style="">
                                 ${{twenty4HConversation(data.value)}}
@@ -1307,7 +1312,7 @@
                             <div v-if="data.value">
                                 <span v-if="data.value>= 0 "
                                     :class="{'text-danger':data.value>= 1 && data.value <= 2.49,'text-success-green' : data.value>= 2.51 && data.value <= 5 }">
-                              {{twenty4HConversation(data.value)}}
+                                    {{twenty4HConversation(data.value)}}
                                 </span>
                             </div>
                         </template>
@@ -2036,8 +2041,9 @@
                                                         :key="index"
                                                         style="display:block; padding: 2px; border-radius: 20px;">
                                                         <div class="d-flex">
-                                                            <b-avatar v-if="activeData.image" :src="'/storage/contracts/'+address.platform+'.png'" fluid
-                                                                alt="" style="margin-right:5px; height:30px;     position: relative;
+                                                            <b-avatar v-if="activeData.image"
+                                                                :src="'/storage/contracts/'+address.platform+'.png'"
+                                                                fluid alt="" style="margin-right:5px; height:30px;     position: relative;
                                                                     bottom: 4px;    margin: auto;" />
                                                             <div style="font-family: 'Poppins-Light'; display:inline-block;
                                                                     font-style: normal;    position: relative;
@@ -2091,7 +2097,8 @@
                                                     <div class="darkBackgroundBlack"
                                                         v-for="(address,index) in activeData.contract_address"
                                                         :key="index" style="display:flex; padding: 4px;">
-                                                        <b-avatar v-if="activeData.image" :src="'/storage/contracts/'+address.platform+'.png'" fluid
+                                                        <b-avatar v-if="activeData.image"
+                                                            :src="'/storage/contracts/'+address.platform+'.png'" fluid
                                                             :alt="address.platform" :text="address.platform.charAt(0)"
                                                             style="margin-right:5px; height:30px; " />
                                                         <div class="" style="font-family: 'Poppins-Light'; display:inline-block; font-style: normal;
@@ -2296,7 +2303,8 @@
                                                     v-if="activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0">
                                                     <span
                                                         style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5; white-space: nowrap;">
-                                                        X's from launch {{ activeData.type ? ' ('+activeData.type+')':'' }}</span>
+                                                        X's from launch
+                                                        {{ activeData.type ? ' ('+activeData.type+')':'' }}</span>
                                                     <div class="" style="font-size:16px; font-weight: 600;">
                                                         <span
                                                             style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;"
@@ -2764,7 +2772,8 @@
                                     <div v-if="activeData.next_unlock_date_text || activeData.next_unlock_date"
                                         class="d-inline ml-2 mt-1" style="border-radius: 10px; margin-left: 45px;">
 
-                                        <button v-if="notified == true" @click="notifyMe(activeData.coin_id,activeData.symbol,'none')"
+                                        <button v-if="notified == true"
+                                            @click="notifyMe(activeData.coin_id,activeData.symbol,'none')"
                                             class="rounded-pill px-2 " style=" padding: 8px; font-size: 14px;">
                                             <feather-icon size="15" icon="BellIcon" /> Remove Notification</button>
                                         <div v-if="notified == true" style="font-size:12px">Will be notified:
@@ -2785,28 +2794,34 @@
                                                 name="dropdownform2" style="z-index:999;">
                                                 <b-dropdown-item href="#"
                                                     v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'1-month-before',)"
-                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'1-month-before')">1 Month before
+                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'1-month-before')">
+                                                    1 Month before
                                                 </b-dropdown-item>
                                                 <b-dropdown-item href="#"
                                                     v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'2-weeks-before')"
-                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'2-weeks-before')">2 weeks before
+                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'2-weeks-before')">
+                                                    2 weeks before
                                                 </b-dropdown-item>
                                                 <b-dropdown-item href="#"
                                                     v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'1-week-before')"
-                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'1-week-before')">1 week before
+                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'1-week-before')">
+                                                    1 week before
                                                 </b-dropdown-item>
                                                 <b-dropdown-item href="#"
                                                     v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'2-days-before')"
-                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'2-days-before')">2 days before
+                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'2-days-before')">
+                                                    2 days before
                                                 </b-dropdown-item>
                                                 <b-dropdown-item href="#"
                                                     v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'12-hours-before')"
-                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'12-hours-before')">12 hours
+                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'12-hours-before')">
+                                                    12 hours
                                                     before
                                                 </b-dropdown-item>
                                                 <b-dropdown-item href="#"
                                                     v-if="checkdateinertval(activeData.next_unlock_date,activeData.next_unlock_date_text,'10-min-before')"
-                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'10-min-before')">10
+                                                    @click="notifyMe(activeData.coin_id,activeData.symbol,'10-min-before')">
+                                                    10
                                                     minutes before
                                                 </b-dropdown-item>
                                                 <b-dropdown-item href="#"
@@ -3023,10 +3038,10 @@
                                                     <div class="mr-1"> Circulating supply </div>
                                                     <div v-if="checkUserPlan(activeData.circulating_supply)"
                                                         style="font-weight:600" class="">
-                                                        {{ kFormatter(activeData.circulating_supply)}}
+                                                        {{ toInterNationalNumber(activeData.circulating_supply)}}
                                                     </div>
                                                     <div style="font-weight:600" v-else>
-                                                        {{kFormatter(activeData.circulating_supply)}}
+                                                        {{toInterNationalNumber(activeData.circulating_supply)}}
                                                     </div>
                                                 </div>
                                             </b-col>
@@ -3051,10 +3066,10 @@
                                                     <div class="mr-1"> Max supply </div>
                                                     <div v-if="checkUserPlan(activeData.max_supply)"
                                                         style="font-weight:600" class="">
-                                                        {{ kFormatter(activeData.max_supply)}}
+                                                        {{ toInterNationalNumber(activeData.max_supply)}}
                                                     </div>
                                                     <div style="font-weight:600" v-else>
-                                                        {{kFormatter(activeData.max_supply)}}
+                                                        {{toInterNationalNumber(activeData.max_supply)}}
                                                     </div>
                                                 </div>
                                             </b-col>
@@ -3142,7 +3157,7 @@
             :title="'New alert for: '+activeData.name">
             <div class="">
                 <template>
-                    <b-overlay  variant="dark" :show="!NotificationModal" rounded="sm">
+                    <b-overlay variant="dark" :show="!NotificationModal" rounded="sm">
                         <div class="details-modal-container" v-if="NotificationModal">
                             <div class="d-flex flex-wrap justify-content-around">
                                 <div class="d-flex">
@@ -3436,7 +3451,7 @@
                         inoutvalue: 0,
                         inoutperOval: 0,
                         btcflowDif: 0,
-
+                        coinseason: 0
 
                     },
                     btcflow: [],
@@ -4146,7 +4161,7 @@
                     },
 
                 },
-                showSupplychart:true,
+                showSupplychart: true,
                 supplyChart: {
                     series: [],
 
@@ -4351,8 +4366,7 @@
 
         },
         methods: {
-            drag(evt) {
-            },
+            drag(evt) {},
             checkToolTipExist(id) {
 
                 return true;
@@ -4701,7 +4715,7 @@
 
             },
             getTimeStamp(data) {
-              
+
                 var utcDate = new Date(data);
                 // console.log(utcDate); 
                 // console.log('1'); 
@@ -4715,7 +4729,7 @@
                     return new Date().getTime();;
                 }
             },
-            notifyMe(coinid,symbol, type) {
+            notifyMe(coinid, symbol, type) {
 
                 axios.post('api/notify-unlock-token', {
                     symbol: symbol,
@@ -4766,7 +4780,7 @@
             checkdateinertval(date, date_text, type) {
                 var now = new Date();
                 let realDate;
-              
+
                 var d1 = now;
 
                 if (date) {
@@ -4779,7 +4793,7 @@
 
                 // console.log(utcDate); 
                 // console.log('1'); 
-                 realDate = new Date(realDate);
+                realDate = new Date(realDate);
                 var timezoneOffset = new Date().getTimezoneOffset();
                 var RdateUTC = new Date(realDate.getTime() - timezoneOffset * 60 * 1000);
                 // console.log(localDate.toString()); 
@@ -4843,7 +4857,7 @@
                 var d1 = new Date();
                 if (date != null) {
                     realDate = date;
-                    
+
                 } else if (date_text != null) {
                     let textMonth = date_text.slice(date_text.lastIndexOf(' ') + 1);
                     let reaStrDate = textMonth + " 1, " + d1.getFullYear() + " 00:00:00";
@@ -4914,25 +4928,21 @@
             },
             priceConversation(val) {
                 let nval = 0.00;
-                if(parseFloat(val) >100)
-                {
-                    nval= parseFloat(val).toFixed(2);
-                }else if(parseFloat(val) >1.1 && parseFloat(val) <=100)
-                {
-                    nval= parseFloat(val).toFixed(2);
-                }else if(parseFloat(val) >0.5 && parseFloat(val) <=1.1)
-                {
-                    nval= parseFloat(val).toFixed(3);
-                }else if(parseFloat(val) >0.05 && parseFloat(val) <=0.5)
-                {
-                    nval= parseFloat(val).toFixed(4);
-                }else{
-                    nval= val;
+                if (parseFloat(val) > 100) {
+                    nval = parseFloat(val).toFixed(2);
+                } else if (parseFloat(val) > 1.1 && parseFloat(val) <= 100) {
+                    nval = parseFloat(val).toFixed(2);
+                } else if (parseFloat(val) > 0.5 && parseFloat(val) <= 1.1) {
+                    nval = parseFloat(val).toFixed(3);
+                } else if (parseFloat(val) > 0.05 && parseFloat(val) <= 0.5) {
+                    nval = parseFloat(val).toFixed(4);
+                } else {
+                    nval = val;
                 }
-                    return new Intl.NumberFormat('en-US', {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 15,
-                    }).format(nval);
+                return new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 15,
+                }).format(nval);
 
             },
             twenty4HConversation(value) {
@@ -5472,18 +5482,20 @@
 
 
                         }
-                        if (this.activeData.max_supply != null &&this.activeData.circulating_supply != null) {
+                        if (this.activeData.max_supply != null && this.activeData.circulating_supply != null) {
                             let MSdiff = 0;
-                            if (this.activeData.max_supply!= null || this.activeData.total_supply!= null && this.activeData
-                                .circulating_supply!= null) {
-                                MSdiff = (this.activeData.max_supply!= null ? this.activeData.max_supply : this
+                            if (this.activeData.max_supply != null || this.activeData.total_supply != null &&
+                                this.activeData
+                                .circulating_supply != null) {
+                                MSdiff = (this.activeData.max_supply != null ? this.activeData.max_supply : this
                                     .activeData.total_supply) - this.activeData.circulating_supply;
                             }
-                            var total_locked = parseFloat(this.activeData.total_locked != null && this.activeData.total_locked >=0 ? this.activeData
+                            var total_locked = parseFloat(this.activeData.total_locked != null && this
+                                .activeData.total_locked >= 0 ? this.activeData
                                 .total_locked : MSdiff);
                             console.log(total_locked)
 
-                                
+
                             var ms = parseFloat(this.activeData.max_supply ? this.activeData.max_supply : this
                                 .activeData.total_supply);
                             if (isNaN(ms))
@@ -5495,7 +5507,8 @@
                                 cs = 0.0;
 
 
-                            var nt = parseFloat(this.activeData.next_unlock_number_of_tokens != null ? this.activeData.next_unlock_number_of_tokens : 0);
+                            var nt = parseFloat(this.activeData.next_unlock_number_of_tokens != null ? this
+                                .activeData.next_unlock_number_of_tokens : 0);
                             if (isNaN(nt)) {
                                 nt = 0.0;
                             }
@@ -5507,7 +5520,7 @@
                             this.showSupplychart = true;
 
 
-                        }else{
+                        } else {
                             this.showSupplychart = false;
                         }
 
@@ -6128,7 +6141,7 @@
                 }
                 axios.post('api/load-visible-fileds', {
                     mode: mode,
-                    orderMode:'order'
+                    orderMode: 'order'
                 }).then(res => {
                     if (res.data.status == true) {
                         this.loadedFields = res.data.fields;
@@ -6287,16 +6300,15 @@
                 }
 
             },
-            removeAnchorTags(html)
-            {
+            removeAnchorTags(html) {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, "text/html");
                 const links = doc.querySelectorAll("a");
                 let text = html;
                 links.forEach(link => {
-                text = text.replace(link.outerHTML, link.textContent);
+                    text = text.replace(link.outerHTML, link.textContent);
                 });
-                return  text;
+                return text;
             },
             loadEthGasValues() {
                 axios.
@@ -6527,7 +6539,7 @@
                 keyArray.push(obj)
                 axios.post('api/update-column-order', {
                         keyArray: keyArray,
-                        mode:'order'
+                        mode: 'order'
                     })
                     .then(res => {})
             },
@@ -6652,6 +6664,8 @@
             'params.filters2': function (newVal, oldVal) {
                 if (oldVal != newVal && newVal.trim().length == 0 || newVal.trim().length >= 3) {
                     this.Cpagpage = 1;
+                    // this.params.sort[0] ='symbol';
+                    // this.params.sort[1] ='asc';
                     this.loadCoins(false)
                 }
             },
@@ -6987,7 +7001,7 @@
         font-style: normal;
         font-weight: 400;
         font-size: 15px;
-       /* background: linear-gradient(172deg, rgba(43, 255, 77, 0.3) 3.11%, rgba(0, 0, 0, 0) 20.06%), rgba(255, 255, 255, 0.07); */
+        /* background: linear-gradient(172deg, rgba(43, 255, 77, 0.3) 3.11%, rgba(0, 0, 0, 0) 20.06%), rgba(255, 255, 255, 0.07); */
         background: linear-gradient(163deg, rgba(43, 255, 76, 0.3) 1.11%, rgba(0, 0, 0, 0) 6.06%), rgba(255, 255, 255, 0.07);
         position: relative;
     }
@@ -7035,11 +7049,13 @@
         border-top-left-radius: 50em;
         border-bottom-left-radius: 50em;
     }
+
     #dashboard .table td {
         padding: 0.72rem 2rem;
         border-top: 2px solid #ebe9f1;
-        padding: 2px 0 ;
+        padding: 2px 0;
     }
+
     tr td:last-child {
         border-top-right-radius: 50em;
         border-bottom-right-radius: 50em;
@@ -7671,7 +7687,7 @@
     .AppExtensionMode #modal-filters .modal-dialog {
         max-width: 769px;
     }
-        
+
 </style>
 
 <style lang="scss">

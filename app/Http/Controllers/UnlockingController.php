@@ -361,6 +361,9 @@ class UnlockingController extends Controller
     public function dataFromUrl($c)
     {
        
+        $client = new CoinGeckoClient(false);
+        return $coinsList = $client->coins()->getList();
+
        
         $existing_coin_ids = CoinsData::select('coin_id','current_price')->get();
 
