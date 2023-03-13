@@ -38,13 +38,13 @@ class SparklineSaveJob implements ShouldQueue
             $client = new Client();
 
             try {
-                $response = $client->get('https://www.coingecko.com/coins/'.$coin.'/sparkline');
+                $response = $client->get('https://www.coingecko.com/coins/'.$coin.'/sparkline.svg');
                 $html  = $response->getBody();
                 Storage::put('public/sparklineicon/sparkline_'.$coin.'.svg', $html);
             } catch (\Throwable $th) {
                  sleep(20);
                  Log::info("Chart Data: $th");
-                 $response = $client->get('https://www.coingecko.com/coins/'.$coin.'/sparkline');
+                 $response = $client->get('https://www.coingecko.com/coins/'.$coin.'/sparkline.svg');
                  $html  = $response->getBody();
                  Storage::put('public/sparklineicon/sparkline_'.$coin.'.svg', $html);
                  
