@@ -335,12 +335,7 @@
             }
             
         },
-        mounted() {
-            this.isBusy = true;
-           this.loadCoins();
-            this.isBusy = false;
-            
-        },
+       
         created() {
             // data
 
@@ -428,6 +423,8 @@
              
                this.NotificationModal = true;
                this.$bvModal.show('modal-notifications');
+               this.fetchLiveCoinPrice();
+
             },
             updateNotificationFilter(evt)
             {
@@ -473,7 +470,6 @@
                         if(res.data.status == true){
 
                             this.coinData = res.data.data;
-                            this.livecoinprice();
                         }
                    });
             },  
@@ -562,7 +558,52 @@
                 }else{
                     this.AddalertDisable = true;
                 }
-            }
+            },
+            fetchLiveCoinPrice() {
+                this.livecoinprice();
+                return;
+                const body = document.querySelector('body');
+                if (body && body.hasAttribute('app_installed_true')) {
+                    window.postMessage({
+                            type: "get_data",
+                            coinsStr: this.activeData.coin_id
+                        }, function (response) {
+                            console.log(response);
+                        });
+                    setInterval(() => {
+                        window.postMessage({
+                            type: "get_data",
+                            coinsStr: this.activeData.coin_id
+                        }, function (response) {
+                            console.log(response);
+                        });
+                    }, 60000);
+                } else {
+                    this.livecoinprice();
+                }
+            },
+        },
+        mounted() {
+            this.isBusy = true;
+           this.loadCoins();
+            this.isBusy = false;
+            let vm = this;
+            window.addEventListener("message", function (event) {
+                console.log(event);
+                if (event.data.type === "return_price_to_site") {
+                    let objKeys = Object.keys(event.data.coinsStr.message);
+                    objKeys.forEach(element => {
+                        vm.$set(vm.activeData, 'current_price', event.data.coinsStr.message[
+                                element].usd);
+                                vm.$set(vm.coinData, 'current_price', event.data.coinsStr.message[
+                                element].usd);
+                        // vm.activeData.current_price =  event.data.coinsStr.message[element].usd;
+                        // vm.coinData.current_price =  event.data.coinsStr.message[element].usd;
+                    });
+                }
+            });
+
+     
         },
         watch: {
             'Cpagpage': function (newVal, oldVal) {

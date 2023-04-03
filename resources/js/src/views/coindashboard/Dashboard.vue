@@ -3175,7 +3175,7 @@
                             <div class=" p-2">
                                 <NotificationRangePrice v-if="activeData.current_price != null" :value="alertData.price"
                                     @updateNotificationFilter="updateNotificationFilter($event)" modal="Price" :item="1"
-                                    :valueData="activeData" />
+                                    :valueData="activeData" :current_price="activeCoinPriceUpdate" />
                                 <NotificationRangeROI v-if="activeData.price_change_percentage_24h != null"
                                     :valueData="activeData" :value="alertData.tradingper24h"
                                     @updateNotificationFilter="updateNotificationFilter($event)" modal="24h trading %"
@@ -5826,33 +5826,7 @@
                 this.pricesWs.onmessage = function (msg) {
                     let coinFetched = JSON.parse(msg.data);
                     let objKeys = Object.keys(coinFetched);
-
-                    objKeys.forEach(element => {
-                        let index = thisScope.items.data.findIndex(x => x.coin_id == element)
-                        if (thisScope.items.data[index]) {
-                            let oldVal = thisScope.items.data[index].current_price;
-                            thisScope.items.data[index].current_price = coinFetched[element];
-                            if (oldVal < coinFetched[element]) {
-                                thisScope.items.data[index].flash = 1;
-                                setTimeout(() => {
-                                    if (thisScope.items.data[index]) {
-                                        thisScope.items.data[index].flash = 3;
-
-                                    }
-                                }, 1000);
-
-                            } else {
-                                thisScope.items.data[index].flash = 2;
-                                setTimeout(() => {
-                                    if (thisScope.items.data[index]) {
-                                        thisScope.items.data[index].flash = 3;
-                                    }
-                                }, 1000);
-                            }
-                        }
-                    });
-
-
+                    thisScope.webPriceLoad(objKeys, coinFetched);
                 }
             },
             onCopy: function (e) {
@@ -6543,7 +6517,57 @@
                     })
                     .then(res => {})
             },
+            fetchLiveCoinPrice() {
+                const body = document.querySelector('body');
+                if (body && body.hasAttribute('app_installed_true')) {
+                    setInterval(() => {
+                        let coinids = [];
+                        this.coinsStr = '';
+                        this.coinsStr = this.items.data
+                        .map(element => element.coin_id)
+                        .sort(() => Math.random() - 0.5)
+                        .join(',');
 
+                        window.postMessage({
+                            type: "get_data",
+                            coinsStr: this.coinsStr
+                        }, function (response) {
+                            console.log(response);
+                        });
+                    }, 5000);
+                } else {
+                    this.liveCoinFetch();
+                }
+            },
+           
+            webPriceLoad(objKeys, coinFetched) {
+
+                objKeys.forEach(element => {
+                    let index = this.items.data.findIndex(x => x.coin_id == element)
+                    if (this.items.data[index]) {
+                        let oldVal = this.items.data[index].current_price;
+                        this.items.data[index].current_price = coinFetched[element];
+                        if (oldVal < coinFetched[element]) {
+                            this.items.data[index].flash = 1;
+                            setTimeout(() => {
+                                if (this.items.data[index]) {
+                                    this.items.data[index].flash = 3;
+
+                                }
+                            }, 1000);
+
+                        } else {
+                            this.items.data[index].flash = 2;
+                            setTimeout(() => {
+                                if (this.items.data[index]) {
+                                    this.items.data[index].flash = 3;
+                                }
+                            }, 1000);
+                        }
+                    }
+                });
+
+            }
 
         },
         computed: {
@@ -6623,6 +6647,14 @@
                 this.dir = 'ltr'
                 return this.dir
             },
+
+            activeCoinPriceUpdate(){
+                let index = this.items.data.findIndex(x => x.coin_id == this.activeData.coin_id)
+                console.log(index)
+                console.log(this.activeData.coin_id)
+                console.log(this.items.data[index].current_price)
+               return this.activeData.current_price =  this.items.data[index].current_price; 
+            },
             refreshEvent() {},
         },
         mounted() {
@@ -6645,7 +6677,39 @@
                 this.all_coins_mode = true;
                 this.params.sort = ["market_cap_rank", "asc"],
                     this.loadCoins(false)
-            })
+            });
+            const vm = this;
+            window.addEventListener("message", function (event) {
+                if (event.data.type === "return_price_to_site") {
+                    let objKeys = Object.keys(event.data.coinsStr.message);
+                    console.log(objKeys);
+                    objKeys.forEach(element => {
+                        let index = vm.items.data.findIndex(x => x.coin_id == element)
+                        if (vm.items.data[index]) {
+                            let oldVal = vm.items.data[index].current_price;
+                            vm.$set(vm.items.data[index], 'current_price', event.data.coinsStr.message[
+                                element].usd);
+                            if (oldVal < event.data.coinsStr.message[element].usd) {
+                                vm.$set(vm.items.data[index], 'flash', 1);
+                                setTimeout(() => {
+                                    if (vm.items.data[index]) {
+                                        vm.$set(vm.items.data[index], 'flash', 3);
+                                    }
+                                }, 1000);
+
+                            } else if(oldVal > event.data.coinsStr.message[element].usd) {
+                                vm.$set(vm.items.data[index], 'flash', 2);
+                                setTimeout(() => {
+                                    if (vm.items.data[index]) {
+                                        vm.$set(vm.items.data[index], 'flash', 3);
+                                    }
+                                }, 1000);
+                            }
+                        }
+                    });
+                }
+            });
+
         },
         created() {
             this.userData = getUserData()
@@ -6671,8 +6735,8 @@
             },
             'loadedCoinData': function (n, o) {
                 if (this.loadedCoinData == true) {
-
-                    this.liveCoinFetch();
+                    this.fetchLiveCoinPrice()
+                    // this.liveCoinFetch();
                 }
 
             },

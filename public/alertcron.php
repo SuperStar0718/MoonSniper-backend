@@ -43,7 +43,6 @@ if (mysqli_num_rows($result) > 0) {
         }
        
     }
-  
     if($coinid_string != ''){
         $ids_array = array_unique(explode(',', $coinid_string)); // Convert the string to an array
          $coinid_string = "'" . implode("', '", $ids_array) . "'"; 
@@ -56,7 +55,7 @@ if (mysqli_num_rows($result) > 0) {
 
     mysqli_close($conn);
     // Print the resulting JSON string
-    $url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=USD"; 
+    $url = "https://api.coingecko.com/api/v3/simple/price?ids=".$coinid_string2."&vs_currencies=USD"; 
 
 // Create a new cURL resource
     $curl = curl_init($url);
