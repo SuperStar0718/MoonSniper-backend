@@ -186,7 +186,7 @@
                 </div>
             </div>
             <b-modal id="modal-notifications" ok-only ok-title="Close" :hide-footer="true" centered size="lg"
-                :title="'Edit alert for: '+activeData.coin_name">
+                :title="'Edit alert for: '+activeData.coin_name" @hidden="onModalHidden">
                 <div class="">
                     <template>
                         <b-overlay :show="!NotificationModal" rounded="sm">
@@ -204,7 +204,7 @@
 
                                 </div>
                                 <div class=" p-2">
-                                    <NotificationRangePrice v-if="coinData.current_price != null" :value="alertData.price" @updateNotificationFilter="updateNotificationFilter($event)"
+                                    <NotificationRangePrice v-if="coinData.current_price != null" :current_price="coinData.current_price" :value="alertData.price" @updateNotificationFilter="updateNotificationFilter($event)"
                                     modal="Price" :item="1" :valueData="coinData" />
                                      <NotificationRangeROI v-if="coinData.price_change_percentage_24h != null" :valueData="coinData"  :value="alertData.tradingper24h" @updateNotificationFilter="updateNotificationFilter($event)"
                                     modal="24H trading %" :item="2" />
@@ -331,7 +331,7 @@
                 activeNotify:[],
                 coinData:{},
                 AddalertDisable:true,
-
+                livePriceInterval:null
             }
             
         },
@@ -560,28 +560,37 @@
                 }
             },
             fetchLiveCoinPrice() {
-                this.livecoinprice();
-                return;
+                // this.livecoinprice();
+                // return;
+                if (this.livePriceInterval) {
+                    clearInterval(this.livePriceInterval)
+                }
                 const body = document.querySelector('body');
                 if (body && body.hasAttribute('app_installed_true')) {
                     window.postMessage({
                             type: "get_data",
                             coinsStr: this.activeData.coin_id
                         }, function (response) {
-                            console.log(response);
                         });
-                    setInterval(() => {
+                   this.livePriceInterval= setInterval(() => {
                         window.postMessage({
                             type: "get_data",
                             coinsStr: this.activeData.coin_id
                         }, function (response) {
-                            console.log(response);
                         });
-                    }, 60000);
+                    }, 10000);
                 } else {
                     this.livecoinprice();
                 }
             },
+            onModalHidden(){
+                if (this.livePriceInterval) {
+                    clearInterval(this.livePriceInterval)
+                }
+            }
+        },
+        beforeDestroy(){
+           this.onModalHidden();
         },
         mounted() {
             this.isBusy = true;
@@ -589,16 +598,15 @@
             this.isBusy = false;
             let vm = this;
             window.addEventListener("message", function (event) {
-                console.log(event);
                 if (event.data.type === "return_price_to_site") {
                     let objKeys = Object.keys(event.data.coinsStr.message);
                     objKeys.forEach(element => {
-                        vm.$set(vm.activeData, 'current_price', event.data.coinsStr.message[
+                        vm.activeData.current_price =  event.data.coinsStr.message[element].usd;
+                        vm.coinData.current_price =  event.data.coinsStr.message[element].usd;
+                          vm.$set(vm.activeData, 'current_price', event.data.coinsStr.message[
                                 element].usd);
                                 vm.$set(vm.coinData, 'current_price', event.data.coinsStr.message[
                                 element].usd);
-                        // vm.activeData.current_price =  event.data.coinsStr.message[element].usd;
-                        // vm.coinData.current_price =  event.data.coinsStr.message[element].usd;
                     });
                 }
             });

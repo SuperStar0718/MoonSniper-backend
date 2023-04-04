@@ -46,7 +46,8 @@
             value: Array,
             item: 0,
             modal: String,
-            valueData: Object
+            valueData: Object,
+            current_price:Number,
         },
         components: {
             VueSlider,
@@ -73,7 +74,7 @@
 
                 let vdata = 2.00;
                 if (this.item == 1) {
-                    vdata = this.valueData.current_price;
+                    vdata = this.current_price;
                 } else if (this.item == 4) {
                     vdata = this.valueData.market_cap;
                 }
@@ -128,7 +129,7 @@
             blurValue1() {
                 let vdata = 0.00;
                 if (this.item == 1) {
-                    vdata = this.valueData.current_price;
+                    vdata = this.current_price;
                 } else if (this.item == 4) {
                     vdata = this.valueData.market_cap;
                 }
@@ -157,7 +158,7 @@
             blurValue2() {
                 let vdata = 0.00;
                 if (this.item == 1) {
-                    vdata = this.valueData.current_price;
+                    vdata = this.current_price;
                 } else if (this.item == 4) {
                     vdata = this.valueData.market_cap;
                 }
@@ -185,7 +186,7 @@
             updateValue2() {
                 let vdata = 0.00;
                 if (this.item == 1) {
-                    vdata = this.valueData.current_price;
+                    vdata = this.current_price;
                 } else if (this.item == 4) {
                     vdata = this.valueData.market_cap;
                 }
@@ -215,7 +216,7 @@
                 let label = '';
                 switch (this.item) {
                     case 1:
-                        label = 'Current price is : ' + this.valueData.current_price + '$';
+                        label = 'Current price is : ' + this.current_price + '$';
                         break;
                     case 2:
                         label = '24h volume is : ' + (this.valueData.total_volume ? this.valueData.total_volume : '-');
@@ -251,7 +252,7 @@
             minvalue() {
                 let vdata = 0;
                 if (this.item == 1) {
-                    vdata = this.valueData.current_price;
+                    vdata = this.current_price;
                 } else if (this.item == 4) {
                     vdata = this.valueData.market_cap;
                 }
@@ -261,7 +262,7 @@
             maxvalue() {
                 let vdata = 0;
                 if (this.item == 1) {
-                    vdata = this.valueData.current_price;
+                    vdata = this.current_price;
                 } else if (this.item == 4) {
                     vdata = this.valueData.market_cap;
                 }
@@ -272,7 +273,7 @@
             {
                 let vdata = 0;
                 if (this.item == 1) {
-                    vdata = this.valueData.current_price;
+                    vdata = this.current_price;
                 }else if (this.item == 4) {
                     vdata = this.valueData.market_cap;
                 }
@@ -299,7 +300,7 @@
             {
                 let vdata = 0;
                 if (this.item == 1) {
-                    vdata = this.valueData.current_price;
+                    vdata = this.current_price;
                 }else if (this.item == 4) {
                     vdata = this.valueData.market_cap;
                 }

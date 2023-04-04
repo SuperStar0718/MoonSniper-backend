@@ -4351,7 +4351,9 @@
                         text: 'High',
                         value: 'High'
                     },
-                ]
+                ],
+                livePriceInterval: null,
+
                 //end
 
             }
@@ -5493,7 +5495,6 @@
                             var total_locked = parseFloat(this.activeData.total_locked != null && this
                                 .activeData.total_locked >= 0 ? this.activeData
                                 .total_locked : MSdiff);
-                            console.log(total_locked)
 
 
                             var ms = parseFloat(this.activeData.max_supply ? this.activeData.max_supply : this
@@ -5515,7 +5516,7 @@
                             var val1 = Math.max(((total_locked / ms) * 100), 0.0);
                             var val2 = nt / ms * 100;
                             var val3 = Math.max((100 - val1 - val2), 0.0);
-                            console.log([val1, val3, val2])
+                            // console.log([val1, val3, val2])
                             this.supplyChart.series = [val1, val3, val2];
                             this.showSupplychart = true;
 
@@ -6518,28 +6519,37 @@
                     .then(res => {})
             },
             fetchLiveCoinPrice() {
+                if (this.livePriceInterval) {
+                    clearInterval(this.livePriceInterval)
+                }
                 const body = document.querySelector('body');
+                this.callLivePrice();
                 if (body && body.hasAttribute('app_installed_true')) {
-                    setInterval(() => {
-                        let coinids = [];
-                        this.coinsStr = '';
-                        this.coinsStr = this.items.data
-                        .map(element => element.coin_id)
-                        .sort(() => Math.random() - 0.5)
-                        .join(',');
-
-                        window.postMessage({
-                            type: "get_data",
-                            coinsStr: this.coinsStr
-                        }, function (response) {
-                            console.log(response);
-                        });
+                    this.livePriceInterval = setInterval(() => {
+                        if (!document.hidden) {
+                            this.callLivePrice();
+                        }
                     }, 5000);
                 } else {
                     this.liveCoinFetch();
                 }
             },
-           
+            callLivePrice() {
+                let coinids = [];
+                this.coinsStr = '';
+                this.coinsStr = this.items.data
+                    .map(element => element.coin_id)
+                    .sort(() => Math.random() - 0.5)
+                    .join(',');
+
+                window.postMessage({
+                    type: "get_data",
+                    coinsStr: this.coinsStr
+                }, function (response) {
+                    console.log(response);
+                });
+            },
+
             webPriceLoad(objKeys, coinFetched) {
 
                 objKeys.forEach(element => {
@@ -6648,12 +6658,9 @@
                 return this.dir
             },
 
-            activeCoinPriceUpdate(){
+            activeCoinPriceUpdate() {
                 let index = this.items.data.findIndex(x => x.coin_id == this.activeData.coin_id)
-                console.log(index)
-                console.log(this.activeData.coin_id)
-                console.log(this.items.data[index].current_price)
-               return this.activeData.current_price =  this.items.data[index].current_price; 
+                return this.activeData.current_price = this.items.data[index].current_price;
             },
             refreshEvent() {},
         },
@@ -6682,7 +6689,6 @@
             window.addEventListener("message", function (event) {
                 if (event.data.type === "return_price_to_site") {
                     let objKeys = Object.keys(event.data.coinsStr.message);
-                    console.log(objKeys);
                     objKeys.forEach(element => {
                         let index = vm.items.data.findIndex(x => x.coin_id == element)
                         if (vm.items.data[index]) {
@@ -6697,7 +6703,7 @@
                                     }
                                 }, 1000);
 
-                            } else if(oldVal > event.data.coinsStr.message[element].usd) {
+                            } else if (oldVal > event.data.coinsStr.message[element].usd) {
                                 vm.$set(vm.items.data[index], 'flash', 2);
                                 setTimeout(() => {
                                     if (vm.items.data[index]) {
@@ -6713,6 +6719,11 @@
         },
         created() {
             this.userData = getUserData()
+        },
+        beforeDestroy(){
+            if (this.livePriceInterval) {
+                    clearInterval(this.livePriceInterval)
+                }
         },
         watch: {
             'alertForm.name': function (newVal, oldVal) {
