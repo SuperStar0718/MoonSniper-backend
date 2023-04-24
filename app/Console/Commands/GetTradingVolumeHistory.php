@@ -33,14 +33,13 @@ class GetTradingVolumeHistory extends Command
     {
         // Only Get Trading Volume History for the coins with flag set to true
         $coins = CoinsList::where("trading_history_flag", true)->get();
-
-
+        // $coins = CoinsList::get();
         foreach($coins as $c)
         {
             $job = (new GetTradingVolumeHistoryJob($c->coin_id, $c->symbol))->onQueue('moon-sniper-worker');
             dispatch($job);
         }
-
         return true;
+      
     }
 }

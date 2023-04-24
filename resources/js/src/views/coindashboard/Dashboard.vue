@@ -3741,7 +3741,7 @@
                     chart: {
                         id: 'trading-history',
                         height: 290,
-                        background: '#54b9eb'
+                        background: '#000'
                     },
                     xaxis: {
                         labels: {
@@ -6297,28 +6297,28 @@
                     })
 
             },
-            loadMarketCap() {
-                axios.
-                get('/api/load-marketcap-values')
-                    .then(res => {
-                        if (res.data.status) {
-                            this.weeklyMcAndVolume = res.data;
-                            this.todaysMc = this.toInterNationalNumber(res.data.mcValues.stats[7][1].toFixed(0));
-                            let A = res.data.mcValues.stats[7][1];
-                            let B = res.data.mcValues.stats[6][1];
-                            this.todaysMcChange = 100 * ((A - B) / ((A + B) / 2));
-                            this.todaysMcChange = this.todaysMcChange.toFixed(2);
+            // loadMarketCap() {
+            //     axios.
+            //     get('/api/load-marketcap-values')
+            //         .then(res => {
+            //             if (res.data.status) {
+            //                 this.weeklyMcAndVolume = res.data;
+            //                 this.todaysMc = this.toInterNationalNumber(res.data.mcValues.stats[7][1].toFixed(0));
+            //                 let A = res.data.mcValues.stats[7][1];
+            //                 let B = res.data.mcValues.stats[6][1];
+            //                 this.todaysMcChange = 100 * ((A - B) / ((A + B) / 2));
+            //                 this.todaysMcChange = this.todaysMcChange.toFixed(2);
 
-                            this.todaysVol = this.toInterNationalNumber(res.data.mcValues.total_volumes[7][1]
-                                .toFixed(0));
-                            let C = res.data.mcValues.total_volumes[7][1];
-                            let D = res.data.mcValues.total_volumes[6][1];
-                            this.todaysVolChange = 100 * ((C - D) / ((C + D) / 2));
-                            this.todaysVolChange = this.todaysVolChange.toFixed(2);
-                        }
-                    })
+            //                 this.todaysVol = this.toInterNationalNumber(res.data.mcValues.total_volumes[7][1]
+            //                     .toFixed(0));
+            //                 let C = res.data.mcValues.total_volumes[7][1];
+            //                 let D = res.data.mcValues.total_volumes[6][1];
+            //                 this.todaysVolChange = 100 * ((C - D) / ((C + D) / 2));
+            //                 this.todaysVolChange = this.todaysVolChange.toFixed(2);
+            //             }
+            //         })
 
-            },
+            // },
             ethGasPriceTooltip() {
                 let html = '';
                 return html = `<div>
@@ -6670,7 +6670,7 @@
             this.loadFag();
             this.loadPresetFilters();
             this.loadEthGasValues();
-            this.loadMarketCap();
+            // this.loadMarketCap();
             if (this.$route.query.type == 'extension') {
                 document.body.classList.add('AppExtensionMode')
             }

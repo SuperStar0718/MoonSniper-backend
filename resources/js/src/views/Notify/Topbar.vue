@@ -111,16 +111,16 @@ export default {
                     .then(res => {
                         if (res.data.status) {
                             this.weeklyMcAndVolume = res.data;
-                            this.todaysMc = this.toInterNationalNumber(res.data.mcValues.stats[7][1].toFixed(0));
-                            let A = res.data.mcValues.stats[7][1];
-                            let B = res.data.mcValues.stats[6][1];
+                            this.todaysMc = this.toInterNationalNumber(res.data.mcValues[0].data[7][1].toFixed(0));
+                            let A = res.data.mcValues[0].data[7][1];
+                            let B = res.data.mcValues[0].data[6][1];
                             this.todaysMcChange = 100 * ((A - B) / ((A + B) / 2));
                             this.todaysMcChange = this.todaysMcChange.toFixed(2);
 
-                            this.todaysVol = this.toInterNationalNumber(res.data.mcValues.total_volumes[7][1]
+                            this.todaysVol = this.toInterNationalNumber(res.data.mcValues[1].data[7][1]
                                 .toFixed(0));
-                            let C = res.data.mcValues.total_volumes[7][1];
-                            let D = res.data.mcValues.total_volumes[6][1];
+                            let C = res.data.mcValues[1].data[7][1];
+                            let D = res.data.mcValues[1].data[6][1];
                             this.todaysVolChange = 100 * ((C - D) / ((C + D) / 2));
                             this.todaysVolChange = this.todaysVolChange.toFixed(2);
                         }
