@@ -66,7 +66,11 @@ class GetIdForCoinDataJob implements ShouldQueue
                $items2[] = $is[0]->getAttribute('data-coin-id'); 
                $items2[] = $is[0]->getAttribute('data-coin-slug'); 
                $divs = $tr->getElementsByTagName('div'); // get the columns in this row
-               $apisym = $divs[6]->getAttribute('data-api-symbol'); 
+               $apisym = '';
+               if ($divs->length >= 7) {
+                   $apisym = $divs[6]->getAttribute('data-api-symbol');
+                   $items2[] = $apisym;
+               }
                $qry = array(
                     'coingeckoid'=>$items2[1],
                 );

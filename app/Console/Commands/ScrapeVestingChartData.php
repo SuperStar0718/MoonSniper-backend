@@ -28,7 +28,7 @@ class ScrapeVestingChartData extends Command
      */
     public function handle()
     {
-        VestingChartJobScrape::dispatch()->onQueue('moon-sniper-worker');
+        VestingChartJobScrape::dispatch()->onQueue('moon-sniper-worker-long');
         return Command::SUCCESS;
     }
 }

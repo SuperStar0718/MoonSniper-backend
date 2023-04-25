@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use DateTime;
+use DOMXPath;
 use Exception;
+use DOMDocument;
 use Carbon\Carbon;
+use Dotenv\Dotenv;
 use GuzzleHttp\Client;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
@@ -15,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use App\Libraries\CoinGecko\CoinGeckoClient;
 use App\Notifications\NotifyTokenUnlockNotification;
@@ -358,74 +362,14 @@ class UnlockingController extends Controller
             }
         }
     }
+    
     public function dataFromUrl($c)
     {
        
-        $client = new CoinGeckoClient(false);
-        return $coinsList = $client->coins()->getList();
-
-       
-        $existing_coin_ids = CoinsData::select('coin_id','current_price')->get();
-
-        $tokens_id = [];
-        $id_price = [];
-
-        foreach($existing_coin_ids as $token) {
-            array_push($tokens_id,$token->coin_id);
-            $id_price[$token->coin_id] = $token->current_price;
-        }
-
-
-        $url = 'https://api.cryptorank.io/v0/coins/crowdsales';
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, Array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15") );
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $result= curl_exec ($ch);
-        curl_close ($ch);
-        $tokens_with_roi = json_decode($result, true);
-
-        $newCoinsArray = [];
-
-        foreach ($tokens_with_roi['data'] as $token_name => $token_data) {
-
-            if(in_array($token_name,$tokens_id)){
-
-                for($rounds=1;$rounds<=count($token_data);$rounds++){
-
-                    if (array_key_exists('price', $token_data[count($token_data)-$rounds]) ) {
-                        //lets use this price
-                        if(isset($token_data[count($token_data)-$rounds]['price']['USD']) ) {
-
-                            $init_price = $token_data[count($token_data) - $rounds]['price']['USD'];
-                            $price_today = $id_price[$token_name];
-                            $ROI = round($price_today / $init_price, 2);
-                            $roi_percentage = $ROI * 100 - 100;
-                            $type = $token_data[count($token_data) - $rounds]['type'];
-                            $newCoinsArray[] = array(
-                                'coin_id' => $token_name,
-                                'roi_times' => $ROI,
-                                'type' => $type,
-                                'roi_currency' => 'usd',
-                                'roi_percentage' => $roi_percentage
-                            );
-                        }//else we dont have other coins to compare with!
-                    }
-                }
-            }
-        }
-        Try {
-            CoinsData::massUpdate(
-                values: $newCoinsArray,
-                uniqueBy: 'coin_id'
-            );
-        }catch (\Exception $exception){
-            Log::info("The Problem here is: ".$exception);
-        }
-        
+        $env = Dotenv::createArrayBacked(base_path())->load();
+        $response = Http::withHeaders(['Authorization' => 'Bearer '. $env["LUNARCRUSH_API_KEY"]])->get('https://lunarcrush.com/api3/coins');
+        $response_body = $response->getBody();
+       return $lunarcrush_data = json_decode($response_body);
 
     }
     public static function getBetween2($content, $start, $end)

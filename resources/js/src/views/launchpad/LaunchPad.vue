@@ -1,8 +1,8 @@
 <template>
-    <div class="launchpad">
+    <div class="launchpad" id="launchpad">
         <div>
             <div>
-                <div id="alerts">
+                <div id="">
                     <div class="darkWhiteText" style="font-family: 'Poppins';
         font-style: normal;
         font-weight: 600;
@@ -731,8 +731,6 @@
 
 
     #launchpad table td {
-        padding-left: 4px !important;
-        padding-right: 4px !important;
         font-family: 'Poppins-Light';
         font-weight: 300;
 
@@ -757,14 +755,14 @@
     }
 
 
-    thead tr th {
+    #launchpad thead tr th {
         font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 300;
         font-size: 12px;
     }
 
-    tbody tr {
+   #launchpad tbody tr {
         font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 400;
@@ -786,37 +784,37 @@
 
 } */
 
-    tbody tr:has(td:not(:first-child)) {
-        box-shadow: inset 1px 2px 1px 0px rgb(82, 243, 109);
+#launchpad tbody tr:has(td:not(:first-child)) {
+        box-shadow: inset 1px 2px 1px 0px rgb(82, 243, 109) 
+        !important;
     }
 
 
-    .AppExtensionMode table {
+    .AppExtensionMode #launchpad table {
         border-spacing: 0 4px !important;
     }
 
-    table {
+    #launchpad table {
         border-collapse: separate;
         border-spacing: 0 7px !important;
     }
 
-    td {
+    #launchpad td {
         border: solid 0px #000000;
         padding: 15px;
     }
 
-    tr td:first-child {
+    #launchpad tr td:first-child {
         border-top-left-radius: 50em;
         border-bottom-left-radius: 50em;
     }
 
     #launchpad .table td {
         padding: 0.72rem 2rem;
-        border-top: 2px solid #ebe9f1;
-        padding: 2px 0;
+        border-top: 1px solid #ebe9f1;
     }
 
-    tr td:last-child {
+    #launchpad tr td:last-child {
         border-top-right-radius: 50em;
         border-bottom-right-radius: 50em;
     }

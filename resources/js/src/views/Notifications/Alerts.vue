@@ -630,15 +630,15 @@
 
 </script>
 <style>
-    tbody tr:has(td:not(:first-child)) {
+   #alerts tbody tr:has(td:not(:first-child)) {
         box-shadow: inset 1px 2px 1px 0px rgb(82 243 109);
     }
 
-    tbody tr {
+    #alerts  tbody tr {
         background: linear-gradient(172deg, rgba(43, 255, 77, 0.3) 3.11%, rgba(0, 0, 0, 0) 20.06%), rgba(255, 255, 255, 0.07);
     }
 
-    tbody tr {
+    #alerts tbody tr {
         font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 400;
@@ -646,12 +646,12 @@
         position: relative;
     }
 
-    tr td:first-child {
+    #alerts  tr td:first-child {
         border-top-left-radius: 50em;
         border-bottom-left-radius: 50em;
     }
 
-    .actionButton .dropdown-toggle {
+    #alerts  .actionButton .dropdown-toggle {
         background: transparent !important;
         border: none !important;
         color: white !important;
@@ -661,28 +661,28 @@
         text-align: center;
     }
 
-    .actionButton .dropdown-toggle::after {
+    #alerts .actionButton .dropdown-toggle::after {
         display: none !important;
     }
 
-    .actionButton .dropdown-item {
+    #alerts .actionButton .dropdown-item {
         color: #000000 !important;
     }
 
-    .action-menu {
+    #alerts .action-menu {
         margin-bottom: 2px;
         padding: 5px;
         border-radius: 5px;
     }
 
-    .action-menu:hover {
+    #alerts .action-menu:hover {
         background: rgb(217, 212, 212) !important;
 
     }
-    .titlereq{
+    #alerts  .titlereq{
         border-color: #ad2020 !important;
     }
-    .b-table-alerts table{
+    #alerts .b-table-alerts table{
     border-spacing: 0px 4px !important;
     }
    .AppExtensionMode  #modal-notifications  .modal-dialog{

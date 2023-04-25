@@ -3082,7 +3082,7 @@
                                                         :series="supplyChart.series" />
                                                 </div>
                                             </b-col>
-                                            <b-col v-if="   vestingDataChart.xaxis.categories.length>0">
+                                            <b-col cols="12" class="col-12" v-if="   vestingDataChart.xaxis.categories.length>0">
                                                 <span class="mr-1">Vesting Chart: </span>
 
 
@@ -3741,7 +3741,6 @@
                     chart: {
                         id: 'trading-history',
                         height: 290,
-                        background: '#000'
                     },
                     xaxis: {
                         labels: {
@@ -5530,7 +5529,8 @@
                 //vesting Chart 
                 if (item.vesting_chart) {
                     let vestingData = JSON.parse(item.vesting_chart);
-                    let keys = Object.keys(vestingData[0])
+                    if(vestingData[0]){
+                        let keys = Object.keys(vestingData[0])
                     var filteredArray = keys.filter(function (e) {
                         return e !== 'name'
                     })
@@ -5555,6 +5555,8 @@
                         const timestamp = date.getTime();
                         this.vestingDataChart.xaxis.categories.push(timestamp);
                     });
+                    }
+                    
                     //   console.log(this.vestingDataSerice);
                 }
                 this.detailsModalLoaded = true;
@@ -7064,19 +7066,18 @@
         white-space: nowrap;
     }
 
-    thead tr th {
+    #dashboard thead tr th {
         font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 300;
         font-size: 12px;
     }
 
-    tbody tr {
+    #dashboard tbody tr, .ExchangeTableDiv tbody tr {
         font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 400;
         font-size: 15px;
-        /* background: linear-gradient(172deg, rgba(43, 255, 77, 0.3) 3.11%, rgba(0, 0, 0, 0) 20.06%), rgba(255, 255, 255, 0.07); */
         background: linear-gradient(163deg, rgba(43, 255, 76, 0.3) 1.11%, rgba(0, 0, 0, 0) 6.06%), rgba(255, 255, 255, 0.07);
         position: relative;
     }
@@ -7101,7 +7102,7 @@
    
     } */
 
-    tbody tr:has(td:not(:first-child)) {
+    #dashboard tbody tr:has(td:not(:first-child)),.ExchangeTableDiv tbody tr:has(td:not(:first-child)) {
         box-shadow: inset 1px 2px 1px 0px rgb(82, 243, 109);
     }
 
@@ -7120,7 +7121,7 @@
         padding: 15px;
     }
 
-    tr td:first-child {
+    #dashboard tr td:first-child ,.ExchangeTableDiv tr td:first-child {
         border-top-left-radius: 50em;
         border-bottom-left-radius: 50em;
     }
@@ -7131,7 +7132,7 @@
         padding: 2px 0;
     }
 
-    tr td:last-child {
+    #dashboard tr td:last-child,.ExchangeTableDiv tr td:last-child {
         border-top-right-radius: 50em;
         border-bottom-right-radius: 50em;
     }
@@ -7148,7 +7149,7 @@
         background: linear-gradient(169deg, rgba(43, 255, 77, 0.3) 3.11%, rgba(0, 0, 0, 0) 50.06%), rgba(255, 255, 255, 0.07);
     }
 
-    .margin20 {
+    #dashboard .margin20 {
         margin: 10px;
         font-family: 'Poppins-Light';
         font-style: normal;
@@ -7176,7 +7177,7 @@
         max-height: 275px !important;
     }
 
-    .dropdown-menu {
+    #dashboard .dropdown-menu {
         border-radius: 20px;
         max-height: 500px;
         overflow: auto;
@@ -7209,11 +7210,11 @@
         padding: 7px 30px 10px 0px;
     }
 
-    .graph_tab {
+    #dashboard .graph_tab {
         font-size: 10px;
     }
 
-    .graph_tab a {
+    #dashboard .graph_tab a {
         padding: inherit !important;
         margin-right: 1rem;
         padding-bottom: 3px !important;

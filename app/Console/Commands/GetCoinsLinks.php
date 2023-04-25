@@ -42,7 +42,7 @@ class GetCoinsLinks extends Command
         $coins = ceil(CoinsList::count()/500);
 
         for ($i=0;$i<=$coins;$i++){
-            $job = (new GetCoinsLinksJob($i+1))->onQueue('moon-sniper-worker');
+            $job = (new GetCoinsLinksJob($i+1))->onQueue('moon-sniper-worker-long');
             dispatch($job);
         }
     }

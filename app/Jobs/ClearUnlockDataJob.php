@@ -32,24 +32,26 @@ class ClearUnlockDataJob implements ShouldQueue
      */
     public function handle()
     {
-        $clearUnlock =  CoinsData::where('next_unlock_date', '<', Carbon::now())
-        ->update([
-            'next_unlock_date' => null,
-            'next_unlock_date_text' => null,
-            'total_locked_percent' => null,
-            'next_unlock_percent' => null,
-            'next_unlock_number_of_tokens' => null,
-            'next_unlock_percent_of_tokens' => null,
-            'next_unlock_size' => null,
-            'end_vc_unlock' => null,
-            'first_vc_unlock_text' => null,
-            'end_vc_unlock_text' => null,
-            'three_months_unlock_number_of_tokens' => null,
-            'three_months_unlock_percent_of_tokens' => null,
-            'three_months_unlock_size' => null,
-            'six_months_unlock_number_of_tokens' => null,
-            'six_months_unlock_percent_of_tokens' => null,
-            'six_months_unlock_size' => null,
-            ]);
-    }
+       
+            $clearUnlock =  CoinsData::where('next_unlock_date', '<', Carbon::now())
+            ->update([
+                'next_unlock_date' => null,
+                'next_unlock_date_text' => null,
+                'total_locked_percent' => null,
+                'next_unlock_percent' => null,
+                'next_unlock_number_of_tokens' => null,
+                'next_unlock_percent_of_tokens' => null,
+                'next_unlock_size' => null,
+                'first_vc_unlock' => null,
+                'end_vc_unlock' => null,
+                'first_vc_unlock_text' => null,
+                'end_vc_unlock_text' => null,
+                'three_months_unlock_number_of_tokens' => null,
+                'three_months_unlock_percent_of_tokens' => null,
+                'three_months_unlock_size' => null,
+                'six_months_unlock_number_of_tokens' => null,
+                'six_months_unlock_percent_of_tokens' => null,
+                'six_months_unlock_size' => null,
+                ]);
+        }
 }

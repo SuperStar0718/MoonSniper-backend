@@ -1,5 +1,5 @@
 <template>
-    <div id="dashboard">
+    <div id="wallet">
         <div class="body-content-overlay" />
         <!-- search bar and table -->
         <div class="cardBack" style="
@@ -2226,34 +2226,34 @@
         color: #757094 !important;
     }
 
-    #dashboard .nameWidth {
+    #wallet .nameWidth {
         width: 55px !important;
     }
 
-    #dashboard .full {
+    #wallet .full {
         width: 100%;
     }
 
-    #dashboard .customBadge {
+    #wallet .customBadge {
         font-size: 11px;
         padding: 2px;
         border-radius: 5px;
     }
 
-    #dashboard .b-table-1 {
+    #wallet .b-table-1 {
         overflow-y: auto !important;
         max-height: 56vh;
     }
 
-    #dashboard .b-table-1 tr {
+    #wallet .b-table-1 tr {
         height: 60px;
     }
 
-    #dashboard .b-table-1:hover {
+    #wallet .b-table-1:hover {
         overflow-x: scroll !important;
     }
 
-    #dashboard td {
+    #wallet td {
         text-align: center;
     }
 
@@ -2262,25 +2262,25 @@
     }
 
 
-    #dashboard .b-table-1::-webkit-scrollbar {
+    #wallet .b-table-1::-webkit-scrollbar {
         height: 2px;
     }
 
-    #dashboard .b-table-1:hover::-webkit-scrollbar {
+    #wallet .b-table-1:hover::-webkit-scrollbar {
         height: 8px;
     }
 
-    #dashboard .b-table-1::-webkit-scrollbar-corner {
+    #wallet .b-table-1::-webkit-scrollbar-corner {
         background: rgba(0, 0, 0, 0);
     }
 
-    #dashboard .b-table-1::-webkit-scrollbar-thumb {
+    #wallet .b-table-1::-webkit-scrollbar-thumb {
         border-radius: 10px;
         -webkit-box-shadow: inset 0 0 6px rgba(233, 229, 229, 0.3);
         background-color: #676565;
     }
 
-    #dashboard .inner-text {
+    #wallet .inner-text {
         height: 100%;
         width: 100%;
         text-align: center;
@@ -2289,14 +2289,14 @@
         justify-content: center;
     }
 
-    #dashboard table td {
+    #wallet table td {
         padding-left: 4px !important;
         padding-right: 4px !important;
         font-family: "Poppins-Light";
         font-weight: 300;
     }
 
-    #dashboard table th {
+    #wallet table th {
         padding-left: 18px !important;
         padding-right: 15px !important;
         font-size: 12px;
@@ -2304,7 +2304,7 @@
         font-family: "Poppins";
     }
 
-    #dashboard .b-avatar {
+    #wallet .b-avatar {
         width: 30px;
         height: 30px;
         margin: auto;
@@ -2416,7 +2416,7 @@
         font-size: 12px;
     }
 
-    tbody tr {
+    #wallet tbody tr {
         font-family: "Poppins-Light";
         font-style: normal;
         font-weight: 400;
@@ -2448,26 +2448,28 @@
    
     } */
 
-    tbody tr:has(td:not(:first-child)) {
+    
+    
+    #wallet tbody tr:has(td:not(:first-child)) {
         box-shadow: inset 1px 2px 1px 0px rgb(82, 243, 109);
     }
 
-    table {
+    #wallet table {
         border-collapse: separate;
         border-spacing: 0 15px !important;
     }
 
-    td {
+    #wallet td {
         border: solid 0px #000000;
         padding: 15px;
     }
 
-    tr td:first-child {
+    #wallet tr td:first-child {
         border-top-left-radius: 50em;
         border-bottom-left-radius: 50em;
     }
 
-    tr td:last-child {
+    #wallet tr td:last-child {
         border-top-right-radius: 50em;
         border-bottom-right-radius: 50em;
     }
