@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\CoinsData;
 use Illuminate\Bus\Queueable;
-use App\Jobs\ScrapeSparklineChartJob;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;

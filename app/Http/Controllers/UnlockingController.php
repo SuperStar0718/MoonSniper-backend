@@ -2,26 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use DateTime;
-use DOMXPath;
-use Exception;
-use DOMDocument;
-use Carbon\Carbon;
-use Dotenv\Dotenv;
-use GuzzleHttp\Client;
+use App\Http\Controllers\Controller;
+use App\Libraries\CoinGecko\CoinGeckoClient;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
-use App\Models\ContractIcon;
 use App\Models\UnlockingPdf;
+use App\Notifications\NotifyTokenUnlockNotification;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
-use App\Libraries\CoinGecko\CoinGeckoClient;
-use App\Notifications\NotifyTokenUnlockNotification;
 
 class UnlockingController extends Controller
 {
@@ -136,7 +128,7 @@ class UnlockingController extends Controller
     public function parsePDF(Request $request)
     {
         // Parse PDF file and build necessary objects.
-        $parser = new \Smalot\PdfParser\Parser();
+        $parser = new \Smalot\PdfParser\Parser ();
         $file = storage_path('app') . '/public/unlocking/pdfs/' . $request->input('filename');
         $pdf = $parser->parseFile($file);
 
@@ -335,15 +327,197 @@ class UnlockingController extends Controller
             $this->strposX($haystack, $needle, $number - 1) + strlen($needle) : 0
         );
     }
-    private function tryPushingToDB($arr,$iterates=0){
+
+    public function dataFromUrl($c)
+    {
+
+        $client = new CoinGeckoClient(false);
+
+        $coin_array = $client->coins()->getMarkets('usd', ["sparkline" => "true", "price_change_percentage" => "1h,24h,7d,14d,30d,200d,1y", "per_page" => "250", "page" => 1]);
+        $coin_array = collect($coin_array);
+
+        $newCoinsArray = array();
+        $updateCoinsArray = array();
+        $newCoinsIds = array();
+
+        //First, lets get ID only to check what is new:
+        foreach ($coin_array as $item) {
+            if (!empty($item['id'])) {
+                $newCoinsIds[] = $item['id'];
+            }
+        }
+
+        // first get ids from table
+        $exist_ids = CoinsData::all('coin_id')->pluck('coin_id')->toArray();
+
+        // get insertable ids (New coins)
+        $insertable_ids = array_values(array_diff($newCoinsIds, $exist_ids));
+
+        //What token to remove:
+
+        $exist_list_ids = CoinsList::all('coin_id')->pluck('coin_id')->toArray();
+        $purge_ids = array_filter(array_values(array_diff($exist_ids, $exist_list_ids)));
+
+        //get all coins (to make sure we can update them):
+        foreach ($coin_array as $item) {
+            if (!empty($item['id'])) {
+
+                $ath_datetime = new \DateTime($item["ath_date"]);
+                $ath_datetime_string = $ath_datetime->format('Y-m-d H:i:s');
+
+                $atl_datetime = new \DateTime($item["atl_date"]);
+                $atl_datetime_string = $atl_datetime->format('Y-m-d H:i:s');
+
+                $spark_string = "";
+                try {
+                    for ($sparkline_index = 0; $sparkline_index < sizeof($item["sparkline_in_7d"]["price"]); $sparkline_index++) {
+                        $spark_string .= $item["sparkline_in_7d"]["price"][$sparkline_index] . "|";
+                    }
+
+                } catch (\Exception$e) {
+                }
+
+              
+                
+                $total_supply_percent = null;
+                if ($item["max_supply"] != null && $item["circulating_supply"] != null) {
+                    $total_supply_percent = (floatval($item["circulating_supply"]) * 100) / floatval($item["max_supply"]);
+                }
+                $volume = null;
+                $volume_date = Carbon::now();
+                $coinPreview = CoinsData::where('coin_id', $item["id"])->first();
+                if ($coinPreview) {
+                    $historicalCirculation = $coinPreview->historical_circulation;
+
+                }
+                if ($coinPreview) {
+                    if ($item["circulating_supply"]) {
+
+                        if ($coinPreview->historical_circulation === null) {
+                            // Create a new array with the current value of $item["circulating_supply"]
+                            $historicalCirculation = [$item["circulating_supply"]];
+                        } else {
+
+                            // Convert existing historical_circulation JSON string to an array
+                            $historicalCirculation = json_decode($coinPreview->historical_circulation, true);
+
+                            // Add the new value of $item["circulating_supply"] to the array
+                            $historicalCirculation[] = $item["circulating_supply"];
+
+                            // Ensure that the array has a maximum length of 30
+                            if (count($historicalCirculation) > 30) {
+                                // Remove the oldest value from the array
+                                $historicalCirculation = array_shift($historicalCirculation);
+                            }
+
+                            // Convert the modified array back to a JSON string
+                        }
+                    }
+                    $historicalCirculation = json_encode($historicalCirculation);
+
+                }
+                if ($coinPreview && !Carbon::parse($coinPreview->last_volume_date)->isToday() || $coinPreview && $coinPreview->volume_history == null) {
+                    if ($coinPreview->volume_history == null) {
+                        $volume = $item["total_volume"];
+                    } else {
+                        $volumeList = preg_split("/\,/", $coinPreview->volume_history);
+                        if (count($volumeList) > 1) {
+                            $volume = $volumeList[1] . ',' . $item["total_volume"];
+                        } else {
+                            $volume = $volumeList[0] . ',' . $item["total_volume"];
+                        }
+
+                    }
+                    $volume_date = Carbon::now();
+
+                } else {
+                    if ($coinPreview) {
+                        $volume = $coinPreview->volume_history;
+                        $volume_date = $coinPreview->last_volume_date;
+                    }
+                }
+                $coin = array(
+                    'coin_id' => $item["id"],
+                    'symbol' => strtoupper($item["symbol"]),
+                    'image' => $item["image"],
+                    'current_price' => $item["current_price"],
+                    'market_cap' => $item["market_cap"],
+                    'market_cap_rank' => $item["market_cap_rank"],
+                    'fully_diluted_valuation' => $item["fully_diluted_valuation"],
+                    'total_volume' => $item["total_volume"],
+                    'volume_history' => $volume,
+                    'last_volume_date' => $volume_date,
+                    'high_24h' => $item["high_24h"],
+                    'low_24h' => $item["low_24h"],
+                    'price_change_24h' => $item["price_change_24h"],
+                    'price_change_percentage_24h' => $item["price_change_percentage_24h"],
+                    'market_cap_change_24h' => $item["market_cap_change_24h"],
+                    'market_cap_change_percentage_24h' => $item["market_cap_change_percentage_24h"],
+                    'circulating_supply' => $item["circulating_supply"],
+                    'historical_circulation' => $historicalCirculation,
+                    'total_supply' => $item["total_supply"],
+                    'total_supply_percent' => $total_supply_percent,
+                    'max_supply' => $item["max_supply"],
+                    'ath' => $item["ath"],
+                    'ath_change_percentage' => $item["ath_change_percentage"],
+                    'ath_date' => $ath_datetime_string,
+                    'atl' => $item["atl"],
+                    'atl_change_percentage' => $item["atl_change_percentage"],
+                    'atl_date' => $atl_datetime_string,
+                    'price_change_percentage_14d_in_currency' => $item["price_change_percentage_14d_in_currency"],
+                    'price_change_percentage_1h_in_currency' => $item["price_change_percentage_1h_in_currency"],
+                    'price_change_percentage_1y_in_currency' => $item["price_change_percentage_1y_in_currency"],
+                    'price_change_percentage_200d_in_currency' => $item["price_change_percentage_200d_in_currency"],
+                    'price_change_percentage_24h_in_currency' => $item["price_change_percentage_24h_in_currency"],
+                    'price_change_percentage_30d_in_currency' => $item["price_change_percentage_30d_in_currency"],
+                    'price_change_percentage_7d_in_currency' => $item["price_change_percentage_7d_in_currency"],
+                    'sparkline_in_7d' => $spark_string,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                );
+              
+
+                if (in_array($item["id"], $insertable_ids)) {
+                    $newCoinsArray[] = $coin;
+                } else {
+                    $updateCoinsArray[] = $coin;
+                }
+            }
+        }
+
+        // prepare data for insert
+        //$data = collect();
+
+        //first add all needed new items to db:
+        $this->tryPushingToDB($newCoinsArray);
+
+        try {
+            CoinsData::massUpdate(
+                values:$updateCoinsArray,
+                uniqueBy:'coin_id'
+            );
+        } catch (\Exception$exception) {
+            Log::info("The Problem here is: " . $exception);
+        }
+
+        //Delete unneeded and dead tokens:
+        foreach ($purge_ids as $to_delete) {
+            CoinsData::where('coin_id', $to_delete)->delete();
+        }
+
+        return sizeof($coin_array);
+
+
+    }
+    private function tryPushingToDB($arr, $iterates = 0)
+    {
         //if its too many records, lets split it...
-        foreach (array_chunk($arr,1000) as $t) {
+        foreach (array_chunk($arr, 1000) as $t) {
             try {
                 //if there is a duplication order id from any reason, continue...
-                CoinsList::insert($t);
+                CoinsData::insert($t);
                 //Log::info("Finance Data has Pushed");
-            } catch
-            (\Exception $e) {
+            } catch (\Exception $e) {
                 //Log should be added here
                 Log::info('PROBLEM:' . $e);
 
@@ -354,23 +528,13 @@ class UnlockingController extends Controller
 
                     $iterates++;
                     //Call again:
-                    $this->tryPushingToDB($t,$iterates);
+                    $this->tryPushingToDB($t, $iterates);
                 } else {
                     Log::info('Im giving up :(');
                 }
 
             }
         }
-    }
-    
-    public function dataFromUrl($c)
-    {
-       
-        $env = Dotenv::createArrayBacked(base_path())->load();
-        $response = Http::withHeaders(['Authorization' => 'Bearer '. $env["LUNARCRUSH_API_KEY"]])->get('https://lunarcrush.com/api3/coins');
-        $response_body = $response->getBody();
-       return $lunarcrush_data = json_decode($response_body);
-
     }
     public static function getBetween2($content, $start, $end)
     {
@@ -442,15 +606,15 @@ class UnlockingController extends Controller
     {
         $user = Auth::user();
         $checkNotification = $user->notifications()
-            ->whereJsonContains('data', ['symbol' => $request->symbol,'coin_id' => $request->coin_id])
-             ->where('note',null)
+            ->whereJsonContains('data', ['symbol' => $request->symbol, 'coin_id' => $request->coin_id])
+            ->where('note', null)
             ->first();
         if (!$checkNotification) {
             $token = DB::table('coins')
                 ->select('coins.coin_id', 'coins.name', 'coins.symbol', 'coin_data.image', 'coin_data.current_price', 'coin_data.market_cap_rank', 'coin_data.next_unlock_date', 'coin_data.next_unlock_date', 'coin_data.next_unlock_date_text', 'coin_data.next_unlock_number_of_tokens')
-                ->leftJoin('coin_data', function($join) {
+                ->leftJoin('coin_data', function ($join) {
                     $join->on('coins.symbol', '=', 'coin_data.symbol')
-                    ->whereRaw('coins.coin_id = coin_data.coin_id');
+                        ->whereRaw('coins.coin_id = coin_data.coin_id');
                 })
                 ->where('coins.symbol', $request->symbol)
                 ->where('coins.coin_id', $request->coin_id)
@@ -473,8 +637,8 @@ class UnlockingController extends Controller
     {
         $user = Auth::user();
         $checkNotification = $user->notifications()
-            ->whereJsonContains('data', ['symbol' => $request->symbol,'coin_id' => $request->coin_id])
-            ->where('note',null)
+            ->whereJsonContains('data', ['symbol' => $request->symbol, 'coin_id' => $request->coin_id])
+            ->where('note', null)
             ->first();
         if ($checkNotification) {
             return response()->json(['status' => true, 'notification' => 'sent', 'item' => $checkNotification]);

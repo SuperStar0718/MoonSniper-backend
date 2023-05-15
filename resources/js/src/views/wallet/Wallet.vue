@@ -97,7 +97,6 @@
                         </b-tabs>
                     </div>
                 </b-overlay>
-                <good-table></good-table>
             </div>
         </div>
         <!-- end search and table -->

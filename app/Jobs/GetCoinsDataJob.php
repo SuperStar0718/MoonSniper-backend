@@ -67,10 +67,10 @@ class GetCoinsDataJob implements ShouldQueue
         foreach ($coin_array as $item) {
             if (!empty($item['id'])) {
 
-                $ath_datetime = new \DateTime($item["ath_date"]);
+                $ath_datetime = new \DateTime ($item["ath_date"]);
                 $ath_datetime_string = $ath_datetime->format('Y-m-d H:i:s');
 
-                $atl_datetime = new \DateTime($item["atl_date"]);
+                $atl_datetime = new \DateTime ($item["atl_date"]);
                 $atl_datetime_string = $atl_datetime->format('Y-m-d H:i:s');
 
                 $spark_string = "";
@@ -79,7 +79,7 @@ class GetCoinsDataJob implements ShouldQueue
                         $spark_string .= $item["sparkline_in_7d"]["price"][$sparkline_index] . "|";
                     }
 
-                } catch (\Exception$e) {
+                } catch (\Exception $e) {
                 }
 
                 /*if ($item["roi"] != null) {
@@ -91,7 +91,7 @@ class GetCoinsDataJob implements ShouldQueue
                 $roi_currency = "";
                 $roi_percentage = "";
                 }*/
-                
+
                 $total_supply_percent = null;
                 if ($item["max_supply"] != null && $item["circulating_supply"] != null) {
                     $total_supply_percent = (floatval($item["circulating_supply"]) * 100) / floatval($item["max_supply"]);
@@ -99,6 +99,37 @@ class GetCoinsDataJob implements ShouldQueue
                 $volume = null;
                 $volume_date = Carbon::now();
                 $coinPreview = CoinsData::where('coin_id', $item["id"])->first();
+                $historicalCirculation = null;
+               
+                if ($coinPreview) {
+                    $historicalCirculation = $coinPreview->historical_circulation;
+
+                    if ($item["circulating_supply"] != null) {
+
+                        if ($coinPreview->historical_circulation === null) {
+                            // Create a new array with the current value of $item["circulating_supply"]
+                            $historicalCirculation = [$item["circulating_supply"]];
+                        } else {
+
+                            // Convert existing historical_circulation JSON string to an array
+                            $historicalCirculation = json_decode($coinPreview->historical_circulation, true);
+
+                            // Add the new value of $item["circulating_supply"] to the array
+                            $historicalCirculation[] = $item["circulating_supply"];
+
+                            // Ensure that the array has a maximum length of 30
+                            if (count($historicalCirculation) > 30) {
+                                // Remove the oldest value from the array
+                                $historicalCirculation = array_shift($historicalCirculation);
+                            }
+
+                            // Convert the modified array back to a JSON string
+                        }
+
+                        $historicalCirculation = json_encode($historicalCirculation);
+                    }
+
+                }
                 if ($coinPreview && !Carbon::parse($coinPreview->last_volume_date)->isToday() || $coinPreview && $coinPreview->volume_history == null) {
                     if ($coinPreview->volume_history == null) {
                         $volume = $item["total_volume"];
@@ -111,16 +142,18 @@ class GetCoinsDataJob implements ShouldQueue
                         }
 
                     }
+
+                    
                     $volume_date = Carbon::now();
-                
-                }else{
-                    if($coinPreview)
-                    {
+
+                } else {
+                    if ($coinPreview) {
                         $volume = $coinPreview->volume_history;
-                    $volume_date = $coinPreview->last_volume_date;
+                        $volume_date = $coinPreview->last_volume_date;
+                        // $historicalCirculation = $coinPreview->historical_circulation;
                     }
                 }
-                $coin = array(
+                return $coin = array(
                     'coin_id' => $item["id"],
                     'symbol' => strtoupper($item["symbol"]),
                     'image' => $item["image"],
@@ -138,6 +171,7 @@ class GetCoinsDataJob implements ShouldQueue
                     'market_cap_change_24h' => $item["market_cap_change_24h"],
                     'market_cap_change_percentage_24h' => $item["market_cap_change_percentage_24h"],
                     'circulating_supply' => $item["circulating_supply"],
+                    'historical_circulation' => $historicalCirculation,
                     'total_supply' => $item["total_supply"],
                     'total_supply_percent' => $total_supply_percent,
                     'max_supply' => $item["max_supply"],
@@ -158,7 +192,7 @@ class GetCoinsDataJob implements ShouldQueue
                     'created_at' => now(),
                     'updated_at' => now(),
                 );
-               
+
                 //Removed these lines (we are taking the xs from cryptorank today):
 /*
 'roi_times' => !empty($roi_times) ? $roi_times : NULL,
@@ -192,7 +226,7 @@ Also, I removed these (it overwrite the social fields!!)
                 values:$updateCoinsArray,
                 uniqueBy:'coin_id'
             );
-        } catch (\Exception$exception) {
+        } catch (\Exception $exception) {
             Log::info("The Problem here is: " . $exception);
         }
 
@@ -213,7 +247,7 @@ Also, I removed these (it overwrite the social fields!!)
                 //if there is a duplication order id from any reason, continue...
                 CoinsData::insert($t);
                 //Log::info("Finance Data has Pushed");
-            } catch (\Exception$e) {
+            } catch (\Exception $e) {
                 //Log should be added here
                 Log::info('PROBLEM:' . $e);
 

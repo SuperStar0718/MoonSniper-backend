@@ -6543,6 +6543,7 @@
                     .map(element => element.coin_id)
                     .sort(() => Math.random() - 0.5)
                     .join(',');
+                    this.coinsStr = this.coinsStr + ','+Math.random();
 
                 window.postMessage({
                     type: "get_data",
