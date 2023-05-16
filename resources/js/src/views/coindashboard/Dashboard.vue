@@ -2324,6 +2324,16 @@
                                                             style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">{{ activeData.total_supply_percent }}
                                                             %</span> </div>
                                                 </div>
+                                                <div v-if="activeData.inflation"
+                                                    style="margin-bottom: 10px;">
+                                                    <span
+                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
+                                                        Inflation:</span>
+                                                    <div class="" style="font-size:16px; font-weight: 600;">
+                                                        <span
+                                                            style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">{{ activeData.inflation }}
+                                                            %</span> </div>
+                                                </div>
                                                 <div class="float-left price_prediction">
                                                     <button class="fs-6 "
                                                         style="border-radius: 10px; font-size: 12px; font-weight: 400; font-family: 'Poppins-Light'; font-style: normal; padding:6px 11px;">Price
@@ -3082,7 +3092,8 @@
                                                         :series="supplyChart.series" />
                                                 </div>
                                             </b-col>
-                                            <b-col cols="12" class="col-12" v-if="   vestingDataChart.xaxis.categories.length>0">
+                                            <b-col cols="12" class="col-12"
+                                                v-if="   vestingDataChart.xaxis.categories.length>0">
                                                 <span class="mr-1">Vesting Chart: </span>
 
 
@@ -5529,34 +5540,34 @@
                 //vesting Chart 
                 if (item.vesting_chart) {
                     let vestingData = JSON.parse(item.vesting_chart);
-                    if(vestingData[0]){
+                    if (vestingData[0]) {
                         let keys = Object.keys(vestingData[0])
-                    var filteredArray = keys.filter(function (e) {
-                        return e !== 'name'
-                    })
-                    //   filteredArray.forEach((element,index) => {
-                    //     this.vestingDataSerice[index] = {};
-                    //     this.vestingDataSerice[index].name = element;
-                    //     this.vestingDataSerice[index].data = [];
-                    //   });
-                    //   vestingData.forEach((element,index) => {
-                    //     console.log(element);
-                    //  });
-                    let dataval = [];
-                    filteredArray.forEach((element, index) => {
-                        this.vestingDataSerice[index] = {};
-                        this.vestingDataSerice[index].name = element;
-                        let oData = vestingData.map(item => item[element]);
-                        this.vestingDataSerice[index].data = oData;
-                    });
+                        var filteredArray = keys.filter(function (e) {
+                            return e !== 'name'
+                        })
+                        //   filteredArray.forEach((element,index) => {
+                        //     this.vestingDataSerice[index] = {};
+                        //     this.vestingDataSerice[index].name = element;
+                        //     this.vestingDataSerice[index].data = [];
+                        //   });
+                        //   vestingData.forEach((element,index) => {
+                        //     console.log(element);
+                        //  });
+                        let dataval = [];
+                        filteredArray.forEach((element, index) => {
+                            this.vestingDataSerice[index] = {};
+                            this.vestingDataSerice[index].name = element;
+                            let oData = vestingData.map(item => item[element]);
+                            this.vestingDataSerice[index].data = oData;
+                        });
 
-                    vestingData.forEach(element => {
-                        const date = new Date(element.name);
-                        const timestamp = date.getTime();
-                        this.vestingDataChart.xaxis.categories.push(timestamp);
-                    });
+                        vestingData.forEach(element => {
+                            const date = new Date(element.name);
+                            const timestamp = date.getTime();
+                            this.vestingDataChart.xaxis.categories.push(timestamp);
+                        });
                     }
-                    
+
                     //   console.log(this.vestingDataSerice);
                 }
                 this.detailsModalLoaded = true;
@@ -6543,7 +6554,7 @@
                     .map(element => element.coin_id)
                     .sort(() => Math.random() - 0.5)
                     .join(',');
-                    this.coinsStr = this.coinsStr + ','+Math.random();
+                this.coinsStr = this.coinsStr + ',' + Math.random();
 
                 window.postMessage({
                     type: "get_data",
@@ -6723,10 +6734,10 @@
         created() {
             this.userData = getUserData()
         },
-        beforeDestroy(){
+        beforeDestroy() {
             if (this.livePriceInterval) {
-                    clearInterval(this.livePriceInterval)
-                }
+                clearInterval(this.livePriceInterval)
+            }
         },
         watch: {
             'alertForm.name': function (newVal, oldVal) {
@@ -7074,7 +7085,8 @@
         font-size: 12px;
     }
 
-    #dashboard tbody tr, .ExchangeTableDiv tbody tr {
+    #dashboard tbody tr,
+    .ExchangeTableDiv tbody tr {
         font-family: 'Poppins-Light';
         font-style: normal;
         font-weight: 400;
@@ -7103,7 +7115,8 @@
    
     } */
 
-    #dashboard tbody tr:has(td:not(:first-child)),.ExchangeTableDiv tbody tr:has(td:not(:first-child)) {
+    #dashboard tbody tr:has(td:not(:first-child)),
+    .ExchangeTableDiv tbody tr:has(td:not(:first-child)) {
         box-shadow: inset 1px 2px 1px 0px rgb(82, 243, 109);
     }
 
@@ -7122,7 +7135,8 @@
         padding: 15px;
     }
 
-    #dashboard tr td:first-child ,.ExchangeTableDiv tr td:first-child {
+    #dashboard tr td:first-child,
+    .ExchangeTableDiv tr td:first-child {
         border-top-left-radius: 50em;
         border-bottom-left-radius: 50em;
     }
@@ -7133,7 +7147,8 @@
         padding: 2px 0;
     }
 
-    #dashboard tr td:last-child,.ExchangeTableDiv tr td:last-child {
+    #dashboard tr td:last-child,
+    .ExchangeTableDiv tr td:last-child {
         border-top-right-radius: 50em;
         border-bottom-right-radius: 50em;
     }

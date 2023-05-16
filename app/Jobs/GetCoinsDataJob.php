@@ -2,16 +2,16 @@
 
 namespace App\Jobs;
 
-use App\Libraries\CoinGecko\CoinGeckoClient;
+use Carbon\Carbon;
 use App\Models\CoinsData;
 use App\Models\CoinsList;
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
+use App\Libraries\CoinGecko\CoinGeckoClient;
 
 class GetCoinsDataJob implements ShouldQueue
 {
@@ -41,6 +41,13 @@ class GetCoinsDataJob implements ShouldQueue
         $coin_array = $client->coins()->getMarkets('usd', ["sparkline" => "true", "price_change_percentage" => "1h,24h,7d,14d,30d,200d,1y", "per_page" => "250", "page" => $this->pageno]);
         $coin_array = collect($coin_array);
 
+        if (isset($coin_array['status']) && isset($coin_array['status']['error_code'])) {
+            $error_code = $coin_array['status']['error_code'];
+            $error_message = $coin_array['status']['error_message'];
+
+            echo $error_message;
+
+        }
         $newCoinsArray = array();
         $updateCoinsArray = array();
         $newCoinsIds = array();
@@ -98,13 +105,16 @@ class GetCoinsDataJob implements ShouldQueue
                 }
                 $volume = null;
                 $volume_date = Carbon::now();
+                $circulationDate = Carbon::now();
+
                 $coinPreview = CoinsData::where('coin_id', $item["id"])->first();
                 $historicalCirculation = null;
-               
-                if ($coinPreview) {
+                $inflationRate = 0.00;
+                if ($coinPreview ) {
                     $historicalCirculation = $coinPreview->historical_circulation;
-
-                    if ($item["circulating_supply"] != null) {
+                    $inflationRate = $coinPreview->inflation;
+                    $inflationRate = $coinPreview->last_historical_circulation;
+                    if ($item["circulating_supply"] != null && ($coinPreview->last_historical_circulation == null  ||  !Carbon::parse($coinPreview->last_historical_circulation)->isToday() )) {
 
                         if ($coinPreview->historical_circulation === null) {
                             // Create a new array with the current value of $item["circulating_supply"]
@@ -125,8 +135,20 @@ class GetCoinsDataJob implements ShouldQueue
 
                             // Convert the modified array back to a JSON string
                         }
+                        if (count($historicalCirculation) > 1) {
+                            $oldHistoricalCirculation = $historicalCirculation[0];
+                            $newHistoricalCirculation = end($historicalCirculation);
+                            if($newHistoricalCirculation != NULL && $oldHistoricalCirculation != null && $newHistoricalCirculation != $oldHistoricalCirculation){
+                            $inflationRate = (($newHistoricalCirculation - $oldHistoricalCirculation) / $oldHistoricalCirculation) * 100;
+                            $inflationRate = round($inflationRate, 2);
 
+                            }else{
+                            $inflationRate = 0.00;
+                            }
+                        }
                         $historicalCirculation = json_encode($historicalCirculation);
+                         $circulationDate = Carbon::now();
+
                     }
 
                 }
@@ -143,7 +165,6 @@ class GetCoinsDataJob implements ShouldQueue
 
                     }
 
-                    
                     $volume_date = Carbon::now();
 
                 } else {
@@ -153,7 +174,7 @@ class GetCoinsDataJob implements ShouldQueue
                         // $historicalCirculation = $coinPreview->historical_circulation;
                     }
                 }
-                return $coin = array(
+                $coin = array(
                     'coin_id' => $item["id"],
                     'symbol' => strtoupper($item["symbol"]),
                     'image' => $item["image"],
@@ -172,6 +193,8 @@ class GetCoinsDataJob implements ShouldQueue
                     'market_cap_change_percentage_24h' => $item["market_cap_change_percentage_24h"],
                     'circulating_supply' => $item["circulating_supply"],
                     'historical_circulation' => $historicalCirculation,
+                    'inflation' => $inflationRate,
+                    'last_historical_circulation' => $circulationDate,
                     'total_supply' => $item["total_supply"],
                     'total_supply_percent' => $total_supply_percent,
                     'max_supply' => $item["max_supply"],
@@ -194,18 +217,18 @@ class GetCoinsDataJob implements ShouldQueue
                 );
 
                 //Removed these lines (we are taking the xs from cryptorank today):
-/*
-'roi_times' => !empty($roi_times) ? $roi_times : NULL,
-'roi_currency' => $roi_currency,
-'roi_percentage' => !empty($roi_percentage) ? $roi_percentage : NULL,
+                /*
+                'roi_times' => !empty($roi_times) ? $roi_times : NULL,
+                'roi_currency' => $roi_currency,
+                'roi_percentage' => !empty($roi_percentage) ? $roi_percentage : NULL,
 
-Also, I removed these (it overwrite the social fields!!)
-'description' => "",
-'platform' => "",
-'historical_sentiment' => "[]",
-'historical_social_mentions' => "[]",
-'historical_social_engagement' => "[]",
- */
+                Also, I removed these (it overwrite the social fields!!)
+                'description' => "",
+                'platform' => "",
+                'historical_sentiment' => "[]",
+                'historical_social_mentions' => "[]",
+                'historical_social_engagement' => "[]",
+                */
 
                 if (in_array($item["id"], $insertable_ids)) {
                     $newCoinsArray[] = $coin;
@@ -215,10 +238,10 @@ Also, I removed these (it overwrite the social fields!!)
             }
         }
 
-        // prepare data for insert
-        //$data = collect();
+            // prepare data for insert
+            //$data = collect();
 
-        //first add all needed new items to db:
+            //first add all needed new items to db:
         $this->tryPushingToDB($newCoinsArray);
 
         try {
