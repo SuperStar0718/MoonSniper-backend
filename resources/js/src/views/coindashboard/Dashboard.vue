@@ -2156,200 +2156,10 @@
                                     ||activeData.total_supply_percent" :isVisible="true" title="Market Data"
                                 class="open w-100">
                                 <b-card no-body>
-                                    <b-card-body style="margin-left: 10px; margin-top: 19px;">
+                                    <b-card-body style="margin-left: 10px; margin-top: 10px;">
                                         <b-row>
-
-                                            <b-col md="10" sm="8" class="text-center sparlineChat mb-1"
-                                                style="margin-left: -40px;"
-                                                v-if="activeData.sparkline_in_7d&& activeData.sparkline_in_7d.length>0">
-                                                <!-- <h5> 7 Days</h5> -->
-                                                <div class="position-absolute w-100" style="z-index:99">
-
-                                                    <b-tabs content-class=""
-                                                        class="graph_tab graph_tab-1 float-left w-50"
-                                                        style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
-                                                        <b-tab active title="Price" @click="toggleChartType('cp')">
-                                                            <div></div>
-                                                        </b-tab>
-                                                        <b-tab title="MC" @click="toggleChartType('mc')">
-                                                            <div></div>
-                                                        </b-tab>
-                                                    </b-tabs>
-                                                    <div class="d-inline-flex float-right"
-                                                        style="padding-right: 40px !important;">
-                                                        <b-tabs content-class="" class="graph_tab my-auto"
-                                                            style="font-family: Poppins-Light;font-style: normal;font-weight: 400;font-size: 10px;">
-                                                            <b-tab active title="1D" @click="loadHistoryChart('24')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                            <b-tab title="7D" @click="loadHistoryChart('7')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                            <b-tab title="14D" @click="loadHistoryChart('14')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                            <b-tab title="1M" @click="loadHistoryChart('30')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                            <b-tab title="3M" @click="loadHistoryChart('90')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                            <b-tab title="1Y" @click="loadHistoryChart('365')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                            <b-tab title="ALL" @click="loadHistoryChart('all')">
-                                                                <div></div>
-                                                            </b-tab>
-                                                        </b-tabs>
-
-                                                        <div style="width:20px">
-                                                            <feather-icon size='12' icon='CalendarIcon' />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div v-show="chartType == 'cp'">
-                                                    <div v-if="activeData.coingeckoid != null">
-                                                        <vue-apex-charts red="apexChart1" class="full" width="100%"
-                                                            :dataLabels="true" type="area" height="330"
-                                                            :options="Price_DaysChart" :series="Price_DaysChartseries">
-                                                        </vue-apex-charts>
-                                                    </div>
-                                                </div>
-                                                <div v-show="chartType == 'mc'">
-                                                    <div v-if="activeData.coingeckoid != null">
-                                                        <vue-apex-charts red="apexChart1" class="full" width="100%"
-                                                            :dataLabels="true" type="area" height="330"
-                                                            :options="MC_DaysChart" :series="MC_DaysChartseries">
-                                                        </vue-apex-charts>
-                                                    </div>
-                                                </div>
-
-                                                <!-- <sparkline width="300" height="150">
-                                                        <sparklineLine :data="activeData.sparkline_in_7d"
-                                                            :limit="activeData.sparkline_in_7d?activeData.sparkline_in_7d.length:1000"
-                                                            :styles="spLineStyles" />
-                                                    </sparkline> -->
-                                            </b-col>
-                                            <b-col md="2" sm="4" style=" 
-                                                    padding-left: 0px !important;
-                                                    justify-content: space-between;
-                                                    flex-direction: column;">
-                                                <div v-if="activeData.total_volume" style="margin-bottom: 10px;">
-                                                    <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                        24h Volume</span>
-                                                    <div class="" style="font-size:16px; font-weight: 600;">
-                                                        <span
-                                                            style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.total_volume) }}</span>
-                                                    </div>
-                                                </div>
-                                                <div v-if="activeData.market_cap" style="margin-bottom: 10px;">
-                                                    <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                        Market Cap</span>
-                                                    <div class="" style="font-size:16px; font-weight: 600;">
-                                                        <span
-                                                            style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.market_cap) }}</span>
-                                                    </div>
-                                                </div>
-                                                <div v-if="activeData.fully_diluted_valuation"
-                                                    style="margin-bottom: 10px;">
-                                                    <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;white-space: nowrap;">
-                                                        Fully Diluted Valuation</span>
-                                                    <div class="" style="font-size:16px; font-weight: 600;">
-                                                        <span
-                                                            style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.fully_diluted_valuation) }}</span>
-                                                    </div>
-                                                </div>
-                                                <div v-if="activeData.ath" style="margin-bottom: 10px;">
-                                                    <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                        ATH</span>
-                                                    <div class="d-flex" style="font-size:16px; font-weight: 600;">
-                                                        <span
-                                                            style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.ath) }}</span>
-                                                        <span
-                                                            style="font-family: Poppins-Light;
-                                                            font-style: normal;
-                                                            font-weight: 400;
-                                                            font-size: 11px;
-                                                            white-space: nowrap;
-                                                            margin: auto;
-                                                            margin-left: 6px;">{{ toInterNationalNumber(activeData.ath_change_percentage) }}
-                                                            %</span>
-                                                    </div>
-                                                </div>
-                                                <div v-if="activeData.atl" style="margin-bottom: 10px;">
-                                                    <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                        ATL</span>
-
-                                                    <div class="d-flex" style="font-size:16px; font-weight: 600;">
-                                                        <span
-                                                            style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">${{ toInterNationalNumber(activeData.atl) }}</span>
-                                                        <span
-                                                            style="font-family: Poppins-Light;
-                                                            font-style: normal;
-                                                            font-weight: 400;
-                                                            font-size: 11px;
-                                                            white-space: nowrap;
-                                                            margin: auto;
-                                                            margin-left: 6px;">{{ toInterNationalNumber(activeData.atl_change_percentage) }}
-                                                            %</span>
-                                                    </div>
-                                                </div>
-                                                <div style="margin-bottom: 10px;"
-                                                    v-if="activeData.roi_times ||activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0">
-                                                    <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5; white-space: nowrap;">
-                                                        X's from launch
-                                                        {{ activeData.type ? ' ('+activeData.type+')':'' }}</span>
-                                                    <div class="" style="font-size:16px; font-weight: 600;">
-                                                        <span
-                                                            style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;"
-                                                            v-if="activeData.roi_times">{{ xfromlunch(activeData.roi_times,'roi_times') }}X</span>
-                                                        <span
-                                                            style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;"
-                                                            v-else-if="activeData.round_price && activeData.round_price !=0 && activeData.current_price&& activeData.current_price !=0 ">{{ xfromlunch(activeData.current_price,activeData.round_price) }}X</span>
-                                                    </div>
-                                                </div>
-                                                <div v-if="activeData.total_supply_percent"
-                                                    style="margin-bottom: 10px;">
-                                                    <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                        Total Supply:</span>
-                                                    <div class="" style="font-size:16px; font-weight: 600;">
-                                                        <span
-                                                            style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">{{ activeData.total_supply_percent }}
-                                                            %</span> </div>
-                                                </div>
-                                                <div v-if="activeData.inflation"
-                                                    style="margin-bottom: 10px;">
-                                                    <span
-                                                        style="font-family: 'Poppins-Light';font-style: normal;font-weight: 300;font-size: 12px;opacity: 0.5;">
-                                                        Inflation:</span>
-                                                    <div class="" style="font-size:16px; font-weight: 600;">
-                                                        <span
-                                                            style="font-family: 'Poppins-Light';font-style: normal;font-weight: 400;font-size: 15px;">{{ activeData.inflation }}
-                                                            %</span> </div>
-                                                </div>
-                                                <div class="float-left price_prediction">
-                                                    <button class="fs-6 "
-                                                        style="border-radius: 10px; font-size: 12px; font-weight: 400; font-family: 'Poppins-Light'; font-style: normal; padding:6px 11px;">Price
-                                                        Prediction</button>
-                                                </div>
-                                            </b-col>
-
+                                            <TradingViewChart :symbol=activeData.symbol />
                                         </b-row>
-                                        <b-row>
-                                            <b-col class="p-0">
-                                                <p class="poppins-font chart-desc" v-html="activeData.coin_description">
-
-                                                </p>
-                                            </b-col>
-                                        </b-row>
-
                                     </b-card-body>
                                 </b-card>
                             </app-collapse-item>
@@ -3241,6 +3051,7 @@
     import NotificationRangePrice from './NotificationRangePrice.vue';
     import NotificationRangeROI from './NotificationRangeROI.vue';
     import NotificationRangeNextUnlock from './NotificationRangeNextUnlock.vue';
+    import TradingViewChart from './TradingViewChart.vue';
     import draggable from 'vuedraggable'
     import {
         BTh,
@@ -3366,7 +3177,7 @@
             BTh,
             BTr,
             BIconGripHorizontal,
-
+            TradingViewChart,
         },
 
         data() {
