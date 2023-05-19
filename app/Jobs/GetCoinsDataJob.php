@@ -113,7 +113,7 @@ class GetCoinsDataJob implements ShouldQueue
                 if ($coinPreview ) {
                     $historicalCirculation = $coinPreview->historical_circulation;
                     $inflationRate = $coinPreview->inflation;
-                    $inflationRate = $coinPreview->last_historical_circulation;
+                    $circulationDate = $coinPreview->last_historical_circulation;
                     if ($item["circulating_supply"] != null && ($coinPreview->last_historical_circulation == null  ||  !Carbon::parse($coinPreview->last_historical_circulation)->isToday() )) {
 
                         if ($coinPreview->historical_circulation === null) {
@@ -133,7 +133,6 @@ class GetCoinsDataJob implements ShouldQueue
                                 $historicalCirculation = array_shift($historicalCirculation);
                             }
 
-                            // Convert the modified array back to a JSON string
                         }
                         if (count($historicalCirculation) > 1) {
                             $oldHistoricalCirculation = $historicalCirculation[0];
@@ -146,6 +145,8 @@ class GetCoinsDataJob implements ShouldQueue
                             $inflationRate = 0.00;
                             }
                         }
+                        
+                            // Convert the modified array back to a JSON string
                         $historicalCirculation = json_encode($historicalCirculation);
                          $circulationDate = Carbon::now();
 
