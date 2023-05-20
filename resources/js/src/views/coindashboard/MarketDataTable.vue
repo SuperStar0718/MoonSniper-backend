@@ -136,7 +136,7 @@ export default {
                 {
                     value: `${this.roundData(this.token?.ath_change_percentage ?? 0)}%`,
                     caption: "% from ATH 60%",
-                    compare: this.token?.ath_change_percentage > 0,
+                    compare: this.token?.ath_change_percentage >= 0,
                 },
                 {
                     value: `$${this.roundData(this.token?.atl ?? 0)}`,
@@ -145,12 +145,12 @@ export default {
                 {
                     value: `${this.roundData(this.token?.atl_change_percentage ?? 0)}%`,
                     caption: "% from ATL 60%",
-                    compare: this.token?.atl_change_percentage > 0,
+                    compare: this.token?.atl_change_percentage >= 0,
                 },
                 {
                     value: `${this.token?.inflation}%`,
                     caption: "INFLATION",
-                    compare: this.token?.inflatio > 0,
+                    compare: this.token?.inflation >= 0,
                 },
                 {
                     value: "-",
@@ -171,17 +171,17 @@ export default {
                 {
                     value: `${this.roundData(this.token?.social_mentions_change)}%`,
                     caption: "24H Social mentions %",
-                    compare: this.token.social_mentions_change > 0,
+                    compare: this.token.social_mentions_change >= 0,
                 },
                 {
                     value: `${this.roundData(this.token?.social_engagement_change)}%`,
                     caption: "24H Social engamgents %",
-                    compare: this.token?.social_engagement_change > 0,
+                    compare: this.token?.social_engagement_change >= 0,
                 },
                 {
                     value: `${this.roundData(this.token?.average_sentiment)}%`,
                     caption: "24H Social sentiments %",
-                    compare: this.token?.average_sentiment > 0,
+                    compare: this.token?.average_sentiment >= 0,
                 },
                 {
                     value: `${this.xfromlunch(this.token?.roi_times??0,'roi_times')}X`,
