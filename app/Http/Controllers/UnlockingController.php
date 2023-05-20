@@ -329,7 +329,28 @@ class UnlockingController extends Controller
     }
 
     public function dataFromUrl($c)
-    { $client = new CoinGeckoClient(false);
+    { 
+        $updateCoinsArray = array();
+        $coinPreviewData = CoinsData::where('historical_circulation', '!=', null)->get();
+        foreach ($coinPreviewData as $key => $coinPreview) {
+            $historicalCirculation = json_decode($coinPreview->historical_circulation, true);
+            $oldHistoricalCirculation = $historicalCirculation[0];
+            $newHistoricalCirculation = end($historicalCirculation);
+                $inflationRate = (($newHistoricalCirculation - $oldHistoricalCirculation) / $oldHistoricalCirculation) * 100;
+                $inflationRate = round($inflationRate, 2);
+                $coin = array(
+                    'coin_id' => $coinPreview["coin_id"],
+                    'inflation' => $inflationRate,
+                );
+                $updateCoinsArray[] = $coin;
+
+        }
+        CoinsData::massUpdate(
+            values:$updateCoinsArray,
+            uniqueBy:'coin_id'
+        );
+        return 'done';
+        $client = new CoinGeckoClient(false);
         $coinPreview = null;
         return ($coinPreview == null  ||  !Carbon::parse($coinPreview)->isToday() );
         return !Carbon::parse(null)->isToday();
