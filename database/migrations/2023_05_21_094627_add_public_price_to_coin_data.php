@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('coin_data', function (Blueprint $table) {
-            $table->double('public_price')->after('type');
+            $table->double('public_price')->nullable()->after('type');
             $table->dateTime('public_date')->nullable()->after('public_price');
         });
     }
