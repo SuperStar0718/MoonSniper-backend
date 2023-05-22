@@ -168,7 +168,7 @@ export default {
                     caption: "Circulating Supply",
                 },
                 {
-                    value: this.token?.total_supply_percent ?? `-` + '%',
+                    value: `${this.token?.total_supply_percent}%` ?? `-`,
                     caption: "% in circulation",
                 },
                 {
