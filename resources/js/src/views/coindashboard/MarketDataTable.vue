@@ -66,6 +66,7 @@ export default {
             if (val) {
                 return this.toInterNationalNumber(parseFloat(val).toFixed(2));
             }
+            return 0;
         },
         nFormatter(num) {
             if (Math.abs(num) > 999999999) {
@@ -93,12 +94,61 @@ export default {
                 }).format(calculated_roi_x.toFixed(2));
             }
         },
+        volumePerCentage(data) {
+            if (data) {
+                var str_array = data.split(',');
+                if (str_array.length > 1) {
+                    let per = (str_array[0] - str_array[1]) / str_array[0];
+                    return this.twenty4HConversation(per);
+                }
+
+            }
+        },
+        compareVolume(data){
+            if (data) {
+                var str_array = data.split(',');
+                if (str_array.length > 1) {
+                    return (str_array[0] - str_array[1]) > 0 
+                }
+            }
+            return true;
+        },
+        twenty4HConversation(value) {
+            let checkval = 0;
+            if (value != null) {
+                if (value >= 0) {
+                    for (let index = 1; index < 10; index++) {
+                        if (0 >= checkval) {
+                            checkval = parseFloat(value).toFixed(index);
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    for (let index = 1; index < 10; index++) {
+                        if (0 <= checkval) {
+                            checkval = parseFloat(value).toFixed(index);
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                if (checkval == 0) {
+                    return 0;
+                }
+                return new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 15,
+                }).format(checkval);
+            }
+
+        },
     },
     data() {
         return {
             tempData: [
                 {
-                    value: "-",
+                    value: this.token?.public_date ?? "-",
                     caption: "Date created",
                 },
                 {
@@ -126,8 +176,9 @@ export default {
                     caption: "Daily Volume",
                 },
                 {
-                    value: "-",
+                    value: `${this.volumePerCentage(this.token?.volume_history)}%`,
                     caption: "Daily Volume Change %",
+                    compare: this.compareVolume(this.token?.volume_history)
                 },
                 {
                     value: `$${this.roundData(this.token?.ath ?? 0)}`,
@@ -188,7 +239,7 @@ export default {
                     caption: "Xs from Public price",
                 },
                 {
-                    value: "-",
+                    value: `${this.roundData(this.token?.public_price)}$`,
                     caption: "Public price",
                 },
                 {
@@ -196,7 +247,7 @@ export default {
                     caption: "x to  no 1 in category",
                 },
                 {
-                    value: "-",
+                    value: `${this.roundData(this.token?.market_cap / this.token?.total_volume)}%`,
                     caption: "Market cap/daily volume %",
                 },
                 {
