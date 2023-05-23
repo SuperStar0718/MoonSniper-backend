@@ -143,12 +143,25 @@ export default {
             }
 
         },
+        getYearMonth(val){
+            if(val){
+                const date = new Date(val);
+                const year = date.getFullYear();
+                const month = date.toLocaleString('default', { month: 'long' });
+
+                const formattedDate = year + ' ' + month;
+
+                return formattedDate
+            }
+
+            return ""
+        },
     },
     data() {
         return {
             tempData: [
                 {
-                    value: this.token?.public_date ?? "-",
+                    value:  this.getYearMonth(this.token?.public_date),
                     caption: "Date created",
                 },
                 {
@@ -168,7 +181,7 @@ export default {
                     caption: "Circulating Supply",
                 },
                 {
-                    value: `${this.token?.total_supply_percent}%` ?? `-`,
+                    value: `${this.token?.total_supply_percent}%` ?? "",
                     caption: "% in circulation",
                 },
                 {
@@ -216,7 +229,7 @@ export default {
                     caption: "Holders 7 day % change",
                 },
                 {
-                    value: this.token?.next_unlock_date_text ?? "-",
+                    value: this.token?.next_unlock_date_text ?? "",
                     caption: "Next unlock date",
                 },
                 {
@@ -259,7 +272,7 @@ export default {
                     text: "Website"
                 },
                 {
-                    value: this.nFormatter(this.token?.twitter_followers) ?? "-",
+                    value: this.nFormatter(this.token?.twitter_followers) ?? "",
                     caption: "Twitter Followers",
                     compare: "icon",
                     imageSrc: `/images/static/twitter.png`,
@@ -267,7 +280,7 @@ export default {
                     text: "Twitter"
                 },
                 {
-                    value: this.nFormatter(this.token?.telegram_members) ?? "-",
+                    value: this.nFormatter(this.token?.telegram_members) ?? "",
                     caption: "TG Followers",
                     compare: "icon",
                     imageSrc: `/images/static/telegram.png`,
