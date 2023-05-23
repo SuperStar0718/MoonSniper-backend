@@ -248,7 +248,7 @@ export default {
                     compare: this.token?.average_sentiment >= 0,
                 },
                 {
-                    value: `${this.xfromlunch(this.token?.roi_times??0,'roi_times')}X`,
+                    value: `${parseInt(this.token?.current_price/this.token?.public_price)}X`,
                     caption: "Xs from Public price",
                 },
                 {
