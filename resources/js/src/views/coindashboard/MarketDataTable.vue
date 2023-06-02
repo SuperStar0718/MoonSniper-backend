@@ -300,8 +300,7 @@ export default {
     },
     computed: {
     filteredData() {
-        console.log("Tempdata:",this.tempData)
-      return this.tempData.filter((data) => typeof data.value === 'number' || (typeof data.value === 'string' && !data.value.includes('null') && data.value!=='-' && data.value!=='' && !data.value.includes('NaN')));
+      return this.tempData.filter((data) => typeof data.value === 'number' || (typeof data.value === 'string' && !data.value.includes('null') && data.value!=='-' && data.value!=='' && !data.value.includes('NaN')));//this is the filtered array to remove empty value
     },
   },
 };
